@@ -80,9 +80,17 @@ public class PublicController {
     }
 
 
-    //登陆
     @RequestMapping("/login")
-    public ModelAndView login(String username,String password, HttpSession session) throws Exception{
+    public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login.jsp");
+        return modelAndView;
+    }
+
+
+    //登陆
+    @RequestMapping("/doLogin")
+    public ModelAndView doLogin(String username,String password, HttpSession session) throws Exception{
         System.out.println(username + ":" + password);
 
 

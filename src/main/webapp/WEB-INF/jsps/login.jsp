@@ -17,7 +17,7 @@
 	</div>
 
 	<div class="bg">
-		<form action="/Management/public/login.action" method="post" class="login-wrap">
+		<form action="${pageContext.request.contextPath}/public/doLogin.action" method="post" class="login-wrap">
 			<div class="form-content">
 				<div class="input-wrap">
 					<span class="input-icon">账号</span>
