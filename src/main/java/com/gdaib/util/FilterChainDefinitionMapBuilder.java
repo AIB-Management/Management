@@ -9,7 +9,7 @@ public class FilterChainDefinitionMapBuilder {
 
 
     public LinkedHashMap<String,String> builderFilterChainDefinitionMap(){
-        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        LinkedHashMap<String,String> map = new LinkedHashMap<String,String>();
 
         /**
          *

@@ -45,7 +45,7 @@
 			<p class="input-wrap">
 				<label>验证码</label>
 				<input type="text" id="vtCode">
-				<img src="images/fj2.jpg" id="vt-img">
+				<img src="${pageContext.request.contextPath}/public/getCaptcha.action" id="vt-img">
 				<a href="#" id="change-vt-code">换一个</a>
 				<span class="hint"></span>
 			</p>

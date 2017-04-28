@@ -30,7 +30,7 @@
 				</div>
 				<div class="vt-code-wrap">
 					<input type="text" name="vt" id="vt-code">
-					<img src="images/fj2.jpg" id="vt-img">
+					<img src="${pageContext.request.contextPath}/public/getCaptcha.action" id="vt-img">
 					<a href="#" id="change-vt-code">换一个</a>
 					<p id="vt-code-hint">验证码错误</p>
 				</div>
@@ -39,7 +39,7 @@
 				<div class="link-wrap">
 					<a href="findpassword.html">忘记密码</a>
 					<span>|</span>
-					<a href="register.html">注册</a>
+					<a href="${pageContext.request.contextPath}/public/register.action">注册</a>
 				</div>
 			</div>
 		</form>
