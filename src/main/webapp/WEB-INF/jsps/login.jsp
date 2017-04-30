@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>登录</title>
-	<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/js/loginMain"></script>--%>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/loginMain"></script>
 </head>
 <body>
 	<div id="warning">
@@ -20,9 +20,9 @@
 		<form action="${pageContext.request.contextPath}/public/doLogin.action" method="post" class="login-wrap">
 			<div class="form-content">
 				<div class="input-wrap">
+					<p id="login-hint">${error}</p>
 					<span class="input-icon">账号</span>
 					<input type="text" name="username" class="input-content" id="account" placeholder="请输入账号" value="${username}">
-					<p id="login-hint">账号和密码不存在</p>
 				</div>
 				<div class="input-wrap">
 					<span class="input-icon">密码</span>
@@ -32,7 +32,7 @@
 					<input type="text" name="vt" id="vt-code">
 					<img src="${pageContext.request.contextPath}/public/getCaptcha.action" id="vt-img">
 					<a href="#" id="change-vt-code">换一个</a>
-					<p id="vt-code-hint">验证码错误</p>
+					<p id="vt-code-hint"></p>
 				</div>
 				<button id="log-in" type="submit">登录</button>
 				<label class="remember-me-wrap"><input type="checkbox" id="remember-me">3天内记住我</label>

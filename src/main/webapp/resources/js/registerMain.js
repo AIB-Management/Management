@@ -26,6 +26,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	}
 
 	//输入框失焦时执行的函数
+	//通过传进来的元素id 执行具体操作
 	function inputOnblurFilter(args){
 		if (args.id == "confirmpwd") {
 			checkBy.sibling(args,"password","span","#00C12B","#FB000D");
@@ -63,23 +64,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		}else if(args.id == "vtCode") {
 
 			checkBy.reg(args,"span","#00C12B","#FB000D");
-			
-			var bool = checkBy.ajax({
-				elem: args,
-				hintsContent: "span",
-				errorColor: "#FB000D",
-				url: "test.php",
-				reqData: {vtVal: args.value},
-				correctBool: true,
-				errorBool: false,
-				result: "vtBool"
-			});
-
-			if (bool == false) {
-				args.value = "";
-				s("#change-vt-code").click();
-			}
-			
 
 		}else {
 			checkBy.reg(args,"span","#00C12B","#FB000D");
@@ -108,6 +92,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 	});
 
+	
 
 	//input元素验证提示函数
 	(function inputsOnCheck(allinput){

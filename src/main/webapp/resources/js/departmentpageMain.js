@@ -28,7 +28,18 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 		return document.querySelectorAll(name);
 	}
 
-	//一级导航点击事件
+	//获取浏览器最终样式的函数
+	function getCurStyle(elem,pusedo,targetProperty){
+		if (elem.currentStyle != undefined) {
+			return elem.currentStyle[targetProperty];
+			
+		}else{
+			return window.getComputedStyle(elem,pusedo)[targetProperty];
+			
+		}
+	}
+
+	//一级导航点击事件执行函数
 	function firstNavClick(){
 		var text = this.innerText;
 		var elem = document.createElement("span");
@@ -37,12 +48,9 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 		//点击完一级导航栏之后先清空面包屑里面的内容
 		container.innerHTML = "";
 		container.appendChild(elem);
-		console.log('一级导航点击');
-		console.log(container);
-		console.log(elem);
 	}
 
-	//二级导航点击事件
+	//二级导航点击事件执行函数
 	function secondNavClick(){
 		var text = this.innerText;
 		var elem = document.createElement("span");
@@ -73,9 +81,38 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 		}
 	}
 
-	//面包屑导航点击事件
+	//控制导航显示方法
+	function controlNavNums(navWrap,childnode,moreElemAdapter,icon){
+		//获取父元素的宽度
+		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
+
+		//获取全部子元素的宽度
+		var childWidthTotal = 0;
+		for (var i = 0; i < childnode.length; i++) {
+
+			childWidthTotal += parseInt(getCurStyle(childnode[i],null,"width"));
+			if (childWidthTotal >= parentWidth) {
+				navWrap.removeChild(childnode[i]);
+			};
+		
+		};
+
+		console.log("子元素的总宽度：" + childWidthTotal);
+		console.log("父元素的宽度：" + parentWidth);
+		
+
+	}
+	controlNavNums(s("#head-nav-content"),ss(".first-nav"));
+
+	//面包屑导航点击事件调用函数
 	//...code
 	
+	//console.log(getCurStyle(ss(".first-nav")[3],null,"width"));
+
+
+	
+	//------------- 调用层 ----------------
+
 	//用户名栏鼠标移入事件
 	EventUntil.addHandler(s("#user-name"),"mouseover",function(event){
 		event = EventUntil.getEvent(event);
@@ -117,6 +154,7 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 	
 	});
 
+	//一二级导航栏点击事件添加面包屑导航
 	navTagClick(ss(".first-nav"));
 	navTagClick(ss(".second-nav"));
 

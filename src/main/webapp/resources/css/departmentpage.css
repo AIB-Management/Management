@@ -136,14 +136,16 @@
 	background-color: #666;
 	z-index: 0;
 }
+#more-elem-contain{
+	position: absolute;
+	top: 0;
+	left: 0;
+	visibility: hidden;
+}
 .head-nav ul{
 	width: 90%;
 	height: 100%;
-	margin: 0 auto;
-	overflow-x: scroll;
-	overflow-y: hidden;
 	word-spacing: -6px;
-	white-space: nowrap;
 }
 .head-nav ul li{
 	display: inline-block;

@@ -48,51 +48,15 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 
 		if (account.value == "" || pwd.value == "") {
 			hint.innerText = "账号或密码不能为空";
-			hint.style.visibility = 'visible';
 			account.isCorrect = false;
 
 		}else if (account.value != "" && pwd.value != "") {
-			//当账号和密码都不为空的时候
-			//发送一个ajax 请求给后台
-			//检测账号是否存在 密码是否与账号匹配
-			var temp = {accountVal: account.value,pwdVal: pwd.value};
-			var reqData = JSON.stringify(temp);
+			//当账号和密码不为空时
+			//账号和密码输入框isCorrect 属性设置为true
+			//数据交给后台验证处理
+			account.isCorrect = true;
+			pwd.isCorrect = true;
 
-			$.ajax({
-				url: 'test.php',
-				type: 'post',
-				dataType: 'json',
-				async: false,
-				data: reqData,
-				success: function(data){
-					/*
-						接收返回数据的格式为：
-						account: 账号是否存在
-						pwd: 密码是否与账号匹配
-					*/
-					if (data.account == false) {
-						//如果账号不存在
-						hint.innerText = "账号不存在";
-						hint.style.visibility = 'visible';
-						account.isCorrect = false;
-
-					}else if (data.account == true && data.pwd == false) {
-						//如果账号存在但与密码不匹配
-						hint.innerText = "密码错误";
-						hint.style.visibility = 'visible';
-						pwd.isCorrect = false;
-
-					}else{
-						account.isCorrect = true;
-						pwd.isCorrect = true;
-
-					}
-				}
-			})
-			
-			
-
-			
 		}
 
 		
@@ -109,40 +73,13 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		//如果验证码为空提示错误信息
 		if (vtVal == "") {
 			vtHint.innerText = "验证码错误";
-			vtHint.style.visibility = 'visible';
 			vtCode.isCorrect = false;
 
 		}else{
-			//不为空时发送一个ajax 请求
-			var temp = {"vtValue":vtVal};
-			var reqData = JSON.stringify(temp);
-
-			$.ajax({
-				url: 'test.php',
-				type: 'get',
-				dataType: 'json',
-				async: false,
-				data: reqData,
-				success: function(data){
-					if (data.bool == "error") {
-					 	//如果输入的验证码错误
-					 	//清空验证码输入框的内容
-					 	s("#vt-code").value = "";
-					 	//提示错误信息
-					 	vtHint.innerText = "验证码错误";
-						vtHint.style.visibility = 'visible';
-						//更换验证码按钮模拟点击一下
-						changeBtn.click();
-
-						vtCode.isCorrect = false;
-					 }else{
-					 	//如果验证码正确
-					 	vtCode.isCorrect = true;
-					 }
-				}
-			})
-			
-			
+			//不为空时把验证码输入框属性 isCorrect 设置为true
+			//验证码交给后台处理
+			vtCode.isCorrect = true;
+	
 		}
 
 	}
@@ -154,10 +91,6 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		var account = s("#account");
 		var pwd = s("#pwd");
 		var vtCode = s("#vt-code");
-
-		alert("account:" + account.isCorrect);
-		alert("pwd:" + pwd.isCorrect)
-		alert("vtCode:" + vtCode.isCorrect);
 
 		if (account.isCorrect == false || pwd.isCorrect == false || vtCode.isCorrect == false) {
 			EventUntil.preventDefault(event);
@@ -177,8 +110,10 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		var account = s("#account");
 		var pwd = s("#pwd");
 
-		account.value = cookies.getCookie("account");
-		pwd.value = cookies.getCookie("pwd");
+		if (account.value == "" && pwd.value == "") {
+			account.value = cookies.getCookie("account");
+			pwd.value = cookies.getCookie("pwd");
+		}
 	});
 	s("#account").focus();
 
