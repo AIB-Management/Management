@@ -58,7 +58,7 @@ public class UsersServiceImpl implements UsersService {
             throw new Exception("密码与确认密码必须一致");
         }
 
-        //To add 判断用户名是否合法
+        //To add 判断用户名 密码 邮箱 是否合法
 
 
         //判断用户是否已经存在
@@ -67,7 +67,10 @@ public class UsersServiceImpl implements UsersService {
         if (account != null) {
             throw  new Exception("用户已存在");
         }
+    }
 
-
+    @Override
+    public void insertAccountByRegisterPojo(RegisterPojo registerPojo) throws Exception {
+        //调用Mapper注册账号方法 传递RegisterPojo对象
     }
 }

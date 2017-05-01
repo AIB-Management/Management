@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.code.kaptcha.Constants;
@@ -137,7 +138,7 @@ public class PublicController {
 
     @Autowired
     private UsersService usersService;
-    @RequestMapping("/doRegister")
+    @RequestMapping(value = "/doRegister",method = RequestMethod.POST)
     public String doRegister  (
             Model model,
             HttpSession session,
@@ -149,6 +150,7 @@ public class PublicController {
 
             //开始注册动作
 
+            usersService.insertAccountByRegisterPojo(registerPojo);
         }catch (Exception e){
             //如果有错误 返回异常信息
             System.out.print(e.getMessage());

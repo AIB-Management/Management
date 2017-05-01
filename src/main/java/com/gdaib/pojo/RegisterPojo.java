@@ -4,13 +4,21 @@ package com.gdaib.pojo;
  * Created by tom on 17-5-1.
  */
 public class RegisterPojo {
+    //用户账号
     private String username;
+    //用户名
     private String name;
+    //密码
     private String pwd;
+    //确认密码
     private String confirmpwd;
+    //专业ID
     private Integer specialId;
+    //邮箱地址
     private String  email;
+    //验证码
     private String vtCode;
+    //系别ID
     private Integer departmentId;
 
     public String getUsername() {
