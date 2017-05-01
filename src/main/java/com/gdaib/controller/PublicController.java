@@ -146,11 +146,13 @@ public class PublicController {
     ){
         System.out.print(registerPojo.toString());
         try {
+            //判断账号是否合法
             usersService.judgeRegisterInfo(session,registerPojo);
 
             //开始注册动作
-
             usersService.insertAccountByRegisterPojo(registerPojo);
+
+
         }catch (Exception e){
             //如果有错误 返回异常信息
             System.out.print(e.getMessage());
