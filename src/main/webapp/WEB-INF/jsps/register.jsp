@@ -14,36 +14,40 @@
 			<h3 class="form-title">用户注册</h3>
 			<p class="input-wrap">
 				<label>教师姓名</label>
-				<input type="text" class="reg-input-style" id="tname" name="name">
+				<input type="text" class="reg-input-style" id="tname" name="name" value="${registerPojo.name}">
 				<span class="hint"></span>
 			</p>
 			<p class="input-wrap">
 				<label>账号</label>
-				<input type="text" class="reg-input-style" id="account" name="username">
+				<input type="text" class="reg-input-style" id="account" name="username" value="${RegisterPojo.username}">
 				<span class="hint"></span>
 			</p>
 			<p class="input-wrap">
 				<label>密码</label>
-				<input type="password" class="reg-input-style" id="password" name="pwd">
+				<input type="password" class="reg-input-style" id="password" name="pwd" value="${RegisterPojo.pwd}">
 				<span class="hint"></span>
 			</p>
 			<p class="input-wrap">
 				<label>确认密码</label>
-				<input type="password" class="reg-input-style" name="confirmpwd" id="confirmpwd">
+				<input type="password" class="reg-input-style" name="confirmpwd" id="confirmpwd" value="${RegisterPojo.confirmpwd}">
 				<span class="hint"></span>
 			</p>
 			<p class="input-wrap">
 				<label>选择专业</label>
 				<select id="department" name="departmentId">
 					<option value="1"> 计算机系</option>
+					<option value="2"> 计算机系</option>
+					<option value="3"> 计算机系</option>
 				</select>
 				<select id="special" name="specialId" >
 					<option value="1">软件技术</option>
+					<option value="2">软件技术</option>
+					<option value="3">软件技术</option>
 				</select>
 			</p>
 			<p class="input-wrap">
 				<label>邮箱</label>
-				<input type="text" class="reg-input-style" id="mail" name="email">
+				<input type="text" class="reg-input-style" id="mail" name="email" value="${RegisterPojo.email}">
 				<span class="hint"></span>
 			</p>
 			<p class="input-wrap">

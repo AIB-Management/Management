@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
-import com.gdaib.util.Print;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.code.kaptcha.Constants;
@@ -35,6 +33,8 @@ public class PublicController {
     @Autowired
     private Producer captchaProducer;
 
+    private static  final String LOGIN="login.jsp";
+    private static  final String REGISTER_JSP = "register.jsp";
     @RequestMapping("/getCaptcha")
     public void getCaptcha
             (HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -138,7 +138,8 @@ public class PublicController {
     @Autowired
     private UsersService usersService;
     @RequestMapping("/doRegister")
-    public void doRegister  (
+    public String doRegister  (
+            Model model,
             HttpSession session,
             RegisterPojo registerPojo
     ){
@@ -150,9 +151,12 @@ public class PublicController {
 
         }catch (Exception e){
             //如果有错误 返回异常信息
+            System.out.print(e.getMessage());
             session.setAttribute("error",e.getMessage());
-            e.printStackTrace();
+            model.addAttribute("RegisterPojo",registerPojo);
         }
+
+        return REGISTER_JSP;
 
     }
 

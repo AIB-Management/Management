@@ -1,7 +1,6 @@
 package com.gdaib.service.impl;
 
 
-
 import com.gdaib.mapper.AccountMapper;
 import com.gdaib.pojo.Account;
 import com.gdaib.pojo.AccountExample;
@@ -26,33 +25,37 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Account findAccountForUsername(String username) throws Exception {
+
         WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
         AccountExample accountExample = (AccountExample) wac.getBean("accountExample");
-        AccountExample.Criteria criteria= accountExample.createCriteria();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
 
         criteria.andUsernameEqualTo(username);
         List<Account> accounts = accountMapper.selectByExample(accountExample);
 
-        if(accounts.size() == 0){
+        if (accounts.size() == 0) {
             return null;
-        }else{
+        } else {
             return accounts.get(0);
         }
     }
 
     @Override
     public void judgeRegisterInfo(HttpSession session, RegisterPojo registerPojo) throws Exception {
-        String kaptchaExpected = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        String kaptchaExpected = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
         String vtCode = registerPojo.getVtCode();
-        if(registerPojo == null){
-            new Exception("用户注册信息失败");
+        if (registerPojo == null) {
+            throw new Exception("用户注册信息失败");
         }
 
-        if(vtCode.equals("")||vtCode == null){
-            new Exception("验证码不能为空");
+        if (vtCode.equals("") || vtCode == null) {
+            throw new Exception("验证码不能为空");
+        } else if ((!vtCode.equals(kaptchaExpected))) {
+            throw new Exception("验证码出错");
         }
-        else if((!vtCode.equals(kaptchaExpected))){
-            new Exception("验证码出错");
+
+        if(!registerPojo.getPwd().equals(registerPojo.getConfirmpwd())){
+            throw new Exception("密码与确认密码必须一致");
         }
 
         //To add 判断用户名是否合法
@@ -61,8 +64,8 @@ public class UsersServiceImpl implements UsersService {
         //判断用户是否已经存在
 
         Account account = findAccountForUsername(registerPojo.getUsername());
-        if(account != null){
-            new Exception("用户已存在");
+        if (account != null) {
+            throw  new Exception("用户已存在");
         }
 
 
