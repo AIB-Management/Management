@@ -21,6 +21,8 @@
 
 
         <bean id="usersService" class="com.gdaib.service.impl.UsersServiceImpl"/>
+    <bean id="departmentServiceImpl" class="com.gdaib.service.impl.DepartmentServiceImpl"/>
 
-        <bean id="accountExample" class="com.gdaib.pojo.AccountExample" scope="prototype"/>
+
+    <bean id="accountExample" class="com.gdaib.pojo.AccountExample" scope="prototype"/>
 </beans>

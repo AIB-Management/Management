@@ -1,3 +1,5 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.gdaib.pojo.Department" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,11 +37,27 @@
 			<p class="input-wrap">
 				<label>选择专业</label>
 				<select id="department" name="departmentId">
-					<option value="1"> 计算机系</option>
-					<option value="2"> 计算机系</option>
-					<option value="3"> 计算机系</option>
+
+
+					<%
+						List<Department> departments = (List<Department>)session.getAttribute("department");
+					    if(departments!=null){
+					        for(Department department:departments) {
+                                out.print("<option value=\""+department.getId()+"\">" + department.getDepartment() + "</option>");
+                            }
+                        }else{
+					        out.print("<option value=\"1\"> 计算机系</option>");
+                        }
+                    %>
 				</select>
 				<select id="special" name="specialId" >
+
+                    <!--
+                    path:http://localhost:8080/Management/public/getProfessionJson.action?departmentID=1
+                    param:departmentID
+                    return :{"professionArr":[{"id":1,"profession":"软件技术","departmentId":1},{"id":2,"profession":"计算机应用基础","departmentId":1}]}
+                    error:{"professionArr":"null"}
+                    -->
 					<option value="1">软件技术</option>
 					<option value="2">软件技术</option>
 					<option value="3">软件技术</option>
@@ -60,7 +78,7 @@
 			<p>${error}</p>
 			<p class="input-wrap">
 				<button id="complete-reg" type="submit">注册</button>
-				<a href="" class="link-login">已有账号，直接登陆</a>
+				<a href="${pageContext.request.contextPath}/public/login.action" class="link-login">已有账号，直接登陆</a>
 			</p>
 		</form>
 	</div>

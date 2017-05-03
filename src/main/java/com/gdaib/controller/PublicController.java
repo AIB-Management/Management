@@ -1,6 +1,8 @@
 package com.gdaib.controller;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.gdaib.pojo.RegisterPojo;
+import com.gdaib.service.DepartmentService;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.code.kaptcha.Constants;
@@ -34,8 +38,9 @@ public class PublicController {
     @Autowired
     private Producer captchaProducer;
 
-    private static  final String LOGIN="login.jsp";
-    private static  final String REGISTER_JSP = "register.jsp";
+    private static final String LOGIN = "login.jsp";
+    private static final String REGISTER_JSP = "register.jsp";
+
     @RequestMapping("/getCaptcha")
     public void getCaptcha
             (HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -79,7 +84,7 @@ public class PublicController {
 
 
     @RequestMapping("/login")
-    public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login.jsp");
         return modelAndView;
@@ -88,7 +93,7 @@ public class PublicController {
 
     //登陆
     @RequestMapping("/doLogin")
-    public ModelAndView doLogin(String username,String password, HttpSession session) throws Exception{
+    public ModelAndView doLogin(String username, String password, HttpSession session) throws Exception {
         System.out.println(username + ":" + password);
 
 
@@ -96,26 +101,25 @@ public class PublicController {
         Subject subject = SecurityUtils.getSubject();
         ModelAndView modelAndView = new ModelAndView();
         //2. 测试用户有没有被认证
-        if(!subject.isAuthenticated()){
+        if (!subject.isAuthenticated()) {
             //把用户名密码都封装到UsernamePasswordToken中
-            UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 
 
-            try{
+            try {
                 //登录，执行realm中的认证方法
                 subject.login(token);
 
-            }catch (UnknownAccountException ue){
+            } catch (UnknownAccountException ue) {
                 System.out.println("错误信息");
-                modelAndView.addObject("error",ue.getMessage());
-                modelAndView.addObject("username",username);
+                modelAndView.addObject("error", ue.getMessage());
+                modelAndView.addObject("username", username);
                 modelAndView.setViewName("login.jsp");
                 return modelAndView;
-            }
-            catch(AuthenticationException ae){
-                System.out.println("错误信息"+ae.getMessage().toString());
-                modelAndView.addObject("error","密码错误");
-                modelAndView.addObject("username",username);
+            } catch (AuthenticationException ae) {
+                System.out.println("错误信息" + ae.getMessage().toString());
+                modelAndView.addObject("error", "密码错误");
+                modelAndView.addObject("username", username);
                 modelAndView.setViewName("login.jsp");
                 return modelAndView;
             }
@@ -127,43 +131,65 @@ public class PublicController {
     }
 
 
+    @Autowired
+    private DepartmentService departmentService;
 
     @RequestMapping("/register")
-    public String register(){
+    public String register(HttpSession session) {
+
+        try {
+            session.setAttribute("department", departmentService.getAllDepartment());
+        } catch (Exception e) {
+            session.setAttribute("department", null);
+        }
+
+
         return "register.jsp";
     }
 
-
+    @RequestMapping(value = "/getProfessionJson")
+    @ResponseBody
+    public HashMap<String, Object> getProfessionJson(Integer departmentID) {
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        System.out.println("--------------------"+departmentID+"--------------------");
+        try {
+            throw  new Exception();
+            //hashMap.put("professionArr", departmentService.getProfessionByDepartmentID(departmentID));
+        } catch (Exception e) {
+            hashMap.put("professionArr", "null");
+        }
+        return hashMap;
+    }
 
 
     @Autowired
     private UsersService usersService;
-    @RequestMapping(value = "/doRegister",method = RequestMethod.POST)
-    public String doRegister  (
+
+    @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
+    public String doRegister(
             Model model,
             HttpSession session,
             RegisterPojo registerPojo
-    ){
+    ) {
         System.out.print(registerPojo.toString());
         try {
             //判断账号是否合法
-            usersService.judgeRegisterInfo(session,registerPojo);
+            usersService.judgeRegisterInfo(session, registerPojo);
 
             //开始注册动作
 //            usersService.insertAccountByRegisterPojo(registerPojo);
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             //如果有错误 返回异常信息
             System.out.print(e.getMessage());
-            session.setAttribute("error",e.getMessage());
-            model.addAttribute("RegisterPojo",registerPojo);
+            session.setAttribute("error", e.getMessage());
+            model.addAttribute("RegisterPojo", registerPojo);
         }
 
         return REGISTER_JSP;
 
     }
-
 
 
 }
