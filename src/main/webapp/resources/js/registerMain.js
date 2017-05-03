@@ -162,6 +162,16 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	}(s("#department"),s("#special")));
 
 
+	//切换验证码按钮点击事件
+	EventUntil.addHandler(s("#change-vt-code"),"click",function(event){
+		event = EventUntil.getEvent(event);
+		EventUntil.preventDefault(event);
+
+        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
+	})
+
+	
+
 	//提交按钮点击事件函数
 	(function clickSubmit(elem){
 		var submit = elem;
@@ -189,20 +199,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
 
-	//切换验证码按钮点击事件
-	EventUntil.addHandler(s("#change-vt-code"),"click",function(event){
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-
-		var vtImg = s("#vt-img");
-		var args = {"change":"changeVt"};
-		$.get("", args, function(data) {
-			/*
-				返回格式为：
-				{"imgSrc":"图片路径"}
-			 */
-			 //vtImg.src = data.imgSrc;
-		});
-	})
+	
 
 });
