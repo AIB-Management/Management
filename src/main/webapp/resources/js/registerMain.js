@@ -130,10 +130,16 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				dataType: 'json',
 				data: curData,
 				success: function(data){
-					for (var i = 0; i < professionArr.length; i++) {
+					data = JSON.parse(data);
+					
+					for (var i = 0; i < data[professionArr].length; i++) {
+
 						var option = document.createElement("option");
-						option.value = professionArr[i]["id"];
-						option.innerText = professionArr[i]["profession"];
+
+						option.value = data[professionArr][i]["id"];
+
+						option.innerText = data[professionArr][i]["profession"];
+
 						frag.appendChild(option);
 					}
 
@@ -141,7 +147,12 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				},
 
 				error: function(data){
-					selector2.appendChild(selectorHint);
+					data = JSON.parse(data);
+
+					var option = document.createElement("option");
+					option.innerText = data["professionArr"];
+					selector2.options.length = 0;
+					selector2.appendChild(option);
 				}
 			})
 
