@@ -121,22 +121,7 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 
 	//切换验证码按钮点击事件
 	EventUntil.addHandler(s("#change-vt-code"),"click",function(event){
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-		console.log('点击了一下切换按钮');
-
-		var img = s("#vt-img");
-		var temp = {change: "changeVtCode"};
-		//整理为json 字符串格式
-		var reqData = JSON.stringify(temp);
-		//通过ajax 获取后台图片的路径 再将图片路径赋值
-		$.get("", reqData,function(data) {
-			/*返回数据格式为：
-				{"imgsrc":"图片路径"}
-			 */
-			 img.src = data.imgsrc;
-		},"JSON");
-		
+        $("#vt-img").attr("src","/Management/public/getCaptcha.action?a="+new Date());
 	})
 
 

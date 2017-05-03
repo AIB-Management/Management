@@ -9,7 +9,7 @@
     <!--批量扫描别名，mybatis会自动扫描包下面的pojo类，自动定义别名，别名就是类名（首字母大小写随意）-->
     <typeAliases>
         <!--批量扫描别名-->
-        <package name="com.gdaib.login.pojo"/>
+        <package name="com.gdaib.pojo"/>
     </typeAliases>
 
     <!--
