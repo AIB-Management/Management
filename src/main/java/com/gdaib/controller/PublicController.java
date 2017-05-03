@@ -150,7 +150,7 @@ public class PublicController {
             usersService.judgeRegisterInfo(session,registerPojo);
 
             //开始注册动作
-            usersService.insertAccountByRegisterPojo(registerPojo);
+//            usersService.insertAccountByRegisterPojo(registerPojo);
 
 
         }catch (Exception e){
