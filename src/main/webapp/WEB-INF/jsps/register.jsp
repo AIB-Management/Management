@@ -58,9 +58,7 @@
                     return :{"professionArr":[{"id":1,"profession":"软件技术","departmentId":1},{"id":2,"profession":"计算机应用基础","departmentId":1}]}
                     error:{"professionArr":"null"}
                     -->
-					<option value="1">软件技术</option>
-					<option value="2">软件技术</option>
-					<option value="3">软件技术</option>
+					<option value="">请选择专业</option>
 				</select>
 			</p>
 			<p class="input-wrap">
