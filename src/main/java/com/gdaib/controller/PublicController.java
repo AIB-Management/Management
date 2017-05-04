@@ -174,13 +174,13 @@ public class PublicController {
             HttpSession session,
             RegisterPojo registerPojo
     ) {
-        System.out.print(registerPojo.toString());
+        System.out.println(registerPojo.toString());
         try {
             //判断账号是否合法
             usersService.judgeRegisterInfo(session, registerPojo);
 
             //开始注册动作
-//            usersService.insertAccountByRegisterPojo(registerPojo);
+            usersService.insertAccountByRegisterPojo(registerPojo);
 
 
         } catch (Exception e) {

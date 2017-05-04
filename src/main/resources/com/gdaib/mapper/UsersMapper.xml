@@ -11,8 +11,8 @@
     </select>
 
     <!--插入用户信息-->
-    <select id="insertUserFromAccount" parameterType="Account">
-        INSERT INTO `t_account`(username,PASSWORD,NAME,mail,dp_id) VALUES(#{username},#{password},#{name},#{mail},#{dp_id})
+    <select id="insertUserFromAccount" parameterType="RegisterPojo">
+        INSERT INTO `t_account`(username,PASSWORD,NAME,mail,dp_id) VALUES(#{username},#{pwd},#{name},#{email},#{specialId})
     </select>
 
     <!--得到所有系-->

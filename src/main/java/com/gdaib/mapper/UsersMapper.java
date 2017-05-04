@@ -3,6 +3,7 @@ package com.gdaib.mapper;
 import com.gdaib.pojo.Account;
 import com.gdaib.pojo.Department;
 import com.gdaib.pojo.Profession;
+import com.gdaib.pojo.RegisterPojo;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface UsersMapper {
 
 
     //增加用户
-    public void insertUserFromAccount(Account account) throws Exception;
+    public void insertUserFromAccount(RegisterPojo registerPojo) throws Exception;
 
     //得到所有系
     public List<Department> findDepartment() throws Exception;

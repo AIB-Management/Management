@@ -2,6 +2,7 @@ package com.gdaib.service.impl;
 
 
 import com.gdaib.mapper.AccountMapper;
+import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.Account;
 import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.RegisterPojo;
@@ -26,6 +27,12 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     public AccountMapper accountMapper;
 
+    @Autowired
+    public UsersMapper usersMapper;
+
+    /**
+     * 根据用户名找到用户
+     */
     @Override
     public Account findAccountForUsername(String username) throws Exception {
         WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
@@ -73,9 +80,10 @@ public class UsersServiceImpl implements UsersService {
 
     private void judgeVtCode(HttpSession session ,String vtCode) throws Exception{
         String kaptchaExpected = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+
         if (vtCode.equals("") || vtCode == null) {
             throw new Exception("验证码不能为空！");
-        } else if ((!vtCode.equals(kaptchaExpected))) {
+        } else if (!(vtCode.equalsIgnoreCase(kaptchaExpected))) {
             throw new Exception("验证码错误！");
         }
     }
@@ -139,6 +147,8 @@ public class UsersServiceImpl implements UsersService {
         System.out.print("-----------------"+registerPojo.toString()+"----------------------------");
 
         //To Add 调用Mapper注册账号方法 传递RegisterPojo对象
+        usersMapper.insertUserFromAccount(registerPojo);
+
 
     }
 }
