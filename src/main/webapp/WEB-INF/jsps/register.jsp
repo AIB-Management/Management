@@ -38,7 +38,6 @@
 			<p class="input-wrap">
 				<label>选择专业</label>
 				<select id="department" name="departmentId">
-					<option value="">请选择系</option>
 					<c:forEach items="${department}" var="dp">
 						<option value="${dp.id}">${dp.department}</option>
 					</c:forEach>
@@ -64,9 +63,8 @@
 				<input type="text" id="vtCode" name="vtCode">
 				<img src="${pageContext.request.contextPath}/public/getCaptcha.action" id="vt-img">
 				<a href="#" id="change-vt-code">换一个</a>
-				<span class="hint"></span>
+				<span class="hint">${error}</span>
 			</p>
-			<p>${error}</p>
 			<p class="input-wrap">
 				<button id="complete-reg" type="submit">注册</button>
 				<a href="${pageContext.request.contextPath}/public/login.action" class="link-login">已有账号，直接登陆</a>
