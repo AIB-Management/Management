@@ -165,8 +165,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			selector2.options.length = 0;
 
 			//保存json 对象数据
-			var arg = JSON.stringify({departmentID:selector1.value});
-
+			// var arg = JSON.stringify({departmentID:selector1.value});
+            var arg = {departmentID:selector1.value};
 			$.ajax({
 				url: 'http://localhost:8080/Management/public/getProfessionJson.action',
 				type: 'GET',
