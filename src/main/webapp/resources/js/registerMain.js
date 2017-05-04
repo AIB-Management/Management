@@ -130,7 +130,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		var inputs = allinput;
 
 		for (var i = 0; i < inputs.length; i++) {
-			
+
 			if (inputs[i].id != "vtCode") {
 
 				EventUntil.addHandler(inputs[i],"focus",function(){
@@ -164,38 +164,50 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			//清空第二个下拉框的option
 			selector2.options.length = 0;
 
-			//保存json 对象数据
-			// var arg = JSON.stringify({departmentID:selector1.value});
-            var arg = {departmentID:selector1.value};
-			$.ajax({
-				url: 'http://localhost:8080/Management/public/getProfessionJson.action',
-				type: 'GET',
-				async: true,
-				dataType: 'json',
-				data: arg,
-				success: function(data){
-					for (var i = 0; i < data.length; i++) {
-						var option = document.createElement("option");
-						option.value = data[i].id;
-						option.innerText = data[i].profession;
-						frag.appendChild(option);
+
+			//保存传输数据对象
+			var arg = {departmentID:selector1.value};
+
+			//如果第一个下拉框选择的option value 不为空
+			//发送一个ajax 请求道后台获取数据
+			if (selector1.value != "") {
+				$.ajax({
+					url: 'http://localhost:8080/Management/public/getProfessionJson.action',
+					type: 'GET',
+					async: true,
+					dataType: 'json',
+					data: arg,
+					success: function(data){
+						for (var i = 0; i < data.length; i++) {
+							var option = document.createElement("option");
+							option.value = data[i].id;
+							option.innerText = data[i].profession;
+							frag.appendChild(option);
+						}
+
+						//为第二个下拉框添加子元素
+						selector2.appendChild(frag);
+					},
+
+					error: function(data){
+						data = JSON.parse(data);
+
+	                    var option = document.createElement("option");
+	                    option.innerText = data["professionArr"];
+	                    //清空第二个下拉框的option
+	                    selector2.options.length = 0;
+	             		//为第二个下拉框添加一个子元素 option
+	                    selector2.appendChild(option);
+
 					}
+				})
+			}else{
 
-					//为第二个下拉框添加子元素
-					selector2.appendChild(frag);
-				},
-
-				error: function(data){
-					data = JSON.parse(data);
-
-                    var option = document.createElement("option");
-                    option.innerText = data["professionArr"];
-                    //清空第二个下拉框的option
-                    selector2.options.length = 0;
-             		//为第二个下拉框添加一个子元素 option
-                    selector2.appendChild(option);
-				}
-			})
+				//否则
+				//第二个选择框变为默认的提示option
+				selector2.options.length = 0;
+				selector2.appendChild(selectorHint);
+			}
 
 			
 		})
@@ -229,6 +241,11 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			event = EventUntil.getEvent(event);
 			var count = 0;
 			for (var i = 0; i < inputs.length; i++) {
+				//提交按钮点击时
+				//将所有的输入元素都执行一次失焦事件
+				//防止数据回滚的时候没有被认证
+				inputs[i].blur();
+
 				if (inputs[i].isCorrect == true) {
 					count++;
 				}
@@ -239,7 +256,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				alert("提交成功");
 			}else{
 				EventUntil.preventDefault(event);
-				alert("提交失败");
 			}
 		});
 	}(s("#complete-reg")));
