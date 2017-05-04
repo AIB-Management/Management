@@ -31,7 +31,50 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		if (args.id == "confirmpwd") {
 			checkBy.sibling(args,"password","span","#00C12B","#FB000D");
 
-		}else if(args.id == "mail" || args.id == "vtCode") {
+		}else if(args.id == "account") {
+
+			var bool = checkBy.regWithLimit(args,"span","#00C12B","#FB000D");
+
+			//如果通过正则表达式验证正确就发送ajax 数据
+			if (bool == true) {
+
+				checkBy.ajax({	
+					elem: args,
+					hintsContent: "span",
+					errorColor: "#00C12B",
+					//后台页面地址
+					url:"",
+					reqData: {accountVal: args.value},
+					correctBool: "notExist",
+					errorBool: "exist",
+					//后台返回json 数据的键名
+					result: "accountStatus"
+				});
+			}
+
+
+		}else if(args.id == "mail") {
+
+			var bool = checkBy.regWithoutLimit(args,"span","#00C12B","#FB000D");
+
+			//如果通过正则表达式验证正确就发送ajax 数据
+			if (bool == true) {
+
+				checkBy.ajax({	
+					elem: args,
+					hintsContent: "span",
+					errorColor: "#00C12B",
+					//后台页面地址
+					url:"",
+					reqData: {mailVal: args.value},
+					correctBool: "notExist",
+					errorBool: "exist",
+					//后台返回json 数据的键名
+					result: "mailStatus"
+				});
+			}
+
+		}else if(args.id == "vtCode") {
 			checkBy.regWithoutLimit(args,"span","#00C12B","#FB000D");
 
 		}else if(args.id == "tname") {
@@ -70,13 +113,13 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		tname:{hint:"长度为2~10位中文或英文字符,不能有数字",correct:"输入正确",error:"输入不正确"
 		,reg: /[\u4E00-\u9FA5\uF900-\uFA2D\w]{2,10}/,minLen: 2,maxLen: 10},
 		account:{hint:"必填，长度为8~16位数字或英文字符",correct:"输入正确",error:"输入不正确"
-		,reg:/[\S\w\d]{8,16}/,minLen: 8,maxLen: 16},
+		,reg:/[\S\w\d]{8,16}/,ajaxError: "此账号已被注册", minLen: 8,maxLen: 16},
 		password:{hint:"必填，长度为6~16位字符,包含字母和数字",correct:"输入正确",error:"输入不正确"
 		,reg:/[\S\d\w.]{6,16}/,minLen: 6,maxLen: 16},
 		confirmpwd:{hint:"必须和密码一致",correct:"输入正确",error:"输入不正确"},
 		mail:{hint:"请填写正确的邮箱地址",correct:"输入正确",error:"输入不正确"
-		,reg:/^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}/},
-		vtCode:{reg:/\S/,ajaxError:"验证码错误",correct:"",error:"验证码不能为空"}
+		,reg:/^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}/,ajaxError: "此邮箱已被注册"},
+		vtCode:{reg:/\S/,correct:"",error:"验证码不能为空"}
 
 	});
 
@@ -109,21 +152,21 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//下拉框联动
 	(function unionChange(selector1,selector2){
 
-		//保存第二个选择框的提示信息
-		var selectorHint = selector2.options[0];
-
 		EventUntil.addHandler(selector1,"change",function(){
-			//....实际由后台ajax 给出
+
+			//保存第二个选择框的提示信息
+			var selectorHint = selector2.options[0];
 
 			//创建一个文本碎片收集器
 			var frag = document.createDocumentFragment();
-			var curVal = selector1.value;
 
 			frag.appendChild(selectorHint);
+			//清空第二个下拉框的option
 			selector2.options.length = 0;
 
+			//保存json 对象数据
+			var arg = JSON.stringify({departmentID:selector1.value});
 
-			var arg = {departmentID:curVal}
 			$.ajax({
 				url: 'http://localhost:8080/Management/public/getProfessionJson.action',
 				type: 'GET',
@@ -138,6 +181,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 						frag.appendChild(option);
 					}
 
+					//为第二个下拉框添加子元素
 					selector2.appendChild(frag);
 				},
 
@@ -146,7 +190,9 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
                     var option = document.createElement("option");
                     option.innerText = data["professionArr"];
+                    //清空第二个下拉框的option
                     selector2.options.length = 0;
+             		//为第二个下拉框添加一个子元素 option
                     selector2.appendChild(option);
 				}
 			})

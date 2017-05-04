@@ -37,6 +37,9 @@ body{
 	vertical-align: middle;
 	font-size: 15px;
 }
+.input-wrap span{
+	color: #00C12B;
+}
 .input-wrap label{
 	width: 70px;
 	height: 30px;
