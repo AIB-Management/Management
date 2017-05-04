@@ -2,7 +2,8 @@ package com.gdaib.controller;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
+import java.util.*;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.gdaib.pojo.Profession;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.DepartmentService;
 import com.gdaib.service.UsersService;
@@ -150,16 +152,16 @@ public class PublicController {
 
     @RequestMapping(value = "/getProfessionJson")
     @ResponseBody
-    public HashMap<String, Object> getProfessionJson(Integer departmentID) {
-        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+    public List<Profession> getProfessionJson(Integer departmentID) throws Exception {
+
+
+        List<Profession> professionByDepartmentID = null;
         System.out.println("--------------------"+departmentID+"--------------------");
-        try {
-            throw  new Exception();
-            //hashMap.put("professionArr", departmentService.getProfessionByDepartmentID(departmentID));
-        } catch (Exception e) {
-            hashMap.put("professionArr", "null");
-        }
-        return hashMap;
+
+        professionByDepartmentID = departmentService.getProfessionByDepartmentID(departmentID);
+
+
+        return professionByDepartmentID;
     }
 
 

@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.gdaib.pojo.Department" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,7 @@
 	<meta http-equiv = "X-UA-Compatible" content = "IE=Edge" /> 
 	<title>注册</title>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js"
-			defer async="true" data-main="${pageContext.request.contextPath}/resources/js/registerMain"></script>
+			defer async="true" data-main="${pageContext.request.contextPath}/resources/js/registerMain.js?t=170504-5"></script>
 </head>
 <body>
 	<div class="form-wrap">
@@ -37,18 +38,10 @@
 			<p class="input-wrap">
 				<label>选择专业</label>
 				<select id="department" name="departmentId">
-
-
-					<%
-						List<Department> departments = (List<Department>)session.getAttribute("department");
-					    if(departments!=null){
-					        for(Department department:departments) {
-                                out.print("<option value=\""+department.getId()+"\">" + department.getDepartment() + "</option>");
-                            }
-                        }else{
-					        out.print("<option value=\"1\"> 计算机系</option>");
-                        }
-                    %>
+					<option value="">请选择系</option>
+					<c:forEach items="${department}" var="dp">
+						<option value="${dp.id}">${dp.department}</option>
+					</c:forEach>
 				</select>
 				<select id="special" name="specialId" >
 

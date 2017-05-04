@@ -1,8 +1,10 @@
 package com.gdaib.service.impl;
 
+import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.Department;
 import com.gdaib.pojo.Profession;
 import com.gdaib.service.DepartmentService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +13,34 @@ import java.util.List;
  * Created by mahanzhen on 17-5-3.
  */
 public class DepartmentServiceImpl implements DepartmentService {
+
+    @Autowired
+    public UsersMapper usersMapper;
+
+
+    /**
+     * 得到所有系
+     */
     @Override
     public List<Department> getAllDepartment() throws Exception {
-        List<Department> departments = new ArrayList<Department>();
+        return usersMapper.findDepartment();
 
-        departments.add(new Department(1,"计算机系"));
-        departments.add(new Department(2,"机电系"));
 
-        return departments;
     }
-
-
+    /**
+     * 得到该系的所有专业
+     */
     @Override
     public List<Profession> getProfessionByDepartmentID(Integer departmentId) throws Exception {
-        List<Profession> professions = new ArrayList<Profession>();
+//        List<Profession> professions = new ArrayList<Profession>();
+//
+//        professions.add(new Profession(1,"软件技术",1));
+//        professions.add(new Profession(2,"计算机应用基础",1));
+//
+//        return professions;
 
-        professions.add(new Profession(1,"软件技术",1));
-        professions.add(new Profession(2,"计算机应用基础",1));
+        List<Profession> professionById = usersMapper.findProfessionById(departmentId);
 
-        return professions;
+        return professionById;
     }
 }

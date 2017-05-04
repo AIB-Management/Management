@@ -118,28 +118,23 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			//创建一个文本碎片收集器
 			var frag = document.createDocumentFragment();
 			var curVal = selector1.value;
+
 			frag.appendChild(selectorHint);
 			selector2.options.length = 0;
 
-			var curData = JSON.stringify({departmentVal: curVal});
 
+			var arg = {departmentID:curVal}
 			$.ajax({
-				url: 'http://localhost:8080/Management/public/getProfessionJson.action?departmentID=1',
+				url: 'http://localhost:8080/Management/public/getProfessionJson.action',
 				type: 'GET',
-				async: false,
+				async: true,
 				dataType: 'json',
-				data: curData,
+				data: arg,
 				success: function(data){
-					data = JSON.parse(data);
-					
-					for (var i = 0; i < data[professionArr].length; i++) {
-
+					for (var i = 0; i < data.length; i++) {
 						var option = document.createElement("option");
-
-						option.value = data[professionArr][i]["id"];
-
-						option.innerText = data[professionArr][i]["profession"];
-
+						option.value = data[i].id;
+						option.innerText = data[i].profession;
 						frag.appendChild(option);
 					}
 
@@ -149,10 +144,10 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				error: function(data){
 					data = JSON.parse(data);
 
-					var option = document.createElement("option");
-					option.innerText = data["professionArr"];
-					selector2.options.length = 0;
-					selector2.appendChild(option);
+                    var option = document.createElement("option");
+                    option.innerText = data["professionArr"];
+                    selector2.options.length = 0;
+                    selector2.appendChild(option);
 				}
 			})
 
@@ -191,18 +186,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 	//切换验证码按钮点击事件
 	EventUntil.addHandler(s("#change-vt-code"),"click",function(event){
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-
-		var vtImg = s("#vt-img");
-		var args = {"change":"changeVt"};
-		$.get("", args, function(data) {
-			/*
-				返回格式为：
-				{"imgSrc":"图片路径"}
-			 */
-			 //vtImg.src = data.imgSrc;
-		});
+        $("#vt-img").attr("src","/Management/public/getCaptcha.action?a="+new Date());
 	})
 
 });

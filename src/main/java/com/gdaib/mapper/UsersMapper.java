@@ -1,18 +1,29 @@
 package com.gdaib.mapper;
 
 import com.gdaib.pojo.Account;
+import com.gdaib.pojo.Department;
+import com.gdaib.pojo.Profession;
+
+import java.util.List;
 
 /**
  * Created by znho on 2017/4/22.
  */
 //多表查询
 public interface UsersMapper {
-//    查找用户是否存在
+    //查找用户是否存在
     public int findAccountFromUsername(String username) throws Exception;
 
 
-//    增加用户
+    //增加用户
     public void insertUserFromAccount(Account account) throws Exception;
+
+    //得到所有系
+    public List<Department> findDepartment() throws Exception;
+
+
+    //根据系id找到专业
+    public List<Profession> findProfessionById(int id)throws Exception;
 
 
 }
