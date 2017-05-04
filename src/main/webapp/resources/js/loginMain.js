@@ -121,7 +121,10 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 
 	//切换验证码按钮点击事件
 	EventUntil.addHandler(s("#change-vt-code"),"click",function(event){
-        $("#vt-img").attr("src","/Management/public/getCaptcha.action?a="+new Date());
+		event = EventUntil.getEvent(event);
+		EventUntil.preventDefault(event);
+
+        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
 	})
 
 
