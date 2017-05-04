@@ -140,7 +140,7 @@ public class UsersServiceImpl implements UsersService {
         //对账号密码进行加密
         Object salt = ByteSource.Util.bytes(registerPojo.getUsername());
 
-        Object md5 = new SimpleHash("MD5",registerPojo.getPwd(),salt,1025);
+        Object md5 = new SimpleHash("MD5",registerPojo.getPwd(),salt,1024);
 
         registerPojo.setPwd(md5.toString());
 

@@ -138,16 +138,17 @@ public class PublicController {
     private DepartmentService departmentService;
 
     @RequestMapping("/register")
-    public String register(HttpSession session) {
+    public ModelAndView register() {
 
+        ModelAndView modelAndView = new ModelAndView();
         try {
-            session.setAttribute("department", departmentService.getAllDepartment());
+            modelAndView.addObject("department", departmentService.getAllDepartment());
         } catch (Exception e) {
-            session.setAttribute("department", null);
+            modelAndView.addObject("department", null);
         }
+        modelAndView.setViewName("register.jsp");
 
-
-        return "register.jsp";
+        return modelAndView;
     }
 
     @RequestMapping(value = "/getProfessionJson")
