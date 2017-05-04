@@ -17,7 +17,7 @@
 			<h3 class="form-title">用户注册</h3>
 			<p class="input-wrap">
 				<label>教师姓名</label>
-				<input type="text" class="reg-input-style" id="tname" name="name" value="${registerPojo.name}">
+				<input type="text" class="reg-input-style" id="tname" name="name" value="${RegisterPojo.name}">
 				<span class="hint"></span>
 			</p>
 			<p class="input-wrap">

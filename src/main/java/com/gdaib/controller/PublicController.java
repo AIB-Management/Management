@@ -2,10 +2,12 @@ package com.gdaib.controller;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +45,10 @@ public class PublicController {
     private static final String LOGIN = "login.jsp";
     private static final String REGISTER_JSP = "register.jsp";
 
+
+    /**
+     *
+     */
     @RequestMapping("/getCaptcha")
     public void getCaptcha
             (HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -120,7 +126,7 @@ public class PublicController {
                 modelAndView.setViewName("login.jsp");
                 return modelAndView;
             } catch (AuthenticationException ae) {
-                System.out.println("错误信息" + ae.getMessage().toString());
+                System.out.println("错误信息：" + ae.getMessage().toString());
                 modelAndView.addObject("error", "密码错误");
                 modelAndView.addObject("username", username);
                 modelAndView.setViewName("login.jsp");
@@ -138,7 +144,9 @@ public class PublicController {
     private DepartmentService departmentService;
 
     @RequestMapping("/register")
-    public ModelAndView register() {
+    public ModelAndView register(HttpServletRequest request) {
+        RegisterPojo registerPojo = (RegisterPojo) request.getAttribute("RegisterPojo");
+
 
         ModelAndView modelAndView = new ModelAndView();
         try {
@@ -173,8 +181,10 @@ public class PublicController {
     public String doRegister(
             Model model,
             HttpSession session,
-            RegisterPojo registerPojo
-    ) {
+            RegisterPojo registerPojo,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws ServletException, IOException {
         System.out.println(registerPojo.toString());
         try {
             //判断账号是否合法
@@ -187,8 +197,12 @@ public class PublicController {
         } catch (Exception e) {
             //如果有错误 返回异常信息
             System.out.print(e.getMessage());
-            session.setAttribute("error", e.getMessage());
-            model.addAttribute("RegisterPojo", registerPojo);
+//            session.setAttribute("error", e.getMessage());
+//            model.addAttribute("RegisterPojo", registerPojo);
+            request.setAttribute("error", e.getMessage());
+            request.setAttribute("RegisterPojo", registerPojo);
+
+            request.getRequestDispatcher("/public/register.action").forward(request,response);
         }
 
         return REGISTER_JSP;

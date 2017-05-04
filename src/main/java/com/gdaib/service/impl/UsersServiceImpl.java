@@ -62,7 +62,7 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
-    private void    judgeRegister(RegisterPojo registerPojo) throws Exception{
+    private void judgeRegister(RegisterPojo registerPojo) throws Exception{
         if(
                 registerPojo.getName().trim().equals("")||
                         registerPojo.getUsername().trim().equals("")||
@@ -134,6 +134,8 @@ public class UsersServiceImpl implements UsersService {
             throw new Exception("邮箱格式不正确");
         }
     }
+
+
     @Override
     public void insertAccountByRegisterPojo(RegisterPojo registerPojo) throws Exception {
 
