@@ -127,6 +127,14 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
         s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
 	})
 
+    //切换验证码按钮点击事件
+    EventUntil.addHandler(s("#vt-img"),"click",function(event){
+        event = EventUntil.getEvent(event);
+        EventUntil.preventDefault(event);
+
+        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
+    })
+
 
 
 	//登陆按钮点击事件
