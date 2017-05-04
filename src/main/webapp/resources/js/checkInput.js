@@ -51,13 +51,16 @@ define(["jquery.min"],function($){
 				hintsContain.style.color = correctColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = true;
+
+				return true;
 			}else{
 				hintsContain.innerText = this.hintsData[id]["error"];
 				hintsContain.style.color = errorColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = false;
+
+				return false;
 			}
-			console.log("当前失焦元素：" + elem.id + "内容长度为：" + elem.value.length);
 		},
 
 		regWithoutLimit: function(elem,hintsContent,correctColor,errorColor){
@@ -71,13 +74,17 @@ define(["jquery.min"],function($){
 				hintsContain.style.color = correctColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = true;
+
+				return true;
 			}else{
 				hintsContain.innerText = this.hintsData[id]["error"];
 				hintsContain.style.color = errorColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = false;
+
+				return false;
 			}
-			console.log("当前失焦元素：" + elem.id + "内容长度为：" + elem.value.length);
+			
 		},
 
 		ajax: function(obj){
@@ -96,35 +103,39 @@ define(["jquery.min"],function($){
 			var that = this;
 			var bool;
 			var id = obj["elem"].id;
-			console.log(id);
+			//元素 isCorrect 属性附初值
 			obj["elem"].isCorrect = false;
+
+			//找到提示框元素
 			var hintsContain = this.findHintsContain(obj["elem"],obj["hintsContent"]);
 			//整理为json 字符串
 			var formateData = JSON.stringify(obj["reqData"]);
 
 			//保存后台返回键的名
-			var resultCode = obj["result"]
+			var resultCode = obj["result"];
 			
 			$.ajax({
 				url: obj["url"],
 				type: 'GET',
 				async: false,
 				dataType: 'json',
+				//传入后台页面的数据
 				data: formateData,
 				success: function(data){
 					/*
 						返回的数据格式
 						{"result":"true/false"}
 					*/
-					//如果返回结果为false 则显示错误信息
 
+					//如果返回json 数据的对应键的内容等于规定好的错误内容
+					//提示错误
 					if (data[resultCode] == obj["errorBool"]) {
 						hintsContain.innerText = that.hintsData[id]["ajaxError"];
 						hintsContain.style.color = obj["errorColor"];
-						hintsContain.style.visibility = 'visible';
 						obj["elem"].isCorrect = false;
 						bool = false;
 					}else{
+						//如果不是isCorrect 属性赋值为 true
 						obj["elem"].isCorrect = true;
 						bool = true;
 					}
