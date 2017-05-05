@@ -109,18 +109,18 @@ define(["jquery.min"],function($){
 			//找到提示框元素
 			var hintsContain = this.findHintsContain(obj["elem"],obj["hintsContent"]);
 			//整理为json 字符串
-			var formateData = JSON.stringify(obj["reqData"]);
+			// var formateData = JSON.stringify(obj["reqData"]);
 
 			//保存后台返回键的名
 			var resultCode = obj["result"];
-			
+
 			$.ajax({
 				url: obj["url"],
 				type: 'GET',
 				async: false,
 				dataType: 'json',
 				//传入后台页面的数据
-				data: formateData,
+				data: obj["reqData"],
 				success: function(data){
 					/*
 						返回的数据格式
@@ -129,7 +129,9 @@ define(["jquery.min"],function($){
 
 					//如果返回json 数据的对应键的内容等于规定好的错误内容
 					//提示错误
+                    alert("进入");
 					if (data[resultCode] == obj["errorBool"]) {
+                        alert("进入");
 						hintsContain.innerText = that.hintsData[id]["ajaxError"];
 						hintsContain.style.color = obj["errorColor"];
 						obj["elem"].isCorrect = false;

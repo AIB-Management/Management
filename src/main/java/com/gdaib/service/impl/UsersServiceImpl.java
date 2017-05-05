@@ -49,6 +49,10 @@ public class UsersServiceImpl implements UsersService {
         }
     }
 
+    /**
+     *      校验用户信息
+     *      开始
+     */
     @Override
     public void judgeRegisterInfo(HttpSession session, RegisterPojo registerPojo) throws Exception {
 
@@ -134,8 +138,16 @@ public class UsersServiceImpl implements UsersService {
             throw new Exception("邮箱格式不正确");
         }
     }
+    /**
+     *      校验用户信息结束
+     */
 
 
+
+
+    /**
+     *      增加用户信息
+     */
     @Override
     public void insertAccountByRegisterPojo(RegisterPojo registerPojo) throws Exception {
 
@@ -153,4 +165,21 @@ public class UsersServiceImpl implements UsersService {
 
 
     }
+
+    /**
+     * 查找用户名是否存在
+     */
+    public String findUsernameIsExists(String username) throws Exception {
+
+        String status = null;
+        //查找用户是否存在
+        int num = usersMapper.findUsernameIsExists(username);
+
+        return num == 0 ? "notExist" : "exist";
+    }
+
+
+
+
+
 }

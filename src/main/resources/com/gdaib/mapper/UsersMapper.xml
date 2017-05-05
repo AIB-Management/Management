@@ -6,7 +6,7 @@
 
 
     <!--帐号是否存在-->
-    <select id="findAccountFromUsername" parameterType="string" resultType="int">
+    <select id="findUsernameIsExists" parameterType="string" resultType="int">
         SELECT COUNT(*) FROM `t_account` WHERE username = #{account}
     </select>
 

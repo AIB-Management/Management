@@ -25,6 +25,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -223,6 +224,19 @@ public class PublicController {
         }
 
         return REGISTER_JSP;
+
+    }
+
+
+    @RequestMapping(value = "/ajaxFindUsernameIsExists")
+    public void ajaxFindUsernameIsExists(String accountVal,HttpServletResponse response) throws Exception {
+
+        String IsExists = usersService.findUsernameIsExists(accountVal);
+        String nul = "{\"accountStatus\":"+"\""+IsExists +"\""+"}";
+        response.getWriter().append(nul);
+
+
+
 
     }
 

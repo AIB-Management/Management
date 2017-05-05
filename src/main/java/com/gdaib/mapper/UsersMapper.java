@@ -13,8 +13,7 @@ import java.util.List;
 //多表查询
 public interface UsersMapper {
     //查找用户是否存在
-    public int findAccountFromUsername(String username) throws Exception;
-
+    public int findUsernameIsExists(String username) throws Exception;
 
     //增加用户
     public void insertUserFromAccount(RegisterPojo registerPojo) throws Exception;

@@ -21,4 +21,7 @@ public interface UsersService {
 
     //注册账号
     public void insertAccountByRegisterPojo(RegisterPojo registerPojo) throws  Exception;
+
+    //查找用户是否存在
+    public String findUsernameIsExists(String username) throws Exception;
 }

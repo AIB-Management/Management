@@ -43,8 +43,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					hintsContent: "span",
 					errorColor: "#00C12B",
 					//后台页面地址
-					url:"",
-					reqData: {accountVal: args.value},
+					url:"http://localhost:8080/Management/public/ajaxFindUsernameIsExists.action",
+					reqData: "accountVal="+args.value,
 					correctBool: "notExist",
 					errorBool: "exist",
 					//后台返回json 数据的键名
