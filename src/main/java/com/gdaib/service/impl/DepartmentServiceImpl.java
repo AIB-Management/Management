@@ -25,7 +25,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> getAllDepartment() throws Exception {
         return usersMapper.findDepartment();
 
-
     }
     /**
      * 得到该系的所有专业
