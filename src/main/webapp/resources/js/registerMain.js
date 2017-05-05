@@ -215,7 +215,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	}(s("#department"),s("#special")));
 
 
-	//切换验证码按钮点击事件
+	//验证码图片钮点击事件
 	EventUntil.addHandler(s("#vt-img"),"click",function(event){
 		event = EventUntil.getEvent(event);
 		EventUntil.preventDefault(event);
@@ -232,33 +232,33 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
     //提交按钮点击事件函数
-	(function clickSubmit(elem){
-		var submit = elem;
+	EventUntil.addHandler(s("#complete-reg"),"click",function(event){
+
+		event = EventUntil.getEvent(event);
 		var inputs = ss(".input-wrap input");
-		var selectVal = ss(".input-wrap select");
+		var count = 0;
 		
-		EventUntil.addHandler(submit,"click",function(event){
-			event = EventUntil.getEvent(event);
-			var count = 0;
-			for (var i = 0; i < inputs.length; i++) {
-				//提交按钮点击时
-				//将所有的输入元素都执行一次失焦事件
-				//防止数据回滚的时候没有被认证
-				inputs[i].blur();
+		for (var i = 0; i < inputs.length; i++) {
+			//提交按钮点击时
+			//将所有的输入元素都执行一次聚焦事件
+			//再执行一次失焦事件
+			//防止数据回滚的时候没有被认证
+			inputs[i].focus();
+			inputs[i].blur();
 
-				if (inputs[i].isCorrect == true) {
-					count++;
-				}
+			if (inputs[i].isCorrect == true) {
+				count++;
 			}
+		}
 
-			if (count == inputs.length) {
+		if (count == inputs.length) {
 
-				alert("提交成功");
-			}else{
-				EventUntil.preventDefault(event);
-			}
-		});
-	}(s("#complete-reg")));
+			alert("提交成功");
+		}else{
+			EventUntil.preventDefault(event);
+		}
+	});
+	
 
 
 

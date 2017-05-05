@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>主页</title>
-	<script type="text/javascript" src="js/require.min.js" defer async="true" data-main="js/departmentpageMain"></script>
+	<script type="text/javascript" src="../../resources/js/require.min.js" defer async="true" data-main="../../resources/js/departmentpageMain"></script>
 </head>
 <body>
 	<div id="release-msg-content">
@@ -12,13 +12,34 @@
 			<div id="close-btn">×</div>
 			<h3>上传文件</h3>
 			<p class="release-msg-wrap">
-				<span>标题</span>
+				<span>文件标题</span>
 				<input type="text" id="release-msg-title" name="file-title">
 			</p>
-			<p>
+			<p class="release-msg-wrap">
+				<span>选择文件所属的导航栏</span>
+				<select name="first-nav" id="first-nav-select">
+					<option value="">请选择一级导航栏</option>
+					<option value="1">一级导航栏</option>
+					<option value="1">一级导航栏</option>
+					<option value="1">一级导航栏</option>
+					<option value="1">一级导航栏</option>
+					<option value="1">一级导航栏</option>
+				</select>
+				<select name="second-nav" id="second-nav-select">
+					<option value="">请选择二级导航栏</option>
+					<option value="null">无</option>
+					<option value="1">二级导航栏</option>
+					<option value="1">二级导航栏</option>
+					<option value="1">二级导航栏</option>
+					<option value="1">二级导航栏</option>
+					<option value="1">二级导航栏</option>
+				</select>
+				
+			</p>
+			<p class="release-msg-wrap">
 				<input type="file" name="release-file" id="select-file">
 			</p>
-			<p>
+			<p class="release-msg-wrap">
 				<input type="submit" value="提交" id="upload-file">
 			</p>
 		</form>
@@ -60,7 +81,9 @@
 				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7个字</li>
 				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7 8个字</li>
 				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7 8 9个字</li>
+				<li id="show-more-btn" title="更多导航栏">>></li>
 			</ul>
+			<ul id="nav-overflow-contain"></ul>
 		</div>
 		<div class="mainbody">
 			<div class="side-bar">
@@ -149,7 +172,7 @@
 		</div>
 	</div>
 
-	<link rel="stylesheet" type="text/css" href="css/normal.css">
-	<link rel="stylesheet" type="text/css" href="css/departmentpage.css">
+	<link rel="stylesheet" type="text/css" href="../../resources/css/normal.css">
+	<link rel="stylesheet" type="text/css" href="../../resources/css/departmentpage.css">
 </body>
 </html>
