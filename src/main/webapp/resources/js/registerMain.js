@@ -113,13 +113,13 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		tname:{hint:"长度为2~10位中文或英文字符,不能有数字",correct:"输入正确",error:"输入不正确"
 		,reg: /^\S[\u4E00-\u9FA5\uF900-\uFA2D\w]{2,10}/,minLen: 2,maxLen: 10},
 		account:{hint:"必填，长度为8~16位数字或英文字符",correct:"输入正确",error:"输入不正确"
-		,reg:/[\S\w\d]{8,16}/,ajaxError: "此账号已被注册", minLen: 8,maxLen: 16},
+		,reg:/^\S[\S\w\d]{8,16}/,ajaxError: "此账号已被注册", minLen: 8,maxLen: 16},
 		password:{hint:"必填，长度为6~16位字符,包含字母和数字",correct:"输入正确",error:"输入不正确"
-		,reg:/[\S\d\w.]{6,16}/,minLen: 6,maxLen: 16},
+		,reg:/^\S[\S\d\w.]{6,16}/,minLen: 6,maxLen: 16},
 		confirmpwd:{hint:"必须和密码一致",correct:"输入正确",error:"输入不正确"},
 		mail:{hint:"请填写正确的邮箱地址",correct:"输入正确",error:"输入不正确"
 		,reg:/^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}/,ajaxError: "此邮箱已被注册"},
-		vtCode:{reg:/\S/,correct:"",error:"验证码不能为空"}
+		vtCode:{reg:/^\S[\S]/,correct:"",error:"验证码不能为空"}
 
 	});
 
