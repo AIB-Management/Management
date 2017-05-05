@@ -25,6 +25,11 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		return document.querySelectorAll(name);
 	}
 
+	//封装去除空格函数
+	function myTrim(x) {
+    	return x.replace(/^\s+|\s+$/gm,'');
+	}
+
 	//输入框失焦时执行的函数
 	//通过传进来的元素id 执行具体操作
 	function inputOnblurFilter(args){
@@ -44,7 +49,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					errorColor: "#00C12B",
 					//后台页面地址
 					url:"http://localhost:8080/Management/public/ajaxFindUsernameIsExists.action",
-					reqData: "accountVal="+args.value,
+					reqData: "accountVal="+myTrim(args.value),
 					correctBool: "notExist",
 					errorBool: "exist",
 					//后台返回json 数据的键名
@@ -66,7 +71,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					errorColor: "#00C12B",
 					//后台页面地址
 					url:"",
-					reqData: "mailVal="+args.value,
+					reqData: "mailVal="+myTrim(args.value),
 					correctBool: "notExist",
 					errorBool: "exist",
 					//后台返回json 数据的键名
@@ -111,11 +116,11 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//定义表单认证的提示内容以及正则表达式
 	checkBy.init({
 		tname:{hint:"长度为2~10位中文或英文字符,不能有数字",correct:"输入正确",error:"输入不正确"
-		,reg: /^\S[\u4E00-\u9FA5\uF900-\uFA2D\w]{2,10}/,minLen: 2,maxLen: 10},
+		,reg: /^\S[\u4E00-\u9FA5\uF900-\uFA2D\w]{1,10}/,minLen: 2,maxLen: 10},
 		account:{hint:"必填，长度为8~16位数字或英文字符",correct:"输入正确",error:"输入不正确"
-		,reg:/^\S[\S\w\d]{8,16}/,ajaxError: "此账号已被注册", minLen: 8,maxLen: 16},
+		,reg:/^\S[\S\w\d]{7,16}/,ajaxError: "此账号已被注册", minLen: 8,maxLen: 16},
 		password:{hint:"必填，长度为6~16位字符,包含字母和数字",correct:"输入正确",error:"输入不正确"
-		,reg:/^\S[\S\d\w.]{6,16}/,minLen: 6,maxLen: 16},
+		,reg:/^\S[\S\d\w.]{5,16}/,minLen: 6,maxLen: 16},
 		confirmpwd:{hint:"必须和密码一致",correct:"输入正确",error:"输入不正确"},
 		mail:{hint:"请填写正确的邮箱地址",correct:"输入正确",error:"输入不正确"
 		,reg:/^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}/,ajaxError: "此邮箱已被注册"},
