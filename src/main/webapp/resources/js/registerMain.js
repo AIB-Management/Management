@@ -66,7 +66,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					errorColor: "#00C12B",
 					//后台页面地址
 					url:"",
-					reqData: {mailVal: args.value},
+					reqData: "mailVal="+args.value,
 					correctBool: "notExist",
 					errorBool: "exist",
 					//后台返回json 数据的键名
@@ -111,7 +111,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//定义表单认证的提示内容以及正则表达式
 	checkBy.init({
 		tname:{hint:"长度为2~10位中文或英文字符,不能有数字",correct:"输入正确",error:"输入不正确"
-		,reg: /[\u4E00-\u9FA5\uF900-\uFA2D\w]{2,10}/,minLen: 2,maxLen: 10},
+		,reg: /^\S[\u4E00-\u9FA5\uF900-\uFA2D\w]{2,10}/,minLen: 2,maxLen: 10},
 		account:{hint:"必填，长度为8~16位数字或英文字符",correct:"输入正确",error:"输入不正确"
 		,reg:/[\S\w\d]{8,16}/,ajaxError: "此账号已被注册", minLen: 8,maxLen: 16},
 		password:{hint:"必填，长度为6~16位字符,包含字母和数字",correct:"输入正确",error:"输入不正确"
