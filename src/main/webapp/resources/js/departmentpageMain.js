@@ -43,11 +43,14 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 	function firstNavClick(){
 		var text = this.innerText;
 		var elem = document.createElement("span");
+		var icon = document.createElement("b");
 		var container = s("#bread-crumb-nav");
-		elem.innerText = text + " >";
+		elem.innerText = text;
+		icon.innerText = ">";
 		//点击完一级导航栏之后先清空面包屑里面的内容
 		container.innerHTML = "";
 		container.appendChild(elem);
+		container.appendChild(icon);
 	}
 
 	//二级导航点击事件执行函数
@@ -118,6 +121,12 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 					moreNavContain.style.left = (target.offsetLeft - 215) + "px";
 					moreNavContain.style.visibility = "visible";
 				}
+			}else if(target.className.indexOf("first-nav") != -1) {
+				//如果点击的是溢出的导航
+				//返回一个空值 为的就是令一级导航栏可以点击
+				//以及增加路径
+				return ;
+
 			}else{
 				moreNavContain.style.visibility = "hidden";
 
