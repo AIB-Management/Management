@@ -45,9 +45,15 @@ public class PublicController {
     private static final String LOGIN = "login.jsp";
     private static final String REGISTER_JSP = "register.jsp";
 
+    @Autowired
+    private DepartmentService departmentService;
+
+
+    @Autowired
+    private UsersService usersService;
 
     /**
-     *
+     *  得到验证码
      */
     @RequestMapping("/getCaptcha")
     public void getCaptcha
@@ -92,6 +98,9 @@ public class PublicController {
     }
 
 
+    /**
+     *  跳转到登录页面
+     */
     @RequestMapping("/login")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
@@ -100,7 +109,10 @@ public class PublicController {
     }
 
 
-    //登陆
+
+    /**
+     *  登录功能
+     */
     @RequestMapping("/doLogin")
     public ModelAndView doLogin(String username, String password, HttpSession session) throws Exception {
         System.out.println(username + ":" + password);
@@ -140,9 +152,9 @@ public class PublicController {
     }
 
 
-    @Autowired
-    private DepartmentService departmentService;
-
+    /**
+     *  得到所有系之后再跳转到主页页面
+     */
     @RequestMapping("/register")
     public ModelAndView register(HttpServletRequest request) {
         RegisterPojo registerPojo = (RegisterPojo) request.getAttribute("RegisterPojo");
@@ -159,6 +171,10 @@ public class PublicController {
         return modelAndView;
     }
 
+
+    /**
+     *  根据传来的系id找到系的所有专业
+     */
     @RequestMapping(value = "/getProfessionJson")
     @ResponseBody
     public List<Profession> getProfessionJson(Integer departmentID) throws Exception {
@@ -174,8 +190,9 @@ public class PublicController {
     }
 
 
-    @Autowired
-    private UsersService usersService;
+    /**
+     *  注册功能
+     */
 
     @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
     public String doRegister(
