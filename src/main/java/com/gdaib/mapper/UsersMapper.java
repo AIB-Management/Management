@@ -28,4 +28,7 @@ public interface UsersMapper {
     //查找邮箱是否存在
     public int findEmailIsExists(String email) throws Exception;
 
+    //根据用户名找到用户
+    public Account selectByUsername(String username) throws Exception;
+
 }

@@ -3,6 +3,10 @@
 <mapper namespace="com.gdaib.mapper.UsersMapper">
 
 
+    <!--根据用户名找到用户-->
+    <select id="selectByUsername" parameterType="string" resultType="account">
+        SELECT * FROM `t_account` WHERE username = #{account}
+    </select>
 
 
     <!--帐号是否存在-->

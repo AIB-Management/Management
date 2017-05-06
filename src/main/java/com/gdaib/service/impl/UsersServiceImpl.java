@@ -1,32 +1,23 @@
 package com.gdaib.service.impl;
 
 
-import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.Account;
-import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
  * Created by znho on 2017/4/22.
  */
 public class UsersServiceImpl implements UsersService {
-    @Autowired
-    public AccountExample accountExample;
 
-    @Autowired
-    public AccountMapper accountMapper;
+
 
     @Autowired
     public UsersMapper usersMapper;
@@ -36,18 +27,9 @@ public class UsersServiceImpl implements UsersService {
      */
     @Override
     public Account findAccountForUsername(String username) throws Exception {
-        WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
-        AccountExample accountExample = (AccountExample) wac.getBean("accountExample");
-        AccountExample.Criteria criteria = accountExample.createCriteria();
 
-        criteria.andUsernameEqualTo(username);
-        List<Account> accounts = accountMapper.selectByExample(accountExample);
-
-        if (accounts.size() == 0) {
-            return null;
-        } else {
-            return accounts.get(0);
-        }
+        Account account = usersMapper.selectByUsername(username);
+        return account;
     }
 
     /**

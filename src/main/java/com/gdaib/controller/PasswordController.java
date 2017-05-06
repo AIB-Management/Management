@@ -1,7 +1,9 @@
 package com.gdaib.controller;
 
 import com.gdaib.pojo.MailPojo;
+import com.gdaib.pojo.UrlPojo;
 import com.gdaib.service.MailService;
+import com.gdaib.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 
 /**
  * @Author:马汉真
@@ -20,18 +24,30 @@ public class PasswordController {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private UsersService usersService;
+
     private static final String FINDPASSWORD = "findpassword.jsp";
     private static final String MODIFYPWD = "modifypwd.jsp";
+
+    private static final String MODIFYPWD_ACTION = "/public/modifypwd.action";
 
 
     /**
      *      转发到找回密码页面
      */
+
     @RequestMapping(value = "/public/findPassword")
     public ModelAndView findPassword(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
+        try {
+//            UrlPojo urlPojo = new UrlPojo(request.getScheme(),request.getServerName(),request.getServerPort()+"",request.getContextPath(),"/public/login.action");
+        } catch (Exception e) {
+
+        }
         return modelAndView;
     }
+
 
 
     /**
@@ -43,35 +59,51 @@ public class PasswordController {
             HttpServletRequest request,
             HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
-        modelAndView.addObject("error", mail);
-        return modelAndView;
 
+        try {
+            UrlPojo urlPojo = new UrlPojo();
+            urlPojo.setScheme(request.getScheme());
+            urlPojo.setServerName(request.getServerName());
+            urlPojo.setPort(request.getServerPort() + "");
+            urlPojo.setContextPath(request.getContextPath());
+            urlPojo.setAction(MODIFYPWD_ACTION);
+            urlPojo.setMail(mail);
+            request.setAttribute("UrlPojo", urlPojo);
+            request.getRequestDispatcher("/public/sendMail.action").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return modelAndView;
     }
 
-    /*
 
-    @RequestMapping(value = "/sendEmail")
+    @RequestMapping(value = "/public/sendMail")
     public ModelAndView sendEmail(HttpServletRequest request) {
 
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("login.jsp");
 
+        UrlPojo urlPojo = (UrlPojo) request.getAttribute("UrlPojo");
+        System.out.print(urlPojo.toString());
         MailPojo mailPojo = new MailPojo();
 
         mailPojo.setFromAddress("18707513901@163.com");
-        mailPojo.setToAddresses("184999894@qq.com");
+        mailPojo.setToAddresses(urlPojo.getMail());
+        mailPojo.setContent(
+                "<html><head></head><body>"+
+                        "<a href=\""+urlPojo.toString()+"\">点击链接进入系统密码找回页面</a>"+
+                        "</body></html>");
+        try {
+        } catch (Exception e) {
 
-        mailPojo.setSubject("Discover interesting projects on GitHub ");
-        mailPojo.setContent("There's a whole world of code waiting for you.\n" +
-                "\n" +
-                "GitHub is home to the best open source projects in the world. From languages, " +
-                "to frameworks, to plugins, if you are looking for great code to use in your project " +
-                "you can find it on GitHub.");
+        }
+        mailPojo.setSubject("找回密码");
+
         mailService.sendAttachMail(mailPojo);
-        System.out.print("-----------------------------------");
         return modelAndView;
     }
 
-    */
+
+
 
 
     /**
@@ -79,6 +111,7 @@ public class PasswordController {
      */
     @RequestMapping(value = "/public/modifypwd")
     public ModelAndView modifypwd() {
+
         ModelAndView modelAndView = new ModelAndView(MODIFYPWD);
         return modelAndView;
     }
