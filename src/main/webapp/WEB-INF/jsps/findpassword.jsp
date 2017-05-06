@@ -25,7 +25,10 @@
                 <span class="hint">${error}</span>
             </p>
             <p class="input-wrap">
+                <input type="submit" value="下一步"/>
+                <!--
                 <button id="find-password">下一步</button>
+                -->
                 <a href="${pageContext.request.contextPath}/public/login.action" class="link-login">返回登陆</a>
             </p>
         </form>

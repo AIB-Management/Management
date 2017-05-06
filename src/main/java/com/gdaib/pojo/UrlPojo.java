@@ -1,0 +1,79 @@
+package com.gdaib.pojo;
+
+/**
+ * @Author:马汉真
+ * @Date: 17-5-6
+ * @role:
+ */
+public class UrlPojo {
+    private String scheme;               //协议
+    private String serverName;           //服务器地址
+    private String port;                 //端口
+    private String contextPath;          //项目地址
+    private String action;               //接口
+    private String mail;
+
+    public UrlPojo(String scheme, String serverName, String port, String contextPath, String action,String mail) {
+        this.scheme = scheme;
+        this.serverName = serverName;
+        this.port = port;
+        this.contextPath = contextPath;
+        this.action = action;
+        this.mail = mail;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public UrlPojo(){}
+
+    public String getScheme() {
+        return scheme;
+    }
+
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    @Override
+    public String toString() {
+        return scheme+"://"+serverName+":"+port+contextPath+action+"?mail="+mail;
+    }
+}
