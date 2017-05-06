@@ -16,12 +16,12 @@
             http://www.springframework.org/schema/tx/spring-tx.xsd
             http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop.xsd "
-       >
+>
 
 
-
-        <bean id="usersService" class="com.gdaib.service.impl.UsersServiceImpl"/>
+    <bean id="usersService" class="com.gdaib.service.impl.UsersServiceImpl"/>
     <bean id="departmentServiceImpl" class="com.gdaib.service.impl.DepartmentServiceImpl"/>
+
 
 
     <bean id="accountExample" class="com.gdaib.pojo.AccountExample" scope="prototype"/>
