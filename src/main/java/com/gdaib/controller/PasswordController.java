@@ -42,6 +42,8 @@ public class PasswordController {
 
     }
 
+
+
     /*
 
     @RequestMapping(value = "/sendEmail")
@@ -66,6 +68,7 @@ public class PasswordController {
     }
 
     */
+
     @RequestMapping(value = "/public/modifypwd")
     public ModelAndView modifypwd() {
         ModelAndView modelAndView = new ModelAndView(MODIFYPWD);
