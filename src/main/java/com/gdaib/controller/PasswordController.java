@@ -24,13 +24,19 @@ public class PasswordController {
     private static final String MODIFYPWD = "modifypwd.jsp";
 
 
-
+    /**
+     *      转发到找回密码页面
+     */
     @RequestMapping(value = "/public/findPassword")
     public ModelAndView findPassword(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
         return modelAndView;
     }
 
+
+    /**
+     *      转发到找回密码页面
+     */
     @RequestMapping(value = "/public/doFindPassword")
     public ModelAndView doFindPassword(
             String mail,
@@ -66,6 +72,11 @@ public class PasswordController {
     }
 
     */
+
+
+    /**
+     *     修改密码
+     */
     @RequestMapping(value = "/public/modifypwd")
     public ModelAndView modifypwd() {
         ModelAndView modelAndView = new ModelAndView(MODIFYPWD);

@@ -20,10 +20,17 @@
             </p>
             -->
             <p class="input-wrap">
+                <label>帐号</label>
+                <input type="text" class="modify-input-style" id="username" name="username">
+                <span class="hint">${error}</span>
+            </p>
+
+            <p class="input-wrap">
                 <label>邮箱</label>
                 <input type="text" class="modify-input-style" id="mail" name="mail">
                 <span class="hint">${error}</span>
             </p>
+
             <p class="input-wrap">
                 <button id="find-password">下一步</button>
                 <a href="${pageContext.request.contextPath}/public/login.action" class="link-login">返回登陆</a>
