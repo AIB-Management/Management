@@ -44,13 +44,7 @@
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
-<<<<<<< HEAD
 
-=======
-            <!--
-            <scope>provided</scope>
-            -->
->>>>>>> f4dfff6b40ce6eabeb8e18735f2a88ec3c1be838
         </dependency>
 
         <dependency>
