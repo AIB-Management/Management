@@ -14,6 +14,7 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -137,6 +138,8 @@ public class UsersServiceImpl implements UsersService {
         if(!Pattern.matches(emailCheck,mail)){
             throw new Exception("邮箱格式不正确");
         }
+
+
     }
     /**
      *      校验用户信息结束

@@ -5,10 +5,10 @@ import com.gdaib.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author:马汉真
@@ -17,19 +17,32 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class PasswordController {
-    public static final  String FINDPASSWORD_JSP = "findpassword.jsp";
+    @Autowired
+    private MailService mailService;
+
+    private static final String FINDPASSWORD = "findpassword.jsp";
+    private static final String MODIFYPWD = "modifypwd.jsp";
 
 
-    public ModelAndView findpassword(){
-        ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName(FINDPASSWORD_JSP);
-        return  modelAndView;
+    @RequestMapping(value = "/public/findPassword")
+    public ModelAndView findPassword(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
+        return modelAndView;
     }
 
+    @RequestMapping(value = "/public/doFindPassword")
+    public ModelAndView doFindPassword(
+            String mail,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
+        modelAndView.addObject("error", mail);
+        return modelAndView;
 
-    @Autowired
-    MailService mailService;
+    }
+
+    /*
 
     @RequestMapping(value = "/sendEmail")
     public ModelAndView sendEmail(HttpServletRequest request) {
@@ -37,6 +50,7 @@ public class PasswordController {
         ModelAndView modelAndView = new ModelAndView();
 
         MailPojo mailPojo = new MailPojo();
+
         mailPojo.setFromAddress("18707513901@163.com");
         mailPojo.setToAddresses("184999894@qq.com");
 
@@ -48,6 +62,13 @@ public class PasswordController {
                 "you can find it on GitHub.");
         mailService.sendAttachMail(mailPojo);
         System.out.print("-----------------------------------");
-        return  modelAndView;
+        return modelAndView;
+    }
+
+    */
+    @RequestMapping(value = "/public/modifypwd")
+    public ModelAndView modifypwd() {
+        ModelAndView modelAndView = new ModelAndView(MODIFYPWD);
+        return modelAndView;
     }
 }

@@ -28,7 +28,7 @@
                         <prop key="kaptcha.border.color">105,179,90</prop>
                         <prop key="kaptcha.textproducer.font.color">blue</prop>
                         <prop key="kaptcha.image.width">125</prop>
-                        <prop key="kaptcha.image.height">45</prop>
+                        <prop key="kaptcha.image.height">55</prop>
                         <prop key="kaptcha.textproducer.font.size">45</prop>
                         <prop key="kaptcha.session.key">code</prop>
                         <prop key="kaptcha.textproducer.char.length">4</prop>
