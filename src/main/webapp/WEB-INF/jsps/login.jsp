@@ -37,7 +37,7 @@
 				<button id="log-in" type="submit">登录</button>
 				<label class="remember-me-wrap"><input type="checkbox" id="remember-me">3天内记住我</label>
 				<div class="link-wrap">
-					<a href="findpassword.html">忘记密码</a>
+					<a href="findpassword.jsp">忘记密码</a>
 					<span>|</span>
 					<a href="${pageContext.request.contextPath}/public/register.action">注册</a>
 				</div>
