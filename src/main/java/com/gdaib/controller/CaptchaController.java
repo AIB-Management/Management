@@ -65,4 +65,13 @@ public class CaptchaController {
 //        String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 //        System.out.println(kaptchaExpected);
     }
+
+
+    //跳转到某页
+    @RequestMapping("/forwardto")
+    public String forwardto(String add){
+        return add;
+    }
+
+
 }

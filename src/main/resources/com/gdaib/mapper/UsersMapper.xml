@@ -27,4 +27,9 @@
     </select>
 
 
+    <!--帐号是否存在-->
+    <select id="findEmailIsExists" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM `t_account` WHERE mail = #{account}
+    </select>
+
 </mapper>

@@ -129,9 +129,9 @@ define(["jquery.min"],function($){
 
 					//如果返回json 数据的对应键的内容等于规定好的错误内容
 					//提示错误
-                    alert("进入");
+
 					if (data[resultCode] == obj["errorBool"]) {
-                        alert("进入");
+
 						hintsContain.innerText = that.hintsData[id]["ajaxError"];
 						hintsContain.style.color = obj["errorColor"];
 						obj["elem"].isCorrect = false;
