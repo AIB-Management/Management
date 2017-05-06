@@ -171,9 +171,21 @@ public class UsersServiceImpl implements UsersService {
      */
     public String findUsernameIsExists(String username) throws Exception {
 
-        String status = null;
+
         //查找用户是否存在
         int num = usersMapper.findUsernameIsExists(username);
+
+        return num == 0 ? "notExist" : "exist";
+    }
+
+    /**
+     * 查找邮箱是否存在
+     */
+    public String findEmailIsExists(String email) throws Exception {
+
+
+        //查找邮箱是否存在
+        int num = usersMapper.findEmailIsExists(email);
 
         return num == 0 ? "notExist" : "exist";
     }

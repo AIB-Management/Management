@@ -70,7 +70,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					hintsContent: "span",
 					errorColor: "#00C12B",
 					//后台页面地址
-					url:"",
+					url:"http://localhost:8080/Management/public/ajaxFindEmailIsExists.action",
 					reqData: "mailVal="+myTrim(args.value),
 					correctBool: "notExist",
 					errorBool: "exist",

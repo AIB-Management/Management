@@ -24,4 +24,7 @@ public interface UsersService {
 
     //查找用户是否存在
     public String findUsernameIsExists(String username) throws Exception;
+
+    //查找邮箱是否存在
+    public String findEmailIsExists(String email) throws Exception;
 }

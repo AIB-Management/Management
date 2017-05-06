@@ -25,5 +25,7 @@ public interface UsersMapper {
     //根据系id找到专业
     public List<Profession> findProfessionById(int id)throws Exception;
 
+    //查找邮箱是否存在
+    public int findEmailIsExists(String email) throws Exception;
 
 }

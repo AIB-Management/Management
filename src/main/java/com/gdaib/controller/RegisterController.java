@@ -101,6 +101,9 @@ public class RegisterController {
     }
 
 
+    /**
+     *  用户名是否为存在
+     */
     @RequestMapping(value = "/public/ajaxFindUsernameIsExists")
     public void ajaxFindUsernameIsExists(String accountVal,HttpServletResponse response) throws Exception {
 
@@ -109,6 +112,20 @@ public class RegisterController {
         response.getWriter().append(nul);
 
     }
+
+    /**
+     *  邮箱是否为存在
+     */
+    @RequestMapping(value = "/public/ajaxFindEmailIsExists")
+    public void ajaxFindEmailIsExists(String mailVal,HttpServletResponse response) throws Exception {
+        System.out.println("mailVal"+mailVal);
+
+        String IsExists = usersService.findEmailIsExists(mailVal);
+        String nul = "{\"mailStatus\":"+"\""+IsExists +"\""+"}";
+        response.getWriter().append(nul);
+
+    }
+
 
 
 }
