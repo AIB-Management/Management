@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <title>找回密码</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js"
+            defer async="true" data-main="${pageContext.request.contextPath}
+            /resources/js/findpwdMain.js?t=170506-1"></script>
 
 </head>
 <body>
@@ -13,25 +15,13 @@
     <div class="form-content">
         <h3 class="form-title">找回密码</h3>
         <form action="${pageContext.request.contextPath}/public/doFindPassword.action" method="post">
-            <!--
-            <p class="input-wrap">
-                <label>账号</label>
-                <input type="text" class="modify-input-style" id="username">
-            </p>
-            -->
-
-
             <p class="input-wrap">
                 <label>邮箱</label>
                 <input type="text" class="modify-input-style" id="mail" name="mail">
                 <span class="hint">${error}</span>
             </p>
-
             <p class="input-wrap">
-                <input type="submit" value="下一步"/>
-                <!--
-                <button id="find-password">下一步</button>
-                -->
+                <input type="submit" id="find-password" value="下一步"/>
                 <a href="${pageContext.request.contextPath}/public/login.action" class="link-login">返回登陆</a>
             </p>
         </form>
