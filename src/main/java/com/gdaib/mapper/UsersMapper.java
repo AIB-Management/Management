@@ -31,4 +31,7 @@ public interface UsersMapper {
     //根据用户名找到用户
     public Account selectByUsername(String username) throws Exception;
 
+    //查找用户是否存在
+    public int findEmailAndUsernameIsExists(Account account) throws Exception;
+
 }

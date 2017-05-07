@@ -16,8 +16,13 @@
         <h3 class="form-title">找回密码</h3>
         <form action="${pageContext.request.contextPath}/public/doFindPassword.action" method="post">
             <p class="input-wrap">
-                <label>邮箱</label>
-                <input type="text" class="modify-input-style" id="mail" name="mail">
+                <label>帐号：</label>
+                <input type="text" class="modify-input-style" id="username" name="username" value="${username}">
+                <span class="hint">${error}</span>
+            </p>
+            <p class="input-wrap">
+                <label>邮箱：</label>
+                <input type="text" class="modify-input-style" id="mail" name="mail" value="${mail}">
                 <span class="hint">${error}</span>
             </p>
             <p class="input-wrap">

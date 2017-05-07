@@ -69,6 +69,13 @@ public class MailServiceImpl implements MailService {
 
     }
 
+    /**
+     *      生成UUID和过期时间赋值给用户和url
+     */
+    public String insertTimeAndUUID(){
+        return null;
+    }
+
 
     public JavaMailSender getMailSender() {
         return mailSender;

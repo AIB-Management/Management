@@ -176,7 +176,26 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
+    //查找用户和邮箱是否存在
+    @Override
+    public boolean findEmailAndUsernameIsExists(String username, String email) throws Exception {
+        //得到Account
+        Account account = new Account();
+        account.setUsername(username);
+        account.setMail(email);
 
+        int bool = usersMapper.findEmailAndUsernameIsExists(account);
+
+        //如果返回的是0的话，就代表邮箱或者用户名错误
+        if (bool == 0){
+            return false;
+        }else{
+            return true;
+        }
+
+
+
+    }
 
 
 }

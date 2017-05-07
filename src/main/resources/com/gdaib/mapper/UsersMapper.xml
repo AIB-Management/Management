@@ -36,4 +36,9 @@
         SELECT COUNT(*) FROM `t_account` WHERE mail = #{account}
     </select>
 
+    <!--帐号和邮箱是否存在-->
+    <select id="findEmailAndUsernameIsExists" parameterType="Account" resultType="int">
+        SELECT COUNT(*) FROM `t_account` WHERE mail = #{mail} and username = #{username}
+    </select>
+
 </mapper>

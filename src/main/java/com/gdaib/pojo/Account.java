@@ -1,5 +1,7 @@
 package com.gdaib.pojo;
 
+import java.util.Date;
+
 public class Account extends AccountKey {
     private String password;
 
@@ -10,6 +12,10 @@ public class Account extends AccountKey {
     private Integer dpId;
 
     private String character;
+
+    private String validatacode;
+
+    private Date outdate;
 
     public String getPassword() {
         return password;
@@ -49,5 +55,21 @@ public class Account extends AccountKey {
 
     public void setCharacter(String character) {
         this.character = character == null ? null : character.trim();
+    }
+
+    public String getValidatacode() {
+        return validatacode;
+    }
+
+    public void setValidatacode(String validatacode) {
+        this.validatacode = validatacode == null ? null : validatacode.trim();
+    }
+
+    public Date getOutdate() {
+        return outdate;
+    }
+
+    public void setOutdate(Date outdate) {
+        this.outdate = outdate;
     }
 }
