@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd "
+>
+
+    <!--1.配置SecurityManager-->
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--cacheManager:缓存管理器-->
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="authenticator" ref="authenticator"/>
+        <!--如果只有一个realm直接使用下面这个-->
+        <!--<property name="realm" ref="jdbcRealm"/>-->
+
+        <!--把配置Realm放到这里，他会把这个属性赋值给authenticator属性里面的realms属性（背后源码实现的）-->
+        <property name="realms">
+            <list>
+                <ref bean="jdbcRealm"></ref>
+            </list>
+        </property>
+
+        <!--设置rememberMe时间-->
+        <property name="rememberMeManager.cookie.maxAge" value="120"/>
+
+    </bean>
+
+
+    <!--2. 配置Cache缓存管理器
+    2.1 需要加入ehcache的jar包和配置文件
+    -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:config/ehcache.xml"/>
+
+    </bean>
+
+
+    <!--配置ModularRealmAuthenticator类-->
+    <bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+
+        <!--这里是需要放入多个realm，但是我们把他放在上面securityManager中配置，securityManager会把它配置到
+        我们这个类中的。-->
+
+
+        <!--修改认证策略-->
+        <property name="authenticationStrategy">
+            <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"/>
+        </property>
+    </bean>
+
+
+
+
+    <!--3. 配置realm
+     新建一个继承Realm接口的类，配置bean
+ -->
+    <bean id="jdbcRealm" class="com.gdaib.realm.LoginRealm">
+        <!--继承的父类的CredentialsMatcher属性就是来进行密码对比的（默认是字符串对比）
+            所以我们就要把他更换为HashedCredentialsMatcher
+        -->
+        <property name="credentialsMatcher">
+            <!--HashedCredentialsMatcher：把传进来的密码转换为MD5，之后和数据库的密码（这个早就被我们转为MD5了）
+                进行对比，这样子安全性高！！
+            -->
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!--设置使用MD5加密的对比方式-->
+                <property name="hashAlgorithmName" value="MD5"/>
+                <!--MD5加密重复次数（重复使用MD5加密1024次，安全！）
+                    实际内部是使用new SimpleHash(hashAlgorithmName, credentials, salt, hashIterations)这条语句加密的，
+                    参数代表分别是hashAlgorithmName：加密名、credentials：原来的密码、salt：盐值加密、hashIterations：加密重复次数
+                -->
+                <property name="hashIterations" value="1024"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--
+    4.配置LifecycleBeanPostProcessor,可以自动的来调用配置在Spring IOC容器中shiro bean的生命周期方法
+-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+
+    <!--
+    5. 让我们可以在ioc容器中使用shiro注解。但必须在配置了LifecycleBeanPostProcessor之后
+-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!--
+    6.配置ShiroFilter
+        6.1 id必须和web.xml 文件中配置的一样,否则会编译错误抛出异常！因为Shiro会根据Filter-name
+        的id到Spring的配置文件中寻找对应的bean
+
+    -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--没有通过认证就会被重定向到这个页面-->
+        <property name="loginUrl" value="/public/register.action"/>
+        <!--登录成功页面-->
+        <property name="successUrl" value="/jsps/list.jsp"/>
+        <!--登录失败页面-->
+        <property name="unauthorizedUrl" value="/jsps/unauthorized"/>
+        <!--
+            配置那些页面需要受保护，以及访问这些页面需要的权限
+            1. anon 可以被匿名访问
+            2. authc：必须认证（即登录）后才可以访问
+            3. logout：退出
+        -->
+
+        <property name="filterChainDefinitionMap" ref="builderFilterChainDefinitionMap"/>
+    </bean>
+    <!--配置一个bean，该bean实际上是一个map，通过实例工厂的方式-->
+    <bean id="builder" class="com.gdaib.util.FilterChainDefinitionMapBuilder"/>
+    <bean id="builderFilterChainDefinitionMap" factory-bean="builder" factory-method="builderFilterChainDefinitionMap"/>
+
+
+
+
+
+</beans>

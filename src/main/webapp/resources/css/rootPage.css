@@ -1,0 +1,273 @@
+#floor{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.6);
+	z-index: 20;
+	visibility: hidden;
+}
+.floor-main-content{
+	width: 500px;
+	height: 350px;
+	background-color: #fff;
+	margin: 15% auto 0 auto;
+}
+.close-btn-wrap{
+	padding-right: 15px;
+	font-size: 25px;
+	text-align: right;
+}
+#close-btn{
+	cursor: pointer;
+}
+.floor-main-content h3{
+	text-align: center;
+}
+.modify-info-wrap{
+	text-align: center;
+	margin-top: 20px;
+}
+.modify-info-wrap span{
+	display: inline-block;
+	width: 120px;
+	height: 35px;
+	line-height: 35px;
+	text-align: right;
+}
+.modify-info-wrap input{
+	display: inline-block;
+	width: 187px;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 3px;
+	border: 1px solid #000;
+}
+#modify-btn{
+	display: inline-block;
+	width: 120px;
+	height: 40px;
+	line-height: 40px;
+	background-color: #3F92D2;
+	text-align: center;
+	color: #fff;
+}
+.wrapper{
+	width: 100%;
+	height: 100%;
+}
+.header{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	font-size: 15px;
+	background-color: #333333;
+}
+.title-wrap{
+	float: left;
+	width: 250px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+}
+.title-wrap h3{
+	display: inline-block;
+	vertical-align: middle;
+	width: 70%;
+	color: #fff;
+	font-size: 20px;
+}
+.logout-btn-wrap{
+	float: right;
+	height: 50px;
+	line-height: 50px;
+	padding-right: 30px;
+}
+#logout-btn{
+	display: inline-block;
+	vertical-align: middle;
+	width: 80px;
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #fff;
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	cursor: pointer;
+}
+#logout-btn:hover{
+	background-color: #fff;
+	color: #000;
+}
+.mainbody{
+	padding-top: 60px;
+	padding-left: 220px;
+}
+.side-bar{
+	position: fixed;
+	top: 50px;
+	left: 0;
+	width: 200px;
+	height: 100%;
+	background-color: #494E52;
+}
+#tag-manage,#user-manage{
+	line-height: 40px;
+	background-color: #BEC2C5;
+	text-align: center;
+	cursor: default;
+}
+.child-tag{
+	line-height: 30px;
+	padding-left: 30px;
+	color: #fff;
+	cursor: default;
+}
+.child-tag:hover{
+	background-color: #fff;
+	color: #434343;
+}
+#number-hints{
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 5px;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	background-color: #E40045;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+	border-radius: 50%;
+}
+.content{
+	width: 98%;
+	margin: 0 auto;
+}
+.content-wrap{
+	display: none;
+}
+.content-wrap:nth-child(1){
+	display: block;
+}
+/*增加导航栏模块包裹层*/
+.add-tag-wrap{
+	width: 80%;
+	margin: 30px auto 0 auto;
+	text-align: center;
+}
+.add-tag-wrap p{
+	width: 60%;
+	margin: 15px auto 0 auto;
+	text-align: left;
+}
+.add-tag-title{
+	margin-bottom: 20px;
+}
+#add-tag-department{
+	width: 120px;
+	height: 35px;
+	line-height: 35px;
+	border-bottom: 1px solid #999;
+}
+#father-tag-content,#childTagContent{
+	width: 180px;
+	height: 35px;
+	line-height: 35px;
+	padding-left: 5px;
+	border-bottom: 1px solid #999;
+}
+#child-tag-wrap{
+	display: none;
+}
+#add-tag-btn{
+	width: 120px;
+	height: 35px;
+	line-height: 35px;
+	background-color: #FF9900;
+	color: #fff;
+}
+#add-tag-hint{
+	visibility: hidden;
+}
+/*修改导航，删除导航模块样式*/
+.modify-tag-wrap,.unexamie-wrap,.examie-wrap{
+	width: 80%;
+	margin: 30px auto 0 auto;
+}
+.filter-style{
+	width: 125px;
+	border-bottom: 1px solid #999;
+}
+.message-list{
+	width: 100%;
+	margin-top: 20px;
+	text-align: center;
+	border: 1px solid #000;
+}
+.message-list thead{
+	border: 1px solid #000;
+	line-height: 30px;
+}
+.message-list thead th{
+	border: 1px solid #999;
+}
+.message-list tr{
+	border: 1px solid #999;
+	line-height: 30px;
+}
+.message-list tr td{
+	border: 1px solid #999;
+}
+.message-list tbody tr:nth-child(2n){
+	background-color: #99CCCC;
+}
+.message-list tbody tr:nth-child(2n+1){
+	background-color: #CCFFFF;
+}
+.message-list tbody tr:hover{
+	background-color: #B2FFEE;
+}
+.pass{
+	width: 50px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #339933;
+	color: #fff;
+}
+.delete{
+	width: 50px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #FF3300;
+	color: #fff;
+}
+.reload{
+	width: 50px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #FF7081;
+	color: #fff;
+}
+.modify-tag{
+	width: 50px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #3470A6;
+	color: #fff;
+}
+.delete-tag{
+	width: 50px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #FF3300;
+	color: #fff;
+}
+/*侧边栏标签点击增加样式*/
+.sidebar-tag-active{
+	background-color: #fff;
+	color: #000;
+}

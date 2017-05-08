@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdaib.mapper.UsersMapper">
+
+
+    <!--根据用户名找到用户-->
+    <select id="selectByUsername" parameterType="string" resultType="account">
+        SELECT * FROM `t_account` WHERE username = #{account}
+    </select>
+
+
+    <!--帐号是否存在-->
+    <select id="findUsernameIsExists" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM `t_account` WHERE username = #{account}
+    </select>
+
+    <!--插入用户信息-->
+    <select id="insertUserFromAccount" parameterType="RegisterPojo">
+        INSERT INTO `t_account`(username,PASSWORD,NAME,mail,dp_id) VALUES(#{username},#{pwd},#{name},#{email},#{specialId})
+    </select>
+
+    <!--得到所有系-->
+    <select id="findDepartment" resultType="Department">
+        SELECT id,department FROM `t_department` WHERE id != 1
+    </select>
+
+
+    <!--根据系id找到相应的专业-->
+    <select id="findProfessionById" parameterType="int" resultType="Profession">
+        SELECT id,department_id,profession FROM `t_profession` WHERE department_id = #{id}
+    </select>
+
+
+    <!--帐号是否存在-->
+    <select id="findEmailIsExists" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM `t_account` WHERE mail = #{account}
+    </select>
+
+    <!--帐号和邮箱是否存在-->
+    <select id="findEmailAndUsernameIsExists" parameterType="Account" resultType="int">
+        SELECT COUNT(*) FROM `t_account` WHERE mail = #{mail} and username = #{username}
+    </select>
+
+</mapper>

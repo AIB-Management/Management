@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd "
+       >
+
+
+    <!--批量扫描
+            可以扫描controller、service... 这里扫描controller，指定controller的包-->
+
+    <context:component-scan base-package="com.gdaib.controller"></context:component-scan>
+
+
+    <!--配置注解映射器和适配器-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+
+    <!--加上这个标签之后，如果找不到页面的话，会去查找静态内容-->
+    <mvc:default-servlet-handler/>
+
+
+    <!--视图解析器-->
+    <!--解析jsp，默认支持jstl，classpath要有jstl的包-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--配置jsp路径的前缀，那样子我们在文件里面写jsp的时候就可以直接写名字，不用写这个路径-->
+        <property name="prefix" value="/WEB-INF/jsps/"/>
+        <!--配置jsp路径的后缀-->
+        <!--
+        <property name="suffix" value=".jsp"/>
+        -->
+    </bean>
+
+
+
+
+    <!--注解映射器-->
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>-->
+
+    <!--注解适配器-->
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>-->
+
+    <!--使用mvc:annotation-driven代替上面的注解映射器和注解适配器
+        mvc:annotation-driven默认加载了很多参数绑定方法，
+        比如json转换解析器就默认加载了，如果使用了mvc:annotation-driven，就不要配置上面的RequestMappingHandlerAdapter和
+        RequestMappingHandlerMapping
+    -->
+
+
+
+
+
+
+</beans>
