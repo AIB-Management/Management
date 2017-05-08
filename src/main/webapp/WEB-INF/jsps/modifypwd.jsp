@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class="form-wrap">
+    <form action=""
     <div class="form-content">
         <h3 class="form-title">修改密码</h3>
         <p class="input-wrap">

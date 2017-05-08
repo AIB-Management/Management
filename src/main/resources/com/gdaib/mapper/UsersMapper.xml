@@ -41,4 +41,26 @@
         SELECT COUNT(*) FROM `t_account` WHERE mail = #{mail} and username = #{username}
     </select>
 
+    <!--更改修改时间和UUID-->
+    <update id="updateCodeAndDate" parameterType="Account">
+        UPDATE `t_account` SET
+        <if test="validatacode != null and outdate != null">
+            validataCode = #{validatacode},outDate=#{outdate}
+        </if>
+        <if test="validatacode != null and outdate == null">
+            validataCode = #{validatacode}
+        </if>
+        WHERE username = #{username}
+    </update>
+
+    <!--得到用户的超时时间-->
+    <select id="findOutDateByAccount" parameterType="String" resultType="date">
+        SELECT outDate FROM `t_account` WHERE username = #{username}
+    </select>
+
+    <!--修改密码-->
+    <update id="updatePassword" parameterType="Account" >
+        UPDATE `t_account` SET password = #{password}WHERE username = #{username}
+    </update>
+
 </mapper>

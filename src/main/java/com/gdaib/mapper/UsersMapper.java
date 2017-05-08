@@ -5,6 +5,7 @@ import com.gdaib.pojo.Department;
 import com.gdaib.pojo.Profession;
 import com.gdaib.pojo.RegisterPojo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,4 +35,12 @@ public interface UsersMapper {
     //查找用户是否存在
     public int findEmailAndUsernameIsExists(Account account) throws Exception;
 
+    //更改修改时间和UUID
+    public void updateCodeAndDate(Account account) throws Exception;
+
+    //得到用户的超时时间
+    public Date findOutDateByAccount(String username)throws Exception;
+
+    //修改密码
+    public void updatePassword(Account account)throws Exception;
 }
