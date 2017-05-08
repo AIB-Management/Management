@@ -30,6 +30,7 @@ public class PasswordController {
     @Autowired
     private UsersService usersService;
 
+    private static final String FROMADDRESS = "18707513901@163.com";
     private static final String FINDPASSWORD = "findpassword.jsp";
 
     private static final String MODIFYPWD = "findandmodifypwd.jsp";
@@ -74,7 +75,6 @@ public class PasswordController {
 
 
 
-
         //把传过来的信息保存到UrlPojo中
             EmailUrlPojo urlPojo = new EmailUrlPojo();
             urlPojo.setScheme(request.getScheme());
@@ -110,7 +110,7 @@ public class PasswordController {
         //发送的标题
         mailPojo.setSubject("找回密码");
         //设置发送人
-        mailPojo.setFromAddress("18707513901@163.com");
+        mailPojo.setFromAddress(FROMADDRESS);
         //发送的地址
         mailPojo.setToAddresses(urlPojo.getMail());
         //发送的内容

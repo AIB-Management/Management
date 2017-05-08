@@ -25,10 +25,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		return document.querySelectorAll(name);
 	}
 
-	//封装去除空格函数
-	function myTrim(x) {
-    	return x.replace(/^\s+|\s+$/gm,'');
-	}
+
 
 
 
