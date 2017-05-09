@@ -1,10 +1,19 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ page import="java.util.List" %>
+<%@ page import="com.gdaib.pojo.Department" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
+<<<<<<< HEAD:src/main/webapp/WEB-INF/jsps/rootPage.html
 	<script type="text/javascript" src="../../resources/js/require.min.js" defer async="true" data-main="../../resources/js/rootpageMain"></script>
+=======
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain"></script>
+>>>>>>> origin/dev:src/main/webapp/WEB-INF/jsps/rootpage.jsp
 </head>
 <body>
 	<div id="floor">
@@ -61,14 +70,11 @@
 						<p>导航名：<input type="text" id="father-tag-content"></p>
 						<p>
 							系别选择：
-							<select id="add-tag-department">
-								<option value="计算机系">计算机系</option>
-								<option value="管理系">管理系</option>
-								<option value="商务系">商务系</option>
-								<option value="财经系">财经系</option>
-								<option value="热作系">热作系</option>
-								<option value="机电系">机电系</option>
-								<option value="BTEC国际交流学院">BTEC国际交流学院</option>
+							<select id="add-tag-department" name="departmentId">
+								<option value="">请选择系别</option>
+								<c:forEach items="${department}" var="dp">
+									<option value="${dp.id}">${dp.department}</option>
+								</c:forEach>
 							</select>
 						</p>
 						<p><input type="checkbox" id="has-child-tag">二级导航</p>
@@ -87,7 +93,9 @@
 				<div class="content-wrap">
 					<div class="modify-tag-wrap">
 						<span>筛选</span>
-						<select id="modify-tag-filter" class="filter-style">
+
+
+						<select id="modify-tag-filter" class="filter-style" name="departmentId">
 							<option value="全部">全部</option>
 							<option value="计算机系">计算机系</option>
 							<option value="管理系">管理系</option>
@@ -97,6 +105,9 @@
 							<option value="机电系">机电系</option>
 							<option value="BTEC国际交流学院">BTEC国际交流学院</option>
 						</select>
+
+
+
 						<table id="all-tag-list" class="message-list" cellspacing="0">
 							<caption>已存在的导航栏</caption>
 							<thead>
@@ -297,7 +308,12 @@
 		</div>
 	</div>
 	
+<<<<<<< HEAD:src/main/webapp/WEB-INF/jsps/rootPage.html
 	<link rel="stylesheet" type="text/css" href="../../resources/css/normal.css">
 	<link rel="stylesheet" type="text/css" href="../../resources/css/rootPage.css">
+=======
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css">
+>>>>>>> origin/dev:src/main/webapp/WEB-INF/jsps/rootpage.jsp
 </body>
 </html>
