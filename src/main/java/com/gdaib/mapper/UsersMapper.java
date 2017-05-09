@@ -1,9 +1,6 @@
 package com.gdaib.mapper;
 
-import com.gdaib.pojo.Account;
-import com.gdaib.pojo.Department;
-import com.gdaib.pojo.Profession;
-import com.gdaib.pojo.RegisterPojo;
+import com.gdaib.pojo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -43,4 +40,8 @@ public interface UsersMapper {
 
     //修改密码
     public void updatePassword(Account account)throws Exception;
+
+
+    //查找账号信息
+    public AccountInfo findAccountInfoByAccountId(Integer accountId) throws Exception;
 }
