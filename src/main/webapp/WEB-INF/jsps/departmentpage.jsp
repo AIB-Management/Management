@@ -1,16 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-			<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/>
-				<title>主页</title>
-				<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain"></script>
-			</head>
-			<body>
-			<div id="release-msg-content">
-				<form action=" " method="post" enctype="multipart/form-data">
-					<div id="close-btn">×</div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
+	<title>主页</title>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain"></script>
+</head>
+<body>
+	<div id="release-msg-content">
+		<form action=" " method="post" enctype="multipart/form-data">
+			<div id="close-btn">×</div>
+
 			<h3>上传文件</h3>
 			<p class="release-msg-wrap">
 				<span>文件标题</span>
@@ -64,7 +66,7 @@
 			</div>
 			<div id="user-operate">
 				<ul>
-					<li><a href="personalpage.html">个人信息</a></li>
+					<li><a href="${pageContext.request.contextPath}/content/personalpage.action">个人信息</a></li>
 					<li><a href="modifypwd.jsp">修改密码</a></li>
 					<li id="logout-btn">退出</li>
 				</ul>

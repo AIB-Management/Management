@@ -34,7 +34,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 		elem.className = allClass.join(" ");
 	}
 
-	//定义获取行内信息方法
+	//定义获取导航栏表格行内信息方法
 	function getDetailInfo(elem){
 		//获取按钮所在行
 		var infoArr = [];
@@ -134,7 +134,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 
 	//子导航输入框聚焦事件
 	EventUntil.addHandler(s("#childTagContent"),"focus",function(){
-		checkInput.onFocus(this,"span","#408DD2");
+		checkInput.onFocus(this,"span","#333333");
 	})
 
 	EventUntil.addHandler(s("#childTagContent"),"blur",function(){
@@ -148,7 +148,12 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 		s("#floor").style.visibility = "hidden";
 	})
 
-	
+	//弹出层提交按钮点击事件
+	EventUntil.addHandler(s("#modify-btn"),"click",function(){
+		s("#floor").style.visibility = "hidden";
+	})
+
+	//导航栏管理表格按钮点击方法
 	modifyModuleBtn();
 
 })

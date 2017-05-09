@@ -50,9 +50,6 @@
 	padding-left: 3px;
 	border: 1px solid #ccc;
 }
-.wrapper{
-	min-width: 1350px;
-}
 /*顶部信息栏样式*/
 .header{
 	position: fixed;
@@ -81,6 +78,7 @@
 	line-height: 50px;
 	text-align: center;
 }
+/*顶部信息分隔线样式*/
 .overide{
 	width: 5px;
 	height: 30px;
@@ -147,33 +145,44 @@
 	line-height: 45px;
 	background-color: #666;
 	word-spacing: -6px;
+	font-size: 0;
 	z-index: 0;
 }
 #head-nav-content{
 	display: inline-block;
-	width: 100%;
+	width: 90%;
 	height: 100%;
-	word-spacing: -6px;
+	word-spacing: 0px;
+	vertical-align: middle;
 }
-#head-nav-content li{
+#head-nav-content .first-nav{
 	display: inline-block;
-	line-height: 45px;
+	height: 35px;
+	line-height: 35px;
+	vertical-align: middle;
 	padding-left: 5px;
 	padding-right: 5px;
-	word-spacing: 0px;
+	margin-left: 5px;
+	margin-right: 5px;
+	font-size: 14px;
 	text-align: center;
 	color: #fff;
-	font-weight: bold;
 	cursor: pointer;
 	border: 1px solid #fff;
+	border-radius: 15px;
 }
 #show-more-btn{
+	display: inline-block;
 	width: 20px;
 	height: 20px;
 	line-height: 20px !important;
-	vertical-align: bottom;
-	visibility: hidden;
+	vertical-align: middle;
+	visibility: visible;
 	font-size: 12px;
+	color: #fff;
+	border: 1px solid #fff;
+	border-radius: 50%;
+	cursor: pointer;
 }
 /*溢出导航包裹层*/
 #nav-overflow-contain{
@@ -184,16 +193,16 @@
 	background-color: #666;
 	z-index: 40;
 }
-#nav-overflow-contain li{
+#nav-overflow-contain .first-nav{
 	line-height: 45px;
 	padding-left: 5px;
 	padding-right: 5px;
 	word-spacing: 0px;
 	text-align: center;
 	color: #fff;
-	font-weight: bold;
+	font-size: 14px;
+	word-spacing: 0px;
 	cursor: pointer;
-	border: 1px solid #fff;
 }
 /*侧边栏样式*/
 .side-bar{

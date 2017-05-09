@@ -45,13 +45,6 @@
 					</c:forEach>
 				</select>
 				<select id="special" name="specialId" >
-
-                    <!--
-                    path:http://localhost:8080/Management/public/getProfessionJson.action?departmentID=1
-                    param:departmentID
-                    return :{"professionArr":[{"id":1,"profession":"软件技术","departmentId":1},{"id":2,"profession":"计算机应用基础","departmentId":1}]}
-                    error:{"professionArr":"null"}
-                    -->
 					<option value="">请选择专业</option>
 				</select>
 			</p>
@@ -75,6 +68,6 @@
 	</div>
 
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/register.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/register.css?20170508-2">
 </body>
 </html>

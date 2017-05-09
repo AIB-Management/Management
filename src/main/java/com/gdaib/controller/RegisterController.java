@@ -41,7 +41,6 @@ public class RegisterController {
      */
     @RequestMapping("/public/register")
     public ModelAndView register(HttpServletRequest request) {
-        System.out.println("-------------------------this is register.action -------------------");
         RegisterPojo registerPojo = (RegisterPojo) request.getAttribute("RegisterPojo");
 
         ModelAndView modelAndView = new ModelAndView();
@@ -63,9 +62,8 @@ public class RegisterController {
     @ResponseBody
     public List<Profession> getProfessionJson(Integer departmentID) throws Exception {
 
-
         List<Profession> professions = null;
-        System.out.println("--------------------"+departmentID+"--------------------");
+        System.out.println("--------------------" + departmentID + "--------------------");
 
         professions = departmentService.getProfessionByDepartmentID(departmentID);
 
@@ -79,15 +77,13 @@ public class RegisterController {
      */
     @RequestMapping(value = "/public/doRegister", method = RequestMethod.POST)
     public String doRegister(
- //           Model model,
- //           HttpSession session,
             RegisterPojo registerPojo,
             HttpServletRequest request,
             HttpServletResponse response
     ) throws ServletException, IOException {
         System.out.println(registerPojo.toString());
         try {
-                HttpSession session = request.getSession();
+            HttpSession session = request.getSession();
             //判断账号是否合法
             usersService.judgeRegisterInfo(session, registerPojo);
 
@@ -98,12 +94,10 @@ public class RegisterController {
         } catch (Exception e) {
             //如果有错误 返回异常信息
             System.out.print(e.getMessage());
-//            session.setAttribute("error", e.getMessage());
-//            model.addAttribute("RegisterPojo", registerPojo);
             request.setAttribute("error", e.getMessage());
             request.setAttribute("RegisterPojo", registerPojo);
 
-            request.getRequestDispatcher("/public/register.action").forward(request,response);
+            request.getRequestDispatcher("/public/register.action").forward(request, response);
         }
 
         return "login.jsp";
@@ -112,30 +106,29 @@ public class RegisterController {
 
 
     /**
-     *  用户名是否为存在
+     * 用户名是否为存在
      */
     @RequestMapping(value = "/public/ajaxFindUsernameIsExists")
-    public void ajaxFindUsernameIsExists(String accountVal,HttpServletResponse response) throws Exception {
+    public void ajaxFindUsernameIsExists(String accountVal, HttpServletResponse response) throws Exception {
 
         String IsExists = usersService.findUsernameIsExists(accountVal);
-        String nul = "{\"accountStatus\":"+"\""+IsExists +"\""+"}";
+        String nul = "{\"accountStatus\":" + "\"" + IsExists + "\"" + "}";
         response.getWriter().append(nul);
 
     }
 
     /**
-     *  邮箱是否为存在
+     * 邮箱是否为存在
      */
     @RequestMapping(value = "/public/ajaxFindEmailIsExists")
-    public void ajaxFindEmailIsExists(String mailVal,HttpServletResponse response) throws Exception {
-        System.out.println("mailVal"+mailVal);
+    public void ajaxFindEmailIsExists(String mailVal, HttpServletResponse response) throws Exception {
+        System.out.println("mailVal" + mailVal);
 
         String IsExists = usersService.findEmailIsExists(mailVal);
-        String nul = "{\"mailStatus\":"+"\""+IsExists +"\""+"}";
+        String nul = "{\"mailStatus\":" + "\"" + IsExists + "\"" + "}";
         response.getWriter().append(nul);
 
     }
-
 
 
 }

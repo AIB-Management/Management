@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 public class UsersServiceImpl implements UsersService {
 
 
-
     @Autowired
     public UsersMapper usersMapper;
 
@@ -41,9 +40,9 @@ public class UsersServiceImpl implements UsersService {
 
 
         judgeRegister(registerPojo);
-        judgeVtCode(session,registerPojo.getVtCode());
+        judgeVtCode(session, registerPojo.getVtCode());
         judgeAccount(registerPojo.getUsername());
-        judgePwd(registerPojo.getPwd(),registerPojo.getConfirmpwd());
+        judgePwd(registerPojo.getPwd(), registerPojo.getConfirmpwd());
         judgeMail(registerPojo.getEmail());
 
 
@@ -70,23 +69,31 @@ public class UsersServiceImpl implements UsersService {
         }
     }
 
-    private void judgeRegister(RegisterPojo registerPojo) throws Exception{
-        if(
-                registerPojo.getName().trim().equals("")||
-                        registerPojo.getUsername().trim().equals("")||
-                        registerPojo.getPwd().trim().equals("")||
-                        registerPojo.getConfirmpwd().trim().equals("")||
-                        registerPojo.getDepartmentId().equals("")||
-                        registerPojo.getSpecialId().equals("")||
-                        registerPojo.getEmail().trim().equals("")||
-                        registerPojo.getVtCode().trim().equals("")
-                ){
+    private void judgeRegister(RegisterPojo registerPojo) throws Exception {
+        if (registerPojo == null ||
+                registerPojo.getName() == null ||
+                registerPojo.getName().trim().equals("") ||
+                registerPojo.getUsername() == null ||
+                registerPojo.getUsername().trim().equals("") ||
+                registerPojo.getPwd() == null ||
+                registerPojo.getPwd().trim().equals("") ||
+                registerPojo.getConfirmpwd() == null ||
+                registerPojo.getConfirmpwd().trim().equals("") ||
+                registerPojo.getDepartmentId() == null ||
+                registerPojo.getDepartmentId().equals("") ||
+                registerPojo.getSpecialId() == null ||
+                registerPojo.getSpecialId().equals("") ||
+                registerPojo.getEmail() == null ||
+                registerPojo.getEmail().trim().equals("") ||
+                registerPojo.getVtCode() == null ||
+                registerPojo.getVtCode().trim().equals("")
+                ) {
             throw new Exception("请确保信息填写完整后重试!");
 
         }
     }
 
-    private void judgeVtCode(HttpSession session ,String vtCode) throws Exception{
+    private void judgeVtCode(HttpSession session, String vtCode) throws Exception {
         String kaptchaExpected = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 
         if (vtCode.equals("") || vtCode == null) {
@@ -97,15 +104,15 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-    private void judgeAccount(String username) throws Exception{
+    private void judgeAccount(String username) throws Exception {
         String check = ".* .*";
-        if(Pattern.matches(check,username)){
-            throw  new Exception("请去除账户内空格后重试！");
+        if (Pattern.matches(check, username)) {
+            throw new Exception("请去除账户内空格后重试！");
         }
 
         check = "^[0-9a-zA-Z]{8,16}$";
-        if(!Pattern.matches(check,username)){
-            throw  new Exception("账户应是长度8-16,数字与字母的组合！");
+        if (!Pattern.matches(check, username)) {
+            throw new Exception("账户应是长度8-16,数字与字母的组合！");
         }
 
 
@@ -117,28 +124,28 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
-    private void judgePwd(String pwd,String confirmpwd) throws Exception{
+    private void judgePwd(String pwd, String confirmpwd) throws Exception {
 
         String check = ".* .*";
-        if(Pattern.matches(check,pwd)){
-            throw  new Exception("请去除密码内空格后重试！");
+        if (Pattern.matches(check, pwd)) {
+            throw new Exception("请去除密码内空格后重试！");
         }
 
-        check= "^[\\s\\S]{6,16}$";
-        if(!Pattern.matches(check,pwd)){
-            throw  new Exception("密码长度应在6-16位之间,无空格");
+        check = "^[\\s\\S]{6,16}$";
+        if (!Pattern.matches(check, pwd)) {
+            throw new Exception("密码长度应在6-16位之间,无空格");
         }
 
-        if(!pwd.equals(confirmpwd)){
-            throw  new Exception("请确保密码与确认密码一致!");
+        if (!pwd.equals(confirmpwd)) {
+            throw new Exception("请确保密码与确认密码一致!");
         }
 
 
     }
 
-    private void judgeMail(String mail) throws Exception{
+    private void judgeMail(String mail) throws Exception {
         String emailCheck = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-        if(!Pattern.matches(emailCheck,mail)){
+        if (!Pattern.matches(emailCheck, mail)) {
             throw new Exception("邮箱格式不正确");
         }
 
@@ -149,10 +156,8 @@ public class UsersServiceImpl implements UsersService {
      */
 
 
-
-
     /**
-     *      增加用户信息
+     * 增加用户信息
      */
     @Override
     public void insertAccountByRegisterPojo(RegisterPojo registerPojo) throws Exception {
@@ -160,11 +165,11 @@ public class UsersServiceImpl implements UsersService {
         //对账号密码进行加密
         Object salt = ByteSource.Util.bytes(registerPojo.getUsername());
 
-        Object md5 = new SimpleHash("MD5",registerPojo.getPwd(),salt,1024);
+        Object md5 = new SimpleHash("MD5", registerPojo.getPwd(), salt, 1024);
 
         registerPojo.setPwd(md5.toString());
 
-        System.out.print("-----------------"+registerPojo.toString()+"----------------------------");
+        System.out.print("-----------------" + registerPojo.toString() + "----------------------------");
 
         //To Add 调用Mapper注册账号方法 传递RegisterPojo对象
         usersMapper.insertUserFromAccount(registerPojo);
@@ -208,12 +213,11 @@ public class UsersServiceImpl implements UsersService {
         int bool = usersMapper.findEmailAndUsernameIsExists(account);
 
         //如果返回的是0的话，就代表邮箱或者用户名错误
-        if (bool == 0){
+        if (bool == 0) {
             return false;
-        }else{
+        } else {
             return true;
         }
-
 
 
     }
