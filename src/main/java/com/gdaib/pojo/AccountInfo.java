@@ -68,4 +68,16 @@ public class AccountInfo extends AccountKey {
     public void setCharacter(String character) {
         this.character = character == null ? null : character.trim();
     }
+
+    @Override
+    public String toString() {
+        return "AccountInfo{" +
+                "mail='" + mail + '\'' +
+                ", profession='" + profession + '\'' +
+                ", department='" + department + '\'' +
+                ", department_id=" + department_id +
+                ", name='" + name + '\'' +
+                ", character='" + character + '\'' +
+                '}';
+    }
 }
