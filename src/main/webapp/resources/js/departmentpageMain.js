@@ -51,6 +51,9 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 		container.innerHTML = "";
 		container.appendChild(elem);
 		container.appendChild(icon);
+		//添加面包屑导航点击事件
+		curmOnclick(ss("#bread-crumb-nav span"));
+
 	}
 
 	//二级导航点击事件执行函数
@@ -70,6 +73,9 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 			//存在第二个a 标签
 			container.querySelectorAll("span")[1].innerText = text;
 		}
+		//添加面包屑导航点击事件
+		curmOnclick(ss("#bread-crumb-nav span"));
+
 	}
 
 	//定义导航标签点击事件 添加面包屑路径
@@ -90,23 +96,32 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
 		var parentHeight = getCurStyle(navWrap,null,"height");
 
+
 		//获取全部子元素的宽度
 		var childWidthTotal = 0;
 		for (var i = 0; i < childnode.length; i++) {
+			//获取每一个子元素的实际宽度
+			//+10 是子元素的左右margin值为5
+			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
+			childWidthTotal += curChildWidth;
+			//获取父元素与此时子元素总宽度的差值
+			var diffWidth = parentWidth - childWidthTotal;
 
-			childWidthTotal += parseInt(getCurStyle(childnode[i],null,"width"));
-			if (childWidthTotal >= parentWidth) {
-				
+			//如果此时的差值不能容纳下子元素
+			if (diffWidth < curChildWidth) {
+				//将此时的子元素添加到溢出导航包裹层里面
 				moreNavContain.appendChild(childnode[i]);
-			};
+			}
+			
 
 			if (moreNavContain.childNodes.length != 0) {
 				icon.style.visibility = "visible";
 			}
+
 		
-		};
+		}
 
-
+		//页面点击事件委托
 		EventUntil.addHandler(document,"click",function(event){
 			event = EventUntil.getEvent(event);
 			var target = EventUntil.getTarget(event);
@@ -125,7 +140,7 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 				//如果点击的是溢出的导航
 				//返回一个空值 为的就是令一级导航栏可以点击
 				//以及增加路径
-				return ;
+				return;
 
 			}else{
 				moreNavContain.style.visibility = "hidden";
@@ -137,8 +152,59 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 
 	}
 
+	//当窗口正在调整的时候控制导航显示方法
+	function controlNavNumsOnResize(navWrap,childnode,moreNavContain,icon){
+		//获取父元素的宽度
+		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
+		var parentHeight = getCurStyle(navWrap,null,"height");
+
+
+		//全部子元素的宽度计算变量
+		var childWidthTotal = 0;
+		//如果此时移出导航包裹层有子元素
+		if (moreNavContain.childNodes.length != 0) {
+			//将溢出包裹层的子元素添加到导航栏包裹层里面
+			var moreNavs = moreNavContain.childNodes;
+			for (var i = 0; i < moreNavs.length; i++) {
+				navWrap.insertBefore(moreNavs[i],icon);
+			}
+		}
+
+		//再开始计算要显示的导航栏数量
+		for (var i = 0; i < childnode.length; i++) {
+			//获取每一个子元素的实际宽度
+			//+10 是子元素的左右margin值为5
+			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
+			childWidthTotal += curChildWidth;
+			//获取父元素与此时子元素总宽度的差值
+			var diffWidth = parentWidth - childWidthTotal;
+
+			//如果此时的差值不能容纳下子元素
+			if (diffWidth < curChildWidth) {
+				//将此时的子元素添加到溢出导航包裹层里面
+				moreNavContain.appendChild(childnode[i]);
+			}
+			
+
+			if (moreNavContain.childNodes.length != 0) {
+				icon.style.visibility = "visible";
+			}
+
+		
+		}
+		
+
+	}
+
 	//面包屑导航点击事件调用函数
-	//...code
+	function curmOnclick(breadCurms){
+		for (var i = 0; i < breadCurms.length; i++) {
+			EventUntil.addHandler(breadCurms[i],"click",function(){
+				console.log(this);
+				//...ajaxcode
+			})
+		}
+	}
 	
 
 
@@ -172,11 +238,9 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 
 	//用户操作下拉框栏鼠标移出事件
 	EventUntil.addHandler(s("#user-operate"),"mouseout",function(){
-		event = EventUntil.getEvent(event);
-		var relatedTarget = EventUntil.getRelatedTarget(event);
-		var tagName = relatedTarget.tagName.toLowerCase();
 		this.style.visibility = "hidden";
 	});
+
 
 	//发布信息按钮点击事件
 	EventUntil.addHandler(s("#release-msg"),"click",function(){
@@ -189,6 +253,7 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 	
 	});
 
+
 	//一二级导航栏点击事件添加面包屑导航调用方法
 	navTagClick(ss(".first-nav"));
 	navTagClick(ss(".second-nav"));
@@ -198,7 +263,12 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 		s("#nav-overflow-contain"),s("#show-more-btn"));
 
 
-	
-
+	//窗口调整时执行的方法
+	EventUntil.addHandler(window,"resize",function(){
+		//当窗口调整大小的时候
+		//执行一级导航栏数量控制函数
+		controlNavNumsOnResize(s("#head-nav-content"),ss(".first-nav"),
+		s("#nav-overflow-contain"),s("#show-more-btn"));
+	})
 	
 })

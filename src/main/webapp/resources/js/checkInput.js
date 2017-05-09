@@ -36,6 +36,8 @@ define(["jquery.min"],function($){
 			//提示框元素载入对应元素id 键的提示信息
 			hintsContain.innerText = this.hintsData[id]["hint"];
 			hintsContain.style.color = hintcolor;
+			hintsContain.style.border = hintcolor;
+			elem.style.borderColor = hintcolor;
 			hintsContain.style.visibility = 'visible';
 		},
 
@@ -49,13 +51,16 @@ define(["jquery.min"],function($){
 				&& elem.value.length <= this.hintsData[id]["maxLen"]) {
 				hintsContain.innerText = this.hintsData[id]["correct"];
 				hintsContain.style.color = correctColor;
+				elem.style.borderColor = correctColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = true;
 
 				return true;
 			}else{
+
 				hintsContain.innerText = this.hintsData[id]["error"];
 				hintsContain.style.color = errorColor;
+				elem.style.borderColor = errorColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = false;
 
@@ -72,13 +77,16 @@ define(["jquery.min"],function($){
 			if (this.hintsData[id]["reg"].test(elem.value)) {
 				hintsContain.innerText = this.hintsData[id]["correct"];
 				hintsContain.style.color = correctColor;
+				elem.style.borderColor = correctColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = true;
 
 				return true;
 			}else{
+
 				hintsContain.innerText = this.hintsData[id]["error"];
 				hintsContain.style.color = errorColor;
+				elem.style.borderColor = errorColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = false;
 
@@ -134,6 +142,7 @@ define(["jquery.min"],function($){
 
 						hintsContain.innerText = that.hintsData[id]["ajaxError"];
 						hintsContain.style.color = obj["errorColor"];
+						elem.style.borderColor = errorColor;
 						obj["elem"].isCorrect = false;
 						bool = false;
 					}else{
@@ -158,11 +167,14 @@ define(["jquery.min"],function($){
 			if (elem.value == sibling.value && elem.value != "") {
 				hintsContain.innerText = this.hintsData[id]["correct"];
 				hintsContain.style.color = correctColor;
+				hintsContain.style.color = correctColor;
+				elem.style.borderColor = correctColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = true;
 			}else{
 				hintsContain.innerText = this.hintsData[id]["error"];
 				hintsContain.style.color = errorColor;
+				elem.style.borderColor = errorColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = false;
 			}
