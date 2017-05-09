@@ -33,7 +33,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     /**
-     *      校验用户信息
+     *      校验用户注册信息
      *      开始
      */
     @Override
@@ -47,6 +47,27 @@ public class UsersServiceImpl implements UsersService {
         judgeMail(registerPojo.getEmail());
 
 
+    }
+    /**
+     *      校验用户登录信息
+     *
+     */
+    public void judgeLoginInfo(HttpSession session, RegisterPojo registerPojo) throws Exception{
+        judgeLogin(registerPojo);
+        judgeVtCode(session,registerPojo.getVtCode());
+        judgeAccount(registerPojo.getUsername());
+        judgePwd(registerPojo.getPwd(),registerPojo.getPwd());
+    }
+
+    private void judgeLogin(RegisterPojo registerPojo) throws Exception{
+        if(
+                        registerPojo.getUsername().trim().equals("")||
+                        registerPojo.getPwd().trim().equals("")||
+                        registerPojo.getVtCode().trim().equals("")
+                ){
+            throw new Exception("请确保信息填写完整后重试!");
+
+        }
     }
 
     private void judgeRegister(RegisterPojo registerPojo) throws Exception{

@@ -32,6 +32,13 @@ public class RegisterController {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private UsersService usersService;
+
+    /**
+     *
+            得到所有系，并转发到注册页面
+     */
     @RequestMapping("/public/register")
     public ModelAndView register(HttpServletRequest request) {
         System.out.println("-------------------------this is register.action -------------------");
@@ -49,6 +56,9 @@ public class RegisterController {
         return modelAndView;
     }
 
+    /**
+     *  通过系找到系的所有专业
+     */
     @RequestMapping(value = "/public/getProfessionJson")
     @ResponseBody
     public List<Profession> getProfessionJson(Integer departmentID) throws Exception {
@@ -64,9 +74,9 @@ public class RegisterController {
     }
 
 
-    @Autowired
-    private UsersService usersService;
-
+    /**
+     *      执行注册
+     */
     @RequestMapping(value = "/public/doRegister", method = RequestMethod.POST)
     public String doRegister(
  //           Model model,

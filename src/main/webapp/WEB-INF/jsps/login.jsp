@@ -26,10 +26,10 @@
 				</div>
 				<div class="input-wrap">
 					<span class="input-icon">密码</span>
-					<input type="password" name="password" class="input-content" id="pwd" placeholder="请输入密码">
+					<input type="password" name="pwd" class="input-content" id="pwd" placeholder="请输入密码" >
 				</div>
 				<div class="vt-code-wrap">
-					<input type="text" name="vt" id="vt-code">
+					<input type="text" name="vtCode" id="vt-code">
 					<img src="${pageContext.request.contextPath}/public/getCaptcha.action" id="vt-img">
 					<a href="#" id="change-vt-code">换一个</a>
 					<p id="vt-code-hint"></p>

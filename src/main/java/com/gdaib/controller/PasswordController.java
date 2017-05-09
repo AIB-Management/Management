@@ -39,12 +39,12 @@ public class PasswordController {
 
     private static final String TAG = "Tag.jsp";
 
+
     /**
      *      转发到找回密码页面
      */
-
     @RequestMapping(value = "/public/findPassword")
-    public ModelAndView findPassword(HttpServletRequest request) {
+    public ModelAndView findPassword() {
         ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
 
         return modelAndView;
@@ -66,7 +66,7 @@ public class PasswordController {
         //验证用户名和帐号是否存在
             boolean bool = usersService.findEmailAndUsernameIsExists( username,mail);
 
-            //如果返回false，表示用户名或密码错误
+            //如果返回false，表示用户名或邮箱错误
             if(!bool){
                 request.setAttribute("error","账户或者邮箱错误");
                 request.getRequestDispatcher("/WEB-INF/jsps/findpassword.jsp").forward(request,response);

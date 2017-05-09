@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
-	<title>主页</title>
-	<script type="text/javascript" src="../../resources/js/require.min.js" defer async="true" data-main="../../resources/js/departmentpageMain"></script>
-</head>
-<body>
-	<div id="release-msg-content">
-		<form action=" " method="post" enctype="multipart/form-data">
-			<div id="close-btn">×</div>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/>
+				<title>主页</title>
+				<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain"></script>
+			</head>
+			<body>
+			<div id="release-msg-content">
+				<form action=" " method="post" enctype="multipart/form-data">
+					<div id="close-btn">×</div>
 			<h3>上传文件</h3>
 			<p class="release-msg-wrap">
 				<span>文件标题</span>
@@ -172,7 +173,7 @@
 		</div>
 	</div>
 
-	<link rel="stylesheet" type="text/css" href="../../resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="../../resources/css/departmentpage.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css">
 </body>
 </html>

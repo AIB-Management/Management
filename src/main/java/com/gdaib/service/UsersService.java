@@ -18,6 +18,9 @@ public interface UsersService {
     //判断注册信息
     public void judgeRegisterInfo(HttpSession session, RegisterPojo registerPojo) throws Exception;
 
+    //判断登录信息
+    public void judgeLoginInfo(HttpSession session, RegisterPojo registerPojo) throws Exception;
+
 
     //注册账号
     public void insertAccountByRegisterPojo(RegisterPojo registerPojo) throws  Exception;
