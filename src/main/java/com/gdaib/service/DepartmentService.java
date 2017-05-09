@@ -13,4 +13,5 @@ public interface DepartmentService {
 
     public List<Profession> getProfessionByDepartmentID (Integer departmentID) throws Exception;
 
+
 }
