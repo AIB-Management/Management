@@ -3,6 +3,7 @@ package com.gdaib.service.impl;
 
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.Account;
+import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -201,5 +202,8 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
-
+    @Override
+    public AccountInfo findAccountInfoByAccountId(Integer accountId) throws Exception {
+        return usersMapper.findAccountInfoByAccountId(accountId);
+    }
 }

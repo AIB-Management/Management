@@ -63,4 +63,7 @@
         UPDATE `t_account` SET password = #{password}WHERE username = #{username}
     </update>
 
+    <select id="findAccountInfoByAccountId" parameterType="Integer" resultType="AccountInfo">
+        SELECT username,mail,profession,department,name FROM `v_account_info` WHERE id = #{accountId}
+    </select>
 </mapper>
