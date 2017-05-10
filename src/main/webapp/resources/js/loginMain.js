@@ -34,8 +34,8 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		var rm = s("#remember-me");
 
 		if (rm.checked == true) {
-			cookies.setCookie("account",account.value,3);
-			cookies.setCookie("pwd",pwd.value,3);
+		  cookies.setCookie("account",account.value,3);
+		  cookies.setCookie("pwd",pwd.value,3);
 		}
 	}
 
@@ -124,16 +124,16 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		event = EventUntil.getEvent(event);
 		EventUntil.preventDefault(event);
 
-        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
+        		s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
 	})
 
-    //切换验证码按钮点击事件
-    EventUntil.addHandler(s("#vt-img"),"click",function(event){
-        event = EventUntil.getEvent(event);
-        EventUntil.preventDefault(event);
+    	//验证码图片点击事件
+    	EventUntil.addHandler(s("#vt-img"),"click",function(event){
+	        event = EventUntil.getEvent(event);
+	        EventUntil.preventDefault(event);
 
-        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
-    })
+	        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
+	    })
 
 
 

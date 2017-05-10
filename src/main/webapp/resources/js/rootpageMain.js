@@ -9,7 +9,7 @@ require.config({
 })
 
 //管理页主函数
-require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInput,EventUntil){
+require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,EventUntil){
 	//封装选择器函数
 	function s(name){
 		if (name.substring(0, 1) == "#") {
@@ -52,7 +52,17 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 	//定义弹出层填写内容方法
 	function setFloorInfo(elemList,infoList){
 		for (var i = 0; i < elemList.length; i++) {
-			elemList[i].value = infoList[i];
+
+			if ((elemList[i].tagName).toLowerCase() == "select") {
+				var options = elemList[i].options;
+				for (var j = 0; j < options.length; j++) {
+					if (options[j].innerText == infoList[i]) {
+						options[j].selected = "true";
+					}
+				}
+			}else{
+				elemList[i].value = infoList[i];
+			}
 		}
 	}
 
@@ -60,6 +70,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 	//修改导航栏模块按钮点击事件
 	//真正调用此函数是当数据完全获取完毕后调用
 	function modifyModuleBtn(){
+		//获取导航栏信息表格中的全部按钮
 		var btns = ss("#all-tag-list tbody tr td button");
 		for (var i = 0; i < btns.length; i++) {
 			EventUntil.addHandler(btns[i],"click",function(){
@@ -72,8 +83,10 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 					//获取弹出层
 					var floor = s("#floor");
 					//执行自定义信息输入函数
-					setFloorInfo(ss("#floor input"),infoList);
+					setFloorInfo(ss("#floor .modify-nav-info"),infoList);
 
+					s("#refuse-info").style.display = 'none';
+					s("#modify-nav-info").style.display = 'block';
 					floor.style.visibility = "visible";
 
 				}else if(this.className.indexOf("delete-tag") != -1){
@@ -84,6 +97,44 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 			})
 		}
 
+	}
+
+
+	//待审核用户表格全部按钮点击事件
+	function unexamieModuleBtn(){
+		//获取待审核用户表格的全部按钮
+		var btns = ss("#unexamie tbody tr td button");
+
+		//遍历 为每一个按钮绑定事件
+		for (var i = 0; i < btns.length; i++) {
+			EventUntil.addHandler(btns[i],"click",function(){
+				if (this.className.indexOf("pass") != -1) {
+					//如果此时点击的按钮为通过按钮
+					//发送一个ajax 给后台
+					//然后刷新更新后的表格
+					//...ajaxCode
+				}else if (this.className.indexOf("refuse") != -1) {
+					//如果点击的是拒绝的按钮
+					//获取注册用户姓名的单元格
+					var parent = this.parentNode.parentNode;
+					var nameTd = parent.querySelectorAll("td")[0];
+
+
+					//获取弹出层
+					var floor = s("#floor");
+					//隐藏修改导航模块
+					s("#modify-nav-info").style.display = 'none';
+					//显示填写拒绝信息模块
+					s("#refuse-info").style.display = 'block';
+					//为提示文字中的姓名字段添加内容
+					s("#refuse-username").innerText = nameTd.innerText;
+					s("#refuse-username").title = nameTd.title;
+					//显示弹出层
+					floor.style.visibility = "visible";
+
+				}
+			})
+		}
 	}
 
 
@@ -119,11 +170,12 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 	
 
 	//初始化子导航栏提示信息
-	checkInput.init({
-		childTagContent: {hint:"多个子导航请用逗号分隔"}
+	checkBy.init({
+		childTagContent: {hint:"多个子导航请用英文逗号分隔"},
+		childTagInfo: {hint:"多个子导航请用英文逗号分隔"}
 	})
 
-	//子导航选择框点击事件
+	//增加导航栏模块---子导航选择框点击事件
 	EventUntil.addHandler(s("#has-child-tag"),"click",function(){
 		if (this.checked == true) {
 			s("#child-tag-wrap").style.display = "block";
@@ -134,7 +186,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 
 	//子导航输入框聚焦事件
 	EventUntil.addHandler(s("#childTagContent"),"focus",function(){
-		checkInput.onFocus(this,"span","#333333");
+		checkBy.onFocus(this,"span","#333333");
 	})
 
 	EventUntil.addHandler(s("#childTagContent"),"blur",function(){
@@ -143,17 +195,51 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkInpu
 		hintContent.innerText = "";
 	})
 
-	//弹出层关闭按钮点击事件
-	EventUntil.addHandler(s("#close-btn"),"click",function(){
+	//弹出层子导航栏信息框聚焦事件
+	EventUntil.addHandler(s("#childTagInfo"),"focus",function(){
+		checkBy.onFocus(this,"#modify-childNav-hint","#408DD2");
+	})
+
+	//弹出层子导航栏信息框失焦事件
+	EventUntil.addHandler(s("#childTagInfo"),"blur",function(){
+
+		var parent = this.parentNode;
+		var hintContent = parent.querySelector("#modify-childNav-hint");
+		hintContent.innerText = "";
+		this.style.borderColor = "#000000";
+	})
+
+	//修改导航模块弹出层关闭按钮点击事件
+	EventUntil.addHandler(s("#modify-nav-close-btn"),"click",function(){
 		s("#floor").style.visibility = "hidden";
 	})
 
-	//弹出层提交按钮点击事件
+	//修改模块弹出层提交按钮点击事件
 	EventUntil.addHandler(s("#modify-btn"),"click",function(){
 		s("#floor").style.visibility = "hidden";
+	})
+
+	//拒绝用户注册模块关闭按钮点击事件
+	EventUntil.addHandler(s("#refuse-close-btn"),"click",function(){
+		
+		s("#floor").style.visibility = "hidden";
+	})
+
+	//拒绝用户注册模块提交拒绝信息按钮点击事件
+	EventUntil.addHandler(s("#send-refuse-info"),"click",function(){
+		//ajax 提交用户的id （则xxx title属性）,拒绝理由 给后台处理
+		//当处理完毕后再将包裹层隐藏
+	})
+
+	//拒绝用户注册模块不填写拒绝信息按钮点击事件
+	EventUntil.addHandler(s("#no-refuse-reason"),"click",function(){
+		//ajax 提交用户的id 给后台，不提交拒绝理由
+		//数据提交完成后将包裹层隐藏
 	})
 
 	//导航栏管理表格按钮点击方法
 	modifyModuleBtn();
 
+	//待审核用户表格所有按钮点击方法
+	unexamieModuleBtn();
 })
