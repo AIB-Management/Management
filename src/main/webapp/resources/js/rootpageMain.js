@@ -93,6 +93,36 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					//如果按钮的类名为 delete-tag
 					//....执行ajax操作
 					//同时再重新获取数据库数据生成dom 元素
+
+					//获取点击按钮的行
+					var tr = this.parentNode.parentNode;
+					//获取按钮包裹的 td
+					var wrapBtnTd = this.parentNode;
+					//获取点击按钮所在行的第一个td 元素（一级导航栏名）
+					var td = tr.querySelectorAll("td")[0];
+					//获取一级导航栏的id
+					var tagId = td.title;
+					$.ajax({
+						url: '',
+						type: 'POST',
+						dataType: 'json',
+						data: {firstNavId: tagId},
+						beforeSend: function(){
+							//发送请求之前先创建一个img
+							var img = document.createElement("img");
+							img.src = "../../resources/images/loading.gif";
+							img.style.width = "25px";
+							img.style.height = "25px";
+							wrapBtnTd.appendChild(img);
+						},
+
+						success: function(data){
+							//请求数据成功之后
+							//进行遍历输出
+						}
+					});
+					
+					
 				}
 			})
 		}
@@ -225,16 +255,81 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		s("#floor").style.visibility = "hidden";
 	})
 
+	//拒绝理由信息输入框输入事件
+	EventUntil.addHandler(s("#refuse-content"),"keyup",function(){
+
+		var sendBtn = s("#send-refuse-info");
+
+		if (this.value.length == 0) {
+			sendBtn.disabled = "disabled";
+			sendBtn.style.backgroundColor = "#999999"
+		}else{
+			sendBtn.removeAttribute("disabled");
+			sendBtn.style.backgroundColor = "#05a828";
+		}
+	})
+
 	//拒绝用户注册模块提交拒绝信息按钮点击事件
 	EventUntil.addHandler(s("#send-refuse-info"),"click",function(){
 		//ajax 提交用户的id （则xxx title属性）,拒绝理由 给后台处理
 		//当处理完毕后再将包裹层隐藏
+
+		//获取当前拒绝用户的后台 id 值
+		var idVal = s("#refuse-username").title;
+		//拒绝的理由
+		var refuseVal = s("#refuse-content").value;
+		//获取加载图片元素
+		var icon = s("#loading-icon");
+		$.ajax({
+			url: '',
+			type: 'POST',
+			dataType: 'json',
+			data: {deleteUserId: idVal,refuseText: refuseVal},
+			beforesend: function(){
+				icon.src = "../../resources/images/loading.gif";
+			},
+
+			success: function(data){
+				//接收到返回信息后
+				//1、遍历更新后的信息 更新前端页面的内容
+				//2、输出完信息之后调用 unexamieModuleBtn() 方法为新添加的内容绑定点击事件
+				//3、loading图标隐藏（src = ""）
+				//4、弹出层隐藏
+			}
+		});
+		
+		
 	})
 
 	//拒绝用户注册模块不填写拒绝信息按钮点击事件
 	EventUntil.addHandler(s("#no-refuse-reason"),"click",function(){
 		//ajax 提交用户的id 给后台，不提交拒绝理由
 		//数据提交完成后将包裹层隐藏
+
+		//获取当前拒绝用户的后台 id 值
+		var idVal = s("#refuse-username").title;
+		//获取加载图片元素
+		var icon = s("#loading-icon");
+
+		$.ajax({
+			url: '',
+			type: 'GET',
+			dataType: 'json',
+			data: {deleteUserId: idVal},
+			beforesend: function(){
+				icon.src = "../../resources/images/loading.gif";
+			},
+
+			success: function(data){
+				//接收到返回信息后
+				//1、遍历更新后的信息 更新前端页面的内容
+				//2、输出完信息之后调用 unexamieModuleBtn() 方法为新添加的内容绑定点击事件
+				//3、loading图标隐藏（src = ""）
+				//4、弹出层隐藏
+			}
+		});
+		
+		
 	})
 
 	//导航栏管理表格按钮点击方法

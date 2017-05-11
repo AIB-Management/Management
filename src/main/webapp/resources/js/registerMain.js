@@ -192,18 +192,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 						//为第二个下拉框添加子元素
 						selector2.appendChild(frag);
-					},
-
-					error: function(data){
-						data = JSON.parse(data);
-
-	                    var option = document.createElement("option");
-	                    option.innerText = data["professionArr"];
-	                    //清空第二个下拉框的option
-	                    selector2.options.length = 0;
-	             		//为第二个下拉框添加一个子元素 option
-	                    selector2.appendChild(option);
-
 					}
 				})
 			}else{

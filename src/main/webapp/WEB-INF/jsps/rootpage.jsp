@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-17"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-18"></script>
 </head>
 <body>
 	<div id="floor">
@@ -53,8 +53,9 @@
 				<textarea name="refuseContent" id="refuse-content"></textarea>
 			</p>
 			<p class="refuse-btn-wrap">
-				<button type="button" id="send-refuse-info">发送</button>
+				<button type="button" id="send-refuse-info" disabled="disabled">发送</button>
 				<button type="button" id="no-refuse-reason">不发送拒绝消息</button>
+				<img src="" alt="" id="loading-icon">
 			</p>
 		</div>
 	</div>
@@ -126,7 +127,6 @@
 						</select>
 
 
-
 						<table id="all-tag-list" class="message-list" cellspacing="0">
 							<caption>已存在的导航栏</caption>
 							<thead>
@@ -139,7 +139,7 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>标签1</td>
+									<td title="1">标签1</td>
 									<td>计算机系</td>
 									<td>二级导航栏,二级导航栏,二级导航栏,二级导航栏</td>
 									<td>
@@ -148,7 +148,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>标签1</td>
+									<td title="2">标签1</td>
 									<td>管理系</td>
 									<td>二级导航栏,二级导航栏,二级导航栏,二级导航栏</td>
 									<td>
@@ -157,7 +157,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>标签1</td>
+									<td title="3">标签1</td>
 									<td>计算机系</td>
 									<td>二级导航栏,二级导航栏,二级导航栏,二级导航栏</td>
 									<td>
@@ -166,7 +166,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>标签1</td>
+									<td title="4">标签1</td>
 									<td>计算机系</td>
 									<td>二级导航栏,二级导航栏,二级导航栏,二级导航栏</td>
 									<td>
@@ -175,7 +175,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>标签1</td>
+									<td title="5">标签1</td>
 									<td>计算机系</td>
 									<td>无</td>
 									<td>
@@ -184,7 +184,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>标签1</td>
+									<td title="6">标签1</td>
 									<td>计算机系</td>
 									<td>无</td>
 									<td>
@@ -328,6 +328,6 @@
 	</div>
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-7">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-8">
 </body>
 </html>
