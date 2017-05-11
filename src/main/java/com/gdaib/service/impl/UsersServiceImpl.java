@@ -203,7 +203,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public AccountInfo findAccountInfoByAccountId(Integer accountId) throws Exception {
-        return usersMapper.findAccountInfoByAccountId(accountId);
+    public AccountInfo findAccountInfoByUsername(String username) throws Exception {
+        return usersMapper.findAccountInfoByUsername(username);
     }
 }

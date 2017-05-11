@@ -43,5 +43,5 @@ public interface UsersMapper {
 
 
     //查找账号信息
-    public AccountInfo findAccountInfoByAccountId(Integer accountId) throws Exception;
+    public AccountInfo findAccountInfoByUsername(String username) throws Exception;
 }

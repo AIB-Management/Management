@@ -48,7 +48,7 @@
 	<div class="wrapper">
 		<div class="header">
 			<div class="title-wrap">
-				<h3>计算机系主页</h3>
+				<h3>${AccountInfo.department}主页</h3>
 			</div>
 			<div class="header-tag">
 				<a href="#" id="manage-msg">管理信息</a>
@@ -60,7 +60,7 @@
 				<span>|</span>
 			</div>
 			<div class="header-tag" id="user-name-wrap">
-				<span id="user-name">xx老师</span>
+				<span id="user-name">${AccountInfo.name}</span>
 			</div>
 			<div id="user-operate">
 				<ul>

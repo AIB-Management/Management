@@ -20,8 +20,8 @@ public class ContentController {
     @Autowired
     private UsersService usersService;
 
-    private static final String DEPARTMENTPAGE = "departmentpage.jsp";
-    private static final String PERSONALPAGE="personalpage.jsp";
+    public static final String DEPARTMENTPAGE = "departmentpage.jsp";
+    public static final String PERSONALPAGE="personalpage.jsp";
 
     @RequestMapping("/content/departmentpage")
     public ModelAndView departmentpage() throws Exception{
@@ -35,14 +35,6 @@ public class ContentController {
         ModelAndView modelAndView =new ModelAndView();
         modelAndView.setViewName(PERSONALPAGE);
         return modelAndView;
-    }
-
-
-    @RequestMapping("/content/getPersonInfoJson")
-    @ResponseBody
-    public AccountInfo getPersonInfoJson(HttpSession session) throws Exception{
-        AccountInfo accountInfo = usersService.findAccountInfoByAccountId(2);
-        return accountInfo;
     }
 
 }

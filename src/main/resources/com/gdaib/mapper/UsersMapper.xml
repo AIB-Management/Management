@@ -16,7 +16,7 @@
 
     <!--插入用户信息-->
     <select id="insertUserFromAccount" parameterType="RegisterPojo">
-        INSERT INTO `t_account`(username,PASSWORD,NAME,mail,dp_id) VALUES(#{username},#{pwd},#{name},#{email},#{specialId})
+        INSERT INTO `t_account`(username,PASSWORD,name,mail,profession_id) VALUES(#{username},#{pwd},#{name},#{email},#{specialId})
     </select>
 
     <!--得到所有系-->
@@ -63,7 +63,7 @@
         UPDATE `t_account` SET password = #{password}WHERE username = #{username}
     </update>
 
-    <select id="findAccountInfoByAccountId" parameterType="Integer" resultType="AccountInfo">
-        SELECT username,mail,profession,department,name FROM `v_account_info` WHERE id = #{accountId}
+    <select id="findAccountInfoByUsername" parameterType="String" resultType="AccountInfo">
+        SELECT * FROM `v_account_info` WHERE username = #{username}
     </select>
 </mapper>
