@@ -33,7 +33,7 @@ public class PasswordController {
     private static final String FROMADDRESS = "18707513901@163.com";
     private static final String FINDPASSWORD = "findpassword.jsp";
 
-    private static final String MODIFYPWD = "findandmodifypwd.jsp";
+    private static final String MODIFYPWD = "resetpwd.jsp";
 
     private static final String MODIFYPWD_ACTION = "/public/modifypwdHtml.action";
 
@@ -69,7 +69,7 @@ public class PasswordController {
             //如果返回false，表示用户名或邮箱错误
             if(!bool){
                 request.setAttribute("error","账户或者邮箱错误");
-                request.getRequestDispatcher("/WEB-INF/jsps/findpassword.jsp").forward(request,response);
+                request.getRequestDispatcher("/WEB-INF/jsps/"+FINDPASSWORD).forward(request,response);
                 return;
             }
 
