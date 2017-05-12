@@ -1,6 +1,8 @@
 package com.gdaib.controller;
 
 import com.gdaib.pojo.AccountInfo;
+import com.gdaib.service.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,8 +17,11 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class ContentController {
-    private static final String DEPARTMENTPAGE = "departmentpage.jsp";
-    private static final String PERSONALPAGE="personalpage.jsp";
+    @Autowired
+    private UsersService usersService;
+
+    public static final String DEPARTMENTPAGE = "departmentpage.jsp";
+    public static final String PERSONALPAGE="personalpage.jsp";
 
     @RequestMapping("/content/departmentpage")
     public ModelAndView departmentpage() throws Exception{
@@ -30,14 +35,6 @@ public class ContentController {
         ModelAndView modelAndView =new ModelAndView();
         modelAndView.setViewName(PERSONALPAGE);
         return modelAndView;
-    }
-
-
-    @RequestMapping("/content/getPersonInfoJson")
-    @ResponseBody
-    public AccountInfo getPersonInfoJson(HttpSession session) throws Exception{
-        AccountInfo accountInfo = new AccountInfo();
-        return accountInfo;
     }
 
 }

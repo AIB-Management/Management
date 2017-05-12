@@ -3,6 +3,7 @@ package com.gdaib.service.impl;
 
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.Account;
+import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -180,25 +181,26 @@ public class UsersServiceImpl implements UsersService {
     /**
      * 查找用户名是否存在
      */
-    public String findUsernameIsExists(String username) throws Exception {
+    public Boolean findUsernameIsExists(String username) throws Exception {
 
 
         //查找用户是否存在
         int num = usersMapper.findUsernameIsExists(username);
-
-        return num == 0 ? "notExist" : "exist";
+        //账户不存在可以注册就返回true，否则false
+        return num == 0 ? true : false;
     }
 
     /**
      * 查找邮箱是否存在
      */
-    public String findEmailIsExists(String email) throws Exception {
+    public Boolean findEmailIsExists(String email) throws Exception {
 
 
         //查找邮箱是否存在
         int num = usersMapper.findEmailIsExists(email);
 
-        return num == 0 ? "notExist" : "exist";
+        //邮箱不存在可以注册就返回true，否则false
+        return num == 0 ? true : false;
     }
 
 
@@ -222,5 +224,8 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
-
+    @Override
+    public AccountInfo findAccountInfoByUsername(String username) throws Exception {
+        return usersMapper.findAccountInfoByUsername(username);
+    }
 }

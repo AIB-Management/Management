@@ -1,9 +1,11 @@
 package com.gdaib.controller;
 
+import com.gdaib.pojo.Msg;
 import com.gdaib.pojo.Profession;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.DepartmentService;
 import com.gdaib.service.UsersService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,25 +110,37 @@ public class RegisterController {
     /**
      * 用户名是否为存在
      */
+    @ResponseBody
     @RequestMapping(value = "/public/ajaxFindUsernameIsExists")
-    public void ajaxFindUsernameIsExists(String accountVal, HttpServletResponse response) throws Exception {
+    public Msg ajaxFindUsernameIsExists(String accountVal, HttpServletResponse response) throws Exception {
 
-        String IsExists = usersService.findUsernameIsExists(accountVal);
-        String nul = "{\"accountStatus\":" + "\"" + IsExists + "\"" + "}";
-        response.getWriter().append(nul);
+        Boolean UserBoolean = usersService.findUsernameIsExists(accountVal);
+        if(UserBoolean){
+            return Msg.success();
+        }else {
+            return Msg.fail();
+        }
+
 
     }
 
     /**
      * 邮箱是否为存在
      */
+    @ResponseBody
     @RequestMapping(value = "/public/ajaxFindEmailIsExists")
-    public void ajaxFindEmailIsExists(String mailVal, HttpServletResponse response) throws Exception {
+    public Msg ajaxFindEmailIsExists(String mailVal, HttpServletResponse response) throws Exception {
         System.out.println("mailVal" + mailVal);
 
-        String IsExists = usersService.findEmailIsExists(mailVal);
-        String nul = "{\"mailStatus\":" + "\"" + IsExists + "\"" + "}";
-        response.getWriter().append(nul);
+        Boolean Emailboolean = usersService.findEmailIsExists(mailVal);
+        if(Emailboolean){
+            return Msg.success();
+        }else {
+            return Msg.fail();
+        }
+
+
+
 
     }
 

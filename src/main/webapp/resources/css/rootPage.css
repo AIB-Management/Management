@@ -1,3 +1,4 @@
+/*弹出层样式*/
 #floor{
 	position: absolute;
 	top: 0;
@@ -8,34 +9,50 @@
 	z-index: 20;
 	visibility: hidden;
 }
-.floor-main-content{
-	width: 500px;
-	height: 350px;
-	background-color: #fff;
-	margin: 15% auto 0 auto;
-}
+/*关闭按钮样式*/
 .close-btn-wrap{
 	padding-right: 15px;
 	font-size: 25px;
 	text-align: right;
 }
-#close-btn{
+#modify-nav-close-btn,#refuse-close-btn{
 	cursor: pointer;
 }
-.floor-main-content h3{
+/*修改导航栏内容，拒绝用户注册最外层样式*/
+#modify-nav-info,#refuse-info{
+	width: 600px;
+	height: 350px;
+	background-color: #fff;
+	margin: 15% auto 0 auto;
+}
+#modify-nav-info h3,#refuse-info h3{
 	text-align: center;
 }
-.modify-info-wrap{
+/*修改信息输入框，拒绝注册信息包裹层样式*/
+.modify-info-wrap,.refuse-info-wrap{
+	text-align: left;
+	margin-top: 20px;
+	padding-left: 20px;
+}
+.modify-btn-wrap{
 	text-align: center;
 	margin-top: 20px;
+	padding-left: 20px;
 }
-.modify-info-wrap span{
+.refuse-btn-wrap{
+	text-align: left;
+	margin-top: 20px;
+	padding-left: 145px;
+}
+/*修改信息输入框标题样式*/
+.modify-info-wrap label,.refuse-info-wrap label{
 	display: inline-block;
 	width: 120px;
 	height: 35px;
 	line-height: 35px;
 	text-align: right;
 }
+/*修改信息输入框样式*/
 .modify-info-wrap input{
 	display: inline-block;
 	width: 187px;
@@ -44,12 +61,59 @@
 	padding-left: 3px;
 	border: 1px solid #000;
 }
+/*系别选择下拉框样式*/
+#belong-department,#refuse-content{
+	display: inline-block;
+	height: 30px;
+	font-size: 15px;
+	border: 1px solid #000;
+}
+/*子导航栏内容输入框样式*/
+#childTagInfo{
+	width: 187px;
+	vertical-align: middle;
+	padding-left: 3px;
+	border: 1px solid #000;
+}
+/*修改导航栏按钮样式*/
 #modify-btn{
 	display: inline-block;
 	width: 120px;
 	height: 40px;
 	line-height: 40px;
 	background-color: #3F92D2;
+	text-align: center;
+	color: #fff;
+}
+/*拒绝信息提示信息样式*/
+.refuse-hint{
+	padding-left: 75px;
+}
+/*拒绝理由输入框样式*/
+#refuse-content{
+	width: 350px;
+	height: 150px;
+	vertical-align: top;
+	padding-left: 3px;
+	border: 1px solid #000;
+}
+/*发送拒绝理由按钮样式*/
+#send-refuse-info{
+	display: inline-block;
+	width: 120px;
+	height: 40px;
+	line-height: 40px;
+	background-color: #999;
+	text-align: center;
+	color: #fff;
+}
+/*没有理由直接拒绝按钮样式*/
+#no-refuse-reason{
+	display: inline-block;
+	width: 120px;
+	height: 40px;
+	line-height: 40px;
+	background-color: #d20003;
 	text-align: center;
 	color: #fff;
 }
@@ -239,8 +303,8 @@
 	background-color: #339933;
 	color: #fff;
 }
-.delete{
-	width: 50px;
+.refuse{
+	width: 90px;
 	height: 25px;
 	line-height: 25px;
 	background-color: #FF3300;

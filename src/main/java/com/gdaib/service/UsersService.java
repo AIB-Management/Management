@@ -2,6 +2,7 @@ package com.gdaib.service;
 
 
 import com.gdaib.pojo.Account;
+import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
 
 import javax.servlet.http.HttpSession;
@@ -26,11 +27,14 @@ public interface UsersService {
     public void insertAccountByRegisterPojo(RegisterPojo registerPojo) throws  Exception;
 
     //查找用户是否存在
-    public String findUsernameIsExists(String username) throws Exception;
+    public Boolean findUsernameIsExists(String username) throws Exception;
 
     //查找邮箱是否存在
-    public String findEmailIsExists(String email) throws Exception;
+    public Boolean findEmailIsExists(String email) throws Exception;
 
     //查找用户和邮箱是否存在
     public boolean findEmailAndUsernameIsExists(String username,String email) throws Exception;
+
+    //查找账号信息
+    public AccountInfo findAccountInfoByUsername(String username) throws Exception;
 }

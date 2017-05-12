@@ -20,4 +20,11 @@
 
 
 
+    <!--配置分页-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+        </plugin>
+    </plugins>
+
+
 </configuration>

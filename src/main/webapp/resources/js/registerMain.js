@@ -50,10 +50,10 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					//后台页面地址
 					url:"http://localhost:8080/Management/public/ajaxFindUsernameIsExists.action",
 					reqData: "accountVal="+myTrim(args.value),
-					correctBool: "notExist",
-					errorBool: "exist",
+					correctBool: "100",
+					errorBool: "200",
 					//后台返回json 数据的键名
-					result: "accountStatus"
+					result: "code"
 				});
 			}
 
@@ -72,10 +72,10 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					//后台页面地址
 					url:"http://localhost:8080/Management/public/ajaxFindEmailIsExists.action",
 					reqData: "mailVal="+myTrim(args.value),
-					correctBool: "notExist",
-					errorBool: "exist",
+					correctBool: "100",
+					errorBool: "200",
 					//后台返回json 数据的键名
-					result: "mailStatus"
+					result: "code"
 				});
 			}
 
@@ -192,18 +192,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 						//为第二个下拉框添加子元素
 						selector2.appendChild(frag);
-					},
-
-					error: function(data){
-						data = JSON.parse(data);
-
-	                    var option = document.createElement("option");
-	                    option.innerText = data["professionArr"];
-	                    //清空第二个下拉框的option
-	                    selector2.options.length = 0;
-	             		//为第二个下拉框添加一个子元素 option
-	                    selector2.appendChild(option);
-
 					}
 				})
 			}else{

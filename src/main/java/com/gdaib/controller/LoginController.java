@@ -1,5 +1,6 @@
 package com.gdaib.controller;
 
+
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.SecurityUtils;
@@ -24,8 +25,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginController {
     private static final String LOGIN = "login.jsp";
+
+
     @Autowired
-    public UsersService usersService;
+    private UsersService usersService;
 
     @RequestMapping("/public/login")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
@@ -37,7 +40,7 @@ public class LoginController {
 
     //登陆
     @RequestMapping("/public/doLogin")
-    public ModelAndView doLogin(RegisterPojo registerPojo, HttpSession session,HttpServletRequest request) throws Exception {
+    public ModelAndView doLogin(RegisterPojo registerPojo, HttpSession session, HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
 
         //验证用户信息
@@ -78,7 +81,9 @@ public class LoginController {
             }
         }
         System.out.println("登陆成功");
-        modelAndView.setViewName("departmentpage.jsp");
+
+        modelAndView.setViewName(ContentController.DEPARTMENTPAGE);
+        session.setAttribute("AccountInfo",usersService.findAccountInfoByUsername(registerPojo.getUsername()));
 
         return modelAndView;
     }

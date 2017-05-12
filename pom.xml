@@ -337,8 +337,12 @@
             <version>1.4.7</version>
         </dependency>
 
-
-
+        <!--分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.0.1</version>
+        </dependency>
 
     </dependencies>
 
