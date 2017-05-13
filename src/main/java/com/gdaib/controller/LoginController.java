@@ -40,7 +40,9 @@ public class LoginController {
 
     //登陆
     @RequestMapping("/public/doLogin")
-    public ModelAndView doLogin(RegisterPojo registerPojo, HttpSession session, HttpServletRequest request) throws Exception {
+    public ModelAndView doLogin(RegisterPojo registerPojo,  HttpServletRequest request,HttpServletResponse response) throws Exception {
+       HttpSession session = request.getSession();
+
         ModelAndView modelAndView = new ModelAndView();
 
         //验证用户信息
@@ -82,9 +84,9 @@ public class LoginController {
         }
         System.out.println("登陆成功");
 
-        modelAndView.setViewName(ContentController.DEPARTMENTPAGE);
+//        modelAndView.setViewName(ContentController.DEPARTMENTPAGE);
         session.setAttribute("AccountInfo",usersService.findAccountInfoByUsername(registerPojo.getUsername()));
-
+        request.getRequestDispatcher("/content/departmentpage.action").forward(request, response);
         return modelAndView;
     }
 }
