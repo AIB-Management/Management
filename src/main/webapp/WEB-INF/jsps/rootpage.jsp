@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-18"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-23"></script>
 </head>
 <body>
 	<div id="floor">
@@ -40,22 +40,52 @@
 				<button id="modify-btn">确认修改</button>
 			</p>
 		</form>
+		
+
+		<!-- 删除导航栏提示信息弹出层 -->
+		<div id="delete-nav">
+			<p class="delete-nav-wrap">
+				<span class="operate-hint">你确认要删除<b id="delete-navname">xxx</b>一级导航吗？此操作将不可回撤</span>
+			</p>
+			<p class="delete-nav-wrap">
+				<button type="button" id="cancel-delete-nav">取消</button>
+				<button type="button" id="confirm-delete-nav">确认</button>
+				<img src="" alt="" id="deleteNav-loading-icon">
+			</p>
+		</div>
+
 
 		<!-- 拒绝用户注册回馈信息弹出层 -->
 		<div id="refuse-info">
 			<p class="close-btn-wrap"><span id="refuse-close-btn">×</span></p>
 			<h3>拒绝信息填写</h3>
 			<p class="refuse-info-wrap refuse-hint">
-				<span>你可以为<b id="refuse-username"></b>发送拒绝信息,以便用户可以获知账号的实时状态</span>
+				<span class="operate-hint">你可以为<b id="refuse-username"></b>发送拒绝信息,以便用户可以获知账号的实时状态</span>
 			</p>
 			<p class="refuse-info-wrap">
 				<label>拒绝理由</label>
-				<textarea name="refuseContent" id="refuse-content"></textarea>
+				<textarea id="refuse-content"></textarea>
 			</p>
-			<p class="refuse-btn-wrap">
+			<p class="refuse-info-wrap">
 				<button type="button" id="send-refuse-info" disabled="disabled">发送</button>
 				<button type="button" id="no-refuse-reason">不发送拒绝消息</button>
-				<img src="" alt="" id="loading-icon">
+				<img src="" alt="" id="refuse-loading-icon">
+			</p>
+		</div>
+
+		<!-- 撤回用户弹出层 -->
+		<div id="recall-user">
+			<p class="recall-user-wrap">
+				<span class="operate-hint">你确认要撤回<b id="recall-username">xxx</b>用户的使用权限吗？</span>
+			</p>
+			<p class="recall-user-wrap">
+				<label>撤回理由</label>
+				<textarea id="recall-content"></textarea>
+			</p>
+			<p class="recall-user-wrap">
+				<button type="button" id="cancel-recall-user">取消</button>
+				<button type="button" id="confirm-recall-user" disabled="disabled">确认</button>
+				<img src="" alt="" id="recall-loading-icon">
 			</p>
 		</div>
 	</div>
@@ -107,7 +137,7 @@
 						</p>
 						<p>
 							<button id="add-tag-btn" type="button">添加导航</button>
-							<span id="add-tag-hint" type="button">已有此标签</span>
+							<span id="add-tag-hint">已有此标签</span>
 						</p>
 					</div>
 				</div>
@@ -288,39 +318,39 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>老师1</td>
+									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="reload">撤回</button>
+										<button class="recall" type="button">撤回</button>
 									</td>
 								</tr>
 								<tr>
-									<td>老师1</td>
+									<td title="2">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="reload">撤回</button>
+										<button class="recall" type="button">撤回</button>
 									</td>
 								</tr>
 								<tr>
-									<td>老师1</td>
+									<td title="3">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="reload">撤回</button>
+										<button class="recall" type="button">撤回</button>
 									</td>
 								</tr>
 								<tr>
-									<td>老师1</td>
+									<td title="4">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="reload" type="button">撤回</button>
+										<button class="recall" type="button">撤回</button>
 									</td>
 								</tr>
 							</tbody>
-					</table>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -328,6 +358,6 @@
 	</div>
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-8">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-22">
 </body>
 </html>

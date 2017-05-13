@@ -1,6 +1,6 @@
 /*弹出层样式*/
 #floor{
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -15,62 +15,61 @@
 	font-size: 25px;
 	text-align: right;
 }
+/*修改导航弹出层关闭按钮 和 拒绝注册弹出层关闭按钮样式*/
 #modify-nav-close-btn,#refuse-close-btn{
 	cursor: pointer;
 }
 /*修改导航栏内容，拒绝用户注册最外层样式*/
 #modify-nav-info,#refuse-info{
 	width: 600px;
-	height: 350px;
 	background-color: #fff;
-	margin: 15% auto 0 auto;
+	margin: 10% auto 0 auto;
+	padding-bottom: 50px;
 }
+/*修改导航弹出层标题 和 拒绝注册弹出层标题样式*/
 #modify-nav-info h3,#refuse-info h3{
 	text-align: center;
 }
-/*修改信息输入框，拒绝注册信息包裹层样式*/
-.modify-info-wrap,.refuse-info-wrap{
+/*修改导航弹出层输入框样式*/
+.modify-info-wrap{
 	text-align: left;
 	margin-top: 20px;
 	padding-left: 20px;
 }
+/*修改导航弹出层按钮包裹层样式*/
 .modify-btn-wrap{
 	text-align: center;
 	margin-top: 20px;
 	padding-left: 20px;
 }
-.refuse-btn-wrap{
-	text-align: left;
-	margin-top: 20px;
-	padding-left: 145px;
-}
-/*修改信息输入框标题样式*/
-.modify-info-wrap label,.refuse-info-wrap label{
+/*修改导航栏label 元素样式*/
+.modify-info-wrap label{
 	display: inline-block;
 	width: 120px;
 	height: 35px;
 	line-height: 35px;
 	text-align: right;
 }
-/*修改信息输入框样式*/
+/*修改导航栏输入框样式*/
 .modify-info-wrap input{
 	display: inline-block;
-	width: 187px;
+	width: 287px;
 	height: 30px;
 	line-height: 30px;
 	padding-left: 3px;
 	border: 1px solid #000;
 }
-/*系别选择下拉框样式*/
+/*修改导航栏弹出层系别选择下拉框样式*/
 #belong-department,#refuse-content{
 	display: inline-block;
 	height: 30px;
 	font-size: 15px;
 	border: 1px solid #000;
 }
-/*子导航栏内容输入框样式*/
+/*修改导航栏弹出层--子导航栏内容输入框样式*/
 #childTagInfo{
-	width: 187px;
+	width: 287px;
+	height: 120px;
 	vertical-align: middle;
 	padding-left: 3px;
 	border: 1px solid #000;
@@ -85,37 +84,95 @@
 	text-align: center;
 	color: #fff;
 }
-/*拒绝信息提示信息样式*/
-.refuse-hint{
-	padding-left: 75px;
+/*撤回用户弹出层 和 拒绝注册弹出层包裹层样式*/
+.recall-user-wrap,.refuse-info-wrap{
+	width: 90%;
+	margin: 15px auto 0 auto;
 }
-/*拒绝理由输入框样式*/
-#refuse-content{
-	width: 350px;
+/*撤回用户弹出层 和 拒绝注册弹出层 label元素样式*/
+.recall-user-wrap label,.refuse-info-wrap label{
+	display: block;
+}
+/*拒绝理由 和 撤回理由输入框样式*/
+#refuse-content,#recall-content{
+	width: 100%;
 	height: 150px;
-	vertical-align: top;
-	padding-left: 3px;
+	margin-top: 10px;
+	padding-left: 5px;
 	border: 1px solid #000;
+}
+/*发送拒绝理由按钮 和 没有理由直接拒绝按钮综合样式*/
+#send-refuse-info,#no-refuse-reason{
+	display: inline-block;
+	width: 120px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
 }
 /*发送拒绝理由按钮样式*/
 #send-refuse-info{
-	display: inline-block;
-	width: 120px;
-	height: 40px;
-	line-height: 40px;
 	background-color: #999;
-	text-align: center;
-	color: #fff;
 }
 /*没有理由直接拒绝按钮样式*/
 #no-refuse-reason{
-	display: inline-block;
-	width: 120px;
+	background-color: #d20003;
+}
+/*删除导航弹出层样式*/
+#delete-nav{
+	width: 450px;
+	height: 149px;
+	margin: 15% auto 0 auto;
+	padding-top: 1px;
+	background-color: #ffffff; 
+}
+/*撤回用户使用权弹出层提示内容包裹层 和 删除导航弹出层内容包裹层样式*/
+.recall-user-wrap,.delete-nav-wrap{
+	width: 90%;
+	margin: 15px auto 0 auto;
+}
+/*取消撤回按钮、确认撤回按钮、取消删除导航按钮、确认删除导航按钮综合样式*/
+#cancel-recall-user,#confirm-recall-user,#cancel-delete-nav,#confirm-delete-nav{
+	width: 80px;
 	height: 40px;
 	line-height: 40px;
-	background-color: #d20003;
-	text-align: center;
 	color: #fff;
+	border-radius: 10px;
+}
+/*取消撤回按钮和取消删除导航按钮 单独样式*/
+#cancel-recall-user,#cancel-delete-nav{
+	background-color: #44BB44;
+}
+/*确认删除按钮单独样式*/
+#confirm-delete-nav{
+	background-color: #E61A1A;
+}
+/*删除主体名称提示字段样式*/
+#delete-navname,#refuse-username,#recall-username{
+	color: #000;
+}
+/*撤回用户弹出层独立样式*/
+#recall-user{
+	width: 600px;
+	height: 349px;
+	margin: 10% auto 0 auto;
+	padding-top: 1px;
+	background-color: #ffffff; 
+}
+/*确认撤回按钮独立样式*/
+#confirm-recall-user{
+	background-color: #999;
+}
+/*弹出层提示内容包裹层样式*/
+.operate-hint{
+	display: inline-block;
+	width: 100%;
+	height: 35px;
+	line-height: 35px;
+	background-color: #F2DEDF;
+	border: 2px solid #EBCBD0;
+	color: #A9433F;
 }
 .wrapper{
 	width: 100%;
@@ -310,7 +367,7 @@
 	background-color: #FF3300;
 	color: #fff;
 }
-.reload{
+.recall{
 	width: 50px;
 	height: 25px;
 	line-height: 25px;
