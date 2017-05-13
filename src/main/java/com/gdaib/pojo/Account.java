@@ -9,7 +9,7 @@ public class Account extends AccountKey {
 
     private String mail;
 
-    private Integer dpId;
+    private Integer professionId;
 
     private String character;
 
@@ -41,12 +41,12 @@ public class Account extends AccountKey {
         this.mail = mail == null ? null : mail.trim();
     }
 
-    public Integer getDpId() {
-        return dpId;
+    public Integer getProfessionId() {
+        return professionId;
     }
 
-    public void setDpId(Integer dpId) {
-        this.dpId = dpId;
+    public void setProfessionId(Integer professionId) {
+        this.professionId = professionId;
     }
 
     public String getCharacter() {

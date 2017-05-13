@@ -51,9 +51,7 @@ public class LoginRealm extends AuthorizingRealm {
             if(count == null){
                 throw new UnknownAccountException("用户不存在");
             }
-            if(count.getCharacter().equals("reviewing")){
-                throw new UnknownAccountException("正在审核中");
-            }
+
 
 
 
