@@ -69,6 +69,7 @@
 
     <select id="findAccountInfoByCharacter" parameterType="String" resultType="AccountInfo">
         SELECT
+          v_account_info.id,
           v_account_info.username,
           v_account_info.profession,
           v_account_info.department,

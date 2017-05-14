@@ -95,7 +95,7 @@
 				<h3>后台管理页</h3>
 			</div>
 			<div class="logout-btn-wrap">
-				<span id="logout-btn">退出</span>
+				<span id="logout-btn"><a href="${pageContext.request.contextPath}/shiro/logout">退出</a></span>
 			</div>
 		</div>
 		<div class="mainbody">

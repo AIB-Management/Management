@@ -88,8 +88,8 @@ public class test{
     @Autowired
     UsersService usersService;
     @Test
-    public void testService(){
-        boolean b = usersService.judegPassword("znhoznho", "qeqwe");
+    public void testService() throws Exception {
+        List<AccountInfo> b = usersService.findAccountInfoByCharacter("reviewing");
         System.out.println(b);
     }
 }

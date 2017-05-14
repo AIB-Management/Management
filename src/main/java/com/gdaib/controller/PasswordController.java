@@ -74,6 +74,7 @@ public class PasswordController {
             return modelAndView;
         }
 
+        //得到subject，使用getPrincipal得到里面保持的AccountInfo
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
         registerPojo.setUsername(accountInfo.getUsername());

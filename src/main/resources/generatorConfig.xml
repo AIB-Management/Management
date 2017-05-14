@@ -64,21 +64,17 @@
         <table tableName="t_department" domainObjectName="Department"></table>
         <table tableName="t_file_info" domainObjectName="File_Info"></table>
         <table tableName="t_mapping_com" domainObjectName="Mapping_Com"></table>
-        <table tableName="t_mapping_dn" domainObjectName="Mapping_Dn" ></table>
-        <table tableName="t_mapping_dp" domainObjectName="Mapping_Dp"></table>
         <table tableName="t_mapping_om" domainObjectName="Mapping_Om"></table>
         <table tableName="t_mapping_ugom" domainObjectName="Mapping_Ugom"></table>
         <table tableName="t_module" domainObjectName="Module"></table>
-        <table tableName="t_n_first" domainObjectName="First"></table>
         <table tableName="t_navigation" domainObjectName="Navigation"></table>
         <table tableName="t_operate" domainObjectName="Operate"></table>
         <table tableName="t_profession" domainObjectName="Profession"></table>
 
-        <table tableName="v_depart_pro" domainObjectName="V_Depart_Pro"></table>
-        <table tableName="v_file_info" domainObjectName="V_File_Info"></table>
-        <table tableName="v_dn" domainObjectName="V_Dn"></table>
-        <table tableName="v_role_permissions" domainObjectName="V_Role_Permissions"></table>
-        <table tableName="v_teacher_info" domainObjectName="V_Teacher_Info"></table>
+        <table tableName="v_account_info" domainObjectName="AccountInfo"></table>
+        <table tableName="v_char_pro" domainObjectName="CharPro">
+        </table>
+
         <!-- <table schema="" tableName="sys_user"></table>
         <table schema="" tableName="sys_role"></table>
         <table schema="" tableName="sys_permission"></table>

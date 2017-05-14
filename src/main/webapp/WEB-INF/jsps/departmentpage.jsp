@@ -68,7 +68,7 @@
 				<ul>
 					<li><a href="${pageContext.request.contextPath}/content/personalpage.action">个人信息</a></li>
 					<li><a href="${pageContext.request.contextPath}/public/modifyPassword.action">修改密码</a></li>
-					<li id="logout-btn" ><a href="${pageContext.request.contextPath}/shiro/logout">退出</a></li>
+					<li id="logout-btn"><a href="${pageContext.request.contextPath}/shiro/logout">退出</a></li>
 				</ul>
 			</div>
 		</div>

@@ -45,10 +45,6 @@ public class FilterChainDefinitionMapBuilder {
         map.put("/content/departmentpage.action","authc");
         map.put("/shiro/logout","logout");
 
-
-
-
-
         return map;
     }
 

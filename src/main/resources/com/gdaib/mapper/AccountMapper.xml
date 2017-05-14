@@ -8,7 +8,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="mail" property="mail" jdbcType="VARCHAR" />
     <result column="profession_id" property="professionId" jdbcType="INTEGER" />
-    <result column="character" property="character" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
     <result column="validataCode" property="validatacode" jdbcType="VARCHAR" />
     <result column="outDate" property="outdate" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -71,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    `id`, `username`, `password`, `name`, `mail`, `profession_id`, `character`, `validataCode`, `outDate`
+    id, username, password, name, mail, profession_id, role, validataCode, outDate
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.AccountExample" >
     select
@@ -108,11 +108,11 @@
   <insert id="insert" parameterType="com.gdaib.pojo.Account" >
     insert into t_account (id, username, password, 
       name, mail, profession_id, 
-      character, validataCode, outDate
+      role, validataCode, outDate
       )
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{professionId,jdbcType=INTEGER}, 
-      #{character,jdbcType=VARCHAR}, #{validatacode,jdbcType=VARCHAR}, #{outdate,jdbcType=TIMESTAMP}
+      #{role,jdbcType=VARCHAR}, #{validatacode,jdbcType=VARCHAR}, #{outdate,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.gdaib.pojo.Account" >
@@ -136,8 +136,8 @@
       <if test="professionId != null" >
         profession_id,
       </if>
-      <if test="character != null" >
-        character,
+      <if test="role != null" >
+        role,
       </if>
       <if test="validatacode != null" >
         validataCode,
@@ -165,8 +165,8 @@
       <if test="professionId != null" >
         #{professionId,jdbcType=INTEGER},
       </if>
-      <if test="character != null" >
-        #{character,jdbcType=VARCHAR},
+      <if test="role != null" >
+        #{role,jdbcType=VARCHAR},
       </if>
       <if test="validatacode != null" >
         #{validatacode,jdbcType=VARCHAR},
@@ -203,8 +203,8 @@
       <if test="record.professionId != null" >
         profession_id = #{record.professionId,jdbcType=INTEGER},
       </if>
-      <if test="record.character != null" >
-        character = #{record.character,jdbcType=VARCHAR},
+      <if test="record.role != null" >
+        role = #{record.role,jdbcType=VARCHAR},
       </if>
       <if test="record.validatacode != null" >
         validataCode = #{record.validatacode,jdbcType=VARCHAR},
@@ -225,7 +225,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       mail = #{record.mail,jdbcType=VARCHAR},
       profession_id = #{record.professionId,jdbcType=INTEGER},
-      character = #{record.character,jdbcType=VARCHAR},
+      role = #{record.role,jdbcType=VARCHAR},
       validataCode = #{record.validatacode,jdbcType=VARCHAR},
       outDate = #{record.outdate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -247,8 +247,8 @@
       <if test="professionId != null" >
         profession_id = #{professionId,jdbcType=INTEGER},
       </if>
-      <if test="character != null" >
-        character = #{character,jdbcType=VARCHAR},
+      <if test="role != null" >
+        role = #{role,jdbcType=VARCHAR},
       </if>
       <if test="validatacode != null" >
         validataCode = #{validatacode,jdbcType=VARCHAR},
@@ -266,7 +266,7 @@
       name = #{name,jdbcType=VARCHAR},
       mail = #{mail,jdbcType=VARCHAR},
       profession_id = #{professionId,jdbcType=INTEGER},
-      character = #{character,jdbcType=VARCHAR},
+      role = #{role,jdbcType=VARCHAR},
       validataCode = #{validatacode,jdbcType=VARCHAR},
       outDate = #{outdate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

@@ -1,12 +1,10 @@
 package com.gdaib.service.impl;
 
 
+import com.gdaib.mapper.AccountInfoMapper;
 import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.UsersMapper;
-import com.gdaib.pojo.Account;
-import com.gdaib.pojo.AccountExample;
-import com.gdaib.pojo.AccountInfo;
-import com.gdaib.pojo.RegisterPojo;
+import com.gdaib.pojo.*;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
@@ -29,6 +27,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     public AccountMapper accountMapper;
+
+    @Autowired
+    private AccountInfoMapper accountInfoMapper;
 
     /**
      * 根据用户名找到用户
@@ -323,10 +324,15 @@ public class UsersServiceImpl implements UsersService {
 
         return i == 0 ? false : true;
     }
+
+    //得到所有未审核的用户
     @Override
     public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception {
+        AccountInfoExample accountInfoExample = new AccountInfoExample();
+        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
+        criteria.andRoleEqualTo(character);
 
-        List<AccountInfo> accountInfos = usersMapper.findAccountInfoByCharacter(character);
+        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
         System.out.print(accountInfos.toString());
 
         return accountInfos;

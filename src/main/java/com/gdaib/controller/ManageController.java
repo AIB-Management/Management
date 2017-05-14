@@ -1,5 +1,6 @@
 package com.gdaib.controller;
 
+import com.gdaib.mapper.AccountInfoMapper;
 import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.Msg;
 import com.gdaib.service.DepartmentService;
@@ -23,6 +24,8 @@ import java.util.List;
 public class ManageController {
     private static final  String ROOTPAGE="rootpage.jsp";
 
+
+
     @Autowired
     private UsersService usersService;
 
@@ -45,6 +48,7 @@ public class ManageController {
         String character = 	"reviewing";
         Msg msg = new Msg();
         List<AccountInfo> accountInfos = usersService.findAccountInfoByCharacter(character);
+        System.out.println(accountInfos);
         msg.add("accountInfos",accountInfos);
         return msg;
     }

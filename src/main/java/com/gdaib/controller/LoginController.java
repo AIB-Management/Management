@@ -1,6 +1,7 @@
 package com.gdaib.controller;
 
 
+import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.SecurityUtils;
@@ -83,6 +84,12 @@ public class LoginController {
                 modelAndView.setViewName("login.jsp");
                 return modelAndView;
             }
+        }
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
+
+        if (accountInfo.getRole().equals("admin")){
+            modelAndView.setViewName("redirect:/admin/rootPage.action");
+            return modelAndView;
         }
 
         modelAndView.setViewName("redirect:/content/departmentpage.action");
