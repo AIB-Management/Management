@@ -54,5 +54,13 @@ public interface UsersService {
     //查找某类角色的所有用户
     public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception;
 
+    //得到所有未审核的用户
+    public int findAccountInfoCountByCharacter(String departmentId,String character) throws Exception;
+
+    //修改用户状态
+    public void updateAccountByCharacter(int id,String character) throws Exception;
+
+    //删除用户
+    public void deleteAccountById(int id) throws Exception;
 
 }

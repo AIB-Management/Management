@@ -5,6 +5,9 @@ import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.UsersService;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +31,7 @@ import sun.applet.Main;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,16 +51,17 @@ public class test{
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private SqlSession sqlSession;
     @Test
     public void test1(){
-        Account account = new Account();
-        account.setPassword("123123");
-
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andPasswordEqualTo("4a2a2fa3f04dd5f37f2684e37ddf5da3");
-        criteria.andUsernameEqualTo("lalalala");
-        accountMapper.updateByExampleSelective(account,accountExample);
+        criteria.andIdEqualTo(21);
+
+        accountMapper.deleteByExample(accountExample);
+
     }
 
     //传入Springmvc的ioc

@@ -80,4 +80,18 @@ public class AccountInfo {
     public void setRole(String role) {
         this.role = role == null ? null : role.trim();
     }
+
+    @Override
+    public String toString() {
+        return "AccountInfo{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", mail='" + mail + '\'' +
+                ", profession='" + profession + '\'' +
+                ", department='" + department + '\'' +
+                ", departmentId=" + departmentId +
+                ", name='" + name + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

@@ -333,9 +333,52 @@ public class UsersServiceImpl implements UsersService {
         criteria.andRoleEqualTo(character);
 
         List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
-        System.out.print(accountInfos.toString());
+        System.out.println(accountInfos);
 
         return accountInfos;
-
     }
+
+    //得到所有某角色用户的数量,可复用的，如果departmentId传入null查询所有，如果传
+    //入系id就根据系id查询
+    @Override
+    public int findAccountInfoCountByCharacter(String departmentId,String character) throws Exception {
+        AccountInfoExample accountInfoExample = new AccountInfoExample();
+        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
+        criteria.andRoleEqualTo(character);
+
+        if(departmentId != null){
+            criteria.andDepartmentIdEqualTo(Integer.parseInt(departmentId));
+        }
+        int count = accountInfoMapper.countByExample(accountInfoExample);
+        System.out.println(count);
+
+        return count;
+    }
+
+
+    //修改用户状态
+    @Override
+    public void updateAccountByCharacter(int id,String character) throws Exception{
+        Account account = new Account();
+        account.setRole(character);
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andIdEqualTo(id);
+
+        accountMapper.updateByExampleSelective(account,accountExample);
+    }
+
+    //删除用户
+    public void deleteAccountById(int id) throws Exception{
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andIdEqualTo(id);
+
+        accountMapper.deleteByExample(accountExample);
+    }
+
+
+
+
+
 }
