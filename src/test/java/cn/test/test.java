@@ -2,9 +2,9 @@ package cn.test;
 
 
 import com.gdaib.mapper.AccountMapper;
-import com.gdaib.pojo.Account;
-import com.gdaib.pojo.AccountExample;
-import com.gdaib.pojo.Department;
+import com.gdaib.mapper.NavigationMapper;
+import com.gdaib.pojo.*;
+import com.gdaib.service.UsersService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,10 +20,13 @@ import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import sun.applet.Main;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,18 +43,20 @@ import java.util.regex.Pattern;
 public class test{
 
     @Autowired
+    private NavigationMapper navigationMapper;
+
+    @Autowired
     private AccountMapper accountMapper;
     @Test
     public void test1(){
-
         Account account = new Account();
-        account.setName("znhoooo");
+        account.setPassword("123123");
+
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andUsernameEqualTo("znhoznho");
-        List<Account> i = accountMapper.selectByExample(accountExample);
-        System.out.println(i);
-
+        criteria.andPasswordEqualTo("4a2a2fa3f04dd5f37f2684e37ddf5da3");
+        criteria.andUsernameEqualTo("lalalala");
+        accountMapper.updateByExampleSelective(account,accountExample);
     }
 
     //传入Springmvc的ioc
@@ -71,9 +76,20 @@ public class test{
     @Test
     public void testCMvc() throws Exception {
         //perform:模拟发送请求,得到返回值
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/public/getProfessionJson").param("departmentID", "300")).andReturn();
 
 
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/public/domodifyPassword.action").param("pwd","123123").param("confirmpwd","123123").param("oldpwd","123123")).andReturn();
+        Object error = mvcResult.getRequest().getAttribute("error");
+        System.out.println(error);
 
+
+    }
+
+    @Autowired
+    UsersService usersService;
+    @Test
+    public void testService(){
+        boolean b = usersService.judegPassword("znhoznho", "qeqwe");
+        System.out.println(b);
     }
 }

@@ -68,7 +68,14 @@ public class LoginRealm extends AuthorizingRealm {
             //salt:盐值，MD5加密会使用它
             //realmName:当前realm对象的name，调用父类的getName()即可
 
-            SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(count,count.getPassword(),salt,getName());
+        AccountInfo accountInfo = null;
+        try {
+            accountInfo = usersService.findAccountInfoByUsername(count.getUsername());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(accountInfo);
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(accountInfo,count.getPassword(),salt,getName());
             return info;
 
     }

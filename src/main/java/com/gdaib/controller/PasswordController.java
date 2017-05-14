@@ -1,10 +1,16 @@
 package com.gdaib.controller;
 
+import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.EmailUrlPojo;
 import com.gdaib.pojo.MailPojo;
 
+import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.MailService;
 import com.gdaib.service.UsersService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -39,9 +46,60 @@ public class PasswordController {
 
     private static final String TAG = "Tag.jsp";
 
+    private static final String MODIFYPDW = "modifypwd.jsp";
 
     /**
-     *      转发到找回密码页面
+     * 转发到修改密码页面
+     */
+    @RequestMapping(value = "/public/modifyPassword")
+    public ModelAndView modifyPassword() {
+        ModelAndView modelAndView = new ModelAndView(MODIFYPDW);
+
+        return modelAndView;
+    }
+
+    /**
+     * 修改密码
+     */
+    @RequestMapping(value = "/public/domodifyPassword")
+    public ModelAndView doModifyPassword(RegisterPojo registerPojo) throws Exception {
+        System.out.println(registerPojo);
+        ModelAndView modelAndView = new ModelAndView();
+        //验证信息是否正确
+        try {
+            usersService.judgeModifyInfo(registerPojo);
+        } catch (Exception e) {
+            modelAndView.addObject("error",e.getMessage());
+            modelAndView.setViewName(MODIFYPDW);
+            return modelAndView;
+        }
+
+        Subject subject = SecurityUtils.getSubject();
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
+        registerPojo.setUsername(accountInfo.getUsername());
+        System.out.println(accountInfo);
+
+        //根据用户名找到密码，验证是否正确
+        boolean bool = usersService.judegPassword(accountInfo.getUsername(), registerPojo.getOldpwd());
+        if (!bool){
+            modelAndView.addObject("error","密码错误，请输入正确的密码");
+            modelAndView.setViewName(MODIFYPDW);
+            return modelAndView;
+        }
+
+
+
+        //修改密码
+        usersService.updatePassword(registerPojo);
+        modelAndView.addObject("success","修改成功，请重新登陆");
+        modelAndView.setViewName(TAG);
+        //退出登录
+        subject.logout();
+        return  modelAndView;
+    }
+
+    /**
+     * 转发到找回密码页面
      */
     @RequestMapping(value = "/public/findPassword")
     public ModelAndView findPassword() {
@@ -51,9 +109,8 @@ public class PasswordController {
     }
 
 
-
     /**
-     *      找回密码
+     * 找回密码
      */
     @RequestMapping(value = "/public/doFindPassword")
     public void doFindPassword(
@@ -64,39 +121,38 @@ public class PasswordController {
 
 
         //验证用户名和帐号是否存在
-            boolean bool = usersService.findEmailAndUsernameIsExists( username,mail);
+        boolean bool = usersService.findEmailAndUsernameIsExists(username, mail);
 
-            //如果返回false，表示用户名或邮箱错误
-            if(!bool){
-                request.setAttribute("error","账户或者邮箱错误");
-                request.getRequestDispatcher("/WEB-INF/jsps/"+FINDPASSWORD).forward(request,response);
-                return;
-            }
-
+        //如果返回false，表示用户名或邮箱错误
+        if (!bool) {
+            request.setAttribute("error", "账户或者邮箱错误");
+            request.getRequestDispatcher("/WEB-INF/jsps/" + FINDPASSWORD).forward(request, response);
+            return;
+        }
 
 
         //把传过来的信息保存到UrlPojo中
-            EmailUrlPojo urlPojo = new EmailUrlPojo();
-            urlPojo.setScheme(request.getScheme());
-            urlPojo.setServerName(request.getServerName());
-            urlPojo.setPort(request.getServerPort() + "");
-            urlPojo.setContextPath(request.getContextPath());
-            urlPojo.setAction(MODIFYPWD_ACTION);
+        EmailUrlPojo urlPojo = new EmailUrlPojo();
+        urlPojo.setScheme(request.getScheme());
+        urlPojo.setServerName(request.getServerName());
+        urlPojo.setPort(request.getServerPort() + "");
+        urlPojo.setContextPath(request.getContextPath());
+        urlPojo.setAction(MODIFYPWD_ACTION);
 
-            //增加邮箱用户名
-            urlPojo.setMail(mail.trim());
-            urlPojo.setUsername(username.trim());
+        //增加邮箱用户名
+        urlPojo.setMail(mail.trim());
+        urlPojo.setUsername(username.trim());
 
-            //保存到Attr中转发到sendMail.action
-            request.setAttribute("UrlPojo", urlPojo);
-            request.getRequestDispatcher("/public/sendMail.action").forward(request, response);
+        //保存到Attr中转发到sendMail.action
+        request.setAttribute("UrlPojo", urlPojo);
+        request.getRequestDispatcher("/public/sendMail.action").forward(request, response);
 
 
     }
 
 
     /**
-     *      发送找回密码的短信
+     * 发送找回密码的短信
      */
     @RequestMapping(value = "/public/sendMail")
     public ModelAndView sendEmail(HttpServletRequest request) throws Exception {
@@ -115,77 +171,74 @@ public class PasswordController {
         mailPojo.setToAddresses(urlPojo.getMail());
         //发送的内容
         String content = urlPojo.toString() + "&Code=" + mailService.insertTimeAndUUID(urlPojo.getUsername());
-        System.out.println("cont>>>>"+content);
+        System.out.println("cont>>>>" + content);
         mailPojo.setContent(
-                "<html><head></head><body>"+
-                        "<a href=\""+content+"\">点击链接进入系统密码找回页面,此链接30分钟内有效</a>"+
+                "<html><head></head><body>" +
+                        "<a href=\"" + content + "\">点击链接进入系统密码找回页面,此链接30分钟内有效</a>" +
                         "</body></html>");
 
 
         //发送邮件
         mailService.sendAttachMail(mailPojo);
-        modelAndView.addObject("success","发送成功");
+        modelAndView.addObject("success", "发送成功");
 
         return modelAndView;
     }
 
 
-
-
-
     /**
-     *     转发到修改密码页，并验证超时时间和用户名
+     * 转发到修改密码页，并验证超时时间和用户名
      */
     @RequestMapping(value = "/public/modifypwdHtml")
-    public ModelAndView modifypwdHtml(String username,String Code) throws Exception {
+    public ModelAndView modifypwdHtml(String username, String Code) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
 
         //校验是否是空的字符串
-        if (Code.equals("") || username.equals("")){
+        if (Code.equals("") || username.equals("")) {
             //返回错误信息
-            modelAndView.addObject("error","链接不完整,请重新申请");
+            modelAndView.addObject("error", "链接不完整,请重新申请");
             modelAndView.setViewName("Tag.jsp");
             return modelAndView;
         }
 
         //校验是否超时
-        if (!(mailService.checkIsOutTime(username))){
+        if (!(mailService.checkIsOutTime(username))) {
 
             //返回错误信息
-            modelAndView.addObject("error","超时,请重新申请");
+            modelAndView.addObject("error", "超时,请重新申请");
             modelAndView.setViewName("Tag.jsp");
             return modelAndView;
         }
         modelAndView.setViewName(MODIFYPWD);
-        modelAndView.addObject("username",username);
-        modelAndView.addObject("Code",Code);
+        modelAndView.addObject("username", username);
+        modelAndView.addObject("Code", Code);
         return modelAndView;
     }
 
     /**
-     *     转发到修改密码页，并验证超时时间和用户名
+     * 转发到修改密码页，并验证超时时间和用户名
      */
     @RequestMapping(value = "/public/modifypwd")
-    public ModelAndView modifypwd(String username,String Code,String pwd,String confirmpwd) throws Exception {
+    public ModelAndView modifypwd(String username, String Code, String pwd, String confirmpwd) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         //校验密码是否输入一致
-        if(!mailService.checkpwdIsTrue(pwd,confirmpwd)){
-            modelAndView.addObject("error","密码输入不一致");
+        if (!mailService.checkpwdIsTrue(pwd, confirmpwd)) {
+            modelAndView.addObject("error", "密码输入不一致");
             modelAndView.setViewName(MODIFYPWD);
             return modelAndView;
         }
 
         //校验数据是否为空,加密串是否正确
-        String error = mailService.checkValueIsTrue(username,Code);
-        if(error != null){
-            modelAndView.addObject("error",error);
+        String error = mailService.checkValueIsTrue(username, Code);
+        if (error != null) {
+            modelAndView.addObject("error", error);
             modelAndView.setViewName(TAG);
             return modelAndView;
         }
 
         //修改密码
-        mailService.ModifyPassword(username,pwd);
-        modelAndView.addObject("success","修改成功");
+        mailService.ModifyPassword(username, pwd);
+        modelAndView.addObject("success", "修改成功");
         modelAndView.setViewName(TAG);
 
 

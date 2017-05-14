@@ -21,6 +21,17 @@ public class RegisterPojo {
     //系别ID
     private Integer departmentId;
 
+    //旧密码
+    private String oldpwd;
+
+    public String getOldpwd() {
+        return oldpwd;
+    }
+
+    public void setOldpwd(String oldpwd) {
+        this.oldpwd = oldpwd;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -103,8 +114,8 @@ public class RegisterPojo {
                 ", email='" + email + '\'' +
                 ", vtCode='" + vtCode + '\'' +
                 ", departmentId=" + departmentId +
+                ", oldpwd='" + oldpwd + '\'' +
                 '}';
     }
-
 }
 

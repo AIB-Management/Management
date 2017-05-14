@@ -50,4 +50,15 @@ public class Navigation {
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Navigation{" +
+                "id=" + id +
+                ", departmentId=" + departmentId +
+                ", parent=" + parent +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

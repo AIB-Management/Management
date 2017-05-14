@@ -112,7 +112,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <!--没有通过认证就会被重定向到这个页面-->
-        <property name="loginUrl" value="/public/register.action"/>
+        <property name="loginUrl" value="/"/>
         <!--登录成功页面-->
         <property name="successUrl" value="/jsps/list.jsp"/>
         <!--登录失败页面-->

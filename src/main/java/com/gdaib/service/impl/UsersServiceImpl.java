@@ -1,8 +1,10 @@
 package com.gdaib.service.impl;
 
 
+import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.Account;
+import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
@@ -22,6 +24,9 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     public UsersMapper usersMapper;
 
+    @Autowired
+    public AccountMapper accountMapper;
+
     /**
      * 根据用户名找到用户
      */
@@ -33,8 +38,8 @@ public class UsersServiceImpl implements UsersService {
     }
 
     /**
-     *      校验用户注册信息
-     *      开始
+     * 校验用户注册信息
+     * 开始
      */
     @Override
     public void judgeRegisterInfo(HttpSession session, RegisterPojo registerPojo) throws Exception {
@@ -48,28 +53,63 @@ public class UsersServiceImpl implements UsersService {
 
 
     }
+
     /**
-     *      校验用户登录信息
-     *
+     * 校验用户登录信息
      */
-    public void judgeLoginInfo(HttpSession session, RegisterPojo registerPojo) throws Exception{
+    @Override
+    public void judgeLoginInfo(HttpSession session, RegisterPojo registerPojo) throws Exception {
         judgeLogin(registerPojo);
-        judgeVtCode(session,registerPojo.getVtCode());
+//        judgeVtCode(session,registerPojo.getVtCode());
         judgeAccount(registerPojo.getUsername());
-        judgePwd(registerPojo.getPwd(),registerPojo.getPwd());
+        judgePwd(registerPojo.getPwd(), registerPojo.getPwd());
     }
 
-    private void judgeLogin(RegisterPojo registerPojo) throws Exception{
-        if(
-                        registerPojo.getUsername().trim().equals("")||
-                        registerPojo.getPwd().trim().equals("")||
+    /**
+     * 校验修改密码信息
+     */
+    @Override
+    public void judgeModifyInfo(RegisterPojo registerPojo) throws Exception {
+        //登陆信息是否为空
+        judgeModify(registerPojo);
+        //验证密码长度和格式是否一致
+        judgePwd(registerPojo.getPwd(), registerPojo.getConfirmpwd());
+        judgePwd(registerPojo.getOldpwd(), registerPojo.getOldpwd());
+
+    }
+
+    //修改密码信息是否为空
+    private void judgeModify(RegisterPojo registerPojo) throws Exception {
+
+        if (
+
+                registerPojo.getPwd() == null ||
+                registerPojo.getConfirmpwd() == null ||
+                registerPojo.getOldpwd() == null ||
+                registerPojo.getPwd().trim().equals("") ||
+                registerPojo.getConfirmpwd().trim().equals("") ||
+                registerPojo.getOldpwd().trim().equals("")
+                ) {
+
+            throw new Exception("请确保信息填写完整后重试!");
+
+        }
+
+    }
+
+    //登陆信息是否为空
+    private void judgeLogin(RegisterPojo registerPojo) throws Exception {
+        if (
+                registerPojo.getUsername().trim().equals("") ||
+                        registerPojo.getPwd().trim().equals("") ||
                         registerPojo.getVtCode().trim().equals("")
-                ){
+                ) {
             throw new Exception("请确保信息填写完整后重试!");
 
         }
     }
 
+    //注册信息是否为空
     private void judgeRegister(RegisterPojo registerPojo) throws Exception {
         if (registerPojo == null ||
                 registerPojo.getName() == null ||
@@ -94,6 +134,7 @@ public class UsersServiceImpl implements UsersService {
         }
     }
 
+    //验证码是否正确
     private void judgeVtCode(HttpSession session, String vtCode) throws Exception {
         String kaptchaExpected = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 
@@ -105,6 +146,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
+    //验证用户名
     private void judgeAccount(String username) throws Exception {
         String check = ".* .*";
         if (Pattern.matches(check, username)) {
@@ -125,6 +167,7 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
+    //验证密码长度和是否一致
     private void judgePwd(String pwd, String confirmpwd) throws Exception {
 
         String check = ".* .*";
@@ -144,6 +187,7 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
+    //验证邮箱是否正确
     private void judgeMail(String mail) throws Exception {
         String emailCheck = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
         if (!Pattern.matches(emailCheck, mail)) {
@@ -224,8 +268,55 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
+    //根据用户名找到用户信息
     @Override
     public AccountInfo findAccountInfoByUsername(String username) throws Exception {
         return usersMapper.findAccountInfoByUsername(username);
+    }
+
+    //根据原密码修改密码
+    @Override
+    public void updatePassword(RegisterPojo registerPojo) throws Exception {
+        String username = registerPojo.getUsername();
+        String oldpassword = registerPojo.getOldpwd();
+        String password = registerPojo.getPwd();
+
+        //加密新密码和原密码
+        Object salt = ByteSource.Util.bytes(username);
+        Object md5 = new SimpleHash("MD5",password,salt,1024);
+        password = md5.toString();
+
+        md5 = new SimpleHash("MD5",oldpassword,salt,1024);
+        oldpassword = md5.toString();
+
+        //把新密码放入Account中
+        Account account = new Account();
+        account.setPassword(password);
+
+
+        //加入条件
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andPasswordEqualTo(oldpassword);
+        criteria.andUsernameEqualTo(username);
+
+        accountMapper.updateByExampleSelective(account, accountExample);
+    }
+
+    //根据用户名密码验证密码是否正确
+    public boolean judegPassword(String username,String password){
+        //对密码进行加密
+        Object salt = ByteSource.Util.bytes(username);
+        Object md5 = new SimpleHash("MD5",password,salt,1024);
+        password = md5.toString();
+
+        //加入条件，密码和账户要准确
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        criteria.andPasswordEqualTo(password);
+        int i = accountMapper.countByExample(accountExample);
+
+        return i==0 ? false:true;
     }
 }

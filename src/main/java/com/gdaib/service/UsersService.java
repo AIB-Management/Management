@@ -37,4 +37,14 @@ public interface UsersService {
 
     //查找账号信息
     public AccountInfo findAccountInfoByUsername(String username) throws Exception;
+
+    //修改密码
+    public void updatePassword(RegisterPojo registerPojo)throws Exception;
+
+    // 校验修改密码信息
+    public void judgeModifyInfo(RegisterPojo registerPojo) throws Exception;
+
+    //根据用户名密码验证密码是否正确
+    public boolean judegPassword(String username,String password);
+
 }

@@ -49,11 +49,13 @@ public class LoginController {
         try {
             usersService.judgeLoginInfo(session,registerPojo);
         }catch (Exception e){
+
             modelAndView.addObject("error",e.getMessage());
             modelAndView.addObject("username",registerPojo.getUsername());
-            modelAndView.setViewName("login.jsp");
+            modelAndView.setViewName(LOGIN);
             return modelAndView;
         }
+
 
         //1.得到Subject
         Subject subject = SecurityUtils.getSubject();
@@ -82,11 +84,9 @@ public class LoginController {
                 return modelAndView;
             }
         }
-        System.out.println("登陆成功");
 
-//        modelAndView.setViewName(ContentController.DEPARTMENTPAGE);
-        session.setAttribute("AccountInfo",usersService.findAccountInfoByUsername(registerPojo.getUsername()));
-        request.getRequestDispatcher("/content/departmentpage.action").forward(request, response);
+        modelAndView.setViewName("redirect:/content/departmentpage.action");
         return modelAndView;
+
     }
 }

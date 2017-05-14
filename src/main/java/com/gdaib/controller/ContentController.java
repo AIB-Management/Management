@@ -23,6 +23,7 @@ public class ContentController {
     public static final String DEPARTMENTPAGE = "departmentpage.jsp";
     public static final String PERSONALPAGE="personalpage.jsp";
 
+
     @RequestMapping("/content/departmentpage")
     public ModelAndView departmentpage() throws Exception{
         ModelAndView modelAndView = new ModelAndView();

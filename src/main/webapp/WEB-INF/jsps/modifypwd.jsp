@@ -9,29 +9,33 @@
 </head>
 <body>
 <div class="form-wrap">
-    <form action=""
-    <div class="form-content">
-        <h3 class="form-title">修改密码</h3>
-        <p class="input-wrap">
-            <label>旧密码</label>
-            <input type="password" class="reg-input-style" id="old-pwd">
-            <span class="hint">输入正确</span>
-        </p>
-        <p class="input-wrap">
-            <label>密码</label>
-            <input type="password" class="reg-input-style" id="new-pwd" name="pwd">
-            <span class="hint"></span>
-        </p>
-        <p class="input-wrap">
-            <label>确认密码</label>
-            <input type="password" class="reg-input-style"  id="confirmpwd" name="confirmpwd">
-            <span class="hint"></span>
-        </p>
-        <p class="input-wrap">
-            <button id="modify">确认修改</button>
-            <a href="#" class="link-homepage">返回主页</a>
-        </p>
-    </div>
+    <div>${error}</div>
+    <form action="${pageContext.request.contextPath}/public/domodifyPassword.action" method="post">
+
+        <div class="form-content">
+            <h3 class="form-title">修改密码</h3>
+            <p class="input-wrap">
+                <label>旧密码</label>
+                <input type="password" class="reg-input-style" id="old-pwd" name="oldpwd">
+                <span class="hint">输入正确</span>
+            </p>
+            <p class="input-wrap">
+                <label>密码</label>
+                <input type="password" class="reg-input-style" id="new-pwd" name="pwd">
+                <span class="hint"></span>
+            </p>
+            <p class="input-wrap">
+                <label>确认密码</label>
+                <input type="password" class="reg-input-style" id="confirmpwd" name="confirmpwd">
+                <span class="hint"></span>
+            </p>
+            <p class="input-wrap">
+                <button id="modify">确认修改</button>
+                <a href="#" class="link-homepage">返回主页</a>
+            </p>
+        </div>
+
+    </form>
 </div>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">

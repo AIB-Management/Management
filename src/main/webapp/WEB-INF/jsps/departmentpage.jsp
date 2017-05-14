@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +50,7 @@
 	<div class="wrapper">
 		<div class="header">
 			<div class="title-wrap">
-				<h3>${AccountInfo.department}主页</h3>
+				<h3><shiro:principal property="department"/>主页</h3>
 			</div>
 			<div class="header-tag">
 				<a href="#" id="manage-msg">管理信息</a>
@@ -62,13 +62,13 @@
 				<span>|</span>
 			</div>
 			<div class="header-tag" id="user-name-wrap">
-				<span id="user-name">${AccountInfo.name}</span>
+				<span id="user-name"><shiro:principal property="name"/></span>
 			</div>
 			<div id="user-operate">
 				<ul>
 					<li><a href="${pageContext.request.contextPath}/content/personalpage.action">个人信息</a></li>
-					<li><a href="modifypwd.jsp">修改密码</a></li>
-					<li id="logout-btn">退出</li>
+					<li><a href="${pageContext.request.contextPath}/public/modifyPassword.action">修改密码</a></li>
+					<li id="logout-btn" ><a href="${pageContext.request.contextPath}/shiro/logout">退出</a></li>
 				</ul>
 			</div>
 		</div>
