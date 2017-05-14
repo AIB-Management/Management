@@ -13,6 +13,9 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -121,9 +124,9 @@ public class UsersServiceImpl implements UsersService {
                 registerPojo.getConfirmpwd() == null ||
                 registerPojo.getConfirmpwd().trim().equals("") ||
                 registerPojo.getDepartmentId() == null ||
-                registerPojo.getDepartmentId().equals("") ||
+                registerPojo.getDepartmentId().toString().equals("") ||
                 registerPojo.getSpecialId() == null ||
-                registerPojo.getSpecialId().equals("") ||
+                registerPojo.getSpecialId().toString().equals("") ||
                 registerPojo.getEmail() == null ||
                 registerPojo.getEmail().trim().equals("") ||
                 registerPojo.getVtCode() == null ||
@@ -138,7 +141,7 @@ public class UsersServiceImpl implements UsersService {
     private void judgeVtCode(HttpSession session, String vtCode) throws Exception {
         String kaptchaExpected = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 
-        if (vtCode.equals("") || vtCode == null) {
+        if (vtCode.trim().equals("") || vtCode == null) {
             throw new Exception("验证码不能为空！");
         } else if (!(vtCode.equalsIgnoreCase(kaptchaExpected))) {
             throw new Exception("验证码错误！");
@@ -274,6 +277,7 @@ public class UsersServiceImpl implements UsersService {
         return usersMapper.findAccountInfoByUsername(username);
     }
 
+
     //根据原密码修改密码
     @Override
     public void updatePassword(RegisterPojo registerPojo) throws Exception {
@@ -304,10 +308,10 @@ public class UsersServiceImpl implements UsersService {
     }
 
     //根据用户名密码验证密码是否正确
-    public boolean judegPassword(String username,String password){
+    public boolean judegPassword(String username,String password) {
         //对密码进行加密
         Object salt = ByteSource.Util.bytes(username);
-        Object md5 = new SimpleHash("MD5",password,salt,1024);
+        Object md5 = new SimpleHash("MD5", password, salt, 1024);
         password = md5.toString();
 
         //加入条件，密码和账户要准确
@@ -317,6 +321,15 @@ public class UsersServiceImpl implements UsersService {
         criteria.andPasswordEqualTo(password);
         int i = accountMapper.countByExample(accountExample);
 
-        return i==0 ? false:true;
+        return i == 0 ? false : true;
+    }
+    @Override
+    public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception {
+
+        List<AccountInfo> accountInfos = usersMapper.findAccountInfoByCharacter(character);
+        System.out.print(accountInfos.toString());
+
+        return accountInfos;
+
     }
 }

@@ -1,7 +1,9 @@
 package com.gdaib.controller;
 
 import com.gdaib.pojo.AccountInfo;
+import com.gdaib.pojo.Msg;
 import com.gdaib.service.DepartmentService;
+import com.gdaib.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,8 @@ import java.util.List;
 public class ManageController {
     private static final  String ROOTPAGE="rootpage.jsp";
 
+    @Autowired
+    private UsersService usersService;
 
     @Autowired
     private DepartmentService departmentService;
@@ -34,12 +38,15 @@ public class ManageController {
     }
 
 
-    @RequestMapping("/admin/findReviewUser")
+    //获取待审核用户
+    @RequestMapping("/admin/ajaxFindReviewUser")
     @ResponseBody
-    public List<AccountInfo> findReviewUser() throws Exception{
-        List<AccountInfo> accountInfos = new ArrayList<AccountInfo>();
-
-        return accountInfos;
+    public  Msg findReviewUser() throws Exception{
+        String character = 	"reviewing";
+        Msg msg = new Msg();
+        List<AccountInfo> accountInfos = usersService.findAccountInfoByCharacter(character);
+        msg.add("accountInfos",accountInfos);
+        return msg;
     }
 
 

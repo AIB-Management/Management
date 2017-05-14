@@ -24,6 +24,9 @@ public class ContentController {
     public static final String PERSONALPAGE="personalpage.jsp";
 
 
+
+
+    //获取页面内容的接口
     @RequestMapping("/content/departmentpage")
     public ModelAndView departmentpage() throws Exception{
         ModelAndView modelAndView = new ModelAndView();
@@ -31,6 +34,7 @@ public class ContentController {
         return  modelAndView;
     }
 
+    //获取个人信息的接口
     @RequestMapping("/content/personalpage")
     public ModelAndView personalpage() throws Exception{
         ModelAndView modelAndView =new ModelAndView();

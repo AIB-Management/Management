@@ -6,6 +6,8 @@ import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+
 
 /**
  * Created by znho on 2017/4/22.
@@ -38,6 +40,7 @@ public interface UsersService {
     //查找账号信息
     public AccountInfo findAccountInfoByUsername(String username) throws Exception;
 
+
     //修改密码
     public void updatePassword(RegisterPojo registerPojo)throws Exception;
 
@@ -46,5 +49,10 @@ public interface UsersService {
 
     //根据用户名密码验证密码是否正确
     public boolean judegPassword(String username,String password);
+
+
+    //查找某类角色的所有用户
+    public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception;
+
 
 }

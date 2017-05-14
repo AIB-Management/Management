@@ -59,11 +59,23 @@
     </select>
 
     <!--修改密码-->
-    <update id="updatePassword" parameterType="Account" >
+    <update id="updatePassword" parameterType="Account">
         UPDATE `t_account` SET password = #{password}WHERE username = #{username}
     </update>
 
     <select id="findAccountInfoByUsername" parameterType="String" resultType="AccountInfo">
         SELECT * FROM `v_account_info` WHERE username = #{username}
+    </select>
+
+    <select id="findAccountInfoByCharacter" parameterType="String" resultType="AccountInfo">
+        SELECT
+          v_account_info.username,
+          v_account_info.profession,
+          v_account_info.department,
+          v_account_info.`character`
+        FROM
+          v_account_info
+        WHERE
+          v_account_info.`character` = #{character}
     </select>
 </mapper>
