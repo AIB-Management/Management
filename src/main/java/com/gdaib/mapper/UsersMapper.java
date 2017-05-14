@@ -41,7 +41,9 @@ public interface UsersMapper {
     //修改密码
     public void updatePassword(Account account)throws Exception;
 
-
     //查找账号信息
     public AccountInfo findAccountInfoByUsername(String username) throws Exception;
+
+    //查找某类角色用户
+    public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception;
 }

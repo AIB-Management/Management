@@ -6,6 +6,8 @@ import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+
 
 /**
  * Created by znho on 2017/4/22.
@@ -37,4 +39,9 @@ public interface UsersService {
 
     //查找账号信息
     public AccountInfo findAccountInfoByUsername(String username) throws Exception;
+
+
+    //查找某类角色的所有用户
+    public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception;
+
 }

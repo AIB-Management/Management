@@ -11,6 +11,9 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -81,9 +84,9 @@ public class UsersServiceImpl implements UsersService {
                 registerPojo.getConfirmpwd() == null ||
                 registerPojo.getConfirmpwd().trim().equals("") ||
                 registerPojo.getDepartmentId() == null ||
-                registerPojo.getDepartmentId().equals("") ||
+                registerPojo.getDepartmentId().toString().equals("") ||
                 registerPojo.getSpecialId() == null ||
-                registerPojo.getSpecialId().equals("") ||
+                registerPojo.getSpecialId().toString().equals("") ||
                 registerPojo.getEmail() == null ||
                 registerPojo.getEmail().trim().equals("") ||
                 registerPojo.getVtCode() == null ||
@@ -97,7 +100,7 @@ public class UsersServiceImpl implements UsersService {
     private void judgeVtCode(HttpSession session, String vtCode) throws Exception {
         String kaptchaExpected = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 
-        if (vtCode.equals("") || vtCode == null) {
+        if (vtCode.trim().equals("") || vtCode == null) {
             throw new Exception("验证码不能为空！");
         } else if (!(vtCode.equalsIgnoreCase(kaptchaExpected))) {
             throw new Exception("验证码错误！");
@@ -227,5 +230,14 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public AccountInfo findAccountInfoByUsername(String username) throws Exception {
         return usersMapper.findAccountInfoByUsername(username);
+    }
+
+    @Override
+    public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception {
+
+        List<AccountInfo> accountInfos = usersMapper.findAccountInfoByCharacter(character);
+        System.out.print(accountInfos.toString());
+
+        return accountInfos;
     }
 }
