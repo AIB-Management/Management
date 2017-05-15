@@ -12,17 +12,17 @@
     <style type="text/css">
         h3{
         	width: 90%;
-            margin: 30px auto 0 auto;
-            padding-left: 20px;
+          margin: 30px auto 0 auto;
+          padding-left: 20px;
         	line-height: 60px;
         	border: 2px solid #ffc050;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-            background-color: #e7ce60;
+          -webkit-border-radius: 10px;
+          -moz-border-radius: 10px;
+          border-radius: 10px;
+          background-color: #e7ce60;
         	font-family: 'Microsoft Yahei';
         	font-size: 30px;
-            color: #fff;
+          color: #fff;
         }
     </style>
 </head>
