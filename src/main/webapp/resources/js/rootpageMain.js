@@ -142,7 +142,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				//获取注册用户姓名的单元格
 				//用作向后台传值及向弹出层传值
 				var parent = this.parentNode.parentNode;
-				var nameTd = parent.querySelectorAll("td")[0];
+				var nameTd = parent.querySelectorAll("td")[1];
 
 				if (this.className.indexOf("pass") != -1) {
 					//如果此时点击的按钮为通过按钮
