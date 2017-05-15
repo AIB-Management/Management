@@ -30,6 +30,8 @@ import java.util.List;
 @Controller
 public class RegisterController {
 
+    private static final String REGISTER = "/user/register.jsp";
+    private static final String LOGIN = "/user/login.jsp";
 
     @Autowired
     private DepartmentService departmentService;
@@ -52,7 +54,7 @@ public class RegisterController {
             modelAndView.addObject("department", null);
             e.printStackTrace();
         }
-        modelAndView.setViewName("register.jsp");
+        modelAndView.setViewName(REGISTER);
 
         return modelAndView;
     }
@@ -102,7 +104,7 @@ public class RegisterController {
             request.getRequestDispatcher("/public/register.action").forward(request, response);
         }
 
-        return "login.jsp";
+        return LOGIN;
 
     }
 

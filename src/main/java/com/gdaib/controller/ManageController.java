@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Controller
 public class ManageController {
-    private static final  String ROOTPAGE="rootpage.jsp";
+    private static final  String ROOTPAGE="/admin/rootpage.jsp";
 
 
 

@@ -20,8 +20,8 @@ public class ContentController {
     @Autowired
     private UsersService usersService;
 
-    public static final String DEPARTMENTPAGE = "departmentpage.jsp";
-    public static final String PERSONALPAGE="personalpage.jsp";
+    public static final String DEPARTMENTPAGE = "/teacher/departmentpage.jsp";
+    public static final String PERSONALPAGE="/teacher/personalpage.jsp";
 
 
 

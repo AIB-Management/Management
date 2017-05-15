@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class LoginController {
-    private static final String LOGIN = "login.jsp";
+    private static final String LOGIN = "/user/login.jsp";
 
 
     @Autowired
@@ -34,7 +34,7 @@ public class LoginController {
     @RequestMapping("/public/login")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login.jsp");
+        modelAndView.setViewName(LOGIN);
         return modelAndView;
     }
 
@@ -75,13 +75,13 @@ public class LoginController {
                 System.out.println("错误信息");
                 modelAndView.addObject("error", ue.getMessage());
                 modelAndView.addObject("username", registerPojo.getUsername());
-                modelAndView.setViewName("login.jsp");
+                modelAndView.setViewName(LOGIN);
                 return modelAndView;
             } catch (AuthenticationException ae) {
                 System.out.println("错误信息：" + ae.getMessage().toString());
                 modelAndView.addObject("error", "密码错误");
                 modelAndView.addObject("username", registerPojo.getUsername());
-                modelAndView.setViewName("login.jsp");
+                modelAndView.setViewName(LOGIN);
                 return modelAndView;
             }
         }

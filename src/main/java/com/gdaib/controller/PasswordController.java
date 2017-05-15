@@ -38,15 +38,15 @@ public class PasswordController {
     private UsersService usersService;
 
     private static final String FROMADDRESS = "18707513901@163.com";
-    private static final String FINDPASSWORD = "findpassword.jsp";
+    private static final String FINDPASSWORD = "/user/findpassword.jsp";
 
-    private static final String MODIFYPWD = "resetpwd.jsp";
+    private static final String MODIFYPWD = "/user/resetpwd.jsp";
 
     private static final String MODIFYPWD_ACTION = "/public/modifypwdHtml.action";
 
     private static final String TAG = "Tag.jsp";
 
-    private static final String MODIFYPDW = "modifypwd.jsp";
+    private static final String MODIFYPDW = "/teacher/modifypwd.jsp";
 
     /**
      * 转发到修改密码页面
