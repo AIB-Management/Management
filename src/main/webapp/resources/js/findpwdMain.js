@@ -33,6 +33,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 	//--------- 调用层----------
 	checkBy.init({
+		username: {reg:/\S/g,correct:"",error:"输入不正确",minLen: 8,maxLen: 16},
 		mail:{hint:"请填写正确的邮箱地址",correct:"输入正确",error:"输入不正确"
 		,reg:/^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}/}
 	});
@@ -47,20 +48,38 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		checkBy.regWithoutLimit(this,"span","#00C12B","#FB000D");
 	})
 
+	//账号输入框失焦事件
+	EventUntil.addHandler(s("#username"),"blur",function(){
+		checkBy.regWithLimit(this,"span","#00C12B","#FB000D");
+	})
+
 	//下一步点击按钮点击事件
 	//点击时重新让输入框执行聚焦和失焦事件
 	//确认输入框的isCorrect 属性
 	EventUntil.addHandler(s("#next-step"),"click",function(event){
 		event = EventUntil.getEvent(event);
+		//数数变量
+		var count = 0;
 		//获取提交按钮元素
-		var mailInput = s("#mail");
-		//执行聚焦，失焦事件，进行二次验证
-		mailInput.focus();
-		mailInput.blur();
+		var allInputs = ss(".findpwdContent");
 
-		if (mailInput.isCorrect == true) {
-			//如果邮箱验证正确 执行提交按钮默认事件
+		//执行聚焦，失焦事件，进行二次验证
+		for (var i = 0; i < allInputs.length; i++) {
+
+			allInputs[i].focus();
+			allInputs[i].blur();
+			if (allInputs[i].isCorrect == true) {
+				count++;
+			}
+		}
+		console.log(allInputs);
+		console.log(count);
+
+		if (count == allInputs.length) {
+			//如果全部都正确
 			alert("请到跳转页面输入新的密码");
+			this.disabled = "disabled";
+			this.style.backgroundColor = "#666666";
 		}else{
 			//如果有误 页面提示错误 阻止提交按钮的默认事件
 			EventUntil.preventDefault(event);
