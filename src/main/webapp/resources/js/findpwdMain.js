@@ -80,6 +80,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			alert("请到跳转页面输入新的密码");
 			this.disabled = "disabled";
 			this.style.backgroundColor = "#666666";
+			return true;
 		}else{
 			//如果有误 页面提示错误 阻止提交按钮的默认事件
 			EventUntil.preventDefault(event);
