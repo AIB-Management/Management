@@ -378,9 +378,14 @@ public class UsersServiceImpl implements UsersService {
         accountMapper.deleteByExample(accountExample);
     }
 
-
-
-
+    @Override
+    public AccountInfo findAccountInfoForId(Integer id) throws Exception {
+        AccountInfoExample accountInfoExample = new AccountInfoExample();
+        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
+        criteria.andIdEqualTo(id);
+        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
+        return accountInfos.get(0);
+    }
 
 
 }

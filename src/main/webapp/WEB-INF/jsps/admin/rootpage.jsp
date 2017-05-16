@@ -9,9 +9,10 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-23"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-24"></script>
 </head>
 <body>
+	<!-- 弹出层开始 -->
 	<div id="floor">
 		<!-- 修改导航弹出层内容 -->
 		<form action="" method="post" id="modify-nav-info">
@@ -89,13 +90,15 @@
 			</p>
 		</div>
 	</div>
+	<!-- 弹出层结束 -->
+
 	<div class="wrapper">
 		<div class="header clearfix">
 			<div class="title-wrap">
 				<h3>后台管理页</h3>
 			</div>
 			<div class="logout-btn-wrap">
-				<span id="logout-btn"><a href="${pageContext.request.contextPath}/shiro/logout">退出</a></span>
+				<a id="logout-btn" href="${pageContext.request.contextPath}/shiro/logout">退出</a>
 			</div>
 		</div>
 		<div class="mainbody">
@@ -116,6 +119,8 @@
 				</div>
 			</div>
 			<div class="content">
+
+				<!-- 右侧添加导航栏模块 -->
 				<div class="content-wrap">
 					<div class="add-tag-wrap">
 						<h3 class="add-tag-title">添加导航栏</h3>
@@ -141,7 +146,9 @@
 						</p>
 					</div>
 				</div>
+				<!-- 右侧添加导航栏模块结束 -->
 
+				<!-- 右侧删除/修改导航栏模块 -->
 				<div class="content-wrap">
 					<div class="modify-tag-wrap">
 						<span>筛选</span>
@@ -226,73 +233,147 @@
 						</table>
 					</div>
 				</div>
-
-
+				<!-- 右侧删除/修改导航栏模块结束 -->
+				
+				<!-- 右侧待审核用户列表模块 -->
 				<div class="content-wrap">
 					<div class="unexamie-wrap">
-						<span>筛选</span>
-						<select id="unexamie-filter" class="filter-style">
-							<option value="全部">全部</option>
-							<option value="计算机系">计算机系</option>
-							<option value="管理系">管理系</option>
-							<option value="商务系">商务系</option>
-							<option value="财经系">财经系</option>
-							<option value="热作系">热作系</option>
-							<option value="机电系">机电系</option>
-							<option value="BTEC国际交流学院">BTEC国际交流学院</option>
-						</select>
-						<table id="unexamie" class="message-list" cellspacing="0">
-							<caption>待审核列表</caption>
+						<table id="unexamie" class="message-list table table-striped table-hover" cellspacing="0">
 							<thead>
 								<tr>
+									<th><input type="checkbox" id="unexamie-select-all">全选</th>
 									<th>姓名</th>
 									<th>系别</th>
 									<th>专业</th>
 									<th>操作</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="unexamie-main-content">
 								<tr>
+									<td><input type="checkbox" class="unexamie-select"></td>
 									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="pass">通过</button>
-										<button class="refuse">拒绝申请</button>
+										<button class="pass btn btn-success btn-sm">
+											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
+											通过
+										</button>
+										<button class="refuse btn btn-danger btn-sm">
+											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
+											拒绝申请
+										</button>
 									</td>
 								</tr>
 								<tr>
-									<td title="2">老师1</td>
+									<td><input type="checkbox" class="unexamie-select"></td>
+									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="pass">通过</button>
-										<button class="refuse">拒绝申请</button>
+										<button class="pass btn btn-success btn-sm">
+											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
+											通过
+										</button>
+										<button class="refuse btn btn-danger btn-sm">
+											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
+											拒绝申请
+										</button>
 									</td>
 								</tr>
 								<tr>
-									<td title="3">老师1</td>
+									<td><input type="checkbox" class="unexamie-select"></td>
+									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="pass">通过</button>
-										<button class="refuse">拒绝申请</button>
+										<button class="pass btn btn-success btn-sm">
+											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
+											通过
+										</button>
+										<button class="refuse btn btn-danger btn-sm">
+											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
+											拒绝申请
+										</button>
 									</td>
 								</tr>
 								<tr>
-									<td title="4">老师1</td>
+									<td><input type="checkbox" class="unexamie-select"></td>
+									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="pass" type="button">通过</button>
-										<button class="refuse" type="button">拒绝申请</button>
+										<button class="pass btn btn-success btn-sm">
+											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
+											通过
+										</button>
+										<button class="refuse btn btn-danger btn-sm">
+											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
+											拒绝申请
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" class="unexamie-select"></td>
+									<td title="1">老师1</td>
+									<td>计算机系</td>
+									<td>移动互联应用技术</td>
+									<td>
+										<button class="pass btn btn-success btn-sm">
+											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
+											通过
+										</button>
+										<button class="refuse btn btn-danger btn-sm">
+											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
+											拒绝申请
+										</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
+						<div class="batcn-opetate-btn-wrap">
+							<button class="btn btn-success btn-md" id="unexamie-pass-all">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 
+								通过
+							</button>
+							<button class="btn btn-danger btn-md" id="unexamie-refuse-all">
+								<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
+								拒绝申请
+							</button>
+						</div>
+						<div class="divid-page-wrap">
+							<nav aria-label="Page navigation">
+							  <ul class="pagination">
+							  	<li>
+							      <a href="#" aria-label="Previous">首页</a>
+							    </li>
+							    <li>
+							      <a href="#" aria-label="Previous">
+							        <span aria-hidden="true">&laquo;</span>
+							      </a>
+							    </li>
+							    <li><a href="#">1</a></li>
+							    <li><a href="#">2</a></li>
+							    <li><a href="#">3</a></li>
+							    <li><a href="#">4</a></li>
+							    <li><a href="#">5</a></li>
+							    <li>
+							      <a href="#" aria-label="Next">
+							        <span aria-hidden="true">&raquo;</span>
+							      </a>
+							    </li>
+							    <li>
+							      <a href="#" aria-label="Previous">末页</a>
+							    </li>
+								</ul>
+						</nav>
 					</div>
 				</div>
-
+			</div>
+				<!-- 右侧待审核用户列表模块结束 -->			
+	
+	
+				<!-- 右侧已审核用户列表模块 -->
 				<div class="content-wrap">
 					<div class="examie-wrap">
 						<span>筛选</span>
@@ -306,58 +387,133 @@
 							<option value="机电系">机电系</option>
 							<option value="BTEC国际交流学院">BTEC国际交流学院</option>
 						</select>
-						<table id="examied" class="message-list" cellspacing="0">
-							<caption>已审核列表</caption>
+						<table id="examied" class="message-list table table-striped table-hover" cellspacing="0">
 							<thead>
 								<tr>
+									<th>
+										<input type="checkbox" id="examie-select-all">全选
+									</th>
 									<th>姓名</th>
 									<th>系别</th>
 									<th>专业</th>
 									<th>操作</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="examied-main-content">
 								<tr>
+									<td>
+										<input type="checkbox" class="examie-all">
+									</td>
 									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="recall" type="button">撤回</button>
+										<button class="recall btn btn-danger btn-sm" type="button">
+											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+											撤回
+										</button>
 									</td>
 								</tr>
 								<tr>
-									<td title="2">老师1</td>
+									<td>
+										<input type="checkbox" class="examie-all">
+									</td>
+									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="recall" type="button">撤回</button>
+										<button class="recall btn btn-danger btn-sm" type="button">
+											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+											撤回
+										</button>
 									</td>
 								</tr>
 								<tr>
-									<td title="3">老师1</td>
+									<td>
+										<input type="checkbox" class="examie-all">
+									</td>
+									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="recall" type="button">撤回</button>
+										<button class="recall btn btn-danger btn-sm" type="button">
+											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+											撤回
+										</button>
 									</td>
 								</tr>
 								<tr>
-									<td title="4">老师1</td>
+									<td>
+										<input type="checkbox" class="examie-all">
+									</td>
+									<td title="1">老师1</td>
 									<td>计算机系</td>
 									<td>移动互联应用技术</td>
 									<td>
-										<button class="recall" type="button">撤回</button>
+										<button class="recall btn btn-danger btn-sm" type="button">
+											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+											撤回
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox" class="examie-all">
+									</td>
+									<td title="1">老师1</td>
+									<td>计算机系</td>
+									<td>移动互联应用技术</td>
+									<td>
+										<button class="recall btn btn-danger btn-sm" type="button">
+											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+											撤回
+										</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
+						<div class="batcn-opetate-btn-wrap">
+							<button class="btn btn-danger btn-md" id="examie-recall-all">
+								<span class="glyphicon glyphicon-erase" aria-hidden="true"></span> 
+								撤回
+							</button>
+						</div>
+						<div class="divid-page-wrap">
+							<nav aria-label="Page navigation">
+							  <ul class="pagination">
+							  	<li>
+							      <a href="#" aria-label="Previous">首页</a>
+							    </li>
+							    <li>
+							      <a href="#" aria-label="Previous">
+							        <span aria-hidden="true">&laquo;</span>
+							      </a>
+							    </li>
+							    <li><a href="#">1</a></li>
+							    <li><a href="#">2</a></li>
+							    <li><a href="#">3</a></li>
+							    <li><a href="#">4</a></li>
+							    <li><a href="#">5</a></li>
+							    <li>
+							      <a href="#" aria-label="Next">
+							        <span aria-hidden="true">&raquo;</span>
+							      </a>
+							    </li>
+							    <li>
+							      <a href="#" aria-label="Previous">末页</a>
+							    </li>
+								</ul>
+						</nav>
+					</div>
 					</div>
 				</div>
+				<!-- 右侧已审核用户列表模块 -->
 			</div>
 		</div>
 	</div>
 	
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-22">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-25">
 </body>
 </html>

@@ -257,8 +257,8 @@
 	margin-left: 5px;
 	padding-left: 4px;
 	padding-right: 4px;  
-	height: 20px;
-	line-height: 20px;
+	height: 22px;
+	line-height: 22px;
 	background-color: #E40045;
 	color: #fff;
 	font-size: 12px;
@@ -317,7 +317,7 @@
 }
 /*修改导航，删除导航模块样式*/
 .modify-tag-wrap,.unexamie-wrap,.examie-wrap{
-	width: 80%;
+	width: 90%;
 	margin: 30px auto 0 auto;
 }
 .filter-style{
@@ -327,33 +327,8 @@
 .message-list{
 	width: 100%;
 	margin-top: 20px;
-	text-align: center;
-	border: 1px solid #000;
 }
-.message-list thead{
-	border: 1px solid #000;
-	line-height: 30px;
-}
-.message-list thead th{
-	border: 1px solid #999;
-}
-.message-list tr{
-	border: 1px solid #999;
-	line-height: 30px;
-}
-.message-list tr td{
-	border: 1px solid #999;
-}
-.message-list tbody tr:nth-child(2n){
-	background-color: #99CCCC;
-}
-.message-list tbody tr:nth-child(2n+1){
-	background-color: #CCFFFF;
-}
-.message-list tbody tr:hover{
-	background-color: #B2FFEE;
-}
-.pass{
+/*.pass{
 	width: 50px;
 	height: 25px;
 	line-height: 25px;
@@ -366,8 +341,8 @@
 	line-height: 25px;
 	background-color: #FF3300;
 	color: #fff;
-}
-.recall{
+}*/
+/*.recall{
 	width: 50px;
 	height: 25px;
 	line-height: 25px;
@@ -387,6 +362,9 @@
 	line-height: 25px;
 	background-color: #FF3300;
 	color: #fff;
+}*/
+.divid-page-wrap{
+	text-align: center;
 }
 /*侧边栏标签点击增加样式*/
 .sidebar-tag-active{

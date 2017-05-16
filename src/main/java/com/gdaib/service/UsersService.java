@@ -63,4 +63,7 @@ public interface UsersService {
     //删除用户
     public void deleteAccountById(int id) throws Exception;
 
+    //根据id查询用户
+    public AccountInfo findAccountInfoForId(Integer id) throws Exception;
+
 }

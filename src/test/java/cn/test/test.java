@@ -94,7 +94,7 @@ public class test{
     UsersService usersService;
     @Test
     public void testService() throws Exception {
-        List<AccountInfo> b = usersService.findAccountInfoByCharacter("reviewing");
+        AccountInfo b = usersService.findAccountInfoForId(2);
         System.out.println(b);
     }
 }

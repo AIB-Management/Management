@@ -27,6 +27,6 @@
     </style>
 </head>
 <body>
-<h3>${error}${success}提示信息</h3>
+<h3>${error}${success}</h3>
 </body>
 </html>

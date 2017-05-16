@@ -93,7 +93,7 @@ public class ManageController {
     /**
      *      得到未验证用户的分页信息，传入当前页数
      */
-    @RequestMapping("/admin/ajaxGetAccountInfoIsNotPass")
+    @RequestMapping("/admin/c")
     @ResponseBody
     public Msg ajaxGetAccountInfoIsNotPass(@RequestParam(value = "pn",defaultValue = "1") Integer pn) throws Exception {
         // 引入PageHelper分页插件
@@ -140,26 +140,38 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxRejectAccount")
     @ResponseBody
-    public Msg ajaxRejectAccount(String id, String content,String mail, HttpServletRequest request) throws Exception {
+    public Msg ajaxRejectAccount(Integer id, String content, HttpServletRequest request) throws Exception {
         MailPojo mailPojo = new MailPojo();
+       
+
+
+        AccountInfo accountInfo = usersService.findAccountInfoForId(id);
+        //查看是否状态为未验证
+        if(!accountInfo.getRole().equals("reviewing")){
+            return new Msg(200,"用户状态错误");
+        }
 
         //发送的标题
         mailPojo.setSubject("[AIB]您的申请已被拒绝");
         //设置发送人
         mailPojo.setFromAddress(FROMADDRESS);
         //发送的地址
-        mailPojo.setToAddresses(mail);
-        //发送的内容
-        System.out.println(content);
+        mailPojo.setToAddresses(accountInfo.getMail());
 
-        if (content.equals("") || content == null){
-            mailPojo.setContent("管理员已经拒绝了你的申请！请重新注册申请");
+
+        //查看有没有附加信息
+        if (content == null ||content.equals("") ){
+            mailPojo.setContent(accountInfo.getName() +"  您好，" + "管理员已经拒绝了你的申请！请重新注册申请。");
         }else {
-            mailPojo.setContent("管理员已经拒绝了你的申请！" + "原因是： "+ content);
+            mailPojo.setContent(accountInfo.getName() +"  您好，" + "管理员已经拒绝了你的申请！请重新注册申请。" + "原因是： "+ content);
         }
 
         //发送邮件
         mailService.sendAttachMail(mailPojo);
+
+        //删除用户
+        usersService.deleteAccountById(id);
+
 
         return Msg.success();
     }
@@ -174,11 +186,5 @@ public class ManageController {
         usersService.updateAccountByCharacter(Integer.parseInt(id),"reviewing");
         return Msg.success();
     }
-
-
-
-
-
-
 
 }
