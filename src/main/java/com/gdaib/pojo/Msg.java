@@ -60,6 +60,12 @@ public class Msg {
 	public void setExtend(Map<String, Object> extend) {
 		this.extend = extend;
 	}
-	
-	
+
+	public Msg(int code, String msg) {
+		this.code = code;
+		this.msg = msg;
+	}
+
+	public Msg() {
+	}
 }

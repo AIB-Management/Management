@@ -331,6 +331,7 @@ public class UsersServiceImpl implements UsersService {
         AccountInfoExample accountInfoExample = new AccountInfoExample();
         AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
         criteria.andRoleEqualTo(character);
+        accountInfoExample.setOrderByClause("id desc");
 
         List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
         System.out.println(accountInfos);
@@ -377,7 +378,6 @@ public class UsersServiceImpl implements UsersService {
         accountMapper.deleteByExample(accountExample);
     }
 
-    //发送邮件
 
 
 
