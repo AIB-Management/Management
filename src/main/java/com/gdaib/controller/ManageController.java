@@ -34,7 +34,10 @@ public class ManageController {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private MailService mailService;
 
+    private static final String FROMADDRESS = "18707513901@163.com";
 
     /**
      *      转发到管理员页面
@@ -93,7 +96,7 @@ public class ManageController {
     /**
      *      得到未验证用户的分页信息，传入当前页数
      */
-    @RequestMapping("/admin/c")
+    @RequestMapping("/admin/ajaxGetAccountInfoIsNotPass")
     @ResponseBody
     public Msg ajaxGetAccountInfoIsNotPass(@RequestParam(value = "pn",defaultValue = "1") Integer pn) throws Exception {
         // 引入PageHelper分页插件
@@ -126,15 +129,12 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxPassAccount")
     @ResponseBody
-    public Msg ajaxPassAccount(String id) throws Exception {
-        usersService.updateAccountByCharacter(Integer.parseInt(id),"teacher");
+    public Msg ajaxPassAccount(Integer id) throws Exception {
+        usersService.updateAccountByCharacter(id,"teacher");
         return Msg.success();
     }
 
-    @Autowired
-    private MailService mailService;
 
-    private static final String FROMADDRESS = "18707513901@163.com";
     /**
      *      拒绝验证
      */
@@ -142,13 +142,18 @@ public class ManageController {
     @ResponseBody
     public Msg ajaxRejectAccount(Integer id, String content, HttpServletRequest request) throws Exception {
         MailPojo mailPojo = new MailPojo();
-       
+
 
 
         AccountInfo accountInfo = usersService.findAccountInfoForId(id);
+
+        if(accountInfo == null){
+            return new Msg(200,"该用户不存在");
+        }
+
         //查看是否状态为未验证
         if(!accountInfo.getRole().equals("reviewing")){
-            return new Msg(200,"用户状态错误");
+            return new Msg(200,"状态错误，该用户不是未审核用户");
         }
 
         //发送的标题
@@ -182,8 +187,8 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxWithdrawAccount")
     @ResponseBody
-    public Msg ajaxWithdrawAccount(String id) throws Exception {
-        usersService.updateAccountByCharacter(Integer.parseInt(id),"reviewing");
+    public Msg ajaxWithdrawAccount(Integer id) throws Exception {
+        usersService.updateAccountByCharacter(id,"reviewing");
         return Msg.success();
     }
 
