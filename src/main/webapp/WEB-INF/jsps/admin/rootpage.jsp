@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-24"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-27"></script>
 </head>
 <body>
 	<!-- 弹出层开始 -->
@@ -231,7 +231,7 @@
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</div>	
 				</div>
 				<!-- 右侧删除/修改导航栏模块结束 -->
 				
@@ -331,16 +331,19 @@
 								</tr>
 							</tbody>
 						</table>
+
+						<!-- 批量通过，批量拒绝按钮包裹层 -->
 						<div class="batcn-opetate-btn-wrap">
 							<button class="btn btn-success btn-md" id="unexamie-pass-all">
 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 
-								通过
+								批量通过
 							</button>
 							<button class="btn btn-danger btn-md" id="unexamie-refuse-all">
 								<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
-								拒绝申请
+								批量拒绝
 							</button>
 						</div>
+						<!-- 待审核列表分页组建包裹层 -->
 						<div class="divid-page-wrap">
 							<nav aria-label="Page navigation">
 							  <ul class="pagination">
@@ -368,6 +371,9 @@
 								</ul>
 						</nav>
 					</div>
+				</div>
+				<div class="loading-icon-wrap">
+						<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
 				</div>
 			</div>
 				<!-- 右侧待审核用户列表模块结束 -->			
@@ -472,12 +478,14 @@
 								</tr>
 							</tbody>
 						</table>
+						<!-- 批量撤回按钮包裹层 -->
 						<div class="batcn-opetate-btn-wrap">
 							<button class="btn btn-danger btn-md" id="examie-recall-all">
 								<span class="glyphicon glyphicon-erase" aria-hidden="true"></span> 
-								撤回
+								批量撤回
 							</button>
 						</div>
+						<!-- 已审核列表分页组建包裹层 -->
 						<div class="divid-page-wrap">
 							<nav aria-label="Page navigation">
 							  <ul class="pagination">
@@ -503,8 +511,11 @@
 							      <a href="#" aria-label="Previous">末页</a>
 							    </li>
 								</ul>
-						</nav>
+							</nav>
+						</div>
 					</div>
+					<div class="loading-icon-wrap">
+						<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
 					</div>
 				</div>
 				<!-- 右侧已审核用户列表模块 -->
@@ -514,6 +525,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-25">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-27">
 </body>
 </html>

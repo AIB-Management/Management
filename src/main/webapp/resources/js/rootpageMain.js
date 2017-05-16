@@ -131,85 +131,154 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	}
 
 
-	//待审核用户表格全部按钮点击事件
-	function unexamieModuleBtn(){
-		//获取待审核用户表格的全部按钮
-		var btns = ss("#unexamie tbody tr td button");
+	// //待审核用户表格全部按钮点击事件
+	// function unexamieModuleBtn(elem){
+	// 	//获取待审核用户表格的全部按钮
+	// 	var btns = ss("#unexamie tbody tr td button");
 
-		//遍历 为每一个按钮绑定事件
-		for (var i = 0; i < btns.length; i++) {
-			EventUntil.addHandler(btns[i],"click",function(){
-				//获取注册用户姓名的单元格
-				//用作向后台传值及向弹出层传值
-				var parent = this.parentNode.parentNode;
-				var nameTd = parent.querySelectorAll("td")[1];
+	// 	//遍历 为每一个按钮绑定事件
+	// 	for (var i = 0; i < btns.length; i++) {
+	// 		EventUntil.addHandler(btns[i],"click",function(){
+	// 			//获取注册用户姓名的单元格
+	// 			//用作向后台传值及向弹出层传值
+	// 			var parent = this.parentNode.parentNode;
+	// 			var nameTd = parent.querySelectorAll("td")[1];
 
-				if (this.className.indexOf("pass") != -1) {
-					//如果此时点击的按钮为通过按钮
-					//发送一个ajax 给后台
-					//然后刷新更新后的表格
-					//...ajaxCode
-					$.ajax({
-						url: '',
-						type: 'GET',
-						dataType: 'json',
-						data: {passUser: nameTd.title},
-					});
+	// 			if (this.className.indexOf("pass") != -1) {
+	// 				//如果此时点击的按钮为通过按钮
+	// 				//发送一个ajax 给后台
+	// 				//然后刷新更新后的表格
+	// 				//...ajaxCode
+	// 				$.ajax({
+	// 					url: '',
+	// 					type: 'POST',
+	// 					dataType: 'json',
+	// 					data: {passUser: nameTd.title},
+	// 				});
 					
 					 
 
-				}else if (this.className.indexOf("refuse") != -1) {
+	// 			}else if (this.className.indexOf("refuse") != -1) {
 
-					//获取弹出层
-					var floor = s("#floor");
-					//隐藏修改导航模块弹出层
-					s("#modify-nav-info").style.display = 'none';
-					//隐藏撤回用户模块弹出层
-					s("#recall-user").style.display = 'none';
-					//隐藏删除导航弹出层
-					s("#delete-nav").style.display = 'none';
-					//显示填写拒绝信息模块弹出层
-					s("#refuse-info").style.display = 'block';
-					//为提示文字中的姓名字段添加内容
-					s("#refuse-username").innerText = nameTd.innerText;
-					s("#refuse-username").title = nameTd.title;
-					//显示弹出层
-					floor.style.visibility = "visible";
+	// 				//获取弹出层
+	// 				var floor = s("#floor");
+	// 				//隐藏修改导航模块弹出层
+	// 				s("#modify-nav-info").style.display = 'none';
+	// 				//隐藏撤回用户模块弹出层
+	// 				s("#recall-user").style.display = 'none';
+	// 				//隐藏删除导航弹出层
+	// 				s("#delete-nav").style.display = 'none';
+	// 				//显示填写拒绝信息模块弹出层
+	// 				s("#refuse-info").style.display = 'block';
+	// 				//为提示文字中的姓名字段添加内容
+	// 				s("#refuse-username").innerText = nameTd.innerText;
+	// 				s("#refuse-username").title = nameTd.title;
+	// 				//显示弹出层
+	// 				floor.style.visibility = "visible";
 
-				}
-			})
-		}
+	// 			}
+	// 		})
+	// 	}
+	// }
+
+	//待审核用户列表通过按钮点击事件执行的方法
+	//直接将用户的id 传给后台做处理
+	function unexamieModulePass(){
+		//获取注册用户姓名的单元格
+		//用作向后台传值及向弹出层传值
+		var parent = this.parentNode.parentNode;
+		var nameTd = parent.querySelectorAll("td")[1];
+
+		//发送一个ajax 给后台
+		//然后刷新更新后的表格
+		//...ajaxCode
+		$.ajax({
+			url: '',
+			type: 'POST',
+			dataType: 'json',
+			data: {passUser: nameTd.title},
+		});
 	}
 
 
-	//撤回用户使用权限方法
-	function recallUser(){
-		//获取已审核用户表格的全部按钮
-		var btns = ss(".recall");
+	//待审核用户列表拒绝按钮点击事件执行的方法
+	//直接将值（用户名，id）传去弹出层
+	function unexamieModuleRefuse(){
+		//获取注册用户姓名的单元格
+		//用作向后台传值及向弹出层传值
+		var parent = this.parentNode.parentNode;
+		var nameTd = parent.querySelectorAll("td")[1];
 
-		for (var i = 0; i < btns.length; i++) {
-			EventUntil.addHandler(btns[i],"click",function(){
-					//获取注册用户姓名的单元格
-					var parent = this.parentNode.parentNode;
-					var nameTd = parent.querySelectorAll("td")[0];
+		//获取弹出层
+		var floor = s("#floor");
+		//隐藏修改导航模块弹出层
+		s("#modify-nav-info").style.display = 'none';
+		//隐藏撤回用户模块弹出层
+		s("#recall-user").style.display = 'none';
+		//隐藏删除导航弹出层
+		s("#delete-nav").style.display = 'none';
+		//显示填写拒绝信息模块弹出层
+		s("#refuse-info").style.display = 'block';
+		//为提示文字中的姓名字段添加内容
+		s("#refuse-username").innerText = nameTd.innerText;
+		//为提示文字中的名字字段属性 title添加内容
+		s("#refuse-username").title = nameTd.title;
+		//显示弹出层
+		floor.style.visibility = "visible";
+	}
 
-					//获取弹出层
-					var floor = s("#floor");
-					//隐藏修改导航模块弹出层
-					s("#modify-nav-info").style.display = 'none';
-					//隐藏删除导航弹出层
-					s("#delete-nav").style.display = 'none';
-					//显示填写拒绝信息模块弹出层
-					s("#refuse-info").style.display = 'none';
-					//显示撤回用户模块弹出层
-					s("#recall-user").style.display = 'block';
-					//为提示文字中的姓名字段添加内容
-					s("#recall-username").innerText = nameTd.innerText;
-					s("#recall-username").title = nameTd.title;
-					//显示弹出层
-					floor.style.visibility = "visible";
-			})
-		}
+
+	// //撤回用户使用权限方法
+	// function recallUser(){
+	// 	//获取已审核用户表格的全部按钮
+	// 	var btns = ss(".recall");
+
+	// 	for (var i = 0; i < btns.length; i++) {
+	// 		EventUntil.addHandler(btns[i],"click",function(){
+	// 				//获取注册用户姓名的单元格
+	// 				var parent = this.parentNode.parentNode;
+	// 				var nameTd = parent.querySelectorAll("td")[1];
+
+	// 				//获取弹出层
+	// 				var floor = s("#floor");
+	// 				//隐藏修改导航模块弹出层
+	// 				s("#modify-nav-info").style.display = 'none';
+	// 				//隐藏删除导航弹出层
+	// 				s("#delete-nav").style.display = 'none';
+	// 				//显示填写拒绝信息模块弹出层
+	// 				s("#refuse-info").style.display = 'none';
+	// 				//显示撤回用户模块弹出层
+	// 				s("#recall-user").style.display = 'block';
+	// 				//为提示文字中的姓名字段添加内容
+	// 				s("#recall-username").innerText = nameTd.innerText;
+	// 				s("#recall-username").title = nameTd.title;
+	// 				//显示弹出层
+	// 				floor.style.visibility = "visible";
+	// 		})
+	// 	}
+	// }
+
+
+	function examieModuleRecall(){
+		//获取注册用户姓名的单元格
+		var parent = this.parentNode.parentNode;
+		var nameTd = parent.querySelectorAll("td")[1];
+
+		//获取弹出层
+		var floor = s("#floor");
+		//隐藏修改导航模块弹出层
+		s("#modify-nav-info").style.display = 'none';
+		//隐藏删除导航弹出层
+		s("#delete-nav").style.display = 'none';
+		//显示填写拒绝信息模块弹出层
+		s("#refuse-info").style.display = 'none';
+		//显示撤回用户模块弹出层
+		s("#recall-user").style.display = 'block';
+		//为提示文字中的姓名字段添加内容
+		s("#recall-username").innerText = nameTd.innerText;
+		s("#recall-username").title = nameTd.title;
+		//显示弹出层
+		floor.style.visibility = "visible";
 	}
 
 
@@ -242,7 +311,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			});
 		}
 		//初始化时 第一个字标签模拟点击
-		tags[0].click();
+		//tags[0].click();
 	}());
 	
 
@@ -501,11 +570,11 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//----------------- 撤回用户弹出层功能结束 -------------------
 
 	//导航栏管理表格按钮点击方法
-	modifyModuleBtn();
+	//modifyModuleBtn();
 
 	//待审核用户表格所有按钮点击方法
-	unexamieModuleBtn();
+	//unexamieModuleBtn();
 
 	//已审核用户表格所有按钮点击方法
-	recallUser();
+	//recallUser();
 })
