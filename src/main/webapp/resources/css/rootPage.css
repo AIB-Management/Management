@@ -252,12 +252,10 @@
 	color: #434343;
 }
 #number-hints{
-	display: inline-block;
+	display: none;
 	vertical-align: middle;
 	margin-left: 5px;
-	padding-left: 4px;
-	padding-right: 4px;  
-	height: 22px;
+	padding: 3px;  
 	line-height: 22px;
 	background-color: #E40045;
 	color: #fff;
@@ -343,13 +341,10 @@
 	width: 100%;
 	margin-top: 20px;
 }
-/*.pass{
-	width: 50px;
-	height: 25px;
-	line-height: 25px;
-	background-color: #339933;
-	color: #fff;
+.pass{
+	margin-right: 5px;
 }
+/*
 .refuse{
 	width: 90px;
 	height: 25px;
