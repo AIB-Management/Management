@@ -34,6 +34,11 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		elem.className = allClass.join(" ");
 	}
 
+	//自定义创建元素方法
+	function createElem(elemName){
+		return document.createElement(elemName);
+	}
+
 	//定义获取导航栏表格行内信息方法
 	function getDetailInfo(elem){
 		//获取按钮所在行
@@ -49,86 +54,86 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		
 	}
 
-	//定义弹出层填写内容方法
-	function setFloorInfo(elemList,infoList){
-		for (var i = 0; i < elemList.length; i++) {
+	//修改导航弹出层模块填写内容方法
+	// function setFloorInfo(elemList,infoList){
+	// 	for (var i = 0; i < elemList.length; i++) {
 
-			if ((elemList[i].tagName).toLowerCase() == "select") {
-				var options = elemList[i].options;
-				for (var j = 0; j < options.length; j++) {
-					if (options[j].innerText == infoList[i]) {
-						options[j].selected = "true";
-					}
-				}
-			}else{
-				elemList[i].value = infoList[i];
-			}
-		}
-	}
+	// 		if ((elemList[i].tagName).toLowerCase() == "select") {
+	// 			var options = elemList[i].options;
+	// 			for (var j = 0; j < options.length; j++) {
+	// 				if (options[j].innerText == infoList[i]) {
+	// 					options[j].selected = "true";
+	// 				}
+	// 			}
+	// 		}else{
+	// 			elemList[i].value = infoList[i];
+	// 		}
+	// 	}
+	// }
 
 
 	//修改导航栏模块按钮点击事件
 	//真正调用此函数是当数据完全获取完毕后调用
-	function modifyModuleBtn(){
-		//获取导航栏信息表格中的全部按钮
-		var btns = ss("#all-tag-list tbody tr td button");
-		for (var i = 0; i < btns.length; i++) {
-			EventUntil.addHandler(btns[i],"click",function(){
-				//如果点击的按钮类名为 modify-tag
-				//执行自定义的 getDetailInfo 方法
-				//获取到所有信息后再将所有信息填入弹出层对应的输入框中
-				if (this.className.indexOf("modify-tag") != -1) {
-					//获取点击按钮对应的信息
-					var infoList = getDetailInfo(this);
-					//获取弹出层
-					var floor = s("#floor");
-					//执行自定义信息输入函数
-					setFloorInfo(ss("#floor .modify-nav-info"),infoList);
-					//拒绝用户注册弹出层隐藏
-					s("#refuse-info").style.display = 'none';
-					//撤回用户弹出层隐藏
-					s("#recall-user").style.display = 'none';
-					//删除导航弹出层隐藏
-					s("#delete-nav").style.display = 'none';
-					//修改导航明细弹出层显示
-					s("#modify-nav-info").style.display = 'block';
-					//弹出层背景显示
-					floor.style.visibility = "visible";
+	// function modifyModuleBtn(){
+	// 	//获取导航栏信息表格中的全部按钮
+	// 	var btns = ss("#all-tag-list tbody tr td button");
+	// 	for (var i = 0; i < btns.length; i++) {
+	// 		EventUntil.addHandler(btns[i],"click",function(){
+	// 			//如果点击的按钮类名为 modify-tag
+	// 			//执行自定义的 getDetailInfo 方法
+	// 			//获取到所有信息后再将所有信息填入弹出层对应的输入框中
+	// 			if (this.className.indexOf("modify-tag") != -1) {
+	// 				//获取点击按钮对应的信息
+	// 				var infoList = getDetailInfo(this);
+	// 				//获取弹出层
+	// 				var floor = s("#floor");
+	// 				//执行自定义信息输入函数
+	// 				setFloorInfo(ss("#floor .modify-nav-info"),infoList);
+	// 				//拒绝用户注册弹出层隐藏
+	// 				s("#refuse-info").style.display = 'none';
+	// 				//撤回用户弹出层隐藏
+	// 				s("#recall-user").style.display = 'none';
+	// 				//删除导航弹出层隐藏
+	// 				s("#delete-nav").style.display = 'none';
+	// 				//修改导航明细弹出层显示
+	// 				s("#modify-nav-info").style.display = 'block';
+	// 				//弹出层背景显示
+	// 				floor.style.visibility = "visible";
 
-				}else if(this.className.indexOf("delete-tag") != -1){
-					//点击删除导航按钮的时候
-					//显示删除导航提示框隐藏其他弹出层
-					//获取要删除导航的名字和id
-					//向提示框传递此时要删除导航栏的 id和名字参数
+	// 			}else if(this.className.indexOf("delete-tag") != -1){
+	// 				//点击删除导航按钮的时候
+	// 				//显示删除导航提示框隐藏其他弹出层
+	// 				//获取要删除导航的名字和id
+	// 				//向提示框传递此时要删除导航栏的 id和名字参数
 
-					//获取父元素
-					var parent = this.parentNode.parentNode;
-					var tagNameTd = parent.querySelectorAll("td")[0];
+	// 				//获取父元素
+	// 				var parent = this.parentNode.parentNode;
+	// 				var tagNameTd = parent.querySelectorAll("td")[0];
 
-					//获取提示标签名的元素
-					var deleteTagName = s("#delete-navname");
+	// 				//获取提示标签名的元素
+	// 				var deleteTagName = s("#delete-navname");
 
-					//获取弹出层
-					var floor = s("#floor");
-					//拒绝用户注册弹出层隐藏
-					s("#refuse-info").style.display = 'none';
-					//撤回用户弹出层隐藏
-					s("#recall-user").style.display = 'none';
-					//修改导航明细弹出层显示
-					s("#modify-nav-info").style.display = 'none';
-					//删除导航弹出层隐藏
-					s("#delete-nav").style.display = 'block';
-					//向提示字符元素填充内容
-					deleteTagName.innerText = tagNameTd.innerText;
-					deleteTagName.title = tagNameTd.title;
+	// 				//获取弹出层
+	// 				var floor = s("#floor");
+	// 				//拒绝用户注册弹出层隐藏
+	// 				s("#refuse-info").style.display = 'none';
+	// 				//撤回用户弹出层隐藏
+	// 				s("#recall-user").style.display = 'none';
+	// 				//修改导航明细弹出层显示
+	// 				s("#modify-nav-info").style.display = 'none';
+	// 				//删除导航弹出层隐藏
+	// 				s("#delete-nav").style.display = 'block';
+	// 				//向提示字符元素填充内容
+	// 				deleteTagName.innerText = tagNameTd.innerText;
+	// 				deleteTagName.title = tagNameTd.title;
 
-					//弹出层背景显示
-					floor.style.visibility = "visible";
-				}
-			})
-		}
+	// 				//弹出层背景显示
+	// 				floor.style.visibility = "visible";
+	// 			}
+	// 		})
+	// 	}
 
-	}
+	// }
 
 
 	// //待审核用户表格全部按钮点击事件
@@ -180,6 +185,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	// 		})
 	// 	}
 	// }
+
+
 
 	//待审核用户列表通过按钮点击事件执行的方法
 	//直接将用户的id 传给后台做处理
@@ -281,6 +288,94 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		floor.style.visibility = "visible";
 	}
 
+	//定义分页组件的响应函数
+	//1、定义创建表格函数
+	function createTable(data,tableElem){
+		//获取保存内容的数组
+		var contentList = data.extend.list;
+		//创建元素碎片收集器
+		var frag = document.createDocumentFragment();
+		//开始遍历
+		for (var i = 0; i < contentList.length; i++) {
+			//先创建一个tr
+			var tr = document.createElement("tr");
+			//创建checkbox 
+			var checkBox = createElem("input");
+			checkBox.type = "checkbox";
+			checkBox.className = "unexamie-select";
+			//创建一个包裹 checkbox 的td 元素
+			var checkBoxTd = createElem("td");
+			//td 元素添加checkbox
+			checkBoxTd.appendChild(checkBox);
+			//行元素添加这个checkboxTd 的元素
+			tr.appendChild(checkBoxTd)
+
+			//创建待审核用户姓名的td
+			var unexamieUserNameTd = createElem("td");
+			//为待审核用户姓名的 td元素添加文字内容
+			unexamieUserNameTd.innerText = contentList[i].username;
+			//为待审核用户姓名的 td元素添加title 属性（待审核用户的id 值）
+			unexamieUserNameTd.title = contentList[i].id;
+			//行元素添加待审核用户姓名的 td 元素
+			tr.appendChild(unexamieUserNameTd);
+
+
+			//创建待审核用户系别的td
+			var unexamieDeaprtmentTd = createElem("td");
+			//为待审核用户系别 td元素添加文字内容
+			unexamieDeaprtmentTd.innerText = contentList[i].department;
+			//行元素添加待审核用户系别 td
+			tr.appendChild(unexamieDeaprtmentTd);
+
+
+			//创建待审核用户专业的td
+			var unexamieProfessionlTd = createElem("td");
+			//为待审核用户专业 td元素添加文字内容
+			unexamieProfessionlTd.innerText = contentList[i].profession;
+			//行元素添加待审核用户专业 td
+			tr.appendChild(unexamieProfessionlTd);
+
+			//“通过” 创建操作按钮td
+			var passBtnTd = createElem("td");
+			//创建操作按钮 button 元素
+			var passBtn = createElem("button");
+			//操作按钮添加类名
+			passBtn.className = "pass btn btn-success btn-sm";
+			//创建操作按钮图标
+			var passBtnIcon = createElem("span");
+			//操作按钮图标添加类名
+			passBtnIcon.className = "glyphicon glyphicon-ok";
+			//操作按钮添加操作按钮图标
+			passBtn.appendChild(passBtnIcon);
+			//操作按钮添加文字
+			passBtn.innerText = "通过";
+			passBtnTd.appendChild(passBtn);
+			tr.appendChild(passBtnTd);
+
+			//“拒绝” 创建操作按钮td
+			var refuseBtnTd = createElem("td");
+			//创建操作按钮 button 元素
+			var refuseBtn = createElem("button");
+			//操作按钮添加类名
+			passBtn.className = "refuse btn btn-success btn-sm";
+			//创建操作按钮图标
+			var refuseBtnIcon = createElem("span");
+			//操作按钮图标添加类名
+			refuseBtnIcon.className = "glyphicon glyphicon-minus-sign";
+			//操作按钮添加操作按钮图标
+			refuseBtn.appendChild(passBtnIcon);
+			//操作按钮添加文字
+			refuseBtn.innerText = "通过";
+			refuseBtnTd.appendChild(refuseBtn);
+			tr.appendChild(refuseBtnTd);
+
+			frag.appendChild(tr);
+
+		}
+
+		tableElem.appendChild(frag);
+	}
+
 
 
 	//--------------定义层结束-------------
@@ -310,8 +405,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				contents[index].style.display = "block";
 			});
 		}
-		//初始化时 第一个字标签模拟点击
-		//tags[0].click();
 	}());
 	
 
