@@ -54,6 +54,60 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		
 	}
 
+	//侧边栏多个tag 点击事件
+	function tagsClick(){
+		var tags = ss(".child-tag");
+		var contents = ss(".content-wrap");
+		var loadingIcon = ss(".loading-icon-wrap");
+
+		for (var i = 0; i < tags.length; i++) {
+			tags[i].index = i;
+
+			EventUntil.addHandler(tags[i],"click",function(){
+				var index = this.index;
+
+				//调整左侧tag 激活样式
+				for (var i = 0; i < tags.length; i++) {
+					if (tags[i].className.indexOf("sidebar-tag-active") != -1) {
+						//调用自定义 removeClass 方法
+						removeClass(tags[i],"sidebar-tag-active");
+					}
+					contents[i].style.display = "none";
+				}
+				contents[index].style.display = 'block';
+
+				//为当前点击的 tag增加激活状态样式
+				this.className += " sidebar-tag-active";
+				
+				//如果当前点击的tag 为未审核列表
+				//执行如下处理
+				if (this.id == "unexamie-tag") {
+					s("#number-hints").style.display = 'none';
+					$.ajax({
+						url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsNotPass.action',
+						type: 'GET',
+						async: false,
+						dataType: 'json',
+						beforeSend: function(){
+							s("#unexamie-main-content").display = 'none';
+							loadingIcon[index].display = 'block';
+						},
+
+						success: function(data){
+							createUnexamieTabel(data,s("#unexamie-main-content"));
+							createPageNav(data,s("#pagination-content"));
+							loadingIcon[index].display = 'none';
+							s("#unexamie-main-content").display = 'block';
+						}
+
+					})
+					
+					
+				}
+			});
+		}
+	};
+
 	//修改导航弹出层模块填写内容方法
 	// function setFloorInfo(elemList,infoList){
 	// 	for (var i = 0; i < elemList.length; i++) {
@@ -187,6 +241,21 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	// }
 
 
+	//页面加载完成时 显示新增未注册用户数量
+	function showUnexamieUserNums(){
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxGetCountIsNotPass.action',
+			type: 'GET',
+			dataType: 'json',
+			success: function(data){
+				s("#number-hints").innerText = data.extend.num;
+				s("#number-hints").style.display = 'inline-block';
+			}
+		})
+		
+		
+	}
+
 
 	//待审核用户列表通过按钮点击事件执行的方法
 	//直接将用户的id 传给后台做处理
@@ -288,124 +357,260 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		floor.style.visibility = "visible";
 	}
 
-	//定义分页组件的响应函数
-	//1、定义创建表格函数
-	function createTable(data,tableElem){
-		//获取保存内容的数组
-		var contentList = data.extend.list;
+
+	function rangeUnexamieData(dataList){
 		//创建元素碎片收集器
 		var frag = document.createDocumentFragment();
-		//开始遍历
-		for (var i = 0; i < contentList.length; i++) {
-			//先创建一个tr
-			var tr = document.createElement("tr");
-			//创建checkbox 
-			var checkBox = createElem("input");
-			checkBox.type = "checkbox";
-			checkBox.className = "unexamie-select";
-			//创建一个包裹 checkbox 的td 元素
+
+		var checkBox = createElem("input");
+		checkBox.type = "checkbox";
+
+		var passBtn = createElem("button");
+		var passBtnIcon = createElem("span");
+		passBtnIcon.innerText = " ";
+		passBtnIcon.className = "glyphicon glyphicon-ok";
+		passBtnIcon.setAttribute("aria-hidden", "true");
+		//为按钮添加图标
+		passBtn.appendChild(passBtnIcon);
+		
+
+		var refuseBtn = createElem("button");
+		var refuseBtnIcon = createElem("span");
+		refuseBtnIcon.innerText = " ";
+		refuseBtnIcon.className = "glyphicon glyphicon-minus-sign";
+		refuseBtnIcon.setAttribute("aria-hidden", "true");
+		//为按钮添加图标
+		refuseBtn.appendChild(refuseBtnIcon);
+		
+
+		//为按钮添加class
+		passBtn.className = "pass btn btn-success btn-sm";
+		refuseBtn.className = "refuse btn btn-danger btn-sm";
+
+		//为按钮添加文字
+		passBtn.innerHTML += " 通过";
+		refuseBtn.innerHTML += " 拒绝申请";
+
+
+		
+
+		for (var i = 0; i < dataList.length; i++) {
+			//每次遍历创建一个 tr
+			var tr = createElem("tr");
+			//创建一个多选框包裹元素 td
 			var checkBoxTd = createElem("td");
-			//td 元素添加checkbox
-			checkBoxTd.appendChild(checkBox);
-			//行元素添加这个checkboxTd 的元素
-			tr.appendChild(checkBoxTd)
+			var btnClone = checkBox.cloneNode(true);
+			checkBoxTd.appendChild(btnClone);
+			//tr 添加checkBoxTd
+			tr.appendChild(checkBoxTd);
 
-			//创建待审核用户姓名的td
-			var unexamieUserNameTd = createElem("td");
-			//为待审核用户姓名的 td元素添加文字内容
-			unexamieUserNameTd.innerText = contentList[i].username;
-			//为待审核用户姓名的 td元素添加title 属性（待审核用户的id 值）
-			unexamieUserNameTd.title = contentList[i].id;
-			//行元素添加待审核用户姓名的 td 元素
-			tr.appendChild(unexamieUserNameTd);
+			//创建一个教师姓名包裹 td
+			var userTd = createElem("td");
+			userTd.innerText = dataList[i].username;
+			userTd.title = dataList[i].id;
+			tr.appendChild(userTd);
+
+			//创建一个系别包裹 td
+			var departmentTd = createElem("td");
+			departmentTd.innerText = dataList[i].department;
+			tr.appendChild(departmentTd);
+
+			//创建一个专业包裹 td
+			var professionTd = createElem("td");
+			professionTd.innerText = dataList[i].profession;
+			tr.appendChild(professionTd);
+
+			//创建一个按钮包裹 td
+			var btnTd = createElem("td");
+			var passBtnClone = passBtn.cloneNode(true);
+			var refuseBtnClone = refuseBtn.cloneNode(true);
+
+			btnTd.appendChild(passBtnClone);
+			btnTd.appendChild(refuseBtnClone);
+			//为按钮绑定事件
+			EventUntil.addHandler(passBtnClone,"click",unexamieModulePass);
+			EventUntil.addHandler(refuseBtnClone,"click",unexamieModuleRefuse);
+
+			tr.appendChild(btnTd);
 
 
-			//创建待审核用户系别的td
-			var unexamieDeaprtmentTd = createElem("td");
-			//为待审核用户系别 td元素添加文字内容
-			unexamieDeaprtmentTd.innerText = contentList[i].department;
-			//行元素添加待审核用户系别 td
-			tr.appendChild(unexamieDeaprtmentTd);
-
-
-			//创建待审核用户专业的td
-			var unexamieProfessionlTd = createElem("td");
-			//为待审核用户专业 td元素添加文字内容
-			unexamieProfessionlTd.innerText = contentList[i].profession;
-			//行元素添加待审核用户专业 td
-			tr.appendChild(unexamieProfessionlTd);
-
-			//“通过” 创建操作按钮td
-			var passBtnTd = createElem("td");
-			//创建操作按钮 button 元素
-			var passBtn = createElem("button");
-			//操作按钮添加类名
-			passBtn.className = "pass btn btn-success btn-sm";
-			//创建操作按钮图标
-			var passBtnIcon = createElem("span");
-			//操作按钮图标添加类名
-			passBtnIcon.className = "glyphicon glyphicon-ok";
-			//操作按钮添加操作按钮图标
-			passBtn.appendChild(passBtnIcon);
-			//操作按钮添加文字
-			passBtn.innerText = "通过";
-			passBtnTd.appendChild(passBtn);
-			tr.appendChild(passBtnTd);
-
-			//“拒绝” 创建操作按钮td
-			var refuseBtnTd = createElem("td");
-			//创建操作按钮 button 元素
-			var refuseBtn = createElem("button");
-			//操作按钮添加类名
-			passBtn.className = "refuse btn btn-success btn-sm";
-			//创建操作按钮图标
-			var refuseBtnIcon = createElem("span");
-			//操作按钮图标添加类名
-			refuseBtnIcon.className = "glyphicon glyphicon-minus-sign";
-			//操作按钮添加操作按钮图标
-			refuseBtn.appendChild(passBtnIcon);
-			//操作按钮添加文字
-			refuseBtn.innerText = "通过";
-			refuseBtnTd.appendChild(refuseBtn);
-			tr.appendChild(refuseBtnTd);
 
 			frag.appendChild(tr);
-
 		}
 
-		tableElem.appendChild(frag);
+		return frag;
 	}
 
 
+	function createUnexamieTabel(data,tableElem){
+		//清空表格
+		tableElem.innerHTML = "";
+		var list = data.extend.page.list;
+		var content = rangeUnexamieData(list);
+
+		tableElem.appendChild(content);
+	}
+
+	//创建分页导航方法
+	function createPageNav(data,paginationElem){
+		paginationElem.innerHTML = "";
+		//获取分页导航输出分页数的数据
+		var pageList = data.extend.page.navigatepageNums;
+		//创建元素碎片收集器
+		var frag = document.createDocumentFragment();
+
+		//先创建首页，向前翻页，向后翻页，到末页按钮
+		//1、创建回首页按钮
+		var homePageBtn = createElem("li");
+		var homePageBtnContent = createElem("a");
+		homePageBtnContent.href = "#";
+		homePageBtnContent.setAttribute("aria-label", "homepage");
+		homePageBtnContent.innerText = "首页";
+		homePageBtn.appendChild(homePageBtnContent);
+
+		//2、创建向前翻页按钮
+		var prevPageBtn = createElem("li");
+		var prevPageBtnContent = createElem("a");
+		
+
+		prevPageBtnContent.href = "#";
+		prevPageBtnContent.setAttribute("aria-label", "homepage");
+		prevPageBtnContent.innerHTML = "&laquo;";
+
+		prevPageBtn.appendChild(prevPageBtnContent);
+
+		//如果当前后台返回的信息表示没有首页
+		//则禁用首页按钮和向前翻页按钮 并且不为他们绑定点击事件
+		if (data.extend.page.hasPreviousPage == false) {
+			homePageBtn.className = "disabled";
+			prevPageBtn.className = "disabled";
+		}else{
+
+			//如果有前一页
+			//点击上一页按钮的时候 就是当前页 -1
+			//data.extend.page.pageNum 表示当前页
+			EventUntil.addHandler(prevPageBtn,"click",function(){
+				toUnexamiePage(data.extend.page.pageNum - 1);
+			});
+
+			//点击返回首页的时候 就是跳到总页数的第一页
+			//即传 1进去就可以了
+			EventUntil.addHandler(homePageBtn,"click",function(){
+				toUnexamiePage(1);
+			});
+		}
+
+		frag.appendChild(homePageBtn);
+		frag.appendChild(prevPageBtn);
+
+
+
+		//3、创建向后翻页按钮
+		var nextPageBtn = createElem("li");
+		var nextPageBtnContent = createElem("a");
+
+		nextPageBtnContent.href = "#";
+		nextPageBtnContent.setAttribute("aria-label", "homepage");
+		nextPageBtnContent.innerHTML = "&raquo;";
+
+		nextPageBtn.appendChild(nextPageBtnContent);
+
+
+		//4、创建回到末页按钮
+		var lastPageBtn = createElem("li");
+		var lastPageBtnContent = createElem("a");
+
+		lastPageBtnContent.href = "#";
+		lastPageBtnContent.setAttribute("aria-label", "homepage");
+		lastPageBtnContent.innerText = "末页";
+
+		lastPageBtn.appendChild(lastPageBtnContent);
+
+		//如果当前后台返回的信息表示没有末页
+		//则禁用末页按钮和向后翻页按钮 并且不为他们绑定点击事件
+		if (data.extend.page.hasNextPage == false) {
+			nextPageBtn.className = "disabled";
+			lastPageBtn.className = "disabled";
+		}else{
+			//否则给他们都绑定点击事件
+			//下一页按钮就是当前页+1
+			//data.extend.page.pageNum 表示当前页
+			EventUntil.addHandler(nextPageBtn,"click",function(){
+				toUnexamiePage(data.extend.page.pageNum + 1);
+			})
+
+			//末页按钮就直接跳到页数的总数位置
+			//data.extend.page.pages 表示页的总数 即最后一页
+			EventUntil.addHandler(lastPageBtn,"click",function(){
+				toUnexamiePage(data.extend.page.pages);
+			})
+		}
+
+
+		//5、遍历创建数字分页按钮
+		for (var i = 0; i < pageList.length; i++) {
+			var numLi = createElem("li");
+			var numLiIcon = createElem("a");
+			numLiIcon.href = "#";
+			numLiIcon.innerText = pageList[i];
+			numLi.appendChild(numLiIcon);
+
+			if (pageList[i] == data.extend.page.pageNum) {
+
+				numLi.className = "active";
+			}
+			//为每个分页数字按钮添加事件
+			(function(num){
+				EventUntil.addHandler(numLi,"click",function(){
+					toUnexamiePage(num);
+				})
+			})(pageList[i]);
+
+			frag.appendChild(numLi);
+		}
+
+		frag.appendChild(nextPageBtn);
+		frag.appendChild(lastPageBtn);
+		
+		//分页导航添加全部分页按钮元素
+		paginationElem.appendChild(frag);
+	}
+
+	//分页按钮点击调用方法
+	function toUnexamiePage(pn){
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsNotPass.action',
+			type: 'GET',
+			dataType: 'json',
+			data: "pn=" + pn,
+			beforeSend: function(){
+				s("#unexamie-main-content").display = 'none';
+				s("#unexamie-loading-wrap").display = 'block';
+			},
+
+			success: function(data){
+				createUnexamieTabel(data,s("#unexamie-main-content"));
+				createPageNav(data,s("#pagination-content"));
+				s("#unexamie-main-content").display = 'block';
+				s("#unexamie-loading-wrap").display = 'none';
+			}
+		})
+		
+		
+	}
+
+	//页面加载完成时要做的预处理
+	function init(){
+		tagsClick();
+		showUnexamieUserNums();
+	}
 
 	//--------------定义层结束-------------
 
+	init();
 
 
-
-
-	//侧边栏多个tag 点击事件
-	(function tagsClick(){
-		var tags = ss(".child-tag");
-		var contents = ss(".content-wrap");
-		for (var i = 0; i < tags.length; i++) {
-			tags[i].index = i;
-			contents.index = i;
-
-			EventUntil.addHandler(tags[i],"click",function(){
-				var index = this.index;
-				for (var i = 0; i < contents.length; i++) {
-					if (tags[i].className.indexOf("sidebar-tag-active") != -1) {
-						//调用自定义 removeClass 方法
-						removeClass(tags[i],"sidebar-tag-active");
-					}
-					contents[i].style.display = "none";
-				}
-				this.className += " sidebar-tag-active";
-				contents[index].style.display = "block";
-			});
-		}
-	}());
+	
 	
 
 	//初始化子导航栏提示信息
