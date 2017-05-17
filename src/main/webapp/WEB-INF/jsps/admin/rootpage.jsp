@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-27"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-52"></script>
 </head>
 <body>
 	<!-- 弹出层开始 -->
@@ -113,8 +113,8 @@
 				<div class="item-wrap-2">
 					<div id="user-manage" class="sidebar-tag-header">用户审核</div>
 					<ul class="child-tag-wrap">
-						<li class="child-tag">待审核<span id="number-hints">15</span></li>
-						<li class="child-tag">已审核</li>
+						<li class="child-tag" id="unexamie-tag">待审核<span id="number-hints">15</span></li>
+						<li class="child-tag" id="examie-tag">已审核</li>
 					</ul>
 				</div>
 			</div>
@@ -144,6 +144,9 @@
 							<button id="add-tag-btn" type="button">添加导航</button>
 							<span id="add-tag-hint">已有此标签</span>
 						</p>
+					</div>
+					<div class="loading-icon-wrap">
+						<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
 					</div>
 				</div>
 				<!-- 右侧添加导航栏模块结束 -->
@@ -231,6 +234,9 @@
 								</tr>
 							</tbody>
 						</table>
+						<div class="loading-icon-wrap">
+								<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
+						</div>
 					</div>	
 				</div>
 				<!-- 右侧删除/修改导航栏模块结束 -->
@@ -346,9 +352,9 @@
 						<!-- 待审核列表分页组建包裹层 -->
 						<div class="divid-page-wrap">
 							<nav aria-label="Page navigation">
-							  <ul class="pagination">
+							  <ul class="pagination" id="pagination-content">
 							  	<li>
-							      <a href="#" aria-label="Previous">首页</a>
+							      <a href="#" aria-label="homepage">首页</a>
 							    </li>
 							    <li>
 							      <a href="#" aria-label="Previous">
@@ -366,13 +372,13 @@
 							      </a>
 							    </li>
 							    <li>
-							      <a href="#" aria-label="Previous">末页</a>
+							      <a href="#" aria-label="lastpage">末页</a>
 							    </li>
 								</ul>
 						</nav>
 					</div>
 				</div>
-				<div class="loading-icon-wrap">
+				<div class="loading-icon-wrap" id="unexamie-loading-wrap">
 						<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
 				</div>
 			</div>
@@ -525,6 +531,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-27">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-33">
 </body>
 </html>
