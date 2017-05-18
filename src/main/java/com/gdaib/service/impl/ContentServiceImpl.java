@@ -24,10 +24,11 @@ public class ContentServiceImpl implements ContentService {
      */
     @Override
     public List<Navigation> getNavByDepartIdandParent(int departId, int parent) throws Exception {
-        NavigationExample navigationExample = new NavigationExample();
-        NavigationExample.Criteria criteria = navigationExample.createCriteria();
-        criteria.andDepartmentIdEqualTo(departId);
-        criteria.andParentEqualTo(parent);
-        return navigationMapper.selectByExample(navigationExample);
+//        NavigationExample navigationExample = new NavigationExample();
+//        NavigationExample.Criteria criteria = navigationExample.createCriteria();
+//        criteria.andDepartmentIdEqualTo(departId);
+//        criteria.andParentEqualTo(parent);
+//        return navigationMapper.selectByExample(navigationExample);
+        return null;
     }
 }
