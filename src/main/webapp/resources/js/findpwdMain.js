@@ -78,12 +78,13 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		if (count == allInputs.length) {
 			//如果全部都正确
 			alert("请到跳转页面输入新的密码");
-            s("#forms").submit();
-			 this.disabled = "disabled";
 
+			 this.disabled = "disabled";
 			this.style.backgroundColor = "#666666";
+
 			
 			s("#next-step").submit();
+
 
 			return true;
 
