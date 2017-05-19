@@ -32,4 +32,10 @@ public class NavigationServerImpl implements NavigationServer {
         List<Navigation> navigations = navigationExtMapper.selectNavigationByDepartmentIdAndParent(departmentId,parent);
         return navigations;
     }
+
+    @Override
+    public Integer deleteNavByPrimaryKey(int id) throws Exception {
+        int result = navigationExtMapper.deleteByPrimaryKey(id);
+        return result;
+    }
 }

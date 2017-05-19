@@ -17,6 +17,8 @@ public interface NavigationServer {
     //获取某系下的某个级别的导航 0为一级
     public List<Navigation> selectNecByDepartIdAndParent(Integer departmentId,Integer parent) throws Exception;
 
+    //根据id删除一条导航
+    public Integer deleteNavByPrimaryKey(int id) throws Exception;
 
 
 }

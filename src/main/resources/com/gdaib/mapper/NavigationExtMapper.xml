@@ -11,4 +11,11 @@
         SELECT * FROM `t_navigation` WHERE parent = #{parent} AND departmentId=#{departmentId}
     </select>
 
+
+    <update id="upExtendByParent" parameterType="int">
+        UPDATE `t_navigation` SET
+        extend = 1
+        WHERE parent = #{parent}
+    </update>
+
 </mapper>

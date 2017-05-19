@@ -18,5 +18,6 @@ public interface NavigationExtMapper extends NavigationMapper {
             @Param("departmentId") Integer departmentId,
             @Param("parent") Integer parent) throws Exception;
 
-    public Integer insertNevByNavPojo(Navigation navigation) throws Exception;
+    //插入导航后更新extend和URL
+    public void upExtendByParent(int parent) throws Exception;
 }
