@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170509-52"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-5"></script>
 </head>
 <body>
 	<!-- 弹出层开始 -->
@@ -145,9 +145,6 @@
 							<span id="add-tag-hint">已有此标签</span>
 						</p>
 					</div>
-					<div class="loading-icon-wrap">
-						<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
-					</div>
 				</div>
 				<!-- 右侧添加导航栏模块结束 -->
 
@@ -234,16 +231,13 @@
 								</tr>
 							</tbody>
 						</table>
-						<div class="loading-icon-wrap">
-								<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
-						</div>
 					</div>	
 				</div>
 				<!-- 右侧删除/修改导航栏模块结束 -->
 				
 				<!-- 右侧待审核用户列表模块 -->
 				<div class="content-wrap">
-					<div class="unexamie-wrap">
+					<div class="unexamie-wrap" id="unexamie-main-content-wrap">
 						<table id="unexamie" class="message-list table table-striped table-hover" cellspacing="0">
 							<thead>
 								<tr>
@@ -352,7 +346,7 @@
 						<!-- 待审核列表分页组建包裹层 -->
 						<div class="divid-page-wrap">
 							<nav aria-label="Page navigation">
-							  <ul class="pagination" id="pagination-content">
+							  <ul class="pagination" id="unexamie-pagination-content">
 							  	<li>
 							      <a href="#" aria-label="homepage">首页</a>
 							    </li>
@@ -377,9 +371,6 @@
 								</ul>
 						</nav>
 					</div>
-				</div>
-				<div class="loading-icon-wrap" id="unexamie-loading-wrap">
-						<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
 				</div>
 			</div>
 				<!-- 右侧待审核用户列表模块结束 -->			
@@ -520,9 +511,6 @@
 							</nav>
 						</div>
 					</div>
-					<div class="loading-icon-wrap">
-						<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="">
-					</div>
 				</div>
 				<!-- 右侧已审核用户列表模块 -->
 			</div>
@@ -531,6 +519,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-33">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-35">
 </body>
 </html>

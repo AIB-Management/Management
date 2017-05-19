@@ -54,59 +54,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		
 	}
 
-	//侧边栏多个tag 点击事件
-	function tagsClick(){
-		var tags = ss(".child-tag");
-		var contents = ss(".content-wrap");
-		var loadingIcon = ss(".loading-icon-wrap");
-
-		for (var i = 0; i < tags.length; i++) {
-			tags[i].index = i;
-
-			EventUntil.addHandler(tags[i],"click",function(){
-				var index = this.index;
-
-				//调整左侧tag 激活样式
-				for (var i = 0; i < tags.length; i++) {
-					if (tags[i].className.indexOf("sidebar-tag-active") != -1) {
-						//调用自定义 removeClass 方法
-						removeClass(tags[i],"sidebar-tag-active");
-					}
-					contents[i].style.display = "none";
-				}
-				contents[index].style.display = 'block';
-
-				//为当前点击的 tag增加激活状态样式
-				this.className += " sidebar-tag-active";
-				
-				//如果当前点击的tag 为未审核列表
-				//执行如下处理
-				if (this.id == "unexamie-tag") {
-					s("#number-hints").style.display = 'none';
-					$.ajax({
-						url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsNotPass.action',
-						type: 'GET',
-						async: false,
-						dataType: 'json',
-						beforeSend: function(){
-							s("#unexamie-main-content").display = 'none';
-							loadingIcon[index].display = 'block';
-						},
-
-						success: function(data){
-							createUnexamieTabel(data,s("#unexamie-main-content"));
-							createPageNav(data,s("#pagination-content"));
-							loadingIcon[index].display = 'none';
-							s("#unexamie-main-content").display = 'block';
-						}
-
-					})
-					
-					
-				}
-			});
-		}
-	};
 
 	//修改导航弹出层模块填写内容方法
 	// function setFloorInfo(elemList,infoList){
@@ -358,9 +305,14 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	}
 
 
-	function rangeUnexamieData(dataList){
+	//整理未审核用户数据
+	//将后台 json 字符串转换为 dom 元素
+	function createUnexamieTable(data){
+		s("#unexamie-main-content").innerHTML = "";
 		//创建元素碎片收集器
 		var frag = document.createDocumentFragment();
+
+		var dataList = data.extend.page.list;
 
 		var checkBox = createElem("input");
 		checkBox.type = "checkbox";
@@ -438,22 +390,14 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			frag.appendChild(tr);
 		}
 
-		return frag;
+		//表格元素添加数据
+		s("#unexamie-main-content").appendChild(frag);
 	}
 
-
-	function createUnexamieTabel(data,tableElem){
-		//清空表格
-		tableElem.innerHTML = "";
-		var list = data.extend.page.list;
-		var content = rangeUnexamieData(list);
-
-		tableElem.appendChild(content);
-	}
-
-	//创建分页导航方法
-	function createPageNav(data,paginationElem){
-		paginationElem.innerHTML = "";
+	// 创建分页导航方法
+	// 传入原始数据，分页导航的载体
+	function createUnexamiePageNav(data){
+		s("#unexamie-pagination-content").innerHTML = "";
 		//获取分页导航输出分页数的数据
 		var pageList = data.extend.page.navigatepageNums;
 		//创建元素碎片收集器
@@ -573,8 +517,9 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		frag.appendChild(lastPageBtn);
 		
 		//分页导航添加全部分页按钮元素
-		paginationElem.appendChild(frag);
+		s("#unexamie-pagination-content").appendChild(frag);
 	}
+
 
 	//分页按钮点击调用方法
 	function toUnexamiePage(pn){
@@ -583,21 +528,81 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			type: 'GET',
 			dataType: 'json',
 			data: "pn=" + pn,
-			beforeSend: function(){
-				s("#unexamie-main-content").display = 'none';
-				s("#unexamie-loading-wrap").display = 'block';
-			},
 
 			success: function(data){
-				createUnexamieTabel(data,s("#unexamie-main-content"));
-				createPageNav(data,s("#pagination-content"));
-				s("#unexamie-main-content").display = 'block';
-				s("#unexamie-loading-wrap").display = 'none';
+				if (data.code == 100) {
+
+					createUnexamieTable(data);
+					createUnexamiePageNav(data);
+
+				}else{
+					alert(data.msg);
+				}
 			}
 		})
 		
 		
 	}
+
+	//侧边栏多个tag 点击事件
+	function tagsClick(){
+		var tags = ss(".child-tag");
+		var contents = ss(".content-wrap");
+		var loadingIcon = ss(".loading-icon-wrap");
+
+		for (var i = 0; i < tags.length; i++) {
+			tags[i].index = i;
+
+			EventUntil.addHandler(tags[i],"click",function(){
+				var index = this.index;
+
+				//调整左侧tag 激活样式
+				for (var i = 0; i < tags.length; i++) {
+					if (tags[i].className.indexOf("sidebar-tag-active") != -1) {
+						//调用自定义 removeClass 方法
+						removeClass(tags[i],"sidebar-tag-active");
+					}
+					contents[i].style.display = "none";
+				}
+				contents[index].style.display = 'block';
+
+				//为当前点击的 tag增加激活状态样式
+				this.className += " sidebar-tag-active";
+				
+				//如果当前点击的tag 为未审核列表
+				//执行如下处理
+				if (this.id == "unexamie-tag") {
+					s("#number-hints").style.display = 'none';
+					$.ajax({
+						url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsNotPass.action',
+						type: 'GET',
+						async: false,
+						dataType: 'json',
+						success: function(data){
+							toUnexamiePage(1);
+						}
+
+					})
+					
+					
+				}
+			});
+		}
+	};
+
+	
+
+
+	function createUnexamieTabel(elemList,tableElem){
+		//清空表格
+		tableElem.innerHTML = "";
+
+		tableElem.appendChild(elemList);
+	}
+
+	
+
+	
 
 	//页面加载完成时要做的预处理
 	function init(){
