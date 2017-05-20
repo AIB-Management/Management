@@ -3,13 +3,15 @@ package com.gdaib.pojo;
 public class Navigation {
     private Integer id;
 
-    private Integer departmentId;
+    private Integer departmentid;
 
     private Integer parent;
 
     private String title;
 
     private String url;
+
+    private Integer extend;
 
     public Integer getId() {
         return id;
@@ -19,12 +21,12 @@ public class Navigation {
         this.id = id;
     }
 
-    public Integer getDepartmentId() {
-        return departmentId;
+    public Integer getDepartmentid() {
+        return departmentid;
     }
 
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartmentid(Integer departmentid) {
+        this.departmentid = departmentid;
     }
 
     public Integer getParent() {
@@ -49,5 +51,25 @@ public class Navigation {
 
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
+    }
+
+    public Integer getExtend() {
+        return extend;
+    }
+
+    public void setExtend(Integer extend) {
+        this.extend = extend;
+    }
+
+    @Override
+    public String toString() {
+        return "Navigation{" +
+                "id=" + id +
+                ", departmentid=" + departmentid +
+                ", parent=" + parent +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", extend=" + extend +
+                '}';
     }
 }

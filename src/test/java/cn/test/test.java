@@ -2,9 +2,12 @@ package cn.test;
 
 
 import com.gdaib.mapper.AccountMapper;
+import com.gdaib.mapper.NavigationExtMapper;
 import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.pojo.*;
+import com.gdaib.service.NavigationServer;
 import com.gdaib.service.UsersService;
+import com.gdaib.service.impl.NavigationServerImpl;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
@@ -47,54 +50,35 @@ import java.util.regex.Pattern;
 public class test{
 
     @Autowired
-    private NavigationMapper navigationMapper;
+    NavigationServer navigationServer;
 
-    @Autowired
-    private AccountMapper accountMapper;
-
-    @Autowired
-    private SqlSession sqlSession;
-    @Test
-    public void test1(){
-        AccountExample accountExample = new AccountExample();
-        AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andIdEqualTo(21);
-
-        accountMapper.deleteByExample(accountExample);
-
+    //@Test
+    public void testSelectCountByParent() throws Exception{
+        Integer count = navigationServer.selectCountByParent(0);
+        System.out.println("---------------"+count+"---------------");
     }
 
-    //传入Springmvc的ioc
-    @Autowired
-    WebApplicationContext webApplicationContext;
-
-    //虚拟mvc请求，获取处理结果
-
-    MockMvc mockMvc;
-
-    //创建mvc
-    @Before
-    public void initMockMvc(){
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    //@Test
+    public void testSelectNecByDepartIdAndParent() throws Exception{
+       List<Navigation> navigations =  navigationServer.selectNecByDepartIdAndParent(100,0);
+        for (Navigation navigation:navigations){
+            System.out.println(navigation.toString());
+        }
     }
 
     @Test
-    public void testCMvc() throws Exception {
-        //perform:模拟发送请求,得到返回值
+    public void testInsertNav() throws Exception {
+        Navigation navigation = new Navigation();
+        navigation.setTitle("一级导航");
+        navigation.setDepartmentid(100);
+        navigation.setParent(0);
+        navigation.setExtend(0);
+        Integer result = navigationServer.insertNavigation(navigation);
 
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/public/domodifyPassword.action").param("pwd","123123").param("confirmpwd","123123").param("oldpwd","123123")).andReturn();
-        Object error = mvcResult.getRequest().getAttribute("error");
-        System.out.println(error);
-
-
-    }
-
-    @Autowired
-    UsersService usersService;
-    @Test
-    public void testService() throws Exception {
-        AccountInfo b = usersService.findAccountInfoForId(2);
-        System.out.println(b);
+        if (result > 0) {
+            System.out.println("----------" + "添加成功" + "---------");
+        } else {
+            System.out.println("----------" + "添加失败" + "---------");
+        }
     }
 }
