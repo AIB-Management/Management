@@ -11,18 +11,18 @@ public class FilterChainDefinitionMapBuilder {
     public LinkedHashMap<String,String> builderFilterChainDefinitionMap(){
         LinkedHashMap<String,String> map = new LinkedHashMap<String,String>();
 
-        /**
-         *
-         <!--/shiro/login = anon-->
-         <!--/shiro/logout = logout-->
-
-         <!--&lt;!&ndash;具备user角色才可以访问&ndash;&gt;-->
-         <!--/jsp/user.jsp = roles[user]-->
-         <!--&lt;!&ndash;具备admin角色才可以访问&ndash;&gt;-->
-         <!--/jsp/admin.jsp = roles[admin]-->
-
-         <!--/** = authc-->
-         */
+//        /**
+//         *
+//         <!--/shiro/login = anon-->
+//         <!--/shiro/logout = logout-->
+//
+//         <!--&lt;!&ndash;具备user角色才可以访问&ndash;&gt;-->
+//         <!--/jsp/user.jsp = roles[user]-->
+//         <!--&lt;!&ndash;具备admin角色才可以访问&ndash;&gt;-->
+//         <!--/jsp/admin.jsp = roles[admin]-->
+//
+//         <!--/** = authc-->
+//         */
 
 //
 
@@ -42,7 +42,7 @@ public class FilterChainDefinitionMapBuilder {
 //        map.put("/login.action","anon");
 //
 //        map.put("/**","authc");
-        map.put("/content/departmentpage.action","authc");
+        map.put("/content/personalpage.action","authc");
         map.put("/shiro/logout","logout");
 
         return map;

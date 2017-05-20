@@ -129,8 +129,16 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxPassAccount")
     @ResponseBody
-    public Msg ajaxPassAccount(Integer id) throws Exception {
-        usersService.updateAccountByCharacter(id,"teacher");
+    public Msg ajaxPassAccount(String id) throws Exception {
+        if(id == null || id.equals("")){
+            return Msg.fail();
+
+        }else{
+            String[] split = id.split(",");
+
+            usersService.updateAccountByCharacter(id,"teacher");
+        }
+
         return Msg.success();
     }
 

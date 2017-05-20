@@ -45,7 +45,7 @@ public class LoginRealm extends AuthorizingRealm {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-            System.out.println(count == null);
+
 
             //4.得到的用户信息做出验证，如果是不存在或者未验证，直接抛出异常
             if(count == null){
@@ -89,7 +89,7 @@ public class LoginRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
 
-
+        System.out.println("lala");
 
         return null;
     }
