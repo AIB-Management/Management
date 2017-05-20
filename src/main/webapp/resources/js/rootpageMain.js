@@ -63,6 +63,18 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		
 	}
 
+	//定义一个计算选中状态的多选框数量的函数
+	function countCheckedBoxChecked(elem){
+		var count = 0;
+		for (var i = 0; i < elem.length; i++) {
+			if (elem[i].checked == true) {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
 
 
 	//修改导航栏模块按钮点击事件
@@ -166,8 +178,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			data: "id=" + id,
 			success: function(data){
 				alert("提交成功");
-				//返回数据的时候重新加载未审核用户第一页的数据
-				toUnexamiePage(1);
+				//返回数据的时候回到操作前停留的页码处
+				toUnexamiePage(curUnexamieModulePage);
 			}
 		});
 	}
@@ -205,20 +217,15 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		//获取所有多选框元素
 		var checkBoxs = ss(".unexamie-select");
 		//定义当前点击多选框时 "被选择多选框数量" 计算变量
-		var checkedNum = 0;
+		var checkedNum = countCheckedBoxChecked(checkBoxs);
 
-		for (var i = 0; i < checkBoxs.length; i++) {
-			//点击多选框的时候遍历一次全部多选框
-			//有选中的 checkedNum +1
-			if (checkBoxs[i].checked == true) {
-				checkedNum++;
-			}
-		}
 
 		//当全部多选框被选中的时候
 		//"多选按钮 #unexamie-select-all" 状态为选中
 		if (checkedNum == checkBoxs.length) {
 			s("#unexamie-select-all").checked = true;
+		}else{
+			s("#unexamie-select-all").checked = false;
 		}
 	}
 
@@ -474,7 +481,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	}
 
 
-	//未审核用户表 "选择全部多选框" 点击事件执行函数
+	//未审核用户表 "选择全部" 多选框点击事件执行函数
 	function unexamieSelectAllBtn(){
 		//获取未审核用户当前页的所有多选框
 		var checkBoxs = ss(".unexamie-select");
@@ -491,43 +498,103 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		
 	}
 
-	//未审核列表批量通过按钮点击事件
+	//未审核列表批量通过按钮点击事件调用函数
 	function unexamiePassAll(){
+		//点击批量通过按钮时 首先要判断当前有没有多选框选中
+		//获取所有多选框元素
+		var checkboxs = ss(".unexamie-select");
+		//定义计算变量
+		var checkedCount = countCheckedBoxChecked(checkboxs);
+		
+		if (checkedCount != 0) {
+			//如果当前有选中多选框
+			//创建保存多个id 值得数组
+			var idList = [];
+			//遍历所有复选框
+			for (var i = 0; i < checkboxs.length; i++) {
+				//把多选框对应的用户名列的 title值（即id 值）推进数组
+				if (checkboxs[i].checked == true) {
+					var idVal = checkboxs[i].parentNode.parentNode.querySelectorAll("td")[1].title;
+					idList.push(idVal);
+				}
+			}
+
+			//发送ajax
+			$.ajax({
+				url: 'http://localhost:8080/Management/admin/ajaxPassAccount.action',
+				type: ' POST',
+				dataType: 'json',
+				data: "id=" + idList.join(","),
+				success: function(data){
+					//如果返回的数据状态码为 100
+					if (parseInt(data.code) == 100) {
+						//提示
+						alert("操作成功！");
+					}
+				}
+			})
+			
+			
+		}else{
+			alert("你没有选中任何字段");
+		}
+		
+	}
+
+
+	//未审核用户列表批量拒绝点击事件调用函数
+	function unexamieRefuseAll(){
 		//创建保存多个 id 的数组
 		var idList = [];
+		//创建保存多个用户名的数组
+		var usernameList = [];
 		//获取所有多选框元素
-		var checkBoxs = ss(".unexamie-select");
+		var checkboxs = ss(".unexamie-select");
+		//统计当前选中的多选框个数
+		var checkedNum = countCheckedBoxChecked(checkboxs);
+		if (checkedNum != 0) {
+			//遍历这一页每一个多选框
+			for (var i = 0; i < checkboxs.length; i++) {
+				if (checkboxs[i].checked == true) {
+						//如果有选中的
+						//获取选中多选框所在行的第二列的 title 值
+						var idVal = checkboxs[i].parentNode.parentNode.querySelectorAll("td")[1].title;
+						//获取选中多选框所在行的第二列的 文本 值
+						var usernameVal = checkboxs[i].parentNode.parentNode.querySelectorAll("td")[1].innerText;
+						//保存id 值数组推入对应的id
+						idList.push(idVal);
+						//保存用户名数组推入对应的用户名
+						usernameList.push(usernameVal);
+					}
+				}
 
-		//遍历这一页每一个多选框
-		//如果有选中的
-		//获取选中多选框所在行的第二列的 title 值
-		for (var i = 0; i < checkBoxs.length; i++) {
-			if (checkBoxs[i].checked == true) {
-				var idVal = checkBoxs[i].parentNode.parentNode.querySelectorAll("td")[1].title;
-				idList.push(idVal);
-			}
+					//将保存到的id 和 用户名 传递给提示弹出层拒绝用户申请模块那里
+					s("#refuse-all-username").innerText = usernameList.join(",");
+					s("#refuse-all-username").title = idList.join(",");
+
+					//获取提示弹出层
+					var hintFloor = s("#hint-floor");
+					
+					//显示提示拒绝用户信息模块弹出层
+					s("#refuse-all-user").style.display = 'block';
+					//显示弹出层
+					hintFloor.style.display = "block";
+		}else{
+			alert("你没有选中任何字段");
 		}
-
-		//将获取到的值发送到后台处理页面
-		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxPassAccount.action',
-			type: 'POST',
-			dataType: 'json',
-			data: "id=" + idList.join(","),
-			success: function(data){
-				toUnexamiePage(curUnexamieModulePage);
-				alert("操作成功");
-			}
-		});
 		
 		
 	}
+
 
 	//未审核用户 "选择全部多选框" 点击事件
 	EventUntil.addHandler(s("#unexamie-select-all"),"click",unexamieSelectAllBtn);
 
 	//未审核用户 "批量通过按钮" 点击事件
 	EventUntil.addHandler(s("#unexamie-pass-all"),"click",unexamiePassAll);
+
+	//未审核用户 "批量拒绝按钮" 点击事件
+	EventUntil.addHandler(s("#unexamie-refuse-all"),"click",unexamieRefuseAll);
 
 	//------------- 未审核模块操作事件结束 -------------------------
 
@@ -668,7 +735,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//------------ 弹出层事件 ----------------
 
 
-	//修改导航栏弹出层功能
+	//--------------- 修改导航栏弹出层开始 ----------------
 	//1、弹出层子导航栏内容修改输入框事件
 	EventUntil.addHandler(s("#childTagInfo"),"focus",function(){
 		checkBy.onFocus(this,"#modify-childNav-hint","#408DD2");
@@ -747,7 +814,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
 
-
+	//----------------- 拒绝用户弹出层功能开始 -------------------
 	//拒绝用户弹出层功能
 	//1、拒绝用户注册模块关闭按钮点击事件
 	EventUntil.addHandler(s("#refuse-close-btn"),"click",function(){
@@ -769,21 +836,25 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		}
 	})
 
-	//3、拒绝用户注册模块提交拒绝信息按钮点击事件
+	//3、拒绝用户注册模块 "提交拒绝信息" 按钮点击事件
 	EventUntil.addHandler(s("#send-refuse-info"),"click",function(){
-		//ajax 提交用户的id （则xxx title属性）,拒绝理由 给后台处理
-		//当处理完毕后再将包裹层隐藏
+		//ajax 提交用户的id （即title属性）,拒绝理由 给后台处理
+		//当处理完毕后再将弹出层包裹层隐藏
 
 		//获取当前拒绝用户的后台 id 值
 		var idVal = s("#refuse-username").title;
 		//拒绝的理由
 		var refuseVal = s("#refuse-content").value;
 		//获取加载图片元素
-		var icon = s("#loading-icon");
+		var icon = s("#refuse-loading-icon");
+		icon.style.width = "15px";
+		icon.style.height = "15px";
+
+
 		$.ajax({
-			url: 'http://localhost:8080/Managementadmin/ajaxRejectAccount.action',
+			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
 			async: false,
-			type: 'GET',
+			type: 'POST',
 			dataType: 'json',
 			data: "id=" + idVal + "&content=" + refuseVal,
 			beforesend: function(){
@@ -797,7 +868,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				//3、loading图标隐藏（src = ""）
 				//4、弹出层隐藏
 				//输出第一页未审核用户数据
-				toUnexamiePage(1);
+				toUnexamiePage(curUnexamieModulePage);
 				//隐藏加载图标
 				icon.src = "";
 				//隐藏弹出层
@@ -816,12 +887,14 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		//获取当前拒绝用户的后台 id 值
 		var idVal = s("#refuse-username").title;
 		//获取加载图片元素
-		var icon = s("#loading-icon");
+		var icon = s("#refuse-loading-icon");
+		icon.style.width = "15px";
+		icon.style.height = "15px";
 
 		$.ajax({
-			url: 'http://localhost:8080/Managementadmin/ajaxRejectAccount.action',
+			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
 			async: false,
-			type: 'GET',
+			type: 'POST',
 			dataType: 'json',
 			data: "id=" + idVal,
 			beforesend: function(){
@@ -835,7 +908,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				//3、loading图标隐藏（src = ""）
 				//4、弹出层隐藏
 
-				toUnexamiePage(1);
+				toUnexamiePage(curUnexamieModulePage);
 				//隐藏加载图标
 				icon.src = "";
 				//隐藏弹出层
@@ -848,6 +921,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//----------------- 拒绝用户弹出层功能结束 -------------------
 
 
+	//----------------- 撤回用户弹出层功能开始 -------------------
 	//撤回用户弹出层功能
 	//1、取消撤回按钮点击事件
 	EventUntil.addHandler(s("#cancel-recall-user"),"click",function(){
@@ -896,5 +970,34 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	})
 
 	//----------------- 撤回用户弹出层功能结束 -------------------
+
+
+	//---------------- 批量拒绝用户申请提示层开始 ------------------
+
+	EventUntil.addHandler(s("#cancel-refuse-all-user"),"click",function(){
+		s("#hint-floor").style.display = "none";
+	})
+
+	EventUntil.addHandler(s("#confirm-refuse-all-user"),"click",function(){
+		//获取拒绝用户的id
+		var idVal = s("#refuse-all-username").title;
+		//发送ajax 请求
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "id=" + idVal,
+			success: function(){
+				if (parseInt(data.code) == 100) {
+					alert("操作成功！");
+					//切换到操作前停留的页码处
+					toUnexamiePage(curUnexamieModulePage);
+				}
+			}
+		})
+		
+	})
+
+	//----------------------- 批量拒绝用户申请提示层结束 -------------------
 
 })

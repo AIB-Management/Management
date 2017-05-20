@@ -46,7 +46,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				checkBy.ajax({	
 					elem: args,
 					hintsContent: "span",
-					errorColor: "#00C12B",
+					errorColor: "#FB000D",
 					//后台页面地址
 					url:"http://localhost:8080/Management/public/ajaxFindUsernameIsExists.action",
 					reqData: "accountVal="+myTrim(args.value),
@@ -68,7 +68,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				checkBy.ajax({	
 					elem: args,
 					hintsContent: "span",
-					errorColor: "#00C12B",
+					errorColor: "#FB000D",
 					//后台页面地址
 					url:"http://localhost:8080/Management/public/ajaxFindEmailIsExists.action",
 					reqData: "mailVal="+myTrim(args.value),

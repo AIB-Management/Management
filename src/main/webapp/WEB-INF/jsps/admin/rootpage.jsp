@@ -9,9 +9,26 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-7"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-9"></script>
 </head>
 <body>
+	<!-- 提示框开始 -->
+	<div id="hint-floor">
+		<div id="refuse-all-user">
+			<p class="refuse-all-user-wrap hint-floor-title">
+					<span>提示</span>
+			</p>
+			<p class="refuse-all-user-wrap hint-floor-main-content">
+				<span class="refuse-all-user-hint">批量拒绝这些用户：<br><b id="refuse-all-username">xxx</b><br>他们将不会受到任何提示信息，确认执行此操作吗？</span>
+			</p>
+			<p class="refuse-all-user-wrap btn-range">
+				<button type="button" id="cancel-refuse-all-user" class="btn btn-success btn-sm">取消</button>
+				<button type="button" id="confirm-refuse-all-user" class="btn btn-danger btn-sm">确认</button>
+				<img src="" alt="" id="refuse-all-user-loading-icon">
+			</p>
+		</div>
+	</div>
+	<!-- 提示框结束 -->
 	<!-- 弹出层开始 -->
 	<div id="floor">
 		<!-- 修改导航弹出层内容 -->
