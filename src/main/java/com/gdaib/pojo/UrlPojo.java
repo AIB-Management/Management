@@ -20,6 +20,10 @@ public class UrlPojo {
     }
 
     public UrlPojo(){
+       scheme = "http";
+       serverName = "/127.0.0.1";
+       port = "8080";
+       contextPath = "Management";
 
     }
 

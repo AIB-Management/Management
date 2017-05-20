@@ -11,6 +11,7 @@ import com.gdaib.service.impl.NavigationServerImpl;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,32 +47,35 @@ import java.util.regex.Pattern;
 //得到webapplication的ioc容器
 @WebAppConfiguration
 //加入mvc和spring的配置文件
-@ContextConfiguration(locations = {"classpath:config/spring/application-*.xml","classpath:config/spring/Springmvc.xml"})
-public class test{
+@ContextConfiguration(locations = {"classpath:config/spring/application-*.xml", "classpath:config/spring/Springmvc.xml"})
+public class test {
 
     @Autowired
     NavigationServer navigationServer;
 
     //@Test
-    public void testSelectCountByParent() throws Exception{
+    public void testSelectCountByParent() throws Exception {
         Integer count = navigationServer.selectCountByParent(0);
-        System.out.println("---------------"+count+"---------------");
+        System.out.println("---------------" + count + "---------------");
     }
 
-    //@Test
-    public void testSelectNecByDepartIdAndParent() throws Exception{
-       List<Navigation> navigations =  navigationServer.selectNecByDepartIdAndParent(100,0);
-        for (Navigation navigation:navigations){
+    //@After
+    public void testSelectNecByDepartIdAndParent() throws Exception {
+
+
+        List<Navigation> navigations = navigationServer.selectNecByDepartIdAndParent(100, 0);
+        for (Navigation navigation : navigations) {
             System.out.println(navigation.toString());
         }
     }
 
-    @Test
+    //@Test
     public void testInsertNav() throws Exception {
         Navigation navigation = new Navigation();
-        navigation.setTitle("一级导航");
+        navigation.setTitle("三级导航");
+
         navigation.setDepartmentid(100);
-        navigation.setParent(0);
+        navigation.setParent(2);
         navigation.setExtend(0);
         Integer result = navigationServer.insertNavigation(navigation);
 
@@ -81,4 +85,17 @@ public class test{
             System.out.println("----------" + "添加失败" + "---------");
         }
     }
+
+    @Test
+    public void testDeleteNav() throws Exception {
+        int result = navigationServer.deleteNavByPrimaryKey(32);
+
+        if (result > 0) {
+            System.out.println("----------" + "删除成功" + "---------");
+        } else {
+            System.out.println("----------" + "删除失败" + "---------");
+        }
+    }
+
+
 }
