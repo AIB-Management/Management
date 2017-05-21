@@ -209,23 +209,27 @@ public class ManageController {
 
     @RequestMapping("/admin/ajaxInsertNev")
     @ResponseBody
-    public Msg ajaxInsertNev(Navigation navigation) throws Exception {
-        System.out.println(navigation.toString());
+    public Msg ajaxInsertNev(Navigation navigation, HttpServletRequest request) throws Exception {
+
 
         if (navigation == null || navigation.getDepartmentid() == null || navigation.getTitle() == null) {
             return Msg.fail();
         }
+
+        String title = toUtf(navigation.getTitle());
+        navigation.setTitle(title);
 
         if (navigation.getParent() == null) {
             navigation.setParent(0);
         }
         navigation.setExtend(0);
 
+        System.out.println("charaSet:" + request.getCharacterEncoding() + "navigation:" + navigation.toString());
         int result = 0;
         result = navigationServer.insertNavigation(navigation);
 
         if (result > 0) {
-            Msg.success();
+            return Msg.success();
         }
 
         return Msg.fail();
@@ -278,7 +282,9 @@ public class ManageController {
             return Msg.fail();
         }
         int result = 0;
-        result = navigationServer.updateNavByPrimaryKey(navigationId, title);
+
+        result = navigationServer.updateNavByPrimaryKey(navigationId, toUtf(title));
+
         if (result > 0) {
             return Msg.success();
         }
@@ -287,5 +293,9 @@ public class ManageController {
         return Msg.fail();
     }
 
+    private String toUtf(String param) throws Exception {
+        String utfStr = new String(param.getBytes("iso-8859-1"), "utf-8");
+        return utfStr;
+    }
 
 }

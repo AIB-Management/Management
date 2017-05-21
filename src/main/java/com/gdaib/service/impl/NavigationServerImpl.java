@@ -86,6 +86,7 @@ public class NavigationServerImpl implements NavigationServer {
         navigation.setTitle(title);
         navigation.setId(navigationId);
 
+
         NavigationExample example = new NavigationExample();
         NavigationExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(navigationId);
