@@ -13,7 +13,10 @@ public interface NavigationServer {
     public Integer insertNavigation(Navigation navigation) throws Exception;
 
     //更新导航
-    public Integer updateNav(Navigation navigation) throws Exception;
+    public Integer updateNavByParent(Navigation navigation) throws Exception;
+
+    //更新导航
+    public int updateNavByPrimaryKey(int navigationId,String title) throws Exception;
 
     //根据id删除一条导航
     public Integer deleteNavByPrimaryKey(int id) throws Exception;

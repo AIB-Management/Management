@@ -36,8 +36,8 @@ public class NavigationServerImpl implements NavigationServer {
         Navigation upNav = new Navigation();
         upNav.setParent(navigation.getParent());
         upNav.setExtend(EXTEND);
-        upNav.setUrl(QUERY_NAV_ACTION);
-        updateNav(upNav);
+//        upNav.setUrl(QUERY_NAV_ACTION);
+        updateNavByParent(upNav);
 
         return insertResult;
     }
@@ -49,23 +49,26 @@ public class NavigationServerImpl implements NavigationServer {
 
         int result = navigationExtMapper.deleteByPrimaryKey(id);
 
-        if (navigation != null && navigation.getParent() != null && navigation.getParent() == 0) {
+        if (navigation != null) {
             int ifExtend = selectCountByParent(navigation.getParent());
+            System.out.println("ifExtemd = " + ifExtend);
             if (ifExtend == UN_EXTEND) {
                 Navigation upNavigation = new Navigation();
                 upNavigation.setParent(navigation.getParent());
-                upNavigation.setUrl(QUERY_FILE_TITLE_ACTION);
+//                upNavigation.setUrl(QUERY_FILE_TITLE_ACTION);
                 upNavigation.setExtend(UN_EXTEND);
-                updateNav(upNavigation);
+                updateNavByParent(upNavigation);
             }
+
         }
 
 
         return result;
     }
 
-    public Integer updateNav(Navigation navigation) throws Exception {
+    public Integer updateNavByParent(Navigation navigation) throws Exception {
         System.out.println(navigation.toString());
+        
         NavigationExample example = new NavigationExample();
         NavigationExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(navigation.getParent());
@@ -75,6 +78,24 @@ public class NavigationServerImpl implements NavigationServer {
         int result = navigationExtMapper.updateByExampleSelective(navigation, example);
 
         return result;
+    }
+
+    @Override
+    public int updateNavByPrimaryKey(int navigationId, String title) throws Exception {
+        Navigation navigation = new Navigation();
+        navigation.setTitle(title);
+        navigation.setId(navigationId);
+
+        NavigationExample example = new NavigationExample();
+        NavigationExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(navigationId);
+
+        navigation.setParent(null);
+
+        int result = navigationExtMapper.updateByExampleSelective(navigation, example);
+
+        return result;
+
     }
 
     @Override
@@ -106,13 +127,15 @@ public class NavigationServerImpl implements NavigationServer {
             fileInfoUrlPojo = new FileInfoUrlPojo();
 
             if (navigation.getExtend() == EXTEND) {
-                navUrlPojo.setAction(navigation.getUrl());
+
+                navUrlPojo.setAction(QUERY_NAV_ACTION);
                 navUrlPojo.setDepartmentId(navigation.getDepartmentid());
-                navUrlPojo.setParent(navigation.getParent());
+                navUrlPojo.setParent(navigation.getId());
+
                 navigation.setUrl(navUrlPojo.toString());
             } else if (navigation.getExtend() == UN_EXTEND) {
 
-                fileInfoUrlPojo.setAction(navigation.getUrl());
+                fileInfoUrlPojo.setAction(QUERY_FILE_TITLE_ACTION);
                 fileInfoUrlPojo.setNavigationId(navigation.getId());
                 navigation.setUrl(fileInfoUrlPojo.toString());
             }
@@ -127,13 +150,18 @@ public class NavigationServerImpl implements NavigationServer {
 
     @Override
     public List<Navigation> selectNecByDepartId(Integer departmentId) throws Exception {
-        List<Navigation> navigations = new ArrayList<Navigation>();
+        List<Navigation> navigations;
         NavigationExample example = new NavigationExample();
         NavigationExample.Criteria criteria = example.createCriteria();
         criteria.andDepartmentidEqualTo(departmentId);
         navigations = navigationExtMapper.selectByExample(example);
+
+
+
         return navigations;
     }
+
+
 
 
 }

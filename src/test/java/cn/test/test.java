@@ -59,7 +59,7 @@ public class test {
         System.out.println("---------------" + count + "---------------");
     }
 
-    //@After
+    @Test
     public void testSelectNecByDepartIdAndParent() throws Exception {
 
 
@@ -71,24 +71,28 @@ public class test {
 
     //@Test
     public void testInsertNav() throws Exception {
-        Navigation navigation = new Navigation();
-        navigation.setTitle("三级导航");
 
-        navigation.setDepartmentid(100);
-        navigation.setParent(2);
-        navigation.setExtend(0);
-        Integer result = navigationServer.insertNavigation(navigation);
+        Navigation navigation ;
+        for(int i = 0;i<4;i++) {
+            navigation = new Navigation();
+            navigation.setTitle("四級导航"+i);
+            navigation.setDepartmentid(100);
+            navigation.setParent(54);
+            navigation.setExtend(0);
+            Integer result = navigationServer.insertNavigation(navigation);
 
-        if (result > 0) {
-            System.out.println("----------" + "添加成功" + "---------");
-        } else {
-            System.out.println("----------" + "添加失败" + "---------");
+            if (result > 0) {
+                System.out.println("----------" + "添加成功" + "---------");
+            } else {
+                System.out.println("----------" + "添加失败" + "---------");
+            }
         }
+
     }
 
-    @Test
+    //@Test
     public void testDeleteNav() throws Exception {
-        int result = navigationServer.deleteNavByPrimaryKey(32);
+        int result = navigationServer.deleteNavByPrimaryKey(55);
 
         if (result > 0) {
             System.out.println("----------" + "删除成功" + "---------");
