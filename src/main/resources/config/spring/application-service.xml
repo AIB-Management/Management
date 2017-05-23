@@ -22,6 +22,7 @@
     <bean id="usersService" class="com.gdaib.service.impl.UsersServiceImpl"/>
     <bean id="departmentServiceImpl" class="com.gdaib.service.impl.DepartmentServiceImpl"/>
     <bean id="navigationServerImpl" class="com.gdaib.service.impl.NavigationServerImpl"/>
+    <bean id="fileInfoServiceImpl" class="com.gdaib.service.impl.FileInfoServiceImpl"/>
     <bean id="mailService" class="com.gdaib.service.impl.MailServiceImpl">
         <property name="mailSender" ref="javaMailSender" />
         <property name="mimeMessage" ref="mimeMessage" />
