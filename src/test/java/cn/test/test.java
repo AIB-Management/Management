@@ -53,6 +53,31 @@ public class test {
     @Autowired
     NavigationServer navigationServer;
 
+    //传入Springmvc的ioc
+    @Autowired
+    WebApplicationContext webApplicationContext;
+
+    //虚拟mvc请求，获取处理结果
+    MockMvc mockMvc;
+
+    //创建mvc
+    @Before
+    public void initMockMvc() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
+
+    //模拟controller操作
+    @Test
+    public void testCMvc() throws Exception {
+
+
+        //perform:模拟发送请求,得到返回值
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/public/domodifyPassword.action").param("pwd", "123123").param("confirmpwd", "123123").param("oldpwd", "123123")).andReturn();
+        Object error = mvcResult.getRequest().getAttribute("error");
+        System.out.println(error);
+    }
+
+
     //@Test
     public void testSelectCountByParent() throws Exception {
         Integer count = navigationServer.selectCountByParent(0);
@@ -72,10 +97,10 @@ public class test {
     //@Test
     public void testInsertNav() throws Exception {
 
-        Navigation navigation ;
-        for(int i = 0;i<4;i++) {
+        Navigation navigation;
+        for (int i = 0; i < 4; i++) {
             navigation = new Navigation();
-            navigation.setTitle("四級导航"+i);
+            navigation.setTitle("四級导航" + i);
             navigation.setDepartmentid(100);
             navigation.setParent(54);
             navigation.setExtend(0);
@@ -113,8 +138,6 @@ public class test {
         id.add(187);
         usersService.deleteAccountById(id);
     }
-
-
 
 
 }

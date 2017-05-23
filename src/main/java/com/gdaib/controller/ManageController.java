@@ -389,13 +389,17 @@ public class ManageController {
     @RequestMapping("/admin/ajaxInsertNev")
     @ResponseBody
     public Msg ajaxInsertNev(Navigation navigation, HttpServletRequest request) throws Exception {
-
+        System.out.println(navigation.getTitle());
 
         if (navigation == null || navigation.getDepartmentid() == null || navigation.getTitle() == null) {
             return Msg.fail();
         }
+        String title = navigation.getTitle();
+        if(request.getCharacterEncoding().equals("iso-8859-1")){
 
-        String title = toUtf(navigation.getTitle());
+           title = toUtf(title);
+        }
+        System.out.println("转换后" + title);
         navigation.setTitle(title);
 
         if (navigation.getParent() == null) {
