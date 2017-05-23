@@ -3,9 +3,11 @@ package com.gdaib.controller;
 import com.gdaib.pojo.*;
 import com.gdaib.service.DepartmentService;
 import com.gdaib.service.MailService;
+import com.gdaib.service.NavigationServer;
 import com.gdaib.service.UsersService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,10 @@ import java.util.List;
  * @Author:马汉真
  * @Date: 17-5-9
  * @role:
- *
  */
 @Controller
 public class ManageController {
-    private static final  String ROOTPAGE="/admin/rootpage.jsp";
-
+    private static final String ROOTPAGE = "/admin/rootpage.jsp";
 
 
     @Autowired
@@ -36,6 +36,10 @@ public class ManageController {
     @Autowired
     private DepartmentService departmentService;
 
+
+    @Autowired
+    private NavigationServer navigationServer;
+
     @Autowired
     private MailService mailService;
 
@@ -43,10 +47,10 @@ public class ManageController {
 
 
     /**
-     *      转发到管理员页面
+     * 转发到管理员页面
      */
     @RequestMapping("/admin/rootPage")
-    public ModelAndView rootPage() throws Exception{
+    public ModelAndView rootPage() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(ROOTPAGE);
 
@@ -55,60 +59,52 @@ public class ManageController {
     }
 
 
-//    /**
-//     *     获取待审核用户
-//     */
-//    @RequestMapping("/admin/ajaxFindReviewUser")
-//    @ResponseBody
-//    public  Msg findReviewUser() throws Exception{
-//        String character = 	"reviewing";
-//        Msg msg = new Msg();
-//        List<AccountInfo> accountInfos = usersService.findAccountInfoByCharacter(character);
-//        System.out.println(accountInfos);
-//        msg.add("accountInfos",accountInfos);
-//        return msg;
-//    }
+
 
     /**
-     *      得到所有系
+     * 得到所有系
      */
     @RequestMapping("/admin/ajaxGetAllDepartment")
     @ResponseBody
     public Msg ajaxGetAllDepartment() throws Exception {
         List<Department> allDepartment = departmentService.getAllDepartment();
-        Msg msg = new Msg(100,"请求成功");
-        msg.add("Department",allDepartment);
+        Msg msg = new Msg(100, "请求成功");
+        msg.add("Department", allDepartment);
         return msg;
     }
 
 
     /**
-     *      得到未审核的数量
+     * 得到未审核的数量
      */
     @RequestMapping("/admin/ajaxGetCountIsNotPass")
     @ResponseBody
     public Msg ajaxGetCountIsNotPass() throws Exception {
+
         int num = usersService.findAccountInfoCountByCharacter( "reviewing");
         Msg msg = new Msg(100,"请求成功");
         msg.add("num",num);
+
 //        return msg;
-        return Msg.success().add("num",num);
+        return Msg.success().add("num", num);
 
     }
 
     /**
-     *      得到未验证用户的分页信息，传入当前页数
+     * 得到未验证用户的分页信息，传入当前页数
      */
     @RequestMapping("/admin/ajaxGetAccountInfoIsNotPass")
     @ResponseBody
-    public Msg ajaxGetAccountInfoIsNotPass(@RequestParam(value = "pn",defaultValue = "1") Integer pn) throws Exception {
+    public Msg ajaxGetAccountInfoIsNotPass(@RequestParam(value = "pn", defaultValue = "1") Integer pn) throws Exception {
         // 引入PageHelper分页插件
         // 在查询之前只需要调用，传入页码，以及每页的大小
-        PageHelper.startPage(pn,5);
+        PageHelper.startPage(pn, 5);
+
 
         List<AccountInfo> accountInfo = usersService.findAccountInfoByCharacter("reviewing",null);
         PageInfo page = new PageInfo(accountInfo,5);
         return Msg.success().add("page",page);
+
     }
 
 
@@ -161,12 +157,16 @@ public class ManageController {
             usersService.updateBatchAccountByCharacter(ids,"teacher");
 
         }
+
         return Msg.success();
     }
 
 
     /**
+
      *      拒绝验证,单个多个二合一
+
+
      */
     @RequestMapping("/admin/ajaxRejectAccount")
     @ResponseBody
@@ -175,6 +175,7 @@ public class ManageController {
             return Msg.fail();
 
         }else{
+
 
             MailPojo mailPojo = new MailPojo();
             List<Integer> ids = new ArrayList<Integer>();
@@ -190,6 +191,7 @@ public class ManageController {
                     ids.add(Integer.parseInt(sp));
                 }
 
+
                 //查询list中所有的用户
                 List<AccountInfo> accountInfos = usersService.findAccountInfoForId(ids);
                 if(accountInfos.size() != ids.size()){
@@ -197,8 +199,10 @@ public class ManageController {
                 }
 
 
+
                 //保存接受者的邮箱
                 StringBuffer stringBuffer = new StringBuffer();
+
 
                 //遍历
                 for(AccountInfo accountInfo:accountInfos){
@@ -368,10 +372,109 @@ public class ManageController {
         }
 
 
+    }
 
 
+    /*  //添加导航条
+    *
+    * path:  http://localhost:8080/Management/admin/ajaxInsertNev.action
+    *
+    * Param: departmentid   系别ID
+    * Param: title          导航名
+    * Param: parent         上一级导航的ID 一级导航为0 默认为0
+    *
+    * return:msg
+    * */
+
+    @RequestMapping("/admin/ajaxInsertNev")
+    @ResponseBody
+    public Msg ajaxInsertNev(Navigation navigation, HttpServletRequest request) throws Exception {
 
 
+        if (navigation == null || navigation.getDepartmentid() == null || navigation.getTitle() == null) {
+            return Msg.fail();
+        }
+
+        String title = toUtf(navigation.getTitle());
+        navigation.setTitle(title);
+
+        if (navigation.getParent() == null) {
+            navigation.setParent(0);
+        }
+        navigation.setExtend(0);
+
+        System.out.println("charaSet:" + request.getCharacterEncoding() + "navigation:" + navigation.toString());
+        int result = 0;
+        result = navigationServer.insertNavigation(navigation);
+
+        if (result > 0) {
+            return Msg.success();
+        }
+
+        return Msg.fail();
+    }
+
+
+     /*         删除导航
+    *  PATH:http://localhost:8080/Management/admin/ajaxDeleteByNavId.action
+    *       Param :navigationId
+    *
+    *       SUCCEED:{"code":100,"msg":"处理成功！","extend":{}}
+    *       FAIL   :{"code":200,"msg":"处理失败！","extend":{}}
+    * */
+
+    //
+    @RequestMapping("/admin/ajaxDeleteByNavId")
+    @ResponseBody
+    public Msg ajaxDeleteByNavId(int navigationId) throws Exception {
+        if (navigationId == 0) {
+            return Msg.fail();
+        }
+
+        int result = navigationServer.deleteNavByPrimaryKey(navigationId);
+        System.out.println("result:" + result);
+        if (result > 0) {
+            return Msg.success();
+        }
+
+        return Msg.fail();
+    }
+
+
+    /*      更新导航名
+    *      PATH:http://localhost:8080/Management/admin/ajaxUpdateNav.action
+    *       Param :title,navigationId
+    *
+    *       SUCCEED:{"code":100,"msg":"处理成功！","extend":{}}
+    *       FAIL   :{"code":200,"msg":"处理失败！","extend":{}}
+    * */
+
+
+    @RequestMapping("/admin/ajaxUpdateNav")
+    @ResponseBody
+    public Msg ajaxUpdateNav(String title, int navigationId) throws Exception {
+        if (title == null || title.equals("")) {
+            return Msg.fail();
+        }
+
+        if (navigationId == 0) {
+            return Msg.fail();
+        }
+        int result = 0;
+
+        result = navigationServer.updateNavByPrimaryKey(navigationId, toUtf(title));
+
+        if (result > 0) {
+            return Msg.success();
+        }
+
+
+        return Msg.fail();
+    }
+
+    private String toUtf(String param) throws Exception {
+        String utfStr = new String(param.getBytes("iso-8859-1"), "utf-8");
+        return utfStr;
     }
 
 }

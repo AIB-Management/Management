@@ -142,7 +142,7 @@ define(["jquery.min"],function($){
 
 						hintsContain.innerText = that.hintsData[id]["ajaxError"];
 						hintsContain.style.color = obj["errorColor"];
-						elem.style.borderColor = errorColor;
+						obj["elem"].style.borderColor = obj["errorColor"];
 						obj["elem"].isCorrect = false;
 						bool = false;
 					}else{
