@@ -42,8 +42,11 @@ public class FilterChainDefinitionMapBuilder {
 //        map.put("/login.action","anon");
 //
 //        map.put("/**","authc");
+
+
         map.put("/content/personalpage.action","authc");
         map.put("/shiro/logout","logout");
+
 
         return map;
     }

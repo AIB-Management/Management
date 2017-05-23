@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
 @WebAppConfiguration
 //加入mvc和spring的配置文件
 @ContextConfiguration(locations = {"classpath:config/spring/application-*.xml", "classpath:config/spring/Springmvc.xml"})
-public class test {
+public class NavTest {
 
     @Autowired
     NavigationServer navigationServer;
