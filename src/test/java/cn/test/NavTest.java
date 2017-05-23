@@ -102,4 +102,19 @@ public class NavTest {
     }
 
 
+    @Autowired
+    UsersService usersService;
+
+    @Test
+    public void test() throws Exception {
+        List<Integer> id = new ArrayList<Integer>();
+        id.add(189);
+        id.add(188);
+        id.add(187);
+        usersService.deleteAccountById(id);
+    }
+
+
+
+
 }

@@ -6,6 +6,7 @@ import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -42,7 +43,9 @@ public class LoginController {
     //登陆
     @RequestMapping("/public/doLogin")
     public ModelAndView doLogin(RegisterPojo registerPojo,  HttpServletRequest request,HttpServletResponse response) throws Exception {
-       HttpSession session = request.getSession();
+
+
+        HttpSession session = request.getSession();
 
         ModelAndView modelAndView = new ModelAndView();
 

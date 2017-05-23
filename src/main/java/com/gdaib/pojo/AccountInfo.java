@@ -1,6 +1,8 @@
 package com.gdaib.pojo;
 
-public class AccountInfo {
+import java.io.Serializable;
+
+public class AccountInfo implements Serializable{
     private Integer id;
 
     private String username;

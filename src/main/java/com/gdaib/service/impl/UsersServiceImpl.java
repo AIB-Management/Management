@@ -327,10 +327,14 @@ public class UsersServiceImpl implements UsersService {
 
     //得到所有未审核的用户
     @Override
-    public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception {
+    public List<AccountInfo> findAccountInfoByCharacter(String character,String departmentId) throws Exception {
+
         AccountInfoExample accountInfoExample = new AccountInfoExample();
         AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
         criteria.andRoleEqualTo(character);
+        if(departmentId!=null){
+            criteria.andDepartmentIdEqualTo(Integer.parseInt(departmentId));
+        }
         accountInfoExample.setOrderByClause("id desc");
 
         List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
@@ -342,14 +346,12 @@ public class UsersServiceImpl implements UsersService {
     //得到所有某角色用户的数量,可复用的，如果departmentId传入null查询所有，如果传
     //入系id就根据系id查询
     @Override
-    public int findAccountInfoCountByCharacter(String departmentId,String character) throws Exception {
+    public int findAccountInfoCountByCharacter(String character) throws Exception {
         AccountInfoExample accountInfoExample = new AccountInfoExample();
         AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
         criteria.andRoleEqualTo(character);
 
-        if(departmentId != null){
-            criteria.andDepartmentIdEqualTo(Integer.parseInt(departmentId));
-        }
+
         int count = accountInfoMapper.countByExample(accountInfoExample);
         System.out.println(count);
 
@@ -357,34 +359,48 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-    //修改用户状态
+//    //修改用户状态
+//    @Override
+//    public void updateAccountByCharacter(int id,String character) throws Exception{
+//        Account account = new Account();
+//        account.setRole(character);
+//        AccountExample accountExample = new AccountExample();
+//        AccountExample.Criteria criteria = accountExample.createCriteria();
+//        criteria.andIdEqualTo(id);
+//
+//        accountMapper.updateByExampleSelective(account,accountExample);
+//    }
+
+    //批量修改用户状态
     @Override
-    public void updateAccountByCharacter(int id,String character) throws Exception{
+    public void updateBatchAccountByCharacter(List<Integer> ids, String character) throws Exception {
         Account account = new Account();
         account.setRole(character);
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andIdEqualTo(id);
+        criteria.andIdIn(ids);
 
         accountMapper.updateByExampleSelective(account,accountExample);
     }
 
     //删除用户
-    public void deleteAccountById(int id) throws Exception{
+    public void deleteAccountById(List<Integer> ids) throws Exception{
+
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andIdEqualTo(id);
-
+        criteria.andIdIn(ids);
         accountMapper.deleteByExample(accountExample);
     }
 
+
+    //根据id查询用户
     @Override
-    public AccountInfo findAccountInfoForId(Integer id) throws Exception {
+    public List<AccountInfo> findAccountInfoForId(List<Integer> ids) throws Exception{
         AccountInfoExample accountInfoExample = new AccountInfoExample();
         AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
-        criteria.andIdEqualTo(id);
+        criteria.andIdIn(ids);
         List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
-        return accountInfos.get(0);
+        return accountInfos;
     }
 
 

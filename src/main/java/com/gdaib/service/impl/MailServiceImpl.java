@@ -11,11 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -69,7 +75,11 @@ public class MailServiceImpl implements MailService {
             * */
 
                 // 发送邮件
+                long time1 = new Date().getTime();
                 mailSender.send(mimeMessage);
+                System.out.println(new Date().getTime() - time1);
+
+
                 logger.info("send mail ok=" + toAddresses[i]);
             }
 
@@ -79,6 +89,7 @@ public class MailServiceImpl implements MailService {
         }
 
     }
+
 
     /**
      *      生成UUID和过期时间赋值给用户和url

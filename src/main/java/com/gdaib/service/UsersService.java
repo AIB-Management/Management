@@ -51,19 +51,22 @@ public interface UsersService {
     public boolean judegPassword(String username,String password);
 
 
-    //查找某类角色的所有用户
-    public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception;
+    //查找某类角色的所有用户信息，或者某个系的某类角色的用户信息
+    public List<AccountInfo> findAccountInfoByCharacter(String character,String departmentId) throws Exception;
 
-    //得到所有未审核的用户
-    public int findAccountInfoCountByCharacter(String departmentId,String character) throws Exception;
+    //得到所有未审核的用户数量
+    public int findAccountInfoCountByCharacter(String character) throws Exception;
 
-    //修改用户状态
-    public void updateAccountByCharacter(int id,String character) throws Exception;
+//    //修改用户状态
+//    public void updateAccountByCharacter(int id,String character) throws Exception;
 
-    //删除用户
-    public void deleteAccountById(int id) throws Exception;
+    //批量修改用户状态
+    public void updateBatchAccountByCharacter(List<Integer> ids,String character) throws Exception;
+
+    //批量删除用户
+    public void deleteAccountById(List<Integer> ids) throws Exception;
 
     //根据id查询用户
-    public AccountInfo findAccountInfoForId(Integer id) throws Exception;
+    public List<AccountInfo> findAccountInfoForId(List<Integer> ids) throws Exception;
 
 }

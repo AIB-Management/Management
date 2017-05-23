@@ -91,17 +91,25 @@
     <!--
     4.配置LifecycleBeanPostProcessor,可以自动的来调用配置在Spring IOC容器中shiro bean的生命周期方法
 -->
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <!--<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>-->
 
 
     <!--
     5. 让我们可以在ioc容器中使用shiro注解。但必须在配置了LifecycleBeanPostProcessor之后
 -->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-          depends-on="lifecycleBeanPostProcessor"/>
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"-->
+          <!--depends-on="lifecycleBeanPostProcessor"/>-->
+
+
+
+
+    <!--5. 让我们可以在ioc容器中使用shiro注解-->
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"/>
     </bean>
+
+
+
 
     <!--
     6.配置ShiroFilter
@@ -115,8 +123,8 @@
         <property name="loginUrl" value="/"/>
         <!--登录成功页面-->
         <property name="successUrl" value="/jsps/list.jsp"/>
-        <!--登录失败页面-->
-        <property name="unauthorizedUrl" value="/jsps/unauthorized"/>
+        <!--没有权限的话就会跳转到这个页面，如果是注解的话会抛出异常-->
+        <property name="unauthorizedUrl" value="/Tag.jsp"/>
         <!--
             配置那些页面需要受保护，以及访问这些页面需要的权限
             1. anon 可以被匿名访问

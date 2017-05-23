@@ -18,6 +18,14 @@
             http://www.springframework.org/schema/aop/spring-aop.xsd "
        >
 
+    <!--全局异常处理器
+    只要实现了HandlerExceptionResolver接口，Spring就会知道他是一个全局异常处理器，项目只能有一个，所以我们直接配一个bea
+    n就好了
+-->
+    <bean class="com.gdaib.Exception.GlobalExceptionResolver"/>
+
+    <!--4. 开启aop对类代理-->
+    <aop:config proxy-target-class="true"/>
 
     <!--批量扫描
             可以扫描controller、service... 这里扫描controller，指定controller的包-->
