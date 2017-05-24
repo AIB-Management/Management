@@ -17,7 +17,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//已审核用户模块当前页码
 	var curExamieModulePage = 0;
 	var curDepartmentId = "";
-	//------------
+
+	//---------------------------
 
 	//封装选择器函数
 	function s(name){
@@ -526,16 +527,23 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			//发送ajax
 			$.ajax({
 				url: 'http://localhost:8080/Management/admin/ajaxPassAccount.action',
-				type: ' POST',
+				type: ' GET',
 				dataType: 'json',
 				data: "id=" + idList.join(","),
 				success: function(data){
-					//跳转回操作前停留的页码
-					toUnexamiePage(curUnexamieModulePage);
-					//提示
-					alert("操作成功！");
+					if (data.code == 100) {
+						//跳转回操作前停留的页码
+						toUnexamiePage(curUnexamieModulePage);
+						//提示
+						alert("操作成功！");
+					}else{
+						alert("操作失败！");
+					}
 
 					
+				},
+				error: function(){
+					alert("操作失败！");
 				}
 			})
 			
@@ -1120,15 +1128,14 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			},
 
 			success: function(data){
-				//接收到返回信息后
-				//1、遍历更新后的信息 更新前端页面的内容
-				//2、输出完信息之后调用 unexamieModuleBtn() 方法为新添加的内容绑定点击事件
-				//3、loading图标隐藏（src = ""）
-				//4、弹出层隐藏
-				//输出第一页未审核用户数据
+				//输出操作前停留页码处的未审核用户数据
 				toUnexamiePage(curUnexamieModulePage);
 				//隐藏加载图标
 				icon.style.visibility = 'hidden';
+				//如果当前操作是拒绝此页的全部用户申请
+				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
+				//所以每次点击完之后都要把多选框的 checked 取消掉
+				s("#unexamie-select-all").checked = false;
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 			}
@@ -1157,15 +1164,14 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			},
 
 			success: function(data){
-				//接收到返回信息后
-				//1、遍历更新后的信息 更新前端页面的内容
-				//2、输出完信息之后调用 unexamieModuleBtn() 方法为新添加的内容绑定点击事件
-				//3、loading图标隐藏（src = ""）
-				//4、弹出层隐藏
 
 				toUnexamiePage(curUnexamieModulePage);
 				//隐藏加载图标
 				icon.style.visibility = 'hidden';
+				//如果当前操作是拒绝此页的全部用户申请
+				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
+				//所以每次点击完之后都要把多选框的 checked 取消掉
+				s("#unexamie-select-all").checked = false;
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 			}
@@ -1261,43 +1267,4 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	})
 
 	//----------------- 撤回用户弹出层功能结束 -------------------
-
-
-	//---------------- 批量拒绝用户申请提示层开始 ------------------
-
-	EventUntil.addHandler(s("#cancel-refuse-all-user"),"click",function(){
-		s("#hint-floor").style.display = "none";
-	})
-
-	EventUntil.addHandler(s("#confirm-refuse-all-user"),"click",function(){
-		//获取拒绝用户的id
-		var idVal = s("#refuse-all-username").title;
-		//获取加载图标
-		var icon = s("#refuse-all-user-loading-icon");
-		//发送ajax 请求
-		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
-			type: 'POST',
-			dataType: 'json',
-			data: "id=" + idVal,
-			beforeSend: function(){
-				icon.style.visibility = 'visible';
-			},
-
-			success: function(){
-				if (parseInt(data.code) == 100) {
-					//加载图标隐藏
-					icon.style.visibility = 'hidden';
-					//切换到操作前停留的页码处
-					toUnexamiePage(curUnexamieModulePage);
-					//弹出层隐藏
-					s("#hint-floor").style.display = "none";
-				}
-			}
-		})
-		
-	})
-
-	//----------------------- 批量拒绝用户申请提示层结束 -------------------
-
 })
