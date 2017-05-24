@@ -74,6 +74,9 @@ public class ManageController {
     }
 
 
+
+
+
     /**
      * 得到未审核的数量
      */
@@ -394,6 +397,7 @@ public class ManageController {
         if (navigation == null || navigation.getDepartmentid() == null || navigation.getTitle() == null) {
             return Msg.fail();
         }
+
         String title = navigation.getTitle();
         if(request.getCharacterEncoding().equals("iso-8859-1")){
 
