@@ -11,12 +11,12 @@ require.config({
 //管理页主函数
 require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,EventUntil){
 	//--------- 全局变量 --------
-	//增加、删除、修改导航栏模块当前页码
-	var curNavModulePage = 0;
+
 	//未审核用户模块当前页码
 	var curUnexamieModulePage = 0;
 	//已审核用户模块当前页码
-	var curExamieModulePage = 0
+	var curExamieModulePage = 0;
+	var curDepartmentId = "";
 	//------------
 
 	//封装选择器函数
@@ -177,7 +177,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			dataType: 'json',
 			data: "id=" + id,
 			success: function(data){
-				alert("提交成功");
+				alert("操作成功");
 				//返回数据的时候回到操作前停留的页码处
 				toUnexamiePage(curUnexamieModulePage);
 			}
@@ -213,19 +213,19 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
 	//未审核用户列表 多选框 点击事件执行函数
-	function unexamieSelected(){
+	function selectAllCheckboxEvent(checkboxList,sellectAllCheckbox){
 		//获取所有多选框元素
-		var checkBoxs = ss(".unexamie-select");
-		//定义当前点击多选框时 "被选择多选框数量" 计算变量
+		var checkBoxs = checkboxList;
+		//countCheckedBoxChecked 这个函数会返回当前监测的多选框选中被选中的个数
 		var checkedNum = countCheckedBoxChecked(checkBoxs);
 
 
 		//当全部多选框被选中的时候
 		//"多选按钮 #unexamie-select-all" 状态为选中
 		if (checkedNum == checkBoxs.length) {
-			s("#unexamie-select-all").checked = true;
+			sellectAllCheckbox.checked = true;
 		}else{
-			s("#unexamie-select-all").checked = false;
+			sellectAllCheckbox.checked = false;
 		}
 	}
 
@@ -281,14 +281,18 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			var checkBoxTd = createElem("td");
 			var btnClone = checkBox.cloneNode(true);
 			checkBoxTd.appendChild(btnClone);
+
 			//为每一个多选框绑定点击事件
-			EventUntil.addHandler(btnClone,"click",unexamieSelected);
+			EventUntil.addHandler(btnClone,"click",function(){
+				selectAllCheckboxEvent(ss(".unexamie-select"),s("#unexamie-select-all"));
+			});
+
 			//tr 添加checkBoxTd
 			tr.appendChild(checkBoxTd);
 
 			//创建一个教师姓名包裹 td
 			var userTd = createElem("td");
-			userTd.innerText = dataList[i].username;
+			userTd.innerText = dataList[i].name;
 			userTd.title = dataList[i].id;
 			tr.appendChild(userTd);
 
@@ -526,17 +530,18 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				dataType: 'json',
 				data: "id=" + idList.join(","),
 				success: function(data){
-					//如果返回的数据状态码为 100
-					if (parseInt(data.code) == 100) {
-						//提示
-						alert("操作成功！");
-					}
+					//跳转回操作前停留的页码
+					toUnexamiePage(curUnexamieModulePage);
+					//提示
+					alert("操作成功！");
+
+					
 				}
 			})
 			
 			
 		}else{
-			alert("你没有选中任何字段");
+			alert("没有选中的用户");
 		}
 		
 	}
@@ -544,15 +549,14 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 	//未审核用户列表批量拒绝点击事件调用函数
 	function unexamieRefuseAll(){
-		//创建保存多个 id 的数组
-		var idList = [];
-		//创建保存多个用户名的数组
-		var usernameList = [];
-		//获取所有多选框元素
-		var checkboxs = ss(".unexamie-select");
-		//统计当前选中的多选框个数
-		var checkedNum = countCheckedBoxChecked(checkboxs);
+		var checkedNum = countCheckedBoxChecked(ss(".unexamie-select"));
 		if (checkedNum != 0) {
+			//创建保存多个 id 的数组
+			var idList = [];
+			//创建保存多个用户名的数组
+			var usernameList = [];
+			//获取所有多选框元素
+			var checkboxs = ss(".unexamie-select");
 			//遍历这一页每一个多选框
 			for (var i = 0; i < checkboxs.length; i++) {
 				if (checkboxs[i].checked == true) {
@@ -569,18 +573,23 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				}
 
 					//将保存到的id 和 用户名 传递给提示弹出层拒绝用户申请模块那里
-					s("#refuse-all-username").innerText = usernameList.join(",");
-					s("#refuse-all-username").title = idList.join(",");
+					s("#refuse-username").innerText = usernameList.join(",");
+					s("#refuse-username").title = idList.join(",");
 
 					//获取提示弹出层
-					var hintFloor = s("#hint-floor");
-					
-					//显示提示拒绝用户信息模块弹出层
-					s("#refuse-all-user").style.display = 'block';
+					var floor = s("#floor");
+					//隐藏修改导航模块弹出层
+					s("#modify-nav-info").style.display = 'none';
+					//隐藏撤回用户模块弹出层
+					s("#recall-user").style.display = 'none';
+					//隐藏删除导航弹出层
+					s("#delete-nav").style.display = 'none';
+					//显示填写拒绝信息模块弹出层
+					s("#refuse-info").style.display = 'block';
 					//显示弹出层
-					hintFloor.style.display = "block";
+					floor.style.display = "block";
 		}else{
-			alert("你没有选中任何字段");
+			alert("没有选中的用户");
 		}
 		
 		
@@ -600,7 +609,23 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
 	//----------------- 已审核模块操作事件开始 -----------------------
-	function examieModuleRecall(){
+	//为筛选下拉框填充内容
+	function initDepFilter(){
+		$.ajax({
+			url: '',
+			type: 'GET',
+			dataType: 'json',
+			success: function(data){
+ 				//请求成功后
+ 				//遍历返回结果 填充下拉选择框
+ 				//填充完毕之后把下拉框第一个值附给全局变量 "curDepartmentId"
+			}
+		})
+		
+		
+	}
+
+	function examiedModuleRecall(){
 		//获取注册用户姓名的单元格
 		var parent = this.parentNode.parentNode;
 		var nameTd = parent.querySelectorAll("td")[1];
@@ -621,6 +646,258 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		//显示弹出层
 		floor.style.display = "block";
 	}
+
+
+	//创建已审核用户表
+	//将后台 json 字符串转换为 dom 元素
+	function createExamiedTable(data){
+		s("#unexamie-main-content").innerHTML = "";
+		//创建元素碎片收集器
+		var frag = document.createDocumentFragment();
+
+		var dataList = data.extend.page.list;
+
+		//创建多选框
+		var checkBox = createElem("input");
+		checkBox.type = "checkbox";
+		checkBox.className = "examie-select";
+		
+		//创建撤回按钮
+		var recallBtn = createElem("button");
+		var recallBtnIcon = createElem("span");
+		recallBtnIcon.innerText = " ";
+		recallBtnIcon.className = "glyphicon glyphicon-erase";
+		recallBtnIcon.setAttribute("aria-hidden", "true");
+		//为撤回按钮添加图标
+		recallBtn.appendChild(recallBtnIcon);
+		
+
+		recallBtn.className = "refuse btn btn-danger btn-sm";
+
+		recallBtn.innerHTML += " 撤回";
+
+
+		
+
+		for (var i = 0; i < dataList.length; i++) {
+			//每次遍历创建一个 tr
+			var tr = createElem("tr");
+			//创建一个多选框包裹元素 td
+			var checkBoxTd = createElem("td");
+			var btnClone = checkBox.cloneNode(true);
+			checkBoxTd.appendChild(btnClone);
+
+			//为每一个多选框绑定点击事件
+			EventUntil.addHandler(btnClone,"click",function(){
+				selectAllCheckboxEvent(ss(".examied-select"),s("#examied-select-all"));
+			});
+			//tr 添加checkBoxTd
+			tr.appendChild(checkBoxTd);
+
+			//创建一个教师姓名包裹 td
+			var userTd = createElem("td");
+			userTd.innerText = dataList[i].name;
+			userTd.title = dataList[i].id;
+			tr.appendChild(userTd);
+
+			//创建一个系别包裹 td
+			var departmentTd = createElem("td");
+			departmentTd.innerText = dataList[i].department;
+			tr.appendChild(departmentTd);
+
+			//创建一个专业包裹 td
+			var professionTd = createElem("td");
+			professionTd.innerText = dataList[i].profession;
+			tr.appendChild(professionTd);
+
+			//创建一个按钮包裹 td
+			var btnTd = createElem("td");
+			var recallBtnClone = recallBtn.cloneNode(true);
+
+			btnTd.appendChild(recallBtnClone);
+			//为按钮绑定事件
+			EventUntil.addHandler(recallBtnClone,"click",examiedModuleRecall);
+
+			tr.appendChild(btnTd);
+
+
+
+			frag.appendChild(tr);
+		}
+
+		//表格元素添加数据
+		s("#examied-main-content").appendChild(frag);
+	}
+
+
+	// 创建分页导航方法
+	// 传入原始数据，分页导航的载体
+	function createExamiePageNav(data){
+		//每次执行都清空一次分页导航
+		s("#examied-pagination-content").innerHTML = "";
+		//获取分页导航输出分页数的数据
+		var pageList = data.extend.page.navigatepageNums;
+		//创建元素碎片收集器
+		var frag = document.createDocumentFragment();
+
+		//先创建首页，向前翻页，向后翻页，到末页按钮
+		//1、创建回首页按钮
+		var homePageBtn = createElem("li");
+		var homePageBtnContent = createElem("a");
+		homePageBtnContent.href = "#";
+		homePageBtnContent.setAttribute("aria-label", "homepage");
+		homePageBtnContent.innerText = "首页";
+		homePageBtn.appendChild(homePageBtnContent);
+
+		//2、创建向前翻页按钮
+		var prevPageBtn = createElem("li");
+		var prevPageBtnContent = createElem("a");
+		
+
+		prevPageBtnContent.href = "#";
+		prevPageBtnContent.setAttribute("aria-label", "homepage");
+		prevPageBtnContent.innerHTML = "&laquo;";
+
+		prevPageBtn.appendChild(prevPageBtnContent);
+
+		//如果当前后台返回的信息表示没有首页
+		//则禁用首页按钮和向前翻页按钮 并且不为他们绑定点击事件
+		if (data.extend.page.hasPreviousPage == false) {
+			homePageBtn.className = "disabled";
+			prevPageBtn.className = "disabled";
+		}else{
+
+			//如果有前一页
+			//点击上一页按钮的时候调用 toUnexamiePage 就是当前页 -1
+			//data.extend.page.pageNum 表示当前页
+			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
+			EventUntil.addHandler(prevPageBtn,"click",function(){
+				toexamiedPage(data.extend.page.pageNum - 1,curDepartmentId);
+			});
+
+			//点击返回首页的时候调用 toUnexamiePage 就是跳到总页数的第一页
+			//即传 1进去就可以了
+			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
+			EventUntil.addHandler(homePageBtn,"click",function(){
+				toexamiedPage(1,curDepartmentId);
+			});
+		}
+
+		frag.appendChild(homePageBtn);
+		frag.appendChild(prevPageBtn);
+
+
+
+		//3、创建向后翻页按钮
+		var nextPageBtn = createElem("li");
+		var nextPageBtnContent = createElem("a");
+
+		nextPageBtnContent.href = "#";
+		nextPageBtnContent.setAttribute("aria-label", "homepage");
+		nextPageBtnContent.innerHTML = "&raquo;";
+
+		nextPageBtn.appendChild(nextPageBtnContent);
+
+
+		//4、创建回到末页按钮
+		var lastPageBtn = createElem("li");
+		var lastPageBtnContent = createElem("a");
+
+		lastPageBtnContent.href = "#";
+		lastPageBtnContent.setAttribute("aria-label", "homepage");
+		lastPageBtnContent.innerText = "末页";
+
+		lastPageBtn.appendChild(lastPageBtnContent);
+
+		//如果当前后台返回的信息表示没有末页
+		//则禁用末页按钮和向后翻页按钮 并且不为他们绑定点击事件
+		if (data.extend.page.hasNextPage == false) {
+			nextPageBtn.className = "disabled";
+			lastPageBtn.className = "disabled";
+		}else{
+			//否则给他们都绑定点击事件
+			//下一页按钮就是当前页+1
+			//调用 toUnexamiePage 传入data.extend.page.pageNum + 1
+			//data.extend.page.pageNum 表示当前页
+			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
+			EventUntil.addHandler(nextPageBtn,"click",function(){
+				toexamiedPage(data.extend.page.pageNum + 1,curDepartmentId);
+			})
+
+			//末页按钮就直接跳到页数的总数位置
+			//调用 toUnexamiePage 传入 data.extend.page.pages
+			//data.extend.page.pageNum 表示当前页
+			//data.extend.page.pages 表示页的总数 即最后一页
+			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
+			EventUntil.addHandler(lastPageBtn,"click",function(){
+				toexamiedPage(data.extend.page.pages,curDepartmentId);
+			})
+		}
+
+
+		//5、遍历创建数字分页按钮
+		for (var i = 0; i < pageList.length; i++) {
+			var numLi = createElem("li");
+			var numLiIcon = createElem("a");
+			numLiIcon.href = "#";
+			numLiIcon.innerText = pageList[i];
+			numLi.appendChild(numLiIcon);
+
+			if (pageList[i] == data.extend.page.pageNum) {
+
+				numLi.className = "active";
+			}
+			//为每个分页数字按钮添加事件
+			//调用 toexamiedPage 传入当前分页按钮数字 ‘num’ 
+			//以及传入当前的筛选下拉框的值
+			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
+			(function(num){
+				EventUntil.addHandler(numLi,"click",function(){
+					toexamiedPage(num,curDepartmentId);
+				})
+			})(pageList[i]);
+
+			frag.appendChild(numLi);
+		}
+
+		frag.appendChild(nextPageBtn);
+		frag.appendChild(lastPageBtn);
+		
+		//分页导航添加全部分页按钮元素
+		s("#examied-pagination-content").appendChild(frag);
+	}
+
+	//已审核用户列表页面跳转方法
+	function toexamiedPage(pn,id){
+		//页面跳转时发送ajax 请求获取后台的数据
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsPass.action',
+			type: 'GET',
+			dataType: 'json',
+			data: "pn=" + pn + "&depId=" + id,
+
+			success: function(data){
+				if (data.code == 100) {
+					//输出已审核用户内容
+					createExamiedTable(data);
+					//输出分页导航栏
+					createExamiePageNav(data);
+					//为全局变量 curExamieModulePage （保存当前分页页码）
+					curExamieModulePage = data.extend.page.pageNum;
+
+
+				}else{
+					alert(data.msg);
+				}
+			}
+		})
+	}
+
+
+
+	//---------------- 已审核模块操作事件结束 ----------------------
+
+
 
 	//侧边栏多个tag 点击事件
 	function tagsClick(){
@@ -648,53 +925,38 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				this.className += " sidebar-tag-active";
 				
 				//如果当前点击的tag 为未审核列表
-				//执行如下处理
+				//读取未审核用户数据的第一页内容
 				if (this.id == "unexamie-tag") {
 					s("#number-hints").style.display = 'none';
-					$.ajax({
-						url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsNotPass.action',
-						type: 'GET',
-						async: false,
-						dataType: 'json',
-						success: function(data){
-							toUnexamiePage(1);
-						}
-
-					})
 					
-					
+					toUnexamiePage(1);
+		
+				}else if(this.id == "examied-tag"){
+					//如果当前点击的tag 为未审核列表
+					//读取已审核用户数据的第一页，且部门筛选为 "全部" 的内容
+					toexamiedPage(1,curDepartmentId);
 				}
 			});
 		}
 	};
-
-	
-
-
-	function createUnexamieTabel(elemList,tableElem){
-		//清空表格
-		tableElem.innerHTML = "";
-
-		tableElem.appendChild(elemList);
-	}
-
-	
-
+ 
 	
 
 	//页面加载完成时要做的预处理
 	function init(){
+		//为侧边栏的标签绑定点击事件
 		tagsClick();
+		//显示未审核用户数量
 		showUnexamieUserNums();
+		//赋值下拉框
+		initDepFilter();
 	}
 
 	//--------------定义层结束-------------
 
+	//初始化页面
 	init();
 
-
-	
-	
 
 	//初始化子导航栏提示信息
 	checkBy.init({
@@ -846,19 +1108,15 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		//拒绝的理由
 		var refuseVal = s("#refuse-content").value;
 		//获取加载图片元素
-		var icon = s("#refuse-loading-icon");
-		icon.style.width = "15px";
-		icon.style.height = "15px";
-
+		var icon = s("#refuse-user-loading-icon");
 
 		$.ajax({
 			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
-			async: false,
 			type: 'POST',
 			dataType: 'json',
 			data: "id=" + idVal + "&content=" + refuseVal,
-			beforesend: function(){
-				icon.src = "../../resources/images/loading.gif";
+			beforeSend: function(){
+				icon.style.visibility = 'visible';
 			},
 
 			success: function(data){
@@ -870,7 +1128,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				//输出第一页未审核用户数据
 				toUnexamiePage(curUnexamieModulePage);
 				//隐藏加载图标
-				icon.src = "";
+				icon.style.visibility = 'hidden';
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 			}
@@ -879,7 +1137,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		
 	})
 
-	//3、拒绝用户注册模块不填写拒绝信息按钮点击事件
+	//3、拒绝用户注册模块 "不填写拒绝信息" 按钮点击事件
 	EventUntil.addHandler(s("#no-refuse-reason"),"click",function(){
 		//ajax 提交用户的id 给后台，不提交拒绝理由
 		//数据提交完成后将包裹层隐藏
@@ -887,18 +1145,15 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		//获取当前拒绝用户的后台 id 值
 		var idVal = s("#refuse-username").title;
 		//获取加载图片元素
-		var icon = s("#refuse-loading-icon");
-		icon.style.width = "15px";
-		icon.style.height = "15px";
+		var icon = s("#refuse-user-loading-icon");
 
 		$.ajax({
 			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
-			async: false,
 			type: 'POST',
 			dataType: 'json',
 			data: "id=" + idVal,
-			beforesend: function(){
-				icon.src = "../../resources/images/loading.gif";
+			beforeSend: function(){
+				icon.style.visibility = 'visible';
 			},
 
 			success: function(data){
@@ -910,7 +1165,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 				toUnexamiePage(curUnexamieModulePage);
 				//隐藏加载图标
-				icon.src = "";
+				icon.style.visibility = 'hidden';
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 			}
@@ -942,28 +1197,64 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		}
 	})
 
-	//3、确认撤回按钮点击事件
+	//3、确认撤回按钮点击事件但 "不发送信息" 点击事件
 	EventUntil.addHandler(s("#confirm-recall-user"),"click",function(){
 		//点击时 和上面一样 获取提示元素的 title值
 		//将title值 传给后台
 		var idVal = s("#recall-username").title;
 
+		//获取撤回用户模块加载图标
+		var icon = s("#recall-user-loading-icon");
+
 		$.ajax({
-			url: '',
-			async: false,
+			url: 'http://localhost:8080/Management/admin/ajaxWithdrawAccount.action',
 			type: 'GET',
 			dataType: 'json',
-			data: {recallUserId: idVal},
+			data: "id=" + idVal,
 			beforeSend: function(){
-				s("#recall-loading-icon").src = "../../resources/images/loading.gif";
+				icon.style.visibility = 'visible';
 			},
 
 			success: function(data){
 				//数据返回成功后
-				//前端遍历后台数据输出到页面
-				//调用 recallUser()
-				//loading 图标隐藏（src = ""）
+				//根据当前筛选下拉框的部门id 输出操作前页码处的内容
+				toexamiedPage(curUnexamieModulePage,curDepartmentId);
+				//loading 图标隐藏
+				icon.style.visibility = 'hidden';
 				//弹出层隐藏
+				s("#floor").style.display = 'none';
+			}
+		});
+		
+	})
+
+	//4、确认撤回按钮点击事件且 "发送信息" 点击事件
+	EventUntil.addHandler(s("#confirm-recall-user"),"click",function(){
+		//点击时获取提示元素的 title值
+		var idVal = s("#recall-username").title;
+		//获取撤回理由的内容
+		var content = s("#recall-content").value;
+		//获取撤回用户模块加载图标
+		var icon = s("#recall-user-loading-icon");
+
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxWithdrawAccount.action',
+			type: 'GET',
+			dataType: 'json',
+			data: "id=" + idVal + "&content=" + content,
+			beforeSend: function(){
+				icon.style.visibility = 'visible';
+			},
+
+			success: function(data){
+				//数据返回成功后
+				//数据返回成功后
+				//根据当前筛选下拉框的部门id 输出操作前页码处的内容
+				toexamiedPage(curUnexamieModulePage,curDepartmentId);
+				//loading 图标隐藏
+				icon.style.visibility = 'hidden';
+				//弹出层隐藏
+				s("#floor").style.display = 'none';
 			}
 		});
 		
@@ -981,17 +1272,26 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	EventUntil.addHandler(s("#confirm-refuse-all-user"),"click",function(){
 		//获取拒绝用户的id
 		var idVal = s("#refuse-all-username").title;
+		//获取加载图标
+		var icon = s("#refuse-all-user-loading-icon");
 		//发送ajax 请求
 		$.ajax({
 			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "id=" + idVal,
+			beforeSend: function(){
+				icon.style.visibility = 'visible';
+			},
+
 			success: function(){
 				if (parseInt(data.code) == 100) {
-					alert("操作成功！");
+					//加载图标隐藏
+					icon.style.visibility = 'hidden';
 					//切换到操作前停留的页码处
 					toUnexamiePage(curUnexamieModulePage);
+					//弹出层隐藏
+					s("#hint-floor").style.display = "none";
 				}
 			}
 		})

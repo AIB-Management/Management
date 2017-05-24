@@ -9,27 +9,9 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-9"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-13"></script>
 </head>
 <body>
-	<!-- 提示框开始 -->
-	<div id="hint-floor">
-		<div id="refuse-all-user">
-			<p class="refuse-all-user-wrap hint-floor-title">
-					<span>提示</span>
-			</p>
-			<p class="refuse-all-user-wrap hint-floor-main-content">
-				<span class="refuse-all-user-hint">批量拒绝这些用户：<br><b id="refuse-all-username">xxx</b><br>他们将不会受到任何提示信息，确认执行此操作吗？</span>
-			</p>
-			<p class="refuse-all-user-wrap btn-range">
-				<button type="button" id="cancel-refuse-all-user" class="btn btn-success btn-sm">取消</button>
-				<button type="button" id="confirm-refuse-all-user" class="btn btn-danger btn-sm">确认</button>
-				<img src="" alt="" id="refuse-all-user-loading-icon">
-			</p>
-		</div>
-	</div>
-	<!-- 提示框结束 -->
-	<!-- 弹出层开始 -->
 	<div id="floor">
 		<!-- 修改导航弹出层内容 -->
 		<form action="" method="post" id="modify-nav-info">
@@ -87,7 +69,7 @@
 			<p class="refuse-info-wrap">
 				<button type="button" id="send-refuse-info" disabled="disabled">发送</button>
 				<button type="button" id="no-refuse-reason">不发送拒绝消息</button>
-				<img src="" alt="" id="refuse-loading-icon">
+				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" id="refuse-user-loading-icon" class="loading-icon">
 			</p>
 		</div>
 
@@ -103,7 +85,7 @@
 			<p class="recall-user-wrap">
 				<button type="button" id="cancel-recall-user">取消</button>
 				<button type="button" id="confirm-recall-user" disabled="disabled">确认</button>
-				<img src="" alt="" id="recall-loading-icon">
+				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" id="recall-user-loading-icon" class="loading-icon">
 			</p>
 		</div>
 	</div>
@@ -131,7 +113,7 @@
 					<div id="user-manage" class="sidebar-tag-header">用户审核</div>
 					<ul class="child-tag-wrap">
 						<li class="child-tag" id="unexamie-tag">待审核<span id="number-hints">15</span></li>
-						<li class="child-tag" id="examie-tag">已审核</li>
+						<li class="child-tag" id="examied-tag">已审核</li>
 					</ul>
 				</div>
 			</div>
@@ -282,70 +264,6 @@
 										</button>
 									</td>
 								</tr>
-								<tr>
-									<td><input type="checkbox" class="unexamie-select"></td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="pass btn btn-success btn-sm">
-											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
-											通过
-										</button>
-										<button class="refuse btn btn-danger btn-sm">
-											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
-											拒绝申请
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" class="unexamie-select"></td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="pass btn btn-success btn-sm">
-											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
-											通过
-										</button>
-										<button class="refuse btn btn-danger btn-sm">
-											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
-											拒绝申请
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" class="unexamie-select"></td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="pass btn btn-success btn-sm">
-											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
-											通过
-										</button>
-										<button class="refuse btn btn-danger btn-sm">
-											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
-											拒绝申请
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" class="unexamie-select"></td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="pass btn btn-success btn-sm">
-											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
-											通过
-										</button>
-										<button class="refuse btn btn-danger btn-sm">
-											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
-											拒绝申请
-										</button>
-									</td>
-								</tr>
 							</tbody>
 						</table>
 
@@ -411,7 +329,7 @@
 							<thead>
 								<tr>
 									<th>
-										<input type="checkbox" id="examie-select-all">全选
+										<input type="checkbox" id="examied-select-all">全选
 									</th>
 									<th>姓名</th>
 									<th>系别</th>
@@ -422,63 +340,7 @@
 							<tbody id="examied-main-content">
 								<tr>
 									<td>
-										<input type="checkbox" class="examie-all">
-									</td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="recall btn btn-danger btn-sm" type="button">
-											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-											撤回
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" class="examie-all">
-									</td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="recall btn btn-danger btn-sm" type="button">
-											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-											撤回
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" class="examie-all">
-									</td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="recall btn btn-danger btn-sm" type="button">
-											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-											撤回
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" class="examie-all">
-									</td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="recall btn btn-danger btn-sm" type="button">
-											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-											撤回
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox" class="examie-all">
+										<input type="checkbox" class="examied-select">
 									</td>
 									<td title="1">老师1</td>
 									<td>计算机系</td>
@@ -502,7 +364,7 @@
 						<!-- 已审核列表分页组建包裹层 -->
 						<div class="divid-page-wrap">
 							<nav aria-label="Page navigation">
-							  <ul class="pagination">
+							  <ul class="pagination" id="examied-pagination-content">
 							  	<li>
 							      <a href="#" aria-label="Previous">首页</a>
 							    </li>
@@ -536,6 +398,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-35">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-37">
 </body>
 </html>

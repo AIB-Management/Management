@@ -1,45 +1,4 @@
-/*提示弹出层层样式*/
-#hint-floor{
-	display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0,0.6);
-	z-index: 20;
-}
-/*批量拒绝用户申请提示框样式*/
-#refuse-all-user{
-	width: 600px;
-	height: 200px;
-	margin: 15% auto 0 auto;
-	background-color: #fff;
-	border-radius: 15px;
-}
-.refuse-all-user-wrap{
-	width: 80%;
-	margin: 0 auto;
-}
-/*定义提示框标题样式*/
-.hint-floor-title{
-	font-size: 18px;
-	font-weight: bold;
-}
-/*定义提示框中间内容样式*/
-.hint-floor-main-content{
-	height: 60%;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	font-size: 15px;
-}
-/*定义按钮的对齐样式*/
-.btn-range{
-	text-align: right;
-}
-/*操作弹出层样式*/
+/*弹出层样式*/
 #floor{
 	display: none;
 	position: fixed;
@@ -214,6 +173,16 @@
 	border: 2px solid #EBCBD0;
 	font-size: 15px;
 	color: #A9433F;
+}
+/*加载图片样式*/
+.loading-icon{
+	visibility: hidden;
+	width: 18px;
+	height: 18px;
+}
+#refuse-user-loading-icon,#recall-user-loading-icon{
+	width: 30px;
+	height: 30px;
 }
 .wrapper{
 	width: 100%;
