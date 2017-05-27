@@ -30,10 +30,10 @@ public interface FileInfoService {
     public List<VFileInfo> selectFileByNavId(int navId) throws Exception;
 
     //根据教师姓名查询文件信息
-    public List<VFileInfo> selectFileByName(String name) throws Exception;
+    public List<VFileInfo> selectFileByName(String name,int departmentId) throws Exception;
 
     //根据类似文件名查询文件信息
-    public List<VFileInfo> selectFileByLikeTitle(String title) throws Exception;
+    public List<VFileInfo> selectFileByLikeTitle(String title,int departmentId) throws Exception;
 
 
 }

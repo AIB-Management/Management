@@ -95,24 +95,26 @@ public class FileInfoServiceImpl implements FileInfoService {
     }
 
     @Override
-    public List<VFileInfo> selectFileByName(String name) throws Exception {
+    public List<VFileInfo> selectFileByName(String name,int departmentId) throws Exception {
         List<VFileInfo> vFileInfos;
 
         VFileInfoExample example = new VFileInfoExample();
         VFileInfoExample.Criteria criteria = example.createCriteria();
         criteria.andNameLike(name);
+        criteria.andDepartmentidEqualTo(departmentId);
         vFileInfos = vFileInfoMapper.selectByExample(example);
 
         return vFileInfos;
     }
 
     @Override
-    public List<VFileInfo> selectFileByLikeTitle(String title) throws Exception {
+    public List<VFileInfo> selectFileByLikeTitle(String title,int departmentId) throws Exception {
         List<VFileInfo> vFileInfos;
 
         VFileInfoExample example = new VFileInfoExample();
         VFileInfoExample.Criteria criteria = example.createCriteria();
         criteria.andTitleLike(title);
+        criteria.andDepartmentidEqualTo(departmentId);
         vFileInfos = vFileInfoMapper.selectByExample(example);
 
             return vFileInfos;
