@@ -1,5 +1,6 @@
 package com.gdaib.service.impl;
 
+import com.gdaib.controller.FileController;
 import com.gdaib.mapper.FileInfoExtMapper;
 import com.gdaib.mapper.VFileInfoMapper;
 import com.gdaib.pojo.FileInfo;
@@ -9,7 +10,12 @@ import com.gdaib.pojo.VFileInfoExample;
 import com.gdaib.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -84,10 +90,11 @@ public class FileInfoServiceImpl implements FileInfoService {
 
         vFileInfos = vFileInfoMapper.selectByExample(example);
 
-        if (vFileInfos != null) {
-            return vFileInfos;
+        for(VFileInfo vFileInfo:vFileInfos){
+            vFileInfo.setUrl("/file/ajaxFindFileItemByFileId.action?fileId="+vFileInfo.getId());
         }
-        return null;
+
+        return vFileInfos;
     }
 
     @Override
@@ -114,6 +121,45 @@ public class FileInfoServiceImpl implements FileInfoService {
         vFileInfos = vFileInfoMapper.selectByExample(example);
 
             return vFileInfos;
+
+    }
+
+    @Override
+    public VFileInfo selectFileById(int fileId) throws Exception {
+
+        VFileInfoExample example = new VFileInfoExample();
+        VFileInfoExample.Criteria criteria =  example.createCriteria();
+        criteria.andIdEqualTo(fileId);
+        List<VFileInfo> vFileInfos = vFileInfoMapper.selectByExample(example);
+
+        return vFileInfos.get(0);
+    }
+
+    public List<HashMap<String ,Object>> findFileItemByFileId(int fileId, HttpServletRequest request) throws Exception{
+        List<HashMap<String ,Object>> items = new ArrayList<HashMap<String, Object>>();
+
+        // 获得项目的路径
+        ServletContext sc = request.getSession().getServletContext();
+
+        String sqlPath = selectFileById(fileId).getFilePath();
+
+        // 上传位置
+        String uploadFilePath = sc.getRealPath(FileController.UP_FILE_PATH) +sqlPath;  // 设定文件保存的目录
+
+//        String uploadFilePath ="/home/mahanzhen/IdeaProjects/Management/target/Management/WEB-INF/fileUpload/MaHanZheng/3c293f11-87e7-4539-82c0-2309ea02c31c";
+        File file = new File(uploadFilePath);
+
+        String[] fileName = file.list();
+
+        for(String str: fileName){
+            HashMap<String,Object> hashMap = new HashMap<String, Object>();
+            hashMap.put("filename",str);
+            hashMap.put("url",uploadFilePath+"/"+str);
+            items.add(hashMap);
+        }
+
+
+        return items;
 
     }
 

@@ -3,7 +3,9 @@ package com.gdaib.service;
 import com.gdaib.pojo.FileInfo;
 import com.gdaib.pojo.VFileInfo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,5 +37,9 @@ public interface FileInfoService {
     //根据类似文件名查询文件信息
     public List<VFileInfo> selectFileByLikeTitle(String title,int departmentId) throws Exception;
 
+    //查询文件信息
+    public VFileInfo selectFileById(int fileId) throws Exception;
+
+    public List<HashMap<String ,Object>> findFileItemByFileId(int fileId, HttpServletRequest request) throws Exception;
 
 }

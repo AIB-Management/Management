@@ -8,10 +8,7 @@ import com.gdaib.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.portlet.ModelAndView;
 
@@ -41,17 +38,24 @@ public class FileController {
     @Autowired
     UsersService usersService;
 
+    //获取上传文件页面
     @RequestMapping(value = "/file/uploadFile")
     public String UploadFile() {
         return UPLOAD_FILE_JSP;
     }
 
 
+
+    //上传文件
     @RequestMapping(value = "/file/doUploadFile", method = RequestMethod.POST)
-    public ModelAndView doUploadFile(
+    @ResponseBody
+    public Msg doUploadFile(
+
             FileInfo fileInfo,
             @RequestParam("file") CommonsMultipartFile files[],
-            HttpServletRequest request) throws Exception {
+            HttpServletRequest request
+
+    ) throws Exception {
 
 
         if (fileInfo.getUsername() == null || fileInfo.getUsername().equals("")) {
@@ -65,11 +69,14 @@ public class FileController {
 
         // 获得项目的路径
         ServletContext sc = request.getSession().getServletContext();
+
+        String sqlPath = "/" + fileInfo.getUsername() +"/"+ UUID.randomUUID()+"/";
+
         // 上传位置
-        String path = sc.getRealPath(UP_FILE_PATH) + "/" + fileInfo.getUsername() +"/"+ UUID.randomUUID()+"/"; // 设定文件保存的目录
+        String path = sc.getRealPath(UP_FILE_PATH) +sqlPath;  // 设定文件保存的目录
         System.out.println("path:" + path);
 
-        fileInfo.setFilePath(path);
+        fileInfo.setFilePath(sqlPath);
 
         File f = new File(path);
         if (!f.exists())
@@ -102,45 +109,56 @@ public class FileController {
 
         }
 
-        return new ModelAndView("redirect:/file/writeFileInfoToSQl.action");
-    }
 
-    @RequestMapping("/file/writeFileInfoToSQl")
-    public Msg writeFileInfoToSQl(FileInfo fileInfo) throws Exception {
 
         System.out.println(fileInfo.toString());
+        return writeFileInfoToSQl(fileInfo);
+    }
+
+    //上传文件后将相关信息写入数据库
+    private  Msg writeFileInfoToSQl(FileInfo fileInfo) throws Exception {
+
+
         if(fileInfo == null){
             return Msg.fail();
         }
 
-//        int result = fileInfoService.insertFileByNFileInfo(fileInfo);
-//        if (result > 0) {
-//            return Msg.success();
-//        }
+        int result = fileInfoService.insertFileByNFileInfo(fileInfo);
+        if (result > 0) {
+            return Msg.success();
+        }
         return Msg.fail();
 
     }
 
 
-
-    @RequestMapping("/getListFileItem")
+    //获取上传文件的条目级链接
+    @RequestMapping("/file/ajaxFindFileItemByFileId")
     @ResponseBody
-    public Msg getListFileItem(HttpServletRequest request,
-                           HttpServletResponse response) {
-        List<String> fileItems = new ArrayList<String>();
+    public Msg ajaxFindFileItemByFileId(HttpServletRequest request,
+                           int fileId,
+                           HttpServletResponse response)  throws Exception{
+//        List<String> fileItems = new ArrayList<String>();
+//
+//        // 获得项目的路径
+//        ServletContext sc = request.getSession().getServletContext();
+//
+//        String sqlPath = fileInfoService.selectFileById(fileId).getFilePath();
+//
+//        // 上传位置
+//        String uploadFilePath = sc.getRealPath(UP_FILE_PATH) +sqlPath;  // 设定文件保存的目录
+//
+//        String uploadFilePath ="/home/mahanzhen/IdeaProjects/Management/target/Management/WEB-INF/fileUpload/MaHanZheng/3c293f11-87e7-4539-82c0-2309ea02c31c";
+//        File file = new File(uploadFilePath);
+//
+//        String[] fileName = file.list();
+//
+//        for(String str: fileName){
+//            fileItems.add(str);
+//        }
 
-        String uploadFilePath ="/home/mahanzhen/IdeaProjects/Management/target/Management/WEB-INF/fileUpload/MaHanZheng/3c293f11-87e7-4539-82c0-2309ea02c31c";
-        File file = new File(uploadFilePath);
 
-        String[] fileName = file.list();
-
-        for(String str: fileName){
-            fileItems.add(str);
-            System.out.println(str);
-        }
-
-
-        return Msg.success().add("filenames",fileItems);
+        return Msg.success().add("filenames",fileInfoService.findFileItemByFileId(fileId,request));
     }
 
 

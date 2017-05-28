@@ -3,6 +3,8 @@ package com.gdaib.controller;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gdaib.pojo.Msg;
 import com.gdaib.pojo.Navigation;
+import com.gdaib.pojo.VFileInfo;
+import com.gdaib.service.FileInfoService;
 import com.gdaib.service.NavigationServer;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,6 +25,9 @@ import java.util.List;
 public class ContentController {
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private FileInfoService fileInfoService;
 
 
     @Autowired
@@ -55,7 +60,9 @@ public class ContentController {
     @RequestMapping("/content/ajaxFindFileInfoByNavId")
     @ResponseBody
     public Msg ajaxFindFileInfoByNavId(int navigationId) throws Exception {
-        return Msg.success();
+        List<VFileInfo> vFileInfos = fileInfoService.selectFileByNavId(navigationId);
+
+        return Msg.success().add("FileInfos",vFileInfos);
     }
 
     /**
