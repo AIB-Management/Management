@@ -1,62 +1,147 @@
 package com.gdaib.controller;
 
+import com.gdaib.pojo.AccountInfo;
+import com.gdaib.pojo.FileInfo;
 import com.gdaib.pojo.Msg;
+import com.gdaib.service.FileInfoService;
+import com.gdaib.service.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import sun.misc.Contended;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.portlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
- * Created by Admin on 2017/5/27.
+ * Created by mahanzhen on 17-5-28.
  */
 @Controller
 public class FileController {
+    public static final String UP_FILE_PATH = "/WEB-INF/fileUpload";
 
-    @RequestMapping("/file/uploadFile"  )
-    @ResponseBody
-    public Msg uploadFile(HttpServletRequest request, HttpServletResponse response) throws IllegalStateException, IOException {
-        //创建一个通用的多部分解析器
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-        //判断 request 是否有文件上传,即多部分请求
-        if(multipartResolver.isMultipart(request)){
-            //转换成多部分request
-            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
-            //取得request中的所有文件名
-            Iterator<String> iter = multiRequest.getFileNames();
-            while(iter.hasNext()){
-                //记录上传过程起始时的时间，用来计算上传时间
-                int pre = (int) System.currentTimeMillis();
-                //取得上传文件
-                MultipartFile file = multiRequest.getFile(iter.next());
-                if(file != null){
-                    //取得当前上传文件的文件名称
-                    String myFileName = file.getOriginalFilename();
-                    //如果名称不为“”,说明该文件存在，否则说明该文件不存在
-                    if(myFileName.trim() !=""){
-                        System.out.println(myFileName);
-                        //重命名上传后的文件名
-                        String fileName = "demoUpload" + file.getOriginalFilename();
-                        //定义上传路径
-                        String path = "H:/" + fileName;
-                        File localFile = new File(path);
-                        file.transferTo(localFile);
+    public static final String UPLOAD_FILE_JSP = "testUpLoadFile.jsp";
+
+
+    @Autowired
+    FileInfoService fileInfoService;
+
+    @Autowired
+    UsersService usersService;
+
+    @RequestMapping(value = "/file/uploadFile")
+    public String UploadFile() {
+        return UPLOAD_FILE_JSP;
+    }
+
+
+    @RequestMapping(value = "/file/doUploadFile", method = RequestMethod.POST)
+    public ModelAndView doUploadFile(
+            FileInfo fileInfo,
+            @RequestParam("file") CommonsMultipartFile files[],
+            HttpServletRequest request) throws Exception {
+
+
+        if (fileInfo.getUsername() == null || fileInfo.getUsername().equals("")) {
+            //fileInfo.setUsername((String) usersService.getUserNameByRequest(request));
+            fileInfo.setUsername("MaHanZheng");
+        }
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis()/1000*1000 );
+        fileInfo.setUpTime(timestamp);
+
+
+        // 获得项目的路径
+        ServletContext sc = request.getSession().getServletContext();
+        // 上传位置
+        String path = sc.getRealPath(UP_FILE_PATH) + "/" + fileInfo.getUsername() +"/"+ UUID.randomUUID()+"/"; // 设定文件保存的目录
+        System.out.println("path:" + path);
+
+        fileInfo.setFilePath(path);
+
+        File f = new File(path);
+        if (!f.exists())
+            f.mkdirs();
+
+        for (int i = 0; i < files.length; i++) {
+            // 获得原始文件名
+            String fileName = files[i].getOriginalFilename();
+            System.out.println("原始文件名:" + fileName);
+
+            //新文件名
+            String newFileName =(i+1)+":"+fileName;
+
+            if (!files[i].isEmpty()) {
+                try {
+                    FileOutputStream fos = new FileOutputStream(path
+                            + newFileName);
+                    InputStream in = files[i].getInputStream();
+                    int b = 0;
+                    while ((b = in.read()) != -1) {
+                        fos.write(b);
                     }
+                    fos.close();
+                    in.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                //记录上传该文件后的时间
-                int finaltime = (int) System.currentTimeMillis();
-                System.out.println(finaltime - pre);
             }
+            System.out.println("上传文件到:" + path + newFileName);
 
         }
-        return Msg.success();
+
+        return new ModelAndView("redirect:/file/writeFileInfoToSQl.action");
     }
+
+    @RequestMapping("/file/writeFileInfoToSQl")
+    public Msg writeFileInfoToSQl(FileInfo fileInfo) throws Exception {
+
+        System.out.println(fileInfo.toString());
+        if(fileInfo == null){
+            return Msg.fail();
+        }
+
+//        int result = fileInfoService.insertFileByNFileInfo(fileInfo);
+//        if (result > 0) {
+//            return Msg.success();
+//        }
+        return Msg.fail();
+
+    }
+
+
+
+    @RequestMapping("/getListFileItem")
+    @ResponseBody
+    public Msg getListFileItem(HttpServletRequest request,
+                           HttpServletResponse response) {
+        List<String> fileItems = new ArrayList<String>();
+
+        String uploadFilePath ="/home/mahanzhen/IdeaProjects/Management/target/Management/WEB-INF/fileUpload/MaHanZheng/3c293f11-87e7-4539-82c0-2309ea02c31c";
+        File file = new File(uploadFilePath);
+
+        String[] fileName = file.list();
+
+        for(String str: fileName){
+            fileItems.add(str);
+            System.out.println(str);
+        }
+
+
+        return Msg.success().add("filenames",fileItems);
+    }
+
+
 }

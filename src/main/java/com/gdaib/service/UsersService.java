@@ -4,7 +4,9 @@ package com.gdaib.service;
 import com.gdaib.pojo.Account;
 import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
+import org.springframework.http.HttpRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -68,5 +70,8 @@ public interface UsersService {
 
     //根据id查询用户
     public List<AccountInfo> findAccountInfoForId(List<Integer> ids) throws Exception;
+
+    //获取登录后的账号
+    public String getUserNameByRequest(HttpServletRequest request) throws Exception;
 
 }

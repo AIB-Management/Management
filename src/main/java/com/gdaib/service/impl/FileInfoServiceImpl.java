@@ -29,10 +29,6 @@ public class FileInfoServiceImpl implements FileInfoService {
     @Override
     public Integer insertFileByNFileInfo(FileInfo info) throws Exception {
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis()/1000*1000 );
-        info.setUpTime(timestamp);
-        info.setFilePath(FILE_PATH);
-        info.setUrl(FILE_URL);
 
         System.out.println(info.toString());
 
