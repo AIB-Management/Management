@@ -27,7 +27,7 @@ import java.util.*;
  */
 @Controller
 public class FileController {
-    public static final String UP_FILE_PATH = "/WEB-INF/fileUpload";
+    public static final String UP_FILE_PATH = "/TeachersFile";
 
     public static final String UPLOAD_FILE_JSP = "testUpLoadFile.jsp";
 
@@ -57,79 +57,35 @@ public class FileController {
 
     ) throws Exception {
 
-
         if (fileInfo.getUsername() == null || fileInfo.getUsername().equals("")) {
-            //fileInfo.setUsername((String) usersService.getUserNameByRequest(request));
-            fileInfo.setUsername("MaHanZheng");
+            fileInfo.setUsername((String) usersService.getLoggingUserName());
         }
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis()/1000*1000 );
         fileInfo.setUpTime(timestamp);
 
-
-        // 获得项目的路径
-        ServletContext sc = request.getSession().getServletContext();
-
-        String sqlPath = "/" + fileInfo.getUsername() +"/"+ UUID.randomUUID()+"/";
-
-        // 上传位置
-        String path = sc.getRealPath(UP_FILE_PATH) +sqlPath;  // 设定文件保存的目录
-        System.out.println("path:" + path);
-
+        //保存到数据库的路径
+        String sqlPath = UP_FILE_PATH+ "/"+fileInfo.getUsername() +"/"+ UUID.randomUUID();
         fileInfo.setFilePath(sqlPath);
 
-        File f = new File(path);
-        if (!f.exists())
-            f.mkdirs();
-
-        for (int i = 0; i < files.length; i++) {
-            // 获得原始文件名
-            String fileName = files[i].getOriginalFilename();
-            System.out.println("原始文件名:" + fileName);
-
-            //新文件名
-            String newFileName =(i+1)+":"+fileName;
-
-            if (!files[i].isEmpty()) {
-                try {
-                    FileOutputStream fos = new FileOutputStream(path
-                            + newFileName);
-                    InputStream in = files[i].getInputStream();
-                    int b = 0;
-                    while ((b = in.read()) != -1) {
-                        fos.write(b);
-                    }
-                    fos.close();
-                    in.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            System.out.println("上传文件到:" + path + newFileName);
-
-        }
+        ServletContext sc = request.getSession().getServletContext();
+        // 上传位置
+        String path = sc.getRealPath(sqlPath) +"/";  // 设定文件保存的目录
 
 
+        System.out.println("path:" + path);
+
+
+        fileInfoService.writeFileToTeachersFile(path,files);
 
         System.out.println(fileInfo.toString());
-        return writeFileInfoToSQl(fileInfo);
+
+        fileInfoService.insertFileByNFileInfo(fileInfo);
+
+        return Msg.success();
     }
 
-    //上传文件后将相关信息写入数据库
-    private  Msg writeFileInfoToSQl(FileInfo fileInfo) throws Exception {
 
-
-        if(fileInfo == null){
-            return Msg.fail();
-        }
-
-        int result = fileInfoService.insertFileByNFileInfo(fileInfo);
-        if (result > 0) {
-            return Msg.success();
-        }
-        return Msg.fail();
-
-    }
 
 
     //获取上传文件的条目级链接
@@ -138,28 +94,47 @@ public class FileController {
     public Msg ajaxFindFileItemByFileId(HttpServletRequest request,
                            int fileId,
                            HttpServletResponse response)  throws Exception{
-//        List<String> fileItems = new ArrayList<String>();
-//
-//        // 获得项目的路径
-//        ServletContext sc = request.getSession().getServletContext();
-//
-//        String sqlPath = fileInfoService.selectFileById(fileId).getFilePath();
-//
-//        // 上传位置
-//        String uploadFilePath = sc.getRealPath(UP_FILE_PATH) +sqlPath;  // 设定文件保存的目录
-//
-//        String uploadFilePath ="/home/mahanzhen/IdeaProjects/Management/target/Management/WEB-INF/fileUpload/MaHanZheng/3c293f11-87e7-4539-82c0-2309ea02c31c";
-//        File file = new File(uploadFilePath);
-//
-//        String[] fileName = file.list();
-//
-//        for(String str: fileName){
-//            fileItems.add(str);
-//        }
 
+        String sqlPath = fileInfoService.selectFileById(fileId).getFilePath();
+        ServletContext sc = request.getSession().getServletContext();
+        String localPath = sc.getRealPath(sqlPath)+"/";
+        List<HashMap<String,Object>> filenames = fileInfoService.findFileItemByFileId(localPath,sqlPath);
+        List<HashMap<String,Object>> resetFileNames = fileInfoService.resetFileNames(filenames);
 
-        return Msg.success().add("filenames",fileInfoService.findFileItemByFileId(fileId,request));
+        if(resetFileNames == null){
+            return Msg.fail();
+        }
+
+        return Msg.success().add("filenames",resetFileNames);
     }
 
 
+    //删除文件
+    @RequestMapping("/file/ajaxDeleteFileByFileId")
+    @ResponseBody
+    public Msg ajaxDeleteFileByFileId(int fileId,HttpServletRequest request) throws Exception{
+        String sqlPath = fileInfoService.selectFileById(fileId).getFilePath();
+
+        ServletContext sc = request.getSession().getServletContext();
+        String localPath = sc.getRealPath(sqlPath)+"/";
+
+        System.out.println("localPath:"+localPath);
+        fileInfoService.deleteFileFromTeachersFile(localPath);
+
+        int result;
+
+        result = fileInfoService.deleteFileByPrimaryKey(fileId);
+        if(result>0){
+            return Msg.success();
+        }
+
+
+        return Msg.fail();
+    }
+
+
+    public ModelAndView fileConten(HttpServletRequest request,HttpServletResponse response,int fileId) throws Exception{
+        ModelAndView modelAndView =new ModelAndView();
+        return modelAndView;
+    }
 }

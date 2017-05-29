@@ -134,10 +134,10 @@ public class PasswordController {
 
         //把传过来的信息保存到UrlPojo中
         EmailUrlPojo urlPojo = new EmailUrlPojo();
-        urlPojo.setScheme(request.getScheme());
-        urlPojo.setServerName(request.getServerName());
-        urlPojo.setPort(request.getServerPort() + "");
-        urlPojo.setContextPath(request.getContextPath());
+//        urlPojo.setScheme(request.getScheme());
+//        urlPojo.setServerName(request.getServerName());
+//        urlPojo.setPort(request.getServerPort() + "");
+//        urlPojo.setContextPath(request.getContextPath());
         urlPojo.setAction(MODIFYPWD_ACTION);
 
         //增加邮箱用户名

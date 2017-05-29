@@ -2,6 +2,7 @@ package com.gdaib.service;
 
 import com.gdaib.pojo.FileInfo;
 import com.gdaib.pojo.VFileInfo;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -40,6 +41,16 @@ public interface FileInfoService {
     //查询文件信息
     public VFileInfo selectFileById(int fileId) throws Exception;
 
-    public List<HashMap<String ,Object>> findFileItemByFileId(int fileId, HttpServletRequest request) throws Exception;
+    //查询实体文件列表
+    public List<HashMap<String ,Object>> findFileItemByFileId(String localPath,String sqlPath) throws Exception;
+
+    //对实体文件列表进行排序
+    public List<HashMap<String ,Object>> resetFileNames(List<HashMap<String ,Object>> fileNames) throws Exception;
+
+    //写入实体文件
+    public void writeFileToTeachersFile(String path, CommonsMultipartFile files[]) throws Exception;
+
+    //删除实体文件
+    public void deleteFileFromTeachersFile(String workspaceRootPath) throws Exception;
 
 }

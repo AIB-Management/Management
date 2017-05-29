@@ -72,6 +72,6 @@ public interface UsersService {
     public List<AccountInfo> findAccountInfoForId(List<Integer> ids) throws Exception;
 
     //获取登录后的账号
-    public String getUserNameByRequest(HttpServletRequest request) throws Exception;
+    public String getLoggingUserName() throws Exception;
 
 }

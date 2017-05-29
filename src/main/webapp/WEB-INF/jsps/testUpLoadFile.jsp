@@ -13,11 +13,12 @@
 </head>
 <body>
 <form action="${pageContext.request.contextPath}/file/doUploadFile.action" method="post" enctype="multipart/form-data">
-
+    账号:<input type="text" name="username" value="lalalala"><<br>
+    账号:<input type="text" name="navigationid" value="1"><<br>
     标题:<input type="text" name="title"></br>
-    <input type="file" name="file">
-    <input type="file" name="file">
-    <input type="submit">
+    <input type="file" name="file"><br>
+    <input type="file" name="file"><br>
+    <input type="submit"><<br>
 </form>
 </body>
 </html>

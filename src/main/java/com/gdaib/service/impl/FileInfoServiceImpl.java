@@ -3,16 +3,16 @@ package com.gdaib.service.impl;
 import com.gdaib.controller.FileController;
 import com.gdaib.mapper.FileInfoExtMapper;
 import com.gdaib.mapper.VFileInfoMapper;
-import com.gdaib.pojo.FileInfo;
-import com.gdaib.pojo.FileInfoExample;
-import com.gdaib.pojo.VFileInfo;
-import com.gdaib.pojo.VFileInfoExample;
+import com.gdaib.pojo.*;
 import com.gdaib.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Admin on 2017/5/23.
  */
 public class FileInfoServiceImpl implements FileInfoService {
-    public static final String FILE_URL="FILE_URL";
+    public static final String FILE_URL = "FILE_URL";
 
     public static final String FILE_PATH = "FILE_PATH";
 
@@ -71,7 +71,6 @@ public class FileInfoServiceImpl implements FileInfoService {
     }
 
 
-
     public Integer updateFileByPrimaryKey(int fileId, String title) throws Exception {
 
 
@@ -90,15 +89,15 @@ public class FileInfoServiceImpl implements FileInfoService {
 
         vFileInfos = vFileInfoMapper.selectByExample(example);
 
-        for(VFileInfo vFileInfo:vFileInfos){
-            vFileInfo.setUrl("/file/ajaxFindFileItemByFileId.action?fileId="+vFileInfo.getId());
+        for (VFileInfo vFileInfo : vFileInfos) {
+            vFileInfo.setUrl("/file/ajaxFindFileItemByFileId.action?fileId=" + vFileInfo.getId());
         }
 
         return vFileInfos;
     }
 
     @Override
-    public List<VFileInfo> selectFileByName(String name,int departmentId) throws Exception {
+    public List<VFileInfo> selectFileByName(String name, int departmentId) throws Exception {
         List<VFileInfo> vFileInfos;
 
         VFileInfoExample example = new VFileInfoExample();
@@ -111,7 +110,7 @@ public class FileInfoServiceImpl implements FileInfoService {
     }
 
     @Override
-    public List<VFileInfo> selectFileByLikeTitle(String title,int departmentId) throws Exception {
+    public List<VFileInfo> selectFileByLikeTitle(String title, int departmentId) throws Exception {
         List<VFileInfo> vFileInfos;
 
         VFileInfoExample example = new VFileInfoExample();
@@ -120,7 +119,7 @@ public class FileInfoServiceImpl implements FileInfoService {
         criteria.andDepartmentidEqualTo(departmentId);
         vFileInfos = vFileInfoMapper.selectByExample(example);
 
-            return vFileInfos;
+        return vFileInfos;
 
     }
 
@@ -128,33 +127,24 @@ public class FileInfoServiceImpl implements FileInfoService {
     public VFileInfo selectFileById(int fileId) throws Exception {
 
         VFileInfoExample example = new VFileInfoExample();
-        VFileInfoExample.Criteria criteria =  example.createCriteria();
+        VFileInfoExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(fileId);
         List<VFileInfo> vFileInfos = vFileInfoMapper.selectByExample(example);
 
         return vFileInfos.get(0);
     }
 
-    public List<HashMap<String ,Object>> findFileItemByFileId(int fileId, HttpServletRequest request) throws Exception{
-        List<HashMap<String ,Object>> items = new ArrayList<HashMap<String, Object>>();
+    public List<HashMap<String, Object>> findFileItemByFileId(String localPath, String sqlPath) throws Exception {
+        List<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
 
-        // 获得项目的路径
-        ServletContext sc = request.getSession().getServletContext();
+        File file = new File(localPath);
 
-        String sqlPath = selectFileById(fileId).getFilePath();
+        String[] fileNames = file.list();
 
-        // 上传位置
-        String uploadFilePath = sc.getRealPath(FileController.UP_FILE_PATH) +sqlPath;  // 设定文件保存的目录
-
-//        String uploadFilePath ="/home/mahanzhen/IdeaProjects/Management/target/Management/WEB-INF/fileUpload/MaHanZheng/3c293f11-87e7-4539-82c0-2309ea02c31c";
-        File file = new File(uploadFilePath);
-
-        String[] fileName = file.list();
-
-        for(String str: fileName){
-            HashMap<String,Object> hashMap = new HashMap<String, Object>();
-            hashMap.put("filename",str);
-            hashMap.put("url",uploadFilePath+"/"+str);
+        for (String fileName : fileNames) {
+            HashMap<String, Object> hashMap = new HashMap<String, Object>();
+            hashMap.put("filename", fileName);
+            hashMap.put("url", UrlPojo.getUrlPojo().toString() + "/" + sqlPath + "/" + fileName);
             items.add(hashMap);
         }
 
@@ -163,5 +153,74 @@ public class FileInfoServiceImpl implements FileInfoService {
 
     }
 
+    @Override
+    public List<HashMap<String, Object>> resetFileNames(List<HashMap<String, Object>> fileNames) throws Exception {
+        if (fileNames == null) {
+            return null;
+        }
+        List<HashMap<String, Object>> resetFileNames = new ArrayList<HashMap<String, Object>>();
 
+        for (HashMap<String, Object> filename : fileNames) {
+            resetFileNames.add(filename);
+        }
+
+        return resetFileNames;
+    }
+
+    @Override
+    public void writeFileToTeachersFile(String path, CommonsMultipartFile[] files) throws Exception {
+        File f = new File(path);
+        if (!f.exists())
+            f.mkdirs();
+
+        for (int i = 0; i < files.length; i++) {
+            // 获得原始文件名
+            String fileName = files[i].getOriginalFilename();
+
+            System.out.println("原始文件名:" + fileName);
+
+            //新文件名
+            String newFileName = (i + 1) + ":" + fileName;
+
+            if (!files[i].isEmpty()) {
+                try {
+                    FileOutputStream fos = new FileOutputStream(path
+                            + newFileName);
+                    InputStream in = files[i].getInputStream();
+                    int b = 0;
+                    while ((b = in.read()) != -1) {
+                        fos.write(b);
+                    }
+                    fos.close();
+                    in.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("上传文件到:" + path + newFileName);
+
+        }
+    }
+
+    //删除文件
+    @Override
+    public void deleteFileFromTeachersFile(String workspaceRootPath) throws Exception {
+        //toAdd 判断用户是否登录
+
+
+        File file = new File(workspaceRootPath);
+        if (file.exists()) {
+            deleteFile(file);
+        }
+    }
+
+    private void deleteFile(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                deleteFile(files[i]);
+            }
+        }
+        file.delete();
+    }
 }

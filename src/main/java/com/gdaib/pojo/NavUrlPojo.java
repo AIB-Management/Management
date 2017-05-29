@@ -5,19 +5,13 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by mahanzhen on 17-5-20.
  */
-public class NavUrlPojo extends UrlPojo {
+public class NavUrlPojo {
 
 
     private String action;
     private Integer parent;
     private Integer departmentId;
 
-    public NavUrlPojo(HttpServletRequest request, String action, Integer parent, Integer departmentId) {
-        super(request);
-        this.action = action;
-        this.parent = parent;
-        this.departmentId = departmentId;
-    }
 
     public NavUrlPojo(String action, Integer parent, Integer departmentId) {
         this.action = action;
@@ -25,7 +19,9 @@ public class NavUrlPojo extends UrlPojo {
         this.departmentId = departmentId;
     }
 
-    public NavUrlPojo(){}
+    public NavUrlPojo() {
+    }
+
     public String getAction() {
         return action;
     }
@@ -52,6 +48,6 @@ public class NavUrlPojo extends UrlPojo {
 
     @Override
     public String toString() {
-        return super.toString() + action + "?departmentId=" + departmentId+"&parent="+parent;
+        return UrlPojo.getUrlPojo().toString() + action + "?departmentId=" + departmentId + "&parent=" + parent;
     }
 }

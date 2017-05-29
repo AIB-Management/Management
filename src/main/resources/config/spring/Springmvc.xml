@@ -76,7 +76,7 @@
 
         <property name="defaultEncoding" value="utf-8"/>
         <property name="maxUploadSize" value="5400000"/>
-        <property name="uploadTempDir" value="/WEB-INF/fileUpload"/>
+        <property name="uploadTempDir" value="/TeachersFile/cache"/>
 
     </bean>
 

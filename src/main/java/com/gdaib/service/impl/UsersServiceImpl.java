@@ -6,7 +6,9 @@ import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.UsersService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -406,9 +408,9 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public String getUserNameByRequest(HttpServletRequest request) throws Exception {
-        HttpSession session = request.getSession();
-        AccountInfo accountInfo = (AccountInfo) session.getAttribute("AccountInfo");
+    public String getLoggingUserName() throws Exception {
+        Subject subject = SecurityUtils.getSubject();
+        AccountInfo accountInfo = (AccountInfo) subject.getSession().getAttribute("AccountInfo");
         return accountInfo.getUsername();
 
     }
