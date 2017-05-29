@@ -92,19 +92,4 @@ public class VFileInfo {
     public void setNavigationid(Integer navigationid) {
         this.navigationid = navigationid;
     }
-
-    @Override
-    public String toString() {
-        return "VFileInfo{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", upTime=" + upTime +
-                ", title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", filePath='" + filePath + '\'' +
-                ", departmentid=" + departmentid +
-                ", navigationid=" + navigationid +
-                '}';
-    }
 }

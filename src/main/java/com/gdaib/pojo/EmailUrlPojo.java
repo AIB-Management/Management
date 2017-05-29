@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 17-5-6
  * @role:
  */
-public class EmailUrlPojo extends UrlPojo {
+public class EmailUrlPojo  {
     //    private String scheme;               //协议
 //    private String serverName;           //服务器地址
 //    private String port;                 //端口
@@ -24,7 +24,6 @@ public class EmailUrlPojo extends UrlPojo {
 //        this.serverName = serverName;
 //        this.port = port;
 //        this.contextPath = contextPath;contextPath
-        super(request);
         this.action = action;
         this.mail = mail;
         this.username = username;
@@ -60,6 +59,6 @@ public class EmailUrlPojo extends UrlPojo {
 
     @Override
     public String toString() {
-        return super.toString() + action + "?username=" + username;
+        return UrlPojo.getUrlPojo().toString() + action + "?username=" + username;
     }
 }

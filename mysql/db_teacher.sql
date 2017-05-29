@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2017-05-18 16:48:56
+Date: 2017-05-24 16:03:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -291,22 +291,31 @@ INSERT INTO `t_department` VALUES ('100', '计算机系');
 DROP TABLE IF EXISTS `t_file_info`;
 CREATE TABLE `t_file_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `account` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '账号',
+  `username` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '账号',
   `navigationId` int(11) NOT NULL COMMENT '系别模块id',
   `up_time` datetime NOT NULL COMMENT '时间',
   `title` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '文本标题',
   `url` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '操作标识',
+  `file_path` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `IDXU_t_file_info_action_code` (`url`),
-  KEY `FK_t_file_info_dn_id` (`navigationId`),
-  KEY `FK_t_file_info_account` (`account`),
-  CONSTRAINT `FK_t_file_info_account` FOREIGN KEY (`account`) REFERENCES `t_account` (`username`),
+  KEY `FK_t_file_info_account` (`username`),
+  KEY `FK_t_file_info_navigation_id` (`navigationId`) USING BTREE,
+  CONSTRAINT `FK_t_file_info_account` FOREIGN KEY (`username`) REFERENCES `t_account` (`username`),
   CONSTRAINT `FK_t_file_info_navigation` FOREIGN KEY (`navigationId`) REFERENCES `t_navigation` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='数据表9';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='数据表9';
 
 -- ----------------------------
 -- Records of t_file_info
 -- ----------------------------
+INSERT INTO `t_file_info` VALUES ('8', 'lalalala', '1', '2017-05-23 17:11:09', 'wawawwa', 'FILE_URL', 'FILE_PATH');
+INSERT INTO `t_file_info` VALUES ('9', 'lalalala', '1', '2017-05-23 17:11:09', '我欲修仙，法力无边', 'FILE_URL', 'FILE_PATH');
+INSERT INTO `t_file_info` VALUES ('10', 'lalalala', '1', '2017-05-23 17:11:09', '我欲修仙，法力无边', 'FILE_URL', 'FILE_PATH');
+INSERT INTO `t_file_info` VALUES ('11', 'lalalala', '1', '2017-05-23 17:11:09', '我欲修仙，法力无边', 'FILE_URL', 'FILE_PATH');
+INSERT INTO `t_file_info` VALUES ('12', 'lalalala', '1', '2017-05-23 17:11:09', '我欲修仙，法力无边', 'FILE_URL', 'FILE_PATH');
+INSERT INTO `t_file_info` VALUES ('13', 'lalalala', '1', '2017-05-23 17:11:10', '我欲修仙，法力无边', 'FILE_URL', 'FILE_PATH');
+INSERT INTO `t_file_info` VALUES ('14', 'lalalala', '1', '2017-05-23 17:11:10', '我欲修仙，法力无边', 'FILE_URL', 'FILE_PATH');
+INSERT INTO `t_file_info` VALUES ('15', 'lalalala', '1', '2017-05-23 17:11:10', '我欲修仙，法力无边', 'FILE_URL', 'FILE_PATH');
+INSERT INTO `t_file_info` VALUES ('16', 'lalalala', '1', '2017-05-23 17:11:10', '我欲修仙，法力无边', 'FILE_URL', 'FILE_PATH');
 
 -- ----------------------------
 -- Table structure for t_mapping_com
@@ -431,21 +440,12 @@ CREATE TABLE `t_navigation` (
   PRIMARY KEY (`id`),
   KEY `FK_t_nacigation_department` (`departmentId`),
   CONSTRAINT `FK_t_nacigation_department` FOREIGN KEY (`departmentId`) REFERENCES `t_department` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Records of t_navigation
 -- ----------------------------
-INSERT INTO `t_navigation` VALUES ('1', '100', '00000000000', '一级导航1', '/findNext.action?parent=1', '1');
-INSERT INTO `t_navigation` VALUES ('2', '100', '00000000000', '一级导航2', '/findNext.action?parent=2', '1');
-INSERT INTO `t_navigation` VALUES ('3', '100', '00000000000', '一级导航3', '/findNext.action?parent=3', '1');
-INSERT INTO `t_navigation` VALUES ('4', '100', '00000000000', '一级导航4', '/findNext.action?parent=4', '1');
-INSERT INTO `t_navigation` VALUES ('7', '100', '00000000001', '二级导航1', '/findFile.action?navId =7', '0');
-INSERT INTO `t_navigation` VALUES ('8', '100', '00000000001', '二级导航2', '/findNext.action?parent=8', '1');
-INSERT INTO `t_navigation` VALUES ('9', '100', '00000000008', '三级导航1', '/findFile.action?navId=9', '0');
-INSERT INTO `t_navigation` VALUES ('10', '100', '00000000000', '????', null, '0');
-INSERT INTO `t_navigation` VALUES ('11', '100', '00000000000', 'my hero', null, '0');
-INSERT INTO `t_navigation` VALUES ('12', '100', '00000000000', '一级导航', null, '0');
+INSERT INTO `t_navigation` VALUES ('1', '100', '00000000000', '一级导航', null, '0');
 
 -- ----------------------------
 -- Table structure for t_operate
@@ -503,6 +503,12 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- ----------------------------
 DROP VIEW IF EXISTS `v_char_pro`;
 CREATE ALGORITHM=TEMPTABLE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_char_pro` AS select `t_mapping_com`.`id` AS `id`,`t_character`.`role` AS `role`,`t_module`.`module` AS `module`,`t_operate`.`operate` AS `operate` from ((((`t_character` join `t_mapping_com` on((`t_mapping_com`.`role` = `t_character`.`role`))) join `t_mapping_om` on((`t_mapping_com`.`om_id` = `t_mapping_om`.`id`))) join `t_module` on((`t_mapping_om`.`module` = `t_module`.`module`))) join `t_operate` on((`t_mapping_om`.`operate` = `t_operate`.`operate`))) order by `t_mapping_com`.`id` ;
+
+-- ----------------------------
+-- View structure for v_file_info
+-- ----------------------------
+DROP VIEW IF EXISTS `v_file_info`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`skip-grants user`@`skip-grants host` SQL SECURITY DEFINER VIEW `v_file_info` AS select `t_file_info`.`id` AS `id`,`t_file_info`.`username` AS `username`,`t_account`.`name` AS `name`,`t_file_info`.`up_time` AS `up_time`,`t_file_info`.`title` AS `title`,`t_file_info`.`url` AS `url`,`t_file_info`.`file_path` AS `file_path`,`t_profession`.`department_id` AS `departmentId`,`t_file_info`.`navigationId` AS `navigationId` from ((`t_file_info` join `t_account` on((`t_file_info`.`username` = `t_account`.`username`))) join `t_profession` on((`t_account`.`profession_id` = `t_profession`.`id`))) ;
 
 -- ----------------------------
 -- Procedure structure for test

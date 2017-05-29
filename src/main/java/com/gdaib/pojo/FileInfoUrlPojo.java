@@ -5,15 +5,11 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by mahanzhen on 17-5-20.
  */
-public class FileInfoUrlPojo extends UrlPojo{
+public class FileInfoUrlPojo {
     private String action;
     private int navigationId;
 
-    public FileInfoUrlPojo(HttpServletRequest request, String action, int navigationId) {
-        super(request);
-        this.action = action;
-        this.navigationId = navigationId;
-    }
+
 
     public FileInfoUrlPojo(String action, int navigationId) {
         this.action = action;
@@ -40,6 +36,6 @@ public class FileInfoUrlPojo extends UrlPojo{
 
     @Override
     public String toString() {
-        return super.toString() + action + "?navigationId=" + navigationId;
+        return UrlPojo.getUrlPojo().toString() + action + "?navigationId=" + navigationId;
     }
 }

@@ -43,7 +43,7 @@ public class LoginController {
     //登陆
     @RequestMapping("/public/doLogin")
     public ModelAndView doLogin(RegisterPojo registerPojo,  HttpServletRequest request,HttpServletResponse response) throws Exception {
-
+        System.out.println(registerPojo.toString());
 
         HttpSession session = request.getSession();
 
@@ -95,6 +95,7 @@ public class LoginController {
             return modelAndView;
         }
 
+        subject.getSession().setAttribute("AccountInfo",accountInfo);
         modelAndView.setViewName("redirect:/content/departmentpage.action");
         return modelAndView;
 

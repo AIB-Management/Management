@@ -71,7 +71,7 @@ public class FileInfoTest {
 
     //@Test
     public void testSelectFileByName() throws Exception{
-        List<VFileInfo> vFileInfos = fileInfoService.selectFileByName("eqweqwe");
+        List<VFileInfo> vFileInfos = fileInfoService.selectFileByName("eqweqwe",100);
 
         for(VFileInfo vFileInfo:vFileInfos){
             System.out.println(vFileInfo.toString());
@@ -81,7 +81,7 @@ public class FileInfoTest {
 
     @Test
     public void testSelectFileByLikeTitle() throws Exception{
-        List<VFileInfo> vFileInfos = fileInfoService.selectFileByLikeTitle("我欲修仙，法力无边");
+        List<VFileInfo> vFileInfos = fileInfoService.selectFileByLikeTitle("我欲修仙，法力无边",100);
         for(VFileInfo vFileInfo:vFileInfos){
             System.out.println(vFileInfo.toString());
         }

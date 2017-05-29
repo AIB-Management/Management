@@ -6,10 +6,14 @@ import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.UsersService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.util.*;
@@ -403,5 +407,11 @@ public class UsersServiceImpl implements UsersService {
         return accountInfos;
     }
 
+    @Override
+    public String getLoggingUserName() throws Exception {
+        Subject subject = SecurityUtils.getSubject();
+        AccountInfo accountInfo = (AccountInfo) subject.getSession().getAttribute("AccountInfo");
+        return accountInfo.getUsername();
 
+    }
 }
