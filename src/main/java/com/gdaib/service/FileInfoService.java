@@ -42,7 +42,7 @@ public interface FileInfoService {
     public VFileInfo selectFileById(int fileId) throws Exception;
 
     //查询实体文件列表
-    public List<HashMap<String ,Object>> findFileItemByFileId(String localPath,String sqlPath) throws Exception;
+    public List<HashMap<String ,Object>> findFileItemByFilePath(String localPath,String sqlPath) throws Exception;
 
     //对实体文件列表进行排序
     public List<HashMap<String ,Object>> resetFileNames(List<HashMap<String ,Object>> fileNames) throws Exception;
