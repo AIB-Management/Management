@@ -1,8 +1,10 @@
 package com.gdaib.mapper;
 
 import com.gdaib.pojo.Navigation;
+import com.gdaib.pojo.NavigationCustom;
 import com.gdaib.pojo.NavigationExample;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface NavigationMapper {
@@ -27,4 +29,6 @@ public interface NavigationMapper {
     int updateByPrimaryKeySelective(Navigation record);
 
     int updateByPrimaryKey(Navigation record);
+
+
 }

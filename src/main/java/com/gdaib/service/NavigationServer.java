@@ -1,6 +1,7 @@
 package com.gdaib.service;
 
 import com.gdaib.pojo.Navigation;
+import com.gdaib.pojo.NavigationCustom;
 
 import java.util.List;
 
@@ -31,5 +32,9 @@ public interface NavigationServer {
 
     //获取某个系的所有导航
     public List<Navigation> selectNecByDepartId(Integer departmentId) throws Exception;
+
+    //找到子导航
+    public List<NavigationCustom> getChildNav(Integer DepartmentId, Integer ParentId) throws Exception;
+
 
 }

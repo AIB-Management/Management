@@ -1,6 +1,9 @@
 package cn.test;
 
+import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.pojo.FileInfo;
+import com.gdaib.pojo.Navigation;
+import com.gdaib.pojo.NavigationExample;
 import com.gdaib.pojo.VFileInfo;
 import com.gdaib.service.FileInfoService;
 import org.junit.Test;
@@ -86,5 +89,10 @@ public class FileInfoTest {
             System.out.println(vFileInfo.toString());
         }
     }
+
+
+
+
+
 
 }

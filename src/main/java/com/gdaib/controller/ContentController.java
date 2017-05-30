@@ -3,6 +3,7 @@ package com.gdaib.controller;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gdaib.pojo.Msg;
 import com.gdaib.pojo.Navigation;
+import com.gdaib.pojo.NavigationCustom;
 import com.gdaib.pojo.VFileInfo;
 import com.gdaib.service.FileInfoService;
 import com.gdaib.service.NavigationServer;
@@ -10,6 +11,7 @@ import com.gdaib.service.UsersService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -97,4 +99,21 @@ public class ContentController {
             return Msg.fail();
         }
     }
+
+    /**
+     * 根据系id,一级导航id找到剩下的所有导航
+     */
+    @RequestMapping("/content/ajaxNavCustomById")
+    @ResponseBody()
+    public List<NavigationCustom> ajaxNavCustomById(Integer departmentId,Integer parentId) throws Exception {
+        List<NavigationCustom> childNav = navigationServer.getChildNav(departmentId, parentId);
+        System.out.println(childNav);
+
+
+        return childNav;
+    }
+
+
+
+
 }

@@ -70,7 +70,7 @@
   <sql id="Base_Column_List" >
     id, departmentId, parent, title, url, extend
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.NavigationExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.Navigation" >
     select
     <if test="distinct" >
       distinct
@@ -85,6 +85,9 @@
       order by ${orderByClause}
     </if>
   </select>
+
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
