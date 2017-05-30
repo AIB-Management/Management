@@ -3,6 +3,7 @@ package com.gdaib.controller;
 import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.FileInfo;
 import com.gdaib.pojo.Msg;
+import com.gdaib.pojo.VFileInfo;
 import com.gdaib.service.FileInfoService;
 import com.gdaib.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,6 @@ public class FileController {
     }
 
 
-
     //上传文件
     @RequestMapping(value = "/file/doUploadFile", method = RequestMethod.POST)
     @ResponseBody
@@ -61,22 +61,22 @@ public class FileController {
             fileInfo.setUsername((String) usersService.getLoggingUserName());
         }
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis()/1000*1000 );
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis() / 1000 * 1000);
         fileInfo.setUpTime(timestamp);
 
         //保存到数据库的路径
-        String sqlPath = UP_FILE_PATH+ "/"+fileInfo.getUsername() +"/"+ UUID.randomUUID();
+        String sqlPath = UP_FILE_PATH + "/" + fileInfo.getUsername() + "/" + UUID.randomUUID();
         fileInfo.setFilePath(sqlPath);
 
         ServletContext sc = request.getSession().getServletContext();
         // 上传位置
-        String path = sc.getRealPath(sqlPath) +"/";  // 设定文件保存的目录
+        String path = sc.getRealPath(sqlPath) + "/";  // 设定文件保存的目录
 
 
         System.out.println("path:" + path);
 
 
-        fileInfoService.writeFileToTeachersFile(path,files);
+        fileInfoService.writeFileToTeachersFile(path, files);
 
         System.out.println(fileInfo.toString());
 
@@ -86,45 +86,44 @@ public class FileController {
     }
 
 
-
-
     //获取上传文件的条目级链接
     @RequestMapping("/file/ajaxFindFileItemByFileId")
     @ResponseBody
     public Msg ajaxFindFileItemByFileId(HttpServletRequest request,
-                           int fileId,
-                           HttpServletResponse response)  throws Exception{
+                                        int fileId,
+                                        HttpServletResponse response) throws Exception {
 
+        System.out.println(fileId);
         String sqlPath = fileInfoService.selectFileById(fileId).getFilePath();
         ServletContext sc = request.getSession().getServletContext();
-        String localPath = sc.getRealPath(sqlPath)+"/";
-        List<HashMap<String,Object>> filenames = fileInfoService.findFileItemByFileId(localPath,sqlPath);
-        List<HashMap<String,Object>> resetFileNames = fileInfoService.resetFileNames(filenames);
+        String localPath = sc.getRealPath(sqlPath) + "/";
+        List<HashMap<String, Object>> filenames = fileInfoService.findFileItemByFilePath(localPath, sqlPath);
+//        List<HashMap<String,Object>> resetFileNames = fileInfoService.resetFileNames(filenames);
 
-        if(resetFileNames == null){
+        if (filenames == null) {
             return Msg.fail();
         }
 
-        return Msg.success().add("filenames",resetFileNames);
+        return Msg.success().add("filenames", filenames);
     }
 
 
     //删除文件
     @RequestMapping("/file/ajaxDeleteFileByFileId")
     @ResponseBody
-    public Msg ajaxDeleteFileByFileId(int fileId,HttpServletRequest request) throws Exception{
+    public Msg ajaxDeleteFileByFileId(int fileId, HttpServletRequest request) throws Exception {
         String sqlPath = fileInfoService.selectFileById(fileId).getFilePath();
 
         ServletContext sc = request.getSession().getServletContext();
-        String localPath = sc.getRealPath(sqlPath)+"/";
+        String localPath = sc.getRealPath(sqlPath) + "/";
 
-        System.out.println("localPath:"+localPath);
+        System.out.println("localPath:" + localPath);
         fileInfoService.deleteFileFromTeachersFile(localPath);
 
         int result;
 
         result = fileInfoService.deleteFileByPrimaryKey(fileId);
-        if(result>0){
+        if (result > 0) {
             return Msg.success();
         }
 
@@ -133,8 +132,38 @@ public class FileController {
     }
 
 
-    public ModelAndView fileConten(HttpServletRequest request,HttpServletResponse response,int fileId) throws Exception{
-        ModelAndView modelAndView =new ModelAndView();
-        return modelAndView;
+//    @RequestMapping("/content/fileContent")
+//    public ModelAndView fileContent(HttpServletRequest request, HttpServletResponse response, int fileId) throws Exception {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("filecontent.jsp");
+//        VFileInfo vFileInfo = fileInfoService.selectFileById(fileId);
+//        modelAndView.addObject("fileInfo", vFileInfo);
+//
+//
+//        ServletContext sc = request.getSession().getServletContext();
+//        String sqlPath = vFileInfo.getFilePath();
+//        String localPath = sc.getRealPath(sqlPath) + "/";
+//
+//        List<HashMap<String, Object>> fileNames = fileInfoService.findFileItemByFilePath(localPath, sqlPath);
+//        modelAndView.addObject("fileNames", fileNames);
+//
+//        return modelAndView;
+//    }
+
+    @RequestMapping("/content/fileContent")
+    public String fileContent(HttpServletRequest request, HttpServletResponse response, int fileId) throws Exception {
+
+        VFileInfo vFileInfo = fileInfoService.selectFileById(fileId);
+        request.setAttribute("fileInfo", vFileInfo);
+
+
+        ServletContext sc = request.getSession().getServletContext();
+        String sqlPath = vFileInfo.getFilePath();
+        String localPath = sc.getRealPath(sqlPath) + "/";
+
+        List<HashMap<String, Object>> fileNames = fileInfoService.findFileItemByFilePath(localPath, sqlPath);
+        request.setAttribute("fileNames", fileNames);
+
+        return "filecontent.jsp";
     }
 }

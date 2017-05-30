@@ -90,7 +90,7 @@ public class FileInfoServiceImpl implements FileInfoService {
         vFileInfos = vFileInfoMapper.selectByExample(example);
 
         for (VFileInfo vFileInfo : vFileInfos) {
-            vFileInfo.setUrl("/file/ajaxFindFileItemByFileId.action?fileId=" + vFileInfo.getId());
+            vFileInfo.setUrl("/content/fileContent?fileId=" + vFileInfo.getId());
         }
 
         return vFileInfos;
@@ -134,19 +134,30 @@ public class FileInfoServiceImpl implements FileInfoService {
         return vFileInfos.get(0);
     }
 
-    public List<HashMap<String, Object>> findFileItemByFileId(String localPath, String sqlPath) throws Exception {
+    public List<HashMap<String, Object>> findFileItemByFilePath(String localPath, String sqlPath) throws Exception {
         List<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
 
         File file = new File(localPath);
 
         String[] fileNames = file.list();
 
-        for (String fileName : fileNames) {
+
+        for(int i=0;i<fileNames.length;i++){
             HashMap<String, Object> hashMap = new HashMap<String, Object>();
-            hashMap.put("filename", fileName);
-            hashMap.put("url", UrlPojo.getUrlPojo().toString() + "/" + sqlPath + "/" + fileName);
+            hashMap.put("filename", fileNames[i]);
+            hashMap.put("url", UrlPojo.getUrlPojo().toString() + "/" + sqlPath + "/" + fileNames[i]);
             items.add(hashMap);
         }
+
+
+
+
+//        for (String fileName : fileNames) {
+//            HashMap<String, Object> hashMap = new HashMap<String, Object>();
+//            hashMap.put("filename", fileName);
+//            hashMap.put("url", UrlPojo.getUrlPojo().toString() + "/" + sqlPath + "/" + fileName);
+//            items.add(hashMap);
+//        }
 
 
         return items;
