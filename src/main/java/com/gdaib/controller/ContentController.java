@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -58,7 +59,7 @@ public class ContentController {
         return modelAndView;
     }
 
-    //获取某个栏目的内容
+    //获取某个导航里面的内容
     @RequestMapping("/content/ajaxFindFileInfoByNavId")
     @ResponseBody
     public Msg ajaxFindFileInfoByNavId(int navigationId) throws Exception {
@@ -84,13 +85,10 @@ public class ContentController {
      *   }
      *}
      * FAIL:{"code":200,"msg":"处理失败！","extend":{}}
-     *
-     *
-     *
      * */
     @RequestMapping("/content/ajaxFindExtNavByParent")
     @ResponseBody()
-    public Msg ajaxExtNavByParent(int departmentId, int parent) throws Exception {
+    public Msg ajaxExtNavByParent(int departmentId, @RequestParam(defaultValue = "0") int parent) throws Exception {
         List<Navigation> navigations;
         navigations = navigationServer.selectNecByDepartIdAndParent(departmentId, parent);
         if (navigations != null) {
@@ -105,12 +103,12 @@ public class ContentController {
      */
     @RequestMapping("/content/ajaxNavCustomById")
     @ResponseBody()
-    public List<NavigationCustom> ajaxNavCustomById(Integer departmentId,Integer parentId) throws Exception {
+    public Msg ajaxNavCustomById(Integer departmentId,Integer parentId) throws Exception {
         List<NavigationCustom> childNav = navigationServer.getChildNav(departmentId, parentId);
         System.out.println(childNav);
 
 
-        return childNav;
+        return Msg.success().add("navigations",childNav);
     }
 
 

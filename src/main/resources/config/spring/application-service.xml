@@ -28,6 +28,8 @@
         <property name="mimeMessage" ref="mimeMessage" />
     </bean>
 
+    <bean id="runasService" class="com.gdaib.service.impl.RunasServiceImpl"/>
+
 
 
 

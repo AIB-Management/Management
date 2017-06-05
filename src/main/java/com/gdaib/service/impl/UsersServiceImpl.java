@@ -40,9 +40,13 @@ public class UsersServiceImpl implements UsersService {
      */
     @Override
     public Account findAccountForUsername(String username) throws Exception {
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
 
-        Account account = usersMapper.selectByUsername(username);
-        return account;
+
+        List<Account> accounts = accountMapper.selectByExample(accountExample);
+        return accounts==null ? null : accounts.get(0);
     }
 
     /**
@@ -279,7 +283,12 @@ public class UsersServiceImpl implements UsersService {
     //根据用户名找到用户信息
     @Override
     public AccountInfo findAccountInfoByUsername(String username) throws Exception {
-        return usersMapper.findAccountInfoByUsername(username);
+        AccountInfoExample accountInfoExample = new AccountInfoExample();
+        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
+
+        return accountInfos == null ? null : accountInfos.get(0);
     }
 
 

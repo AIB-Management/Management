@@ -4,6 +4,7 @@ import com.gdaib.pojo.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by znho on 2017/4/22.
@@ -46,4 +47,13 @@ public interface UsersMapper {
 
     //查找某类角色用户
     public List<AccountInfo> findAccountInfoByCharacter(String character) throws Exception;
+
+    //找到该系的所有教师
+    public List<AccountInfo> findUsernameByDeparentId(Map<String,Object> department_id) throws Exception;
+
+    //得到用户被别人授权的身份
+    public List<AccountInfo> findBeAccountName(String be_account) throws Exception;
+
+    //得到用户授权给别人的身份
+    public List<AccountInfo> findAccountName(String account) throws Exception;
 }

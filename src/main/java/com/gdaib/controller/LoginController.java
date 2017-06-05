@@ -1,6 +1,7 @@
 package com.gdaib.controller;
 
 
+import com.gdaib.pojo.Account;
 import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.UsersService;
@@ -9,6 +10,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -99,5 +102,24 @@ public class LoginController {
         modelAndView.setViewName("redirect:/content/departmentpage.action");
         return modelAndView;
 
+    }
+
+    @RequestMapping("/content/toId")
+    public String toId() throws Exception {
+        Subject subject = SecurityUtils.getSubject();
+        AccountInfo hahahaha = usersService.findAccountInfoByUsername("hahahaha");
+        subject.runAs(new SimplePrincipalCollection(hahahaha,""));
+        return "redirect:/content/departmentpage.action";
+    }
+
+    @RequestMapping("/content/toFromId")
+    public String toFromId() throws Exception {
+        Subject subject = SecurityUtils.getSubject();
+        System.out.println(subject.isRunAs());
+        if(subject.isRunAs()) {
+            //跳转回上一个身份
+            subject.releaseRunAs();
+        }
+        return "redirect:/content/departmentpage.action";
     }
 }

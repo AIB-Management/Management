@@ -194,6 +194,14 @@ public class NavigationServerImpl implements NavigationServer {
                 childNavigationCustoms.add(navigationCustom);
 
             } else {//如果没有子导航
+
+                //给url赋值地址
+                String url = navigationCustom.getUrl();
+                FileInfoUrlPojo fileInfoUrlPojo = new FileInfoUrlPojo();
+                fileInfoUrlPojo.setAction(QUERY_FILE_TITLE_ACTION);
+                fileInfoUrlPojo.setNavigationId(navigationCustom.getId());
+
+                navigationCustom.setUrl(fileInfoUrlPojo.toString());
                 //加入list中
                 childNavigationCustoms.add(navigationCustom);
             }

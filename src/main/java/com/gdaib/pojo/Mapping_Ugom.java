@@ -7,8 +7,6 @@ public class Mapping_Ugom {
 
     private String beAcco;
 
-    private Integer omId;
-
     public Integer getId() {
         return id;
     }
@@ -33,11 +31,12 @@ public class Mapping_Ugom {
         this.beAcco = beAcco == null ? null : beAcco.trim();
     }
 
-    public Integer getOmId() {
-        return omId;
-    }
-
-    public void setOmId(Integer omId) {
-        this.omId = omId;
+    @Override
+    public String toString() {
+        return "Mapping_Ugom{" +
+                "id=" + id +
+                ", account='" + account + '\'' +
+                ", beAcco='" + beAcco + '\'' +
+                '}';
     }
 }

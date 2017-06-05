@@ -53,7 +53,7 @@
 				<h3><shiro:principal property="department"/>主页</h3>
 			</div>
 			<div class="header-tag">
-				<a href="#" id="manage-msg">管理信息</a>
+				<a href="${pageContext.request.contextPath}/content/toId.action" id="manage-msg">管理信息</a>
 			</div>
 			<div class="header-tag" id="add-file">
 				<span id="release-msg">发布信息</span>

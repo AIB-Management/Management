@@ -1,9 +1,9 @@
 package cn.test;
 
 import com.gdaib.mapper.NavigationMapper;
-import com.gdaib.pojo.Navigation;
-import com.gdaib.pojo.NavigationCustom;
-import com.gdaib.pojo.NavigationExample;
+import com.gdaib.pojo.*;
+import com.gdaib.service.RunasService;
+import com.gdaib.service.UsersService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,6 +184,21 @@ public class NaviTest {
         String out=head.toUpperCase()+in.substring(1,in.length());
         return out;
     }
+
+
+    @Autowired
+    public UsersService usersService;
+    @Autowired
+    public RunasService runasService;
+
+    
+    
+    @Test
+    public void test3() throws Exception {
+        runasService.grant("lalalala","5edbf5edbf");
+    }
+
+
 
 
 

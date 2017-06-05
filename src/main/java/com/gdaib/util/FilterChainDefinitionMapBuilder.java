@@ -42,10 +42,29 @@ public class FilterChainDefinitionMapBuilder {
 //        map.put("/login.action","anon");
 //
 //        map.put("/**","authc");
+        //图片等资源
+        map.put("/resources/**","anon");
 
+        //登录页面和登录请求
+        map.put("/public/login.action","anon");
+        map.put("/public/doLogin.action","anon");
 
-        map.put("/content/personalpage.action","authc");
+            //注册页面
+            map.put("/public/register.action","anon");
+            //得到专业
+            map.put("/public/getProfessionJson.action","anon");
+
+        //验证码
+        map.put("/public/getCaptcha.action","anon");
+
+        //找回密码
+        map.put("/public/findPassword.action","anon");
+
+        //退出
         map.put("/shiro/logout","logout");
+
+
+        map.put("/**","authc");
 
 
         return map;

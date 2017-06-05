@@ -72,4 +72,17 @@ public class Account extends AccountKey {
     public void setOutdate(Date outdate) {
         this.outdate = outdate;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                ", professionId=" + professionId +
+                ", role='" + role + '\'' +
+                ", validatacode='" + validatacode + '\'' +
+                ", outdate=" + outdate +
+                '}';
+    }
 }

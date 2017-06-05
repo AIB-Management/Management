@@ -79,4 +79,26 @@
         WHERE
           v_account_info.`character` = #{character}
     </select>
+
+    <!--找到该系的所有教师-->
+    <select id="findUsernameByDeparentId" parameterType="Map" resultType="com.gdaib.pojo.AccountInfo">
+        SELECT a.id,a.name FROM `v_account_info` a WHERE department_id = #{department_id} AND role = 'teacher'
+        <if test="accounts != null and accounts.size() != 0">
+            <foreach collection="accounts" item="account" open="and id not in(" close=")" separator=",">
+                #{account.id}
+            </foreach>
+        </if>
+    </select>
+
+    <!--得到用户被别人授权的身份-->
+    <select id="findBeAccountName" parameterType="String" resultType="com.gdaib.pojo.AccountInfo">
+        SELECT a.id,a.name FROM `t_account` a,`t_mapping_ugom` m WHERE a.`username` = m.`account` AND be_acco = #{be_acco}
+
+    </select>
+
+    <!--得到用户授权给别人的身份-->
+    <select id="findAccountName" parameterType="String" resultType="com.gdaib.pojo.AccountInfo">
+        SELECT a.id,a.name FROM `t_account` a,`t_mapping_ugom` m WHERE a.`username` = m.`be_acco` AND m.`account` = #{account}
+    </select>
+
 </mapper>
