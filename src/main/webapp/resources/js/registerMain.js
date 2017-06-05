@@ -244,13 +244,11 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			}
 		}
 
-		if (count == inputs.length) {
-
-			alert("提交成功");
-		}else{
+		if (count != inputs.length) {
 			EventUntil.preventDefault(event);
+			
 		}
-	});
+});
 	
 
 
