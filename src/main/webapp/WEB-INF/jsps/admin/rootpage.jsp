@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-13"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-14"></script>
 </head>
 <body>
 	<div id="floor">
@@ -316,14 +316,7 @@
 					<div class="examie-wrap">
 						<span>筛选</span>
 						<select id="examie-filter" class="filter-style">
-							<option value="全部">全部</option>
-							<option value="计算机系">计算机系</option>
-							<option value="管理系">管理系</option>
-							<option value="商务系">商务系</option>
-							<option value="财经系">财经系</option>
-							<option value="热作系">热作系</option>
-							<option value="机电系">机电系</option>
-							<option value="BTEC国际交流学院">BTEC国际交流学院</option>
+							<option value="">全部</option>
 						</select>
 						<table id="examied" class="message-list table table-striped table-hover" cellspacing="0">
 							<thead>
