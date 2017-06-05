@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gdaib.mapper.AccountInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.gdaib.pojo.AccountInfo" >
-    <result column="id" property="id" jdbcType="INTEGER" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="mail" property="mail" jdbcType="VARCHAR" />
-    <result column="role" property="role" jdbcType="VARCHAR" />
-    <result column="department_id" property="departmentId" jdbcType="INTEGER" />
-    <result column="dep_content" property="depContent" jdbcType="VARCHAR" />
-    <result column="profession_id" property="professionId" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
+<mapper namespace="com.gdaib.mapper.CharacterMapper" >
+  <resultMap id="BaseResultMap" type="com.gdaib.pojo.Character" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="role" property="role" jdbcType="VARCHAR" />
+    <result column="explanation" property="explanation" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,15 +65,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, name, mail, role, department_id, dep_content, profession_id, content
+    id, role, explanation
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.AccountInfoExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.CharacterExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from v_account_info
+    from t_character
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,118 +81,72 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.gdaib.pojo.AccountInfoExample" >
-    delete from v_account_info
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.CharacterKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_character
+    where id = #{id,jdbcType=INTEGER}
+      and role = #{role,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.gdaib.pojo.CharacterKey" >
+    delete from t_character
+    where id = #{id,jdbcType=INTEGER}
+      and role = #{role,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gdaib.pojo.CharacterExample" >
+    delete from t_character
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gdaib.pojo.AccountInfo" >
-    insert into v_account_info (id, username, name, 
-      mail, role, department_id, 
-      dep_content, profession_id, content
+  <insert id="insert" parameterType="com.gdaib.pojo.Character" >
+    insert into t_character (id, role, explanation
       )
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{mail,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
-      #{depContent,jdbcType=VARCHAR}, #{professionId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{role,jdbcType=VARCHAR}, #{explanation,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.gdaib.pojo.AccountInfo" >
-    insert into v_account_info
+  <insert id="insertSelective" parameterType="com.gdaib.pojo.Character" >
+    insert into t_character
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="username != null" >
-        username,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="mail != null" >
-        mail,
-      </if>
       <if test="role != null" >
         role,
       </if>
-      <if test="departmentId != null" >
-        department_id,
-      </if>
-      <if test="depContent != null" >
-        dep_content,
-      </if>
-      <if test="professionId != null" >
-        profession_id,
-      </if>
-      <if test="content != null" >
-        content,
+      <if test="explanation != null" >
+        explanation,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="mail != null" >
-        #{mail,jdbcType=VARCHAR},
-      </if>
       <if test="role != null" >
         #{role,jdbcType=VARCHAR},
       </if>
-      <if test="departmentId != null" >
-        #{departmentId,jdbcType=INTEGER},
-      </if>
-      <if test="depContent != null" >
-        #{depContent,jdbcType=VARCHAR},
-      </if>
-      <if test="professionId != null" >
-        #{professionId,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
+      <if test="explanation != null" >
+        #{explanation,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gdaib.pojo.AccountInfoExample" resultType="java.lang.Integer" >
-    select count(*) from v_account_info
+  <select id="countByExample" parameterType="com.gdaib.pojo.CharacterExample" resultType="java.lang.Integer" >
+    select count(*) from t_character
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update v_account_info
+    update t_character
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.username != null" >
-        username = #{record.username,jdbcType=VARCHAR},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.mail != null" >
-        mail = #{record.mail,jdbcType=VARCHAR},
-      </if>
       <if test="record.role != null" >
         role = #{record.role,jdbcType=VARCHAR},
       </if>
-      <if test="record.departmentId != null" >
-        department_id = #{record.departmentId,jdbcType=INTEGER},
-      </if>
-      <if test="record.depContent != null" >
-        dep_content = #{record.depContent,jdbcType=VARCHAR},
-      </if>
-      <if test="record.professionId != null" >
-        profession_id = #{record.professionId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.content != null" >
-        content = #{record.content,jdbcType=VARCHAR},
+      <if test="record.explanation != null" >
+        explanation = #{record.explanation,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -206,18 +154,28 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update v_account_info
+    update t_character
     set id = #{record.id,jdbcType=INTEGER},
-      username = #{record.username,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
-      mail = #{record.mail,jdbcType=VARCHAR},
       role = #{record.role,jdbcType=VARCHAR},
-      department_id = #{record.departmentId,jdbcType=INTEGER},
-      dep_content = #{record.depContent,jdbcType=VARCHAR},
-      profession_id = #{record.professionId,jdbcType=VARCHAR},
-      content = #{record.content,jdbcType=VARCHAR}
+      explanation = #{record.explanation,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gdaib.pojo.Character" >
+    update t_character
+    <set >
+      <if test="explanation != null" >
+        explanation = #{explanation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+      and role = #{role,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gdaib.pojo.Character" >
+    update t_character
+    set explanation = #{explanation,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+      and role = #{role,jdbcType=VARCHAR}
   </update>
 </mapper>

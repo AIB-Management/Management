@@ -60,20 +60,13 @@
         </javaClientGenerator>
         <!-- 指定数据库表 --><!--需要修改-->
         <table tableName="t_account" domainObjectName="Account"></table>
+        <table tableName="t_authorization" domainObjectName="Authorization"></table>
         <table tableName="t_character" domainObjectName="Character"></table>
         <table tableName="t_department" domainObjectName="Department"></table>
-        <table tableName="t_file_info" domainObjectName="File_Info"></table>
-        <table tableName="t_mapping_com" domainObjectName="Mapping_Com"></table>
-        <table tableName="t_mapping_om" domainObjectName="Mapping_Om"></table>
-        <table tableName="t_mapping_ugom" domainObjectName="Mapping_Ugom"></table>
-        <table tableName="t_module" domainObjectName="Module"></table>
+        <table tableName="t_file" domainObjectName="File"></table>
         <table tableName="t_navigation" domainObjectName="Navigation"></table>
-        <table tableName="t_operate" domainObjectName="Operate"></table>
-        <table tableName="t_profession" domainObjectName="Profession"></table>
-
+        <table tableName="t_permission" domainObjectName="Permission"></table>
         <table tableName="v_account_info" domainObjectName="AccountInfo"></table>
-        <table tableName="v_char_pro" domainObjectName="CharPro">
-        </table>
 
         <!-- <table schema="" tableName="sys_user"></table>
         <table schema="" tableName="sys_role"></table>

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gdaib.mapper.FileInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.gdaib.pojo.FileInfo" >
+<mapper namespace="com.gdaib.mapper.FileMapper" >
+  <resultMap id="BaseResultMap" type="com.gdaib.pojo.File" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="navigationId" property="navigationid" jdbcType="INTEGER" />
-    <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="accUid" property="accuid" jdbcType="VARCHAR" />
+    <result column="navUid" property="navuid" jdbcType="VARCHAR" />
+    <result column="upTime" property="uptime" jdbcType="TIMESTAMP" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
-    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="filePath" property="filepath" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,16 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, navigationId, up_time, title, url, file_path
+    id, uid, accUid, navUid, upTime, title, url, filePath
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.FileInfoExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.FileExample" >
     select
     <if test="distinct" >
       distinct
     </if>
-    'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from t_file_info
+    from t_file
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,44 +86,49 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.FileKey" >
     select 
     <include refid="Base_Column_List" />
-    from t_file_info
+    from t_file
     where id = #{id,jdbcType=INTEGER}
+      and uid = #{uid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from t_file_info
+  <delete id="deleteByPrimaryKey" parameterType="com.gdaib.pojo.FileKey" >
+    delete from t_file
     where id = #{id,jdbcType=INTEGER}
+      and uid = #{uid,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gdaib.pojo.FileInfoExample" >
-    delete from t_file_info
+  <delete id="deleteByExample" parameterType="com.gdaib.pojo.FileExample" >
+    delete from t_file
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gdaib.pojo.FileInfo" >
-    insert into t_file_info (id, username, navigationId, 
-      up_time, title, url, 
-      file_path)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{navigationid,jdbcType=INTEGER}, 
-      #{upTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{filePath,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.gdaib.pojo.File" >
+    insert into t_file (id, uid, accUid, 
+      navUid, upTime, title, 
+      url, filePath)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{accuid,jdbcType=VARCHAR}, 
+      #{navuid,jdbcType=VARCHAR}, #{uptime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{filepath,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.gdaib.pojo.FileInfo" >
-    insert into t_file_info
+  <insert id="insertSelective" parameterType="com.gdaib.pojo.File" >
+    insert into t_file
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="username != null" >
-        username,
+      <if test="uid != null" >
+        uid,
       </if>
-      <if test="navigationid != null" >
-        navigationId,
+      <if test="accuid != null" >
+        accUid,
       </if>
-      <if test="upTime != null" >
-        up_time,
+      <if test="navuid != null" >
+        navUid,
+      </if>
+      <if test="uptime != null" >
+        upTime,
       </if>
       <if test="title != null" >
         title,
@@ -131,22 +136,25 @@
       <if test="url != null" >
         url,
       </if>
-      <if test="filePath != null" >
-        file_path,
+      <if test="filepath != null" >
+        filePath,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
       </if>
-      <if test="navigationid != null" >
-        #{navigationid,jdbcType=INTEGER},
+      <if test="accuid != null" >
+        #{accuid,jdbcType=VARCHAR},
       </if>
-      <if test="upTime != null" >
-        #{upTime,jdbcType=TIMESTAMP},
+      <if test="navuid != null" >
+        #{navuid,jdbcType=VARCHAR},
+      </if>
+      <if test="uptime != null" >
+        #{uptime,jdbcType=TIMESTAMP},
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
@@ -154,31 +162,34 @@
       <if test="url != null" >
         #{url,jdbcType=VARCHAR},
       </if>
-      <if test="filePath != null" >
-        #{filePath,jdbcType=VARCHAR},
+      <if test="filepath != null" >
+        #{filepath,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gdaib.pojo.FileInfoExample" resultType="java.lang.Integer" >
-    select count(*) from t_file_info
+  <select id="countByExample" parameterType="com.gdaib.pojo.FileExample" resultType="java.lang.Integer" >
+    select count(*) from t_file
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update t_file_info
+    update t_file
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.username != null" >
-        username = #{record.username,jdbcType=VARCHAR},
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=VARCHAR},
       </if>
-      <if test="record.navigationid != null" >
-        navigationId = #{record.navigationid,jdbcType=INTEGER},
+      <if test="record.accuid != null" >
+        accUid = #{record.accuid,jdbcType=VARCHAR},
       </if>
-      <if test="record.upTime != null" >
-        up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      <if test="record.navuid != null" >
+        navUid = #{record.navuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uptime != null" >
+        upTime = #{record.uptime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.title != null" >
         title = #{record.title,jdbcType=VARCHAR},
@@ -186,8 +197,8 @@
       <if test="record.url != null" >
         url = #{record.url,jdbcType=VARCHAR},
       </if>
-      <if test="record.filePath != null" >
-        file_path = #{record.filePath,jdbcType=VARCHAR},
+      <if test="record.filepath != null" >
+        filePath = #{record.filepath,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -195,29 +206,30 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update t_file_info
+    update t_file
     set id = #{record.id,jdbcType=INTEGER},
-      username = #{record.username,jdbcType=VARCHAR},
-      navigationId = #{record.navigationid,jdbcType=INTEGER},
-      up_time = #{record.upTime,jdbcType=TIMESTAMP},
+      uid = #{record.uid,jdbcType=VARCHAR},
+      accUid = #{record.accuid,jdbcType=VARCHAR},
+      navUid = #{record.navuid,jdbcType=VARCHAR},
+      upTime = #{record.uptime,jdbcType=TIMESTAMP},
       title = #{record.title,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
-      file_path = #{record.filePath,jdbcType=VARCHAR}
+      filePath = #{record.filepath,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gdaib.pojo.FileInfo" >
-    update t_file_info
+  <update id="updateByPrimaryKeySelective" parameterType="com.gdaib.pojo.File" >
+    update t_file
     <set >
-      <if test="username != null" >
-        username = #{username,jdbcType=VARCHAR},
+      <if test="accuid != null" >
+        accUid = #{accuid,jdbcType=VARCHAR},
       </if>
-      <if test="navigationid != null" >
-        navigationId = #{navigationid,jdbcType=INTEGER},
+      <if test="navuid != null" >
+        navUid = #{navuid,jdbcType=VARCHAR},
       </if>
-      <if test="upTime != null" >
-        up_time = #{upTime,jdbcType=TIMESTAMP},
+      <if test="uptime != null" >
+        upTime = #{uptime,jdbcType=TIMESTAMP},
       </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
@@ -225,20 +237,22 @@
       <if test="url != null" >
         url = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="filePath != null" >
-        file_path = #{filePath,jdbcType=VARCHAR},
+      <if test="filepath != null" >
+        filePath = #{filepath,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
+      and uid = #{uid,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gdaib.pojo.FileInfo" >
-    update t_file_info
-    set username = #{username,jdbcType=VARCHAR},
-      navigationId = #{navigationid,jdbcType=INTEGER},
-      up_time = #{upTime,jdbcType=TIMESTAMP},
+  <update id="updateByPrimaryKey" parameterType="com.gdaib.pojo.File" >
+    update t_file
+    set accUid = #{accuid,jdbcType=VARCHAR},
+      navUid = #{navuid,jdbcType=VARCHAR},
+      upTime = #{uptime,jdbcType=TIMESTAMP},
       title = #{title,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
-      file_path = #{filePath,jdbcType=VARCHAR}
+      filePath = #{filepath,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
+      and uid = #{uid,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -3,14 +3,14 @@ package com.gdaib.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mapping_UgomExample {
+public class CharacterExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public Mapping_UgomExample() {
+    public CharacterExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -164,143 +164,143 @@ public class Mapping_UgomExample {
             return (Criteria) this;
         }
 
-        public Criteria andAccountIsNull() {
-            addCriterion("account is null");
+        public Criteria andRoleIsNull() {
+            addCriterion("role is null");
             return (Criteria) this;
         }
 
-        public Criteria andAccountIsNotNull() {
-            addCriterion("account is not null");
+        public Criteria andRoleIsNotNull() {
+            addCriterion("role is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAccountEqualTo(String value) {
-            addCriterion("account =", value, "account");
+        public Criteria andRoleEqualTo(String value) {
+            addCriterion("role =", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotEqualTo(String value) {
-            addCriterion("account <>", value, "account");
+        public Criteria andRoleNotEqualTo(String value) {
+            addCriterion("role <>", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountGreaterThan(String value) {
-            addCriterion("account >", value, "account");
+        public Criteria andRoleGreaterThan(String value) {
+            addCriterion("role >", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountGreaterThanOrEqualTo(String value) {
-            addCriterion("account >=", value, "account");
+        public Criteria andRoleGreaterThanOrEqualTo(String value) {
+            addCriterion("role >=", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountLessThan(String value) {
-            addCriterion("account <", value, "account");
+        public Criteria andRoleLessThan(String value) {
+            addCriterion("role <", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountLessThanOrEqualTo(String value) {
-            addCriterion("account <=", value, "account");
+        public Criteria andRoleLessThanOrEqualTo(String value) {
+            addCriterion("role <=", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountLike(String value) {
-            addCriterion("account like", value, "account");
+        public Criteria andRoleLike(String value) {
+            addCriterion("role like", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotLike(String value) {
-            addCriterion("account not like", value, "account");
+        public Criteria andRoleNotLike(String value) {
+            addCriterion("role not like", value, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountIn(List<String> values) {
-            addCriterion("account in", values, "account");
+        public Criteria andRoleIn(List<String> values) {
+            addCriterion("role in", values, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotIn(List<String> values) {
-            addCriterion("account not in", values, "account");
+        public Criteria andRoleNotIn(List<String> values) {
+            addCriterion("role not in", values, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountBetween(String value1, String value2) {
-            addCriterion("account between", value1, value2, "account");
+        public Criteria andRoleBetween(String value1, String value2) {
+            addCriterion("role between", value1, value2, "role");
             return (Criteria) this;
         }
 
-        public Criteria andAccountNotBetween(String value1, String value2) {
-            addCriterion("account not between", value1, value2, "account");
+        public Criteria andRoleNotBetween(String value1, String value2) {
+            addCriterion("role not between", value1, value2, "role");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoIsNull() {
-            addCriterion("be_acco is null");
+        public Criteria andExplanationIsNull() {
+            addCriterion("explanation is null");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoIsNotNull() {
-            addCriterion("be_acco is not null");
+        public Criteria andExplanationIsNotNull() {
+            addCriterion("explanation is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoEqualTo(String value) {
-            addCriterion("be_acco =", value, "beAcco");
+        public Criteria andExplanationEqualTo(String value) {
+            addCriterion("explanation =", value, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoNotEqualTo(String value) {
-            addCriterion("be_acco <>", value, "beAcco");
+        public Criteria andExplanationNotEqualTo(String value) {
+            addCriterion("explanation <>", value, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoGreaterThan(String value) {
-            addCriterion("be_acco >", value, "beAcco");
+        public Criteria andExplanationGreaterThan(String value) {
+            addCriterion("explanation >", value, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoGreaterThanOrEqualTo(String value) {
-            addCriterion("be_acco >=", value, "beAcco");
+        public Criteria andExplanationGreaterThanOrEqualTo(String value) {
+            addCriterion("explanation >=", value, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoLessThan(String value) {
-            addCriterion("be_acco <", value, "beAcco");
+        public Criteria andExplanationLessThan(String value) {
+            addCriterion("explanation <", value, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoLessThanOrEqualTo(String value) {
-            addCriterion("be_acco <=", value, "beAcco");
+        public Criteria andExplanationLessThanOrEqualTo(String value) {
+            addCriterion("explanation <=", value, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoLike(String value) {
-            addCriterion("be_acco like", value, "beAcco");
+        public Criteria andExplanationLike(String value) {
+            addCriterion("explanation like", value, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoNotLike(String value) {
-            addCriterion("be_acco not like", value, "beAcco");
+        public Criteria andExplanationNotLike(String value) {
+            addCriterion("explanation not like", value, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoIn(List<String> values) {
-            addCriterion("be_acco in", values, "beAcco");
+        public Criteria andExplanationIn(List<String> values) {
+            addCriterion("explanation in", values, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoNotIn(List<String> values) {
-            addCriterion("be_acco not in", values, "beAcco");
+        public Criteria andExplanationNotIn(List<String> values) {
+            addCriterion("explanation not in", values, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoBetween(String value1, String value2) {
-            addCriterion("be_acco between", value1, value2, "beAcco");
+        public Criteria andExplanationBetween(String value1, String value2) {
+            addCriterion("explanation between", value1, value2, "explanation");
             return (Criteria) this;
         }
 
-        public Criteria andBeAccoNotBetween(String value1, String value2) {
-            addCriterion("be_acco not between", value1, value2, "beAcco");
+        public Criteria andExplanationNotBetween(String value1, String value2) {
+            addCriterion("explanation not between", value1, value2, "explanation");
             return (Criteria) this;
         }
     }

@@ -1,10 +1,9 @@
 package com.gdaib.mapper;
 
 import com.gdaib.pojo.Navigation;
-import com.gdaib.pojo.NavigationCustom;
 import com.gdaib.pojo.NavigationExample;
+import com.gdaib.pojo.NavigationKey;
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 
 public interface NavigationMapper {
@@ -12,7 +11,7 @@ public interface NavigationMapper {
 
     int deleteByExample(NavigationExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(NavigationKey key);
 
     int insert(Navigation record);
 
@@ -20,7 +19,7 @@ public interface NavigationMapper {
 
     List<Navigation> selectByExample(NavigationExample example);
 
-    Navigation selectByPrimaryKey(Integer id);
+    Navigation selectByPrimaryKey(NavigationKey key);
 
     int updateByExampleSelective(@Param("record") Navigation record, @Param("example") NavigationExample example);
 
@@ -29,6 +28,4 @@ public interface NavigationMapper {
     int updateByPrimaryKeySelective(Navigation record);
 
     int updateByPrimaryKey(Navigation record);
-
-
 }

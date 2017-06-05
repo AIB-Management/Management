@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gdaib.mapper.NavigationMapper" >
-  <resultMap id="BaseResultMap" type="com.gdaib.pojo.Navigation" >
+<mapper namespace="com.gdaib.mapper.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.gdaib.pojo.Department" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <id column="uid" property="uid" jdbcType="VARCHAR" />
-    <result column="parent" property="parent" jdbcType="VARCHAR" />
-    <result column="title" property="title" jdbcType="VARCHAR" />
-    <result column="url" property="url" jdbcType="VARCHAR" />
-    <result column="extend" property="extend" jdbcType="INTEGER" />
-    <result column="depUid" property="depuid" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="parent" property="parent" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,15 +66,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, uid, parent, title, url, extend, depUid
+    id, uid, content, parent
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.NavigationExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.DepartmentExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_navigation
+    from t_department
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,34 +82,32 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.NavigationKey" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.DepartmentKey" >
     select 
     <include refid="Base_Column_List" />
-    from t_navigation
+    from t_department
     where id = #{id,jdbcType=INTEGER}
       and uid = #{uid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.gdaib.pojo.NavigationKey" >
-    delete from t_navigation
+  <delete id="deleteByPrimaryKey" parameterType="com.gdaib.pojo.DepartmentKey" >
+    delete from t_department
     where id = #{id,jdbcType=INTEGER}
       and uid = #{uid,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.gdaib.pojo.NavigationExample" >
-    delete from t_navigation
+  <delete id="deleteByExample" parameterType="com.gdaib.pojo.DepartmentExample" >
+    delete from t_department
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.gdaib.pojo.Navigation" >
-    insert into t_navigation (id, uid, parent, 
-      title, url, extend, 
-      depUid)
-    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{parent,jdbcType=VARCHAR}, 
-      #{title,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{extend,jdbcType=INTEGER}, 
-      #{depuid,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.gdaib.pojo.Department" >
+    insert into t_department (id, uid, content, 
+      parent)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{parent,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.gdaib.pojo.Navigation" >
-    insert into t_navigation
+  <insert id="insertSelective" parameterType="com.gdaib.pojo.Department" >
+    insert into t_department
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -120,20 +115,11 @@
       <if test="uid != null" >
         uid,
       </if>
+      <if test="content != null" >
+        content,
+      </if>
       <if test="parent != null" >
         parent,
-      </if>
-      <if test="title != null" >
-        title,
-      </if>
-      <if test="url != null" >
-        url,
-      </if>
-      <if test="extend != null" >
-        extend,
-      </if>
-      <if test="depuid != null" >
-        depUid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -143,31 +129,22 @@
       <if test="uid != null" >
         #{uid,jdbcType=VARCHAR},
       </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
       <if test="parent != null" >
-        #{parent,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null" >
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null" >
-        #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="extend != null" >
-        #{extend,jdbcType=INTEGER},
-      </if>
-      <if test="depuid != null" >
-        #{depuid,jdbcType=VARCHAR},
+        #{parent,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.gdaib.pojo.NavigationExample" resultType="java.lang.Integer" >
-    select count(*) from t_navigation
+  <select id="countByExample" parameterType="com.gdaib.pojo.DepartmentExample" resultType="java.lang.Integer" >
+    select count(*) from t_department
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update t_navigation
+    update t_department
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
@@ -175,20 +152,11 @@
       <if test="record.uid != null" >
         uid = #{record.uid,jdbcType=VARCHAR},
       </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
       <if test="record.parent != null" >
-        parent = #{record.parent,jdbcType=VARCHAR},
-      </if>
-      <if test="record.title != null" >
-        title = #{record.title,jdbcType=VARCHAR},
-      </if>
-      <if test="record.url != null" >
-        url = #{record.url,jdbcType=VARCHAR},
-      </if>
-      <if test="record.extend != null" >
-        extend = #{record.extend,jdbcType=INTEGER},
-      </if>
-      <if test="record.depuid != null" >
-        depUid = #{record.depuid,jdbcType=VARCHAR},
+        parent = #{record.parent,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -196,47 +164,32 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update t_navigation
+    update t_department
     set id = #{record.id,jdbcType=INTEGER},
       uid = #{record.uid,jdbcType=VARCHAR},
-      parent = #{record.parent,jdbcType=VARCHAR},
-      title = #{record.title,jdbcType=VARCHAR},
-      url = #{record.url,jdbcType=VARCHAR},
-      extend = #{record.extend,jdbcType=INTEGER},
-      depUid = #{record.depuid,jdbcType=VARCHAR}
+      content = #{record.content,jdbcType=VARCHAR},
+      parent = #{record.parent,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.gdaib.pojo.Navigation" >
-    update t_navigation
+  <update id="updateByPrimaryKeySelective" parameterType="com.gdaib.pojo.Department" >
+    update t_department
     <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
       <if test="parent != null" >
-        parent = #{parent,jdbcType=VARCHAR},
-      </if>
-      <if test="title != null" >
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null" >
-        url = #{url,jdbcType=VARCHAR},
-      </if>
-      <if test="extend != null" >
-        extend = #{extend,jdbcType=INTEGER},
-      </if>
-      <if test="depuid != null" >
-        depUid = #{depuid,jdbcType=VARCHAR},
+        parent = #{parent,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
       and uid = #{uid,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.gdaib.pojo.Navigation" >
-    update t_navigation
-    set parent = #{parent,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      extend = #{extend,jdbcType=INTEGER},
-      depUid = #{depuid,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.gdaib.pojo.Department" >
+    update t_department
+    set content = #{content,jdbcType=VARCHAR},
+      parent = #{parent,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
       and uid = #{uid,jdbcType=VARCHAR}
   </update>

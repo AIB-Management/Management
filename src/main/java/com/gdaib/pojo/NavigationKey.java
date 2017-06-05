@@ -1,9 +1,7 @@
 package com.gdaib.pojo;
 
-public class AccountKey {
+public class NavigationKey {
     private Integer id;
-
-    private String username;
 
     private String uid;
 
@@ -13,14 +11,6 @@ public class AccountKey {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
     }
 
     public String getUid() {

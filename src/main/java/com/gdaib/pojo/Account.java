@@ -9,13 +9,13 @@ public class Account extends AccountKey {
 
     private String mail;
 
-    private Integer professionId;
-
     private String role;
 
     private String validatacode;
 
     private Date outdate;
+
+    private String depuid;
 
     public String getPassword() {
         return password;
@@ -39,14 +39,6 @@ public class Account extends AccountKey {
 
     public void setMail(String mail) {
         this.mail = mail == null ? null : mail.trim();
-    }
-
-    public Integer getProfessionId() {
-        return professionId;
-    }
-
-    public void setProfessionId(Integer professionId) {
-        this.professionId = professionId;
     }
 
     public String getRole() {
@@ -73,16 +65,11 @@ public class Account extends AccountKey {
         this.outdate = outdate;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", mail='" + mail + '\'' +
-                ", professionId=" + professionId +
-                ", role='" + role + '\'' +
-                ", validatacode='" + validatacode + '\'' +
-                ", outdate=" + outdate +
-                '}';
+    public String getDepuid() {
+        return depuid;
+    }
+
+    public void setDepuid(String depuid) {
+        this.depuid = depuid == null ? null : depuid.trim();
     }
 }
