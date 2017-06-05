@@ -2,7 +2,7 @@ package com.gdaib.service.impl;
 
 
 import com.gdaib.mapper.AccountInfoMapper;
-import com.gdaib.mapper.Mapping_UgomMapper;
+
 
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
@@ -18,8 +18,6 @@ import java.util.Map;
  */
 public class RunasServiceImpl implements RunasService{
 
-    @Autowired
-    public Mapping_UgomMapper mapping_ugomMapper;
 
     @Autowired
     public UsersMapper usersMapper;
@@ -65,14 +63,6 @@ public class RunasServiceImpl implements RunasService{
         return accountInfos == null ? null : accountInfos.get(0);
     }
 
-    //授权给别人自己的身份
-    @Override
-    public void grant(String account, String beAcco) throws Exception {
-        Mapping_Ugom mapping_ugom = new Mapping_Ugom();
-        mapping_ugom.setAccount(account);
-        mapping_ugom.setBeAcco(beAcco);
-        mapping_ugomMapper.insert(mapping_ugom);
-    }
 
 
 }

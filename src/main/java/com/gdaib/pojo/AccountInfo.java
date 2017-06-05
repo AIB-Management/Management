@@ -90,4 +90,19 @@ public class AccountInfo {
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
     }
+
+    @Override
+    public String toString() {
+        return "AccountInfo{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                ", role='" + role + '\'' +
+                ", departmentId=" + departmentId +
+                ", depContent='" + depContent + '\'' +
+                ", professionId='" + professionId + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

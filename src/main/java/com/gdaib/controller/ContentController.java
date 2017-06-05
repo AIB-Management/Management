@@ -90,12 +90,13 @@ public class ContentController {
     @ResponseBody()
     public Msg ajaxExtNavByParent(int departmentId, @RequestParam(defaultValue = "0") int parent) throws Exception {
         List<Navigation> navigations;
-        navigations = navigationServer.selectNecByDepartIdAndParent(departmentId, parent);
-        if (navigations != null) {
-            return Msg.success().add("navigations", navigations);
-        } else {
-            return Msg.fail();
-        }
+//        navigations = navigationServer.selectNecByDepartIdAndParent(departmentId, parent);
+//        if (navigations != null) {
+//            return Msg.success().add("navigations", navigations);
+//        } else {
+//            return Msg.fail();
+//        }
+        return null;
     }
 
     /**
@@ -104,11 +105,12 @@ public class ContentController {
     @RequestMapping("/content/ajaxNavCustomById")
     @ResponseBody()
     public Msg ajaxNavCustomById(Integer departmentId,Integer parentId) throws Exception {
-        List<NavigationCustom> childNav = navigationServer.getChildNav(departmentId, parentId);
-        System.out.println(childNav);
+//        List<NavigationCustom> childNav = navigationServer.getChildNav(departmentId, parentId);
+//        System.out.println(childNav);
 
 
-        return Msg.success().add("navigations",childNav);
+//        return Msg.success().add("navigations",childNav);
+        return null;
     }
 
 

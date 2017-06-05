@@ -78,66 +78,6 @@ public class NavTest {
     }
 
 
-    //@Test
-    public void testSelectCountByParent() throws Exception {
-        Integer count = navigationServer.selectCountByParent(0);
-        System.out.println("---------------" + count + "---------------");
-    }
-
-    @Test
-    public void testSelectNecByDepartIdAndParent() throws Exception {
-
-
-        List<Navigation> navigations = navigationServer.selectNecByDepartIdAndParent(100, 0);
-        for (Navigation navigation : navigations) {
-            System.out.println(navigation.toString());
-        }
-    }
-
-    //@Test
-    public void testInsertNav() throws Exception {
-
-        Navigation navigation;
-        for (int i = 0; i < 4; i++) {
-            navigation = new Navigation();
-            navigation.setTitle("四級导航" + i);
-            navigation.setDepartmentid(100);
-            navigation.setParent(54);
-            navigation.setExtend(0);
-            Integer result = navigationServer.insertNavigation(navigation);
-
-            if (result > 0) {
-                System.out.println("----------" + "添加成功" + "---------");
-            } else {
-                System.out.println("----------" + "添加失败" + "---------");
-            }
-        }
-
-    }
-
-    //@Test
-    public void testDeleteNav() throws Exception {
-        int result = navigationServer.deleteNavByPrimaryKey(55);
-
-        if (result > 0) {
-            System.out.println("----------" + "删除成功" + "---------");
-        } else {
-            System.out.println("----------" + "删除失败" + "---------");
-        }
-    }
-
-
-    @Autowired
-    UsersService usersService;
-
-    @Test
-    public void test() throws Exception {
-        List<Integer> id = new ArrayList<Integer>();
-        id.add(189);
-        id.add(188);
-        id.add(187);
-        usersService.deleteAccountById(id);
-    }
 
 
 }

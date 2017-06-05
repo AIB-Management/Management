@@ -1,6 +1,7 @@
 package cn.test;
 
 import com.gdaib.mapper.NavigationMapper;
+import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
@@ -85,8 +86,7 @@ public class NaviTest {
         //根据两个参数查找对应的子导航
         NavigationExample navigationExample = new NavigationExample();
         NavigationExample.Criteria criteria = navigationExample.createCriteria();
-        criteria.andDepartmentidEqualTo(DepartmentId);
-        criteria.andParentEqualTo(ParentId);
+
 
         List<Navigation> navigations = navigationMapper.selectByExample(navigationExample);
 
@@ -135,7 +135,7 @@ public class NaviTest {
     public void Test(){
         Navigation navigation = new Navigation();
         navigation.setId(1);
-        navigation.setDepartmentid(232);
+
 
         NavigationCustom navigationCustom = new NavigationCustom();
         fatherToChild(navigation,navigationCustom);
@@ -191,11 +191,15 @@ public class NaviTest {
     @Autowired
     public RunasService runasService;
 
-    
+    @Autowired
+    public UsersMapper usersMapper;
     
     @Test
     public void test3() throws Exception {
-        runasService.grant("lalalala","5edbf5edbf");
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setId(206);
+        List<AccountInfo> accountInfo1 = usersMapper.findAccountInfo(accountInfo);
+        System.out.println(accountInfo1);
     }
 
 

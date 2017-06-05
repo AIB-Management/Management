@@ -23,7 +23,5 @@ public interface RunasService {
     //根据id得到用户
     public AccountInfo getAccountInfoById(Integer id) throws Exception;
 
-    //授权给别人自己的身份
-    public void grant(String account, String beAcco) throws Exception ;
 
 }

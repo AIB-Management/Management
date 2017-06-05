@@ -101,4 +101,27 @@
         SELECT a.id,a.name FROM `t_account` a,`t_mapping_ugom` m WHERE a.`username` = m.`be_acco` AND m.`account` = #{account}
     </select>
 
+
+    <!--AccountInfo-->
+    <select id="findAccountInfo" parameterType="com.gdaib.pojo.AccountInfo" resultType="com.gdaib.pojo.AccountInfo">
+    SELECT
+      `t_account`.`id`         AS `id`,
+      `t_account`.`username`   AS `username`,
+      `t_account`.`name`       AS `name`,
+      `t_account`.`mail`       AS `mail`,
+      `t_account`.`role`       AS `role`,
+      `t_department`.`parent`  AS `departmentId`,
+      (SELECT
+         `t_department`.`content`
+       FROM `t_department`
+       WHERE (`t_department`.`id` = `departmentId`)) AS `depContent`,
+      `t_department`.`uid`     AS `professionId`,
+      `t_department`.`content` AS `content`
+    FROM (`t_account`
+       JOIN `t_department`
+         ON ((`t_account`.`depUid` = `t_department`.`uid`)))
+    WHERE `t_account`.`id` = #{id}
+
+    </select>
+
 </mapper>

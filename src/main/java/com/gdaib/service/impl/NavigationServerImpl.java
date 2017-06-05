@@ -32,186 +32,186 @@ public class NavigationServerImpl implements NavigationServer {
     public NavigationMapper navigationMapper;
 
 
-    @Override
-    public Integer insertNavigation(Navigation navigation) throws Exception {
+//    @Override
+//    public Integer insertNavigation(Navigation navigation) throws Exception {
+//
+//        Integer insertResult = navigationExtMapper.insert(navigation);
+//
+//        Navigation upNav = new Navigation();
+//        upNav.setParent(navigation.getParent());
+//        upNav.setExtend(EXTEND);
+////        upNav.setUrl(QUERY_NAV_ACTION);
+//        updateNavByParent(upNav);
+//
+//        return insertResult;
+//    }
 
-        Integer insertResult = navigationExtMapper.insert(navigation);
+//    @Override
+//    public Integer deleteNavByPrimaryKey(int id) throws Exception {
+//
+//        Navigation navigation = navigationExtMapper.selectByPrimaryKey(id);
+//
+//        int result = navigationExtMapper.deleteByPrimaryKey(id);
+//
+//        if (navigation != null) {
+//            int ifExtend = selectCountByParent(navigation.getParent());
+//            System.out.println("ifExtemd = " + ifExtend);
+//            if (ifExtend == UN_EXTEND) {
+//                Navigation upNavigation = new Navigation();
+//                upNavigation.setParent(navigation.getParent());
+////                upNavigation.setUrl(QUERY_FILE_TITLE_ACTION);
+//                upNavigation.setExtend(UN_EXTEND);
+//                updateNavByParent(upNavigation);
+//            }
+//
+//        }
+//
+//
+//        return result;
+//    }
 
-        Navigation upNav = new Navigation();
-        upNav.setParent(navigation.getParent());
-        upNav.setExtend(EXTEND);
-//        upNav.setUrl(QUERY_NAV_ACTION);
-        updateNavByParent(upNav);
+//    public Integer updateNavByParent(Navigation navigation) throws Exception {
+//        System.out.println(navigation.toString());
+//
+//        NavigationExample example = new NavigationExample();
+//        NavigationExample.Criteria criteria = example.createCriteria();
+//        criteria.andIdEqualTo(navigation.getParent());
+//
+//        navigation.setParent(null);
+//
+//        int result = navigationExtMapper.updateByExampleSelective(navigation, example);
+//
+//        return result;
+//    }
 
-        return insertResult;
-    }
-
-    @Override
-    public Integer deleteNavByPrimaryKey(int id) throws Exception {
-
-        Navigation navigation = navigationExtMapper.selectByPrimaryKey(id);
-
-        int result = navigationExtMapper.deleteByPrimaryKey(id);
-
-        if (navigation != null) {
-            int ifExtend = selectCountByParent(navigation.getParent());
-            System.out.println("ifExtemd = " + ifExtend);
-            if (ifExtend == UN_EXTEND) {
-                Navigation upNavigation = new Navigation();
-                upNavigation.setParent(navigation.getParent());
-//                upNavigation.setUrl(QUERY_FILE_TITLE_ACTION);
-                upNavigation.setExtend(UN_EXTEND);
-                updateNavByParent(upNavigation);
-            }
-
-        }
-
-
-        return result;
-    }
-
-    public Integer updateNavByParent(Navigation navigation) throws Exception {
-        System.out.println(navigation.toString());
-
-        NavigationExample example = new NavigationExample();
-        NavigationExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(navigation.getParent());
-
-        navigation.setParent(null);
-
-        int result = navigationExtMapper.updateByExampleSelective(navigation, example);
-
-        return result;
-    }
-
-    @Override
-    public int updateNavByPrimaryKey(int navigationId, String title) throws Exception {
-        Navigation navigation = new Navigation();
-        navigation.setTitle(title);
-        navigation.setId(navigationId);
-
-
-        NavigationExample example = new NavigationExample();
-        NavigationExample.Criteria criteria = example.createCriteria();
-        criteria.andIdEqualTo(navigationId);
-
-        navigation.setParent(null);
-
-        int result = navigationExtMapper.updateByExampleSelective(navigation, example);
-
-        return result;
-
-    }
-
-    @Override
-    public Integer selectCountByParent(Integer parent) throws Exception {
-
-        NavigationExample example = new NavigationExample();
-        NavigationExample.Criteria criteria = example.createCriteria();
-        criteria.andParentEqualTo(parent);
-        Integer count = navigationExtMapper.countByExample(example);
-        return count;
-    }
-
-    @Override
-    public List<Navigation> selectNecByDepartIdAndParent(Integer departmentId, Integer parent) throws Exception {
-
-        NavigationExample navigationExample = new NavigationExample();
-        NavigationExample.Criteria criteria = navigationExample.createCriteria();
-        criteria.andDepartmentidEqualTo(departmentId);
-        criteria.andParentEqualTo(parent);
-        List<Navigation> navigations = navigationExtMapper.selectByExample(navigationExample);
-
-
-        List<Navigation> myNavigations = new ArrayList<Navigation>();
-        NavUrlPojo navUrlPojo;
-        FileInfoUrlPojo fileInfoUrlPojo;
-        for (Navigation navigation : navigations) {
-
-            navUrlPojo = new NavUrlPojo();
-            fileInfoUrlPojo = new FileInfoUrlPojo();
-
-            if (navigation.getExtend() == EXTEND) {
-
-                navUrlPojo.setAction(QUERY_NAV_ACTION);
-                navUrlPojo.setDepartmentId(navigation.getDepartmentid());
-                navUrlPojo.setParent(navigation.getId());
-
-                navigation.setUrl(navUrlPojo.toString());
-            } else if (navigation.getExtend() == UN_EXTEND) {
-
-                fileInfoUrlPojo.setAction(QUERY_FILE_TITLE_ACTION);
-                fileInfoUrlPojo.setNavigationId(navigation.getId());
-                navigation.setUrl(fileInfoUrlPojo.toString());
-            }
-
-            myNavigations.add(navigation);
-        }
-
-
-        return navigations;
-    }
-
-
-    @Override
-    public List<Navigation> selectNecByDepartId(Integer departmentId) throws Exception {
-        List<Navigation> navigations;
-        NavigationExample example = new NavigationExample();
-        NavigationExample.Criteria criteria = example.createCriteria();
-        criteria.andDepartmentidEqualTo(departmentId);
-        navigations = navigationExtMapper.selectByExample(example);
-
-
-        return navigations;
-    }
-
-    /**
-     * 根据系id,一级导航id找到剩下的所有导航
-     */
-    public List<NavigationCustom> getChildNav(Integer DepartmentId, Integer ParentId) {
-
-        //根据两个参数查找对应的子导航
-        NavigationExample navigationExample = new NavigationExample();
-        NavigationExample.Criteria criteria = navigationExample.createCriteria();
-        criteria.andDepartmentidEqualTo(DepartmentId);
-        criteria.andParentEqualTo(ParentId);
-
-        List<Navigation> navigations = navigationMapper.selectByExample(navigationExample);
-
-        //转换为NavigationCustom的list
-        List<NavigationCustom> navigationCustoms = toCustom(navigations);
-
-        List<NavigationCustom> childNavigationCustoms = new ArrayList<NavigationCustom>();
-
-        //遍历导航，查找出是否存在子导航
-        for (NavigationCustom navigationCustom : navigationCustoms) {
-            //如果有子导航
-            if (navigationCustom.getUrl() == null || navigationCustom.getUrl().equals("")) {
-                //传入系Id和父导航id
-                List<NavigationCustom> childNav = getChildNav(DepartmentId, navigationCustom.getId());
-                navigationCustom.setChiren(childNav);
-
-                childNavigationCustoms.add(navigationCustom);
-
-            } else {//如果没有子导航
-
-                //给url赋值地址
-                String url = navigationCustom.getUrl();
-                FileInfoUrlPojo fileInfoUrlPojo = new FileInfoUrlPojo();
-                fileInfoUrlPojo.setAction(QUERY_FILE_TITLE_ACTION);
-                fileInfoUrlPojo.setNavigationId(navigationCustom.getId());
-
-                navigationCustom.setUrl(fileInfoUrlPojo.toString());
-                //加入list中
-                childNavigationCustoms.add(navigationCustom);
-            }
-
-        }
+//    @Override
+//    public int updateNavByPrimaryKey(int navigationId, String title) throws Exception {
+//        Navigation navigation = new Navigation();
+//        navigation.setTitle(title);
+//        navigation.setId(navigationId);
+//
+//
+//        NavigationExample example = new NavigationExample();
+//        NavigationExample.Criteria criteria = example.createCriteria();
+//        criteria.andIdEqualTo(navigationId);
+//
+//        navigation.setParent(null);
+//
+//        int result = navigationExtMapper.updateByExampleSelective(navigation, example);
+//
+//        return result;
+//
+//    }
+//
+//    @Override
+//    public Integer selectCountByParent(Integer parent) throws Exception {
+//
+//        NavigationExample example = new NavigationExample();
+//        NavigationExample.Criteria criteria = example.createCriteria();
+//        criteria.andParentEqualTo(parent);
+//        Integer count = navigationExtMapper.countByExample(example);
+//        return count;
+//    }
+//
+//    @Override
+//    public List<Navigation> selectNecByDepartIdAndParent(Integer departmentId, Integer parent) throws Exception {
+//
+//        NavigationExample navigationExample = new NavigationExample();
+//        NavigationExample.Criteria criteria = navigationExample.createCriteria();
+//        criteria.andDepartmentidEqualTo(departmentId);
+//        criteria.andParentEqualTo(parent);
+//        List<Navigation> navigations = navigationExtMapper.selectByExample(navigationExample);
+//
+//
+//        List<Navigation> myNavigations = new ArrayList<Navigation>();
+//        NavUrlPojo navUrlPojo;
+//        FileInfoUrlPojo fileInfoUrlPojo;
+//        for (Navigation navigation : navigations) {
+//
+//            navUrlPojo = new NavUrlPojo();
+//            fileInfoUrlPojo = new FileInfoUrlPojo();
+//
+//            if (navigation.getExtend() == EXTEND) {
+//
+//                navUrlPojo.setAction(QUERY_NAV_ACTION);
+//                navUrlPojo.setDepartmentId(navigation.getDepartmentid());
+//                navUrlPojo.setParent(navigation.getId());
+//
+//                navigation.setUrl(navUrlPojo.toString());
+//            } else if (navigation.getExtend() == UN_EXTEND) {
+//
+//                fileInfoUrlPojo.setAction(QUERY_FILE_TITLE_ACTION);
+//                fileInfoUrlPojo.setNavigationId(navigation.getId());
+//                navigation.setUrl(fileInfoUrlPojo.toString());
+//            }
+//
+//            myNavigations.add(navigation);
+//        }
+//
+//
+//        return navigations;
+//    }
+//
+//
+//    @Override
+//    public List<Navigation> selectNecByDepartId(Integer departmentId) throws Exception {
+//        List<Navigation> navigations;
+//        NavigationExample example = new NavigationExample();
+//        NavigationExample.Criteria criteria = example.createCriteria();
+//        criteria.andDepartmentidEqualTo(departmentId);
+//        navigations = navigationExtMapper.selectByExample(example);
+//
+//
+//        return navigations;
+//    }
+//
+//    /**
+//     * 根据系id,一级导航id找到剩下的所有导航
+//     */
+//    public List<NavigationCustom> getChildNav(Integer DepartmentId, Integer ParentId) {
+//
+//        //根据两个参数查找对应的子导航
+//        NavigationExample navigationExample = new NavigationExample();
+//        NavigationExample.Criteria criteria = navigationExample.createCriteria();
+//        criteria.andDepartmentidEqualTo(DepartmentId);
+//        criteria.andParentEqualTo(ParentId);
+//
+//        List<Navigation> navigations = navigationMapper.selectByExample(navigationExample);
+//
+//        //转换为NavigationCustom的list
+//        List<NavigationCustom> navigationCustoms = toCustom(navigations);
+//
+//        List<NavigationCustom> childNavigationCustoms = new ArrayList<NavigationCustom>();
+//
+//        //遍历导航，查找出是否存在子导航
+//        for (NavigationCustom navigationCustom : navigationCustoms) {
+//            //如果有子导航
+//            if (navigationCustom.getUrl() == null || navigationCustom.getUrl().equals("")) {
+//                //传入系Id和父导航id
+//                List<NavigationCustom> childNav = getChildNav(DepartmentId, navigationCustom.getId());
+//                navigationCustom.setChiren(childNav);
+//
+//                childNavigationCustoms.add(navigationCustom);
+//
+//            } else {//如果没有子导航
+//
+//                //给url赋值地址
+//                String url = navigationCustom.getUrl();
+//                FileInfoUrlPojo fileInfoUrlPojo = new FileInfoUrlPojo();
+//                fileInfoUrlPojo.setAction(QUERY_FILE_TITLE_ACTION);
+//                fileInfoUrlPojo.setNavigationId(navigationCustom.getId());
+//
+//                navigationCustom.setUrl(fileInfoUrlPojo.toString());
+//                //加入list中
+//                childNavigationCustoms.add(navigationCustom);
+//            }
+//
+//        }
 
 
-        return childNavigationCustoms;
-
-    }
+//        return childNavigationCustoms;
+//
+//    }
 
     //把List中的父类的属性复制到子类
     private List<NavigationCustom> toCustom(List<Navigation> navigations) {

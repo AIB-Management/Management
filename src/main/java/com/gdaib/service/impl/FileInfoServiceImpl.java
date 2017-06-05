@@ -1,7 +1,7 @@
 package com.gdaib.service.impl;
 
 import com.gdaib.controller.FileController;
-import com.gdaib.mapper.FileInfoExtMapper;
+
 import com.gdaib.mapper.VFileInfoMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileInfoService;
@@ -26,8 +26,6 @@ public class FileInfoServiceImpl implements FileInfoService {
 
     public static final String FILE_PATH = "FILE_PATH";
 
-    @Autowired
-    private FileInfoExtMapper fileInfoExtMapper;
 
     @Autowired
     private VFileInfoMapper vFileInfoMapper;
@@ -38,14 +36,14 @@ public class FileInfoServiceImpl implements FileInfoService {
 
         System.out.println(info.toString());
 
-        int result = fileInfoExtMapper.insert(info);
-        return result;
+
+        return null;
     }
 
     @Override
     public Integer deleteFileByPrimaryKey(int fileId) throws Exception {
-        int result = fileInfoExtMapper.deleteByPrimaryKey(fileId);
-        return result;
+
+        return null;
     }
 
     @Override
@@ -54,9 +52,9 @@ public class FileInfoServiceImpl implements FileInfoService {
         FileInfoExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(username);
 
-        int result = fileInfoExtMapper.deleteByExample(example);
 
-        return result;
+
+        return null;
     }
 
     @Override
@@ -65,18 +63,18 @@ public class FileInfoServiceImpl implements FileInfoService {
         FileInfoExample example = new FileInfoExample();
         FileInfoExample.Criteria criteria = example.createCriteria();
         criteria.andNavigationidEqualTo(navId);
-        int result = fileInfoExtMapper.deleteByExample(example);
 
-        return result;
+
+        return null;
     }
 
 
     public Integer updateFileByPrimaryKey(int fileId, String title) throws Exception {
 
 
-        int result = fileInfoExtMapper.updateFileByPrimaryKey(fileId, title);
 
-        return result;
+
+        return null;
     }
 
     @Override

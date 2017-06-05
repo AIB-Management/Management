@@ -393,9 +393,9 @@ public class ManageController {
     public Msg ajaxInsertNev(Navigation navigation, HttpServletRequest request) throws Exception {
         System.out.println(navigation.getTitle());
 
-        if (navigation == null || navigation.getDepartmentid() == null || navigation.getTitle() == null) {
-            return Msg.fail();
-        }
+//        if (navigation == null || navigation.getDepartmentid() == null || navigation.getTitle() == null) {
+//            return Msg.fail();
+//        }
 
         String title = navigation.getTitle();
         if(request.getCharacterEncoding().equals("iso-8859-1")){
@@ -405,14 +405,14 @@ public class ManageController {
         System.out.println("转换后" + title);
         navigation.setTitle(title);
 
-        if (navigation.getParent() == null) {
-            navigation.setParent(0);
-        }
+//        if (navigation.getParent() == null) {
+//            navigation.setParent(0);
+//        }
         navigation.setExtend(0);
 
         System.out.println("charaSet:" + request.getCharacterEncoding() + "navigation:" + navigation.toString());
         int result = 0;
-        result = navigationServer.insertNavigation(navigation);
+//        result = navigationServer.insertNavigation(navigation);
 
         if (result > 0) {
             return Msg.success();
@@ -438,11 +438,11 @@ public class ManageController {
             return Msg.fail();
         }
 
-        int result = navigationServer.deleteNavByPrimaryKey(navigationId);
-        System.out.println("result:" + result);
-        if (result > 0) {
-            return Msg.success();
-        }
+//        int result = navigationServer.deleteNavByPrimaryKey(navigationId);
+//        System.out.println("result:" + result);
+//        if (result > 0) {
+//            return Msg.success();
+//        }
 
         return Msg.fail();
     }
@@ -469,7 +469,7 @@ public class ManageController {
         }
         int result = 0;
 
-        result = navigationServer.updateNavByPrimaryKey(navigationId, toUtf(title));
+//        result = navigationServer.updateNavByPrimaryKey(navigationId, toUtf(title));
 
         if (result > 0) {
             return Msg.success();
