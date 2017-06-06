@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * Created by mahanzhen on 17-6-6.
  */
-//@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 //得到webapplication的ioc容器
 @WebAppConfiguration
 //加入mvc和spring的配置文件
@@ -42,15 +42,18 @@ public class DepartmentTest {
         }
     }
 
-//    @Test
+    @Test
     public void testseletDepartment() throws Exception{
         DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
         departmentSelectVo.setParent("fe382f65-8df5-4afd-a313-819cefab1073");
 
-        List<DepartmentCustom> departmentCustoms=departmentService.selectDepartment(departmentSelectVo);
-        for(DepartmentCustom departmentCustom:departmentCustoms){
-            System.out.println(departmentCustom.getDepartment().toString());
-        }
+        List<String> uids = new ArrayList<String>();
+        uids.add("fe382f65-8df5-4afd-a313-819cefab1073");
+        departmentService.deleteDepartment(uids);
+//        List<DepartmentCustom> departmentCustoms=departmentService.selectDepartment(departmentSelectVo);
+//        for(DepartmentCustom departmentCustom:departmentCustoms){
+//            System.out.println(departmentCustom.getDepartment().toString());
+//        }
     }
 
 //    @Test
