@@ -1,11 +1,11 @@
 /*上传文件弹出层样式*/
 #release-msg-content{
-	position: absolute;
+	display: none;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	visibility: hidden;
 	background-color: rgba(0,0,0,0.4);
 	z-index: 20;
 }
@@ -53,6 +53,8 @@
 /*顶部信息栏样式*/
 .header{
 	position: fixed;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 50px;
 	z-index: 20;
@@ -135,174 +137,73 @@
 #logout-btn:hover{
 	color: #FF6600;
 }
-/*顶部一级导航栏样式*/
-.head-nav{
-	position: fixed;
-	top: 50px;
-	left: 0;
-	width: 100%;
-	height: 45px;
-	line-height: 45px;
-	background-color: #666;
-	word-spacing: -6px;
-	font-size: 0;
-	z-index: 0;
-}
-#head-nav-content{
-	display: inline-block;
-	width: 90%;
-	height: 100%;
-	word-spacing: 0px;
-	vertical-align: middle;
-}
-#head-nav-content .first-nav{
-	display: inline-block;
-	height: 35px;
-	line-height: 35px;
-	vertical-align: middle;
-	padding-left: 5px;
-	padding-right: 5px;
-	margin-left: 5px;
-	margin-right: 5px;
-	font-size: 14px;
-	text-align: center;
-	color: #fff;
-	cursor: pointer;
-	border: 1px solid #fff;
-	border-radius: 15px;
-}
-#show-more-btn{
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	line-height: 20px !important;
-	vertical-align: middle;
-	visibility: visible;
-	font-size: 12px;
-	color: #fff;
-	border: 1px solid #fff;
-	border-radius: 50%;
-	cursor: pointer;
-}
-/*溢出导航包裹层*/
-#nav-overflow-contain{
-	position: absolute;
-	top: 0;
-	left: 0;
-	visibility: hidden;
-	background-color: #666;
-	z-index: 40;
-}
-#nav-overflow-contain .first-nav{
-	line-height: 45px;
-	padding-left: 5px;
-	padding-right: 5px;
-	word-spacing: 0px;
-	text-align: center;
-	color: #fff;
-	font-size: 14px;
-	word-spacing: 0px;
-	cursor: pointer;
-}
-/*侧边栏样式*/
-.side-bar{
-	position: fixed;
-	top: 95px;
-	left: 0;
-	width: 200px;
-	height: 100%;
-	background-color: #F0F6F6;
-}
-.tag-title{
-	width: 80%;
-	height: 50px;
-	margin: 20px auto 0 auto;
-	line-height: 50px;
-	padding-left: 15px;
-	border-bottom: 1px solid #CADBE6;
-	color: #000;
-	font-size: 18px;
-}
-#tag-content{
-	margin: 20px auto 0 auto;
-}
-#tag-content li{
-	height: 40px;
-	line-height: 40px;
-	padding-left: 15px;
-	font-weight: bold;
-	color: #666;
-	cursor: default;
-}
-#tag-content li:hover{
-	color: #2277DD;
-	background-color: #D5E2EF;
-}
-.content{
-	padding-top: 95px;
-	padding-left: 210px;
-}
+/*面包屑导航栏样式*/
 #bread-crumb{
-	width: 90%;
-	margin: 20px auto 0 auto;
+	position: fixed;
+	width: 100%;
+	left: 0;
+	top: 50px;
 	height: 50px;
 	line-height: 50px;
 	border-bottom: 1px solid #ccc;
-}
-.crumb-hint,.crumb-wrap{
-	display: inline-block;
-}
-#bread-crumb-nav span{
-	color: #000;
-	cursor: pointer;
-}
-#bread-crumb-nav span:hover{
-	text-decoration: underline;
-}
-.main-content-wrap{
-	width: 90%;
-	margin: 30px auto 0 auto;
-}
-.main-content-header{
-	width: 100%;
-	height: 30px;
-	line-height: 30px;
+	background-color: #fff;
 	word-spacing: -6px;
-	border-bottom: 2px solid #000;
 }
-#main-content-list{
-	width: 100%;
-	margin-top: 20px;
-}
-.title{
+#bread-crumb .breadcrumb{
 	display: inline-block;
-	vertical-align: middle;
-	width: 60%;
-	color: #000;
-	text-align: left;
+	width: 90%;
+	height: 45px;
+	padding: 0;
+	margin: 0;
+	background-color: #fff;
 	word-spacing: 0px;
 }
-.author,.public-time{
+#bread-crumb .breadcrumb ol{
+	width: 100%;
+	height: 50px;
+}
+#bread-crumb .breadcrumb ol li{
+	width: 100%;
+	height: 50px;
+}
+.crumb-hint{
 	display: inline-block;
-	vertical-align: middle;
-	width: 20%;
-	color: #000;
+	width: 10%;
+	height: 45px;
 	text-align: center;
 	word-spacing: 0px;
 }
-.header-style{
-	font-size: 18px;
-	font-weight: bold;
-}
-#main-content-list li{
-	height: 45px;
-	line-height: 45px;
+.content{
+	padding-top: 110px;
 	word-spacing: -6px;
-	border-bottom: 2px dotted #999;
 }
-#main-content-list li:hover{
-	background-color: #DDFFF5;
+#main-content-wrap{
+	word-spacing: -6px;
 }
-#main-content-list li a:hover{
-	text-decoration: underline;
+/*文件样式包裹层*/
+.file-wrap{
+	display: inline-block;
+	width: 10%;
+	padding: 10px;
+	word-spacing: 0px;
+	text-align: center;
+	word-spacing: 0px;
+	border: 1px solid red;
+}
+.file-icon{
+	width: 80px;
+	height: 80px;
+	margin: 0 auto;
+}
+/*定义文件夹背景类*/
+.floder{
+	background-image: url(../images/flodericon.png);
+	background-size: cover;
+	background-position: center;
+}
+/*定义文件背景类*/
+.file{
+	background-image: url(../images/fileicon.png);
+	background-size: cover;
+	background-position: center;
 }

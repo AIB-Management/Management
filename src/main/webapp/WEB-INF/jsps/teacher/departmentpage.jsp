@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>主页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170605-1"></script>
 </head>
 <body>
 	<div id="release-msg-content">
@@ -72,109 +72,32 @@
 				</ul>
 			</div>
 		</div>
-		<div class="head-nav">
-			<ul id="head-nav-content">
-				<li class="first-nav">一级导航栏</li>
-				<li class="first-nav">一级导航栏多了1个字</li>
-				<li class="first-nav">一级导航栏多了1 2个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7 8个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7 8 9个字</li>
-				<li id="show-more-btn" title="更多导航栏">>></li>
-			</ul>
-			<ul id="nav-overflow-contain"></ul>
+		<div id="bread-crumb">
+			<b class="crumb-hint">当前路径：</b>
+			<ol class="breadcrumb">
+				<li><a href="#">文件名1</a></li>
+				<li><a href="#">文件名1</a></li>
+				<li><a href="#">文件名1</a></li>
+				<li><a href="#">文件名1</a></li>
+			</ol>
 		</div>
 		<div class="mainbody">
-			<div class="side-bar">
-				<h6 class="tag-title">二级导航栏</h6>
-				<ul id="tag-content">
-					<li class="second-nav">这四个字的导航1</li>
-					<li class="second-nav">这四个字的导航2</li>
-					<li class="second-nav">这四个字的导航3</li>
-					<li class="second-nav">这四个字的导航4</li>
-					<li class="second-nav">这四个字的导航5</li>
-					<li class="second-nav">这四个字的导航6</li>
-					<li class="second-nav">这四个字的导航7</li>
-					<li class="second-nav">这四个字的导航8</li>
-				</ul>
-			</div>
 			<div class="content">
-				<div id="bread-crumb">
-					<span class="crumb-hint">当前路径：</span>
-					<span id="bread-crumb-nav" class="crumb-wrap"></span>
-				</div>
-				<div class="main-content-wrap">
-					<p class="main-content-header">
-						<span class="title header-style">标题</span>
-						<span class="author header-style">作者</span>
-						<span class="public-time header-style">发布日期</span>
-					</p>
-					<ul id="main-content-list">
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-					</ul>	
+				<div id="main-content-wrap">
+					<div class="file-wrap">
+						<div class="file-icon floder"></div>
+						<p class="file-name">文件夹名1</p>
+					</div>
+					<div class="file-wrap">
+						<div class="file-icon file"></div>
+						<p class="file-name">文件名1</p>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css">
 </body>
