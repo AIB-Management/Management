@@ -18,7 +18,7 @@ public interface DepartmentExtMapper extends DepartmentMapper {
 
     public int updateDepartment(DepartmentSelectVo department) throws Exception;
 
-    public List<DepartmentCustom> selectDepartment() throws Exception;
+    public List<DepartmentCustom> selectDepartment(DepartmentSelectVo department) throws Exception;
 
     public List<HashMap<String,Object>> selectProfessional(DepartmentSelectVo department) throws Exception;
 }

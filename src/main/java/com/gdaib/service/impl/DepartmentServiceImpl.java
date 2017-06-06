@@ -42,7 +42,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentCustom> selectDepartment(DepartmentSelectVo department) throws Exception {
-        return departmentExtMapper.selectDepartment();
+        return departmentExtMapper.selectDepartment(department);
 //        return null;
     }
 

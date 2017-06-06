@@ -67,7 +67,7 @@ public class ManageController {
     @RequestMapping("/admin/ajaxGetAllDepartment")
     @ResponseBody
     public Msg ajaxGetAllDepartment() throws Exception {
-        List<Department> allDepartment = departmentService.getAllDepartment();
+        List<DepartmentCustom> allDepartment = departmentService.selectDepartment(null);
         Msg msg = new Msg(100, "请求成功");
         msg.add("Department", allDepartment);
         return msg;

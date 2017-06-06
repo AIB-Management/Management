@@ -20,4 +20,13 @@ public class Department extends DepartmentKey {
     public void setParent(String parent) {
         this.parent = parent == null ? null : parent.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "content='" + content + '\'' +
+                ", parent='" + parent + '\'' +
+                ", uid='" + getUid() + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package com.gdaib.controller;
 
+import com.gdaib.pojo.DepartmentSelectVo;
 import com.gdaib.pojo.Msg;
 import com.gdaib.pojo.Profession;
 import com.gdaib.pojo.RegisterPojo;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -49,7 +51,7 @@ public class RegisterController {
 
         ModelAndView modelAndView = new ModelAndView();
         try {
-            modelAndView.addObject("department", departmentService.getAllDepartment());
+            modelAndView.addObject("department", departmentService.selectDepartment(null));
         } catch (Exception e) {
             modelAndView.addObject("department", null);
             e.printStackTrace();
@@ -64,12 +66,12 @@ public class RegisterController {
      */
     @RequestMapping(value = "/public/getProfessionJson")
     @ResponseBody
-    public List<Profession> getProfessionJson(Integer departmentID) throws Exception {
+    public List<HashMap<String,Object>> getProfessionJson(DepartmentSelectVo departmentSelectVo) throws Exception {
 
-        List<Profession> professions = null;
-        System.out.println("--------------------" + departmentID + "--------------------");
+        List<HashMap<String,Object>> professions = null;
+//        System.out.println("--------------------" + departmentID + "--------------------");
 
-        professions = departmentService.getProfessionByDepartmentID(departmentID);
+        professions = departmentService.selectProfession(departmentSelectVo);
 
 
         return professions;

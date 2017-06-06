@@ -16,6 +16,9 @@
         <if test="parent!=null">
             and parent= #{parent}
         </if>
+        <if test="parent==null">
+            and parent= '0'
+        </if>
         <if test="uid!=null">
             AND uid=#{uid}
         </if>
@@ -52,8 +55,11 @@
 
     </update>
 
-    <select id="selectDepartment" resultMap="DepartmentCustom">
-        SELECT * FROM t_department WHERE parent='0'
+    <select id="selectDepartment" parameterType="com.gdaib.pojo.DepartmentSelectVo" resultMap="DepartmentCustom">
+        SELECT * FROM t_department
+        <where>
+            <include refid="where_department_select_vo"></include>
+        </where>
     </select>
 
     <select id="selectProfessional" parameterType="com.gdaib.pojo.DepartmentSelectVo" resultType="HashMap">
