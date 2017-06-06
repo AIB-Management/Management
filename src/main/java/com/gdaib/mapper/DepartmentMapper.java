@@ -1,9 +1,10 @@
 package com.gdaib.mapper;
 
+import java.util.List;
+
 import com.gdaib.pojo.Department;
 import com.gdaib.pojo.DepartmentExample;
 import com.gdaib.pojo.DepartmentKey;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DepartmentMapper {

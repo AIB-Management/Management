@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <id column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="parent" property="parent" jdbcType="INTEGER" />
+    <result column="parent" property="parent" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,6 +73,7 @@
     <if test="distinct" >
       distinct
     </if>
+    'true' as QUERYID,
     <include refid="Base_Column_List" />
     from t_department
     <if test="_parameter != null" >
@@ -104,7 +105,7 @@
     insert into t_department (id, uid, content, 
       parent)
     values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{parent,jdbcType=INTEGER})
+      #{parent,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.gdaib.pojo.Department" >
     insert into t_department
@@ -133,7 +134,7 @@
         #{content,jdbcType=VARCHAR},
       </if>
       <if test="parent != null" >
-        #{parent,jdbcType=INTEGER},
+        #{parent,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,7 +157,7 @@
         content = #{record.content,jdbcType=VARCHAR},
       </if>
       <if test="record.parent != null" >
-        parent = #{record.parent,jdbcType=INTEGER},
+        parent = #{record.parent,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -168,7 +169,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       uid = #{record.uid,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
-      parent = #{record.parent,jdbcType=INTEGER}
+      parent = #{record.parent,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -180,7 +181,7 @@
         content = #{content,jdbcType=VARCHAR},
       </if>
       <if test="parent != null" >
-        parent = #{parent,jdbcType=INTEGER},
+        parent = #{parent,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -189,7 +190,7 @@
   <update id="updateByPrimaryKey" parameterType="com.gdaib.pojo.Department" >
     update t_department
     set content = #{content,jdbcType=VARCHAR},
-      parent = #{parent,jdbcType=INTEGER}
+      parent = #{parent,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
       and uid = #{uid,jdbcType=VARCHAR}
   </update>

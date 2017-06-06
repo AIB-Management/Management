@@ -63,13 +63,13 @@ public interface UsersService {
 //    public void updateAccountByCharacter(int id,String character) throws Exception;
 
     //批量修改用户状态
-    public void updateBatchAccountByCharacter(List<Integer> ids,String character) throws Exception;
+    public void updateBatchAccountByCharacter(List<String> ids,String character) throws Exception;
 
     //批量删除用户
-    public void deleteAccountById(List<Integer> ids) throws Exception;
+    public void deleteAccountById(List<String> ids) throws Exception;
 
     //根据id查询用户
-    public List<AccountInfo> findAccountInfoForId(List<Integer> ids) throws Exception;
+    public List<AccountInfo> findAccountInfoForId(List<String> ids) throws Exception;
 
     //获取登录后的账号
     public String getLoggingUserName() throws Exception;

@@ -1,7 +1,9 @@
 package com.gdaib.service.impl;
 
+import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.Account;
+import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.MailPojo;
 import com.gdaib.service.MailService;
 import com.github.pagehelper.PageHelper;
@@ -21,6 +23,7 @@ import javax.mail.internet.MimeMessage;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -40,6 +43,9 @@ public class MailServiceImpl implements MailService {
 
     @Autowired
     private UsersMapper usersMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     private static Logger logger = Logger.getLogger("MailServiceImpl.class");
 
@@ -107,8 +113,14 @@ public class MailServiceImpl implements MailService {
         Account account = new Account();
         account.setValidatacode(uuid);
         account.setOutdate(timestamp);
-        account.setUsername(username);
-        usersMapper.updateCodeAndDate(account);
+
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+
+
+
+        accountMapper.updateByExampleSelective(account,accountExample);
 
 
         // 忽略毫秒数  mySql 取出时间是忽略毫秒数的,之后加上uuid
@@ -150,7 +162,17 @@ public class MailServiceImpl implements MailService {
         if (username.equals("") || Code.equals("")){
             return "参数不完整，请重新申请";
         }
-        Account account = usersMapper.selectByUsername(username);
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+
+        List<Account> accounts = accountMapper.selectByExample(accountExample);
+        if(accounts == null){
+            return "用户不存在";
+        }
+        Account account = accounts.get(0);
+
+
         System.out.println(account.getOutdate() + ":" + account.getValidatacode());
 
         Timestamp timestamp = new Timestamp(account.getOutdate().getTime());
@@ -189,8 +211,6 @@ public class MailServiceImpl implements MailService {
     @Override
     public void ModifyPassword(String username, String pwd) throws Exception {
         Account account = new Account();
-        account.setUsername(username);
-
         //对账号密码进行加密
         Object salt = ByteSource.Util.bytes(username);
 
@@ -198,7 +218,11 @@ public class MailServiceImpl implements MailService {
 
         account.setPassword(md5.toString());
 
-        usersMapper.updatePassword(account);
+
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        accountMapper.updateByExampleSelective(account,accountExample);
 
     }
 
@@ -207,10 +231,13 @@ public class MailServiceImpl implements MailService {
         //生成uuid
         String uuid = UUID.randomUUID().toString();
         Account account = new Account();
-        account.setUsername(username);
         account.setValidatacode(uuid);
-        usersMapper.updateCodeAndDate(account);
 
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
+
+        accountMapper.updateByExampleSelective(account,accountExample);
     }
 
 

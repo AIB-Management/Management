@@ -1,5 +1,6 @@
 package com.gdaib.controller;
 
+import com.gdaib.pojo.DepartmentSelectVo;
 import com.gdaib.pojo.Msg;
 import com.gdaib.pojo.Profession;
 import com.gdaib.pojo.RegisterPojo;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,11 +47,11 @@ public class RegisterController {
      */
     @RequestMapping("/public/register")
     public ModelAndView register(HttpServletRequest request) {
-        RegisterPojo registerPojo = (RegisterPojo) request.getAttribute("RegisterPojo");
+
 
         ModelAndView modelAndView = new ModelAndView();
         try {
-            modelAndView.addObject("department", departmentService.getAllDepartment());
+            modelAndView.addObject("department", departmentService.selectDepartment(null));
         } catch (Exception e) {
             modelAndView.addObject("department", null);
             e.printStackTrace();
@@ -64,14 +66,11 @@ public class RegisterController {
      */
     @RequestMapping(value = "/public/getProfessionJson")
     @ResponseBody
-    public List<Profession> getProfessionJson(Integer departmentID) throws Exception {
+    public List<HashMap<String,Object>> getProfessionJson(DepartmentSelectVo departmentSelectVo) throws Exception {
 
-        List<Profession> professions = null;
-        System.out.println("--------------------" + departmentID + "--------------------");
-
-        professions = departmentService.getProfessionByDepartmentID(departmentID);
-
-
+        List<HashMap<String,Object>> professions = null;
+//        System.out.println("--------------------" + departmentID + "--------------------");
+        professions = departmentService.selectProfession(departmentSelectVo);
         return professions;
     }
 
@@ -104,26 +103,24 @@ public class RegisterController {
             request.getRequestDispatcher("/public/register.action").forward(request, response);
         }
 
-        return LOGIN;
+        return  LOGIN;
 
     }
 
 
     /**
      * 用户名是否为存在
-     */
-    @ResponseBody
-    @RequestMapping(value = "/public/ajaxFindUsernameIsExists")
-    public Msg ajaxFindUsernameIsExists(String accountVal, HttpServletResponse response) throws Exception {
+                */
+        @ResponseBody
+        @RequestMapping(value = "/public/ajaxFindUsernameIsExists")
+        public Msg ajaxFindUsernameIsExists(String accountVal, HttpServletResponse response) throws Exception {
 
-        Boolean UserBoolean = usersService.findUsernameIsExists(accountVal);
-        if(UserBoolean){
-            return Msg.success();
-        }else {
-            return Msg.fail();
-        }
-
-
+            Boolean UserBoolean = usersService.findUsernameIsExists(accountVal);
+            if(UserBoolean){
+                return Msg.success();
+            }else {
+                return Msg.fail();
+            }
     }
 
     /**
@@ -132,7 +129,7 @@ public class RegisterController {
     @ResponseBody
     @RequestMapping(value = "/public/ajaxFindEmailIsExists")
     public Msg ajaxFindEmailIsExists(String mailVal, HttpServletResponse response) throws Exception {
-        System.out.println("mailVal" + mailVal);
+
 
         Boolean Emailboolean = usersService.findEmailIsExists(mailVal);
         if(Emailboolean){

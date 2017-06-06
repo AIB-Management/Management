@@ -57,6 +57,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//点击时重新让输入框执行聚焦和失焦事件
 	//确认输入框的isCorrect 属性
 	EventUntil.addHandler(s("#next-step"),"click",function(event){
+
 		event = EventUntil.getEvent(event);
 		//数数变量
 		var count = 0;
@@ -77,14 +78,10 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 		if (count == allInputs.length) {
 			//如果全部都正确
-			alert("请到跳转页面输入新的密码");
 
-			 this.disabled = "disabled";
-			this.style.backgroundColor = "#666666";
 
-			
-			s("#next-step").submit();
-
+            this.style.backgroundColor = "#666666";
+            this.submit();
 
 			return true;
 

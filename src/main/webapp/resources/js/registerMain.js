@@ -171,7 +171,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
 			//保存传输数据对象
-			var arg = {departmentID:selector1.value};
+			var arg = {parent:selector1.value};
 
 			//如果第一个下拉框选择的option value 不为空
 			//发送一个ajax 请求道后台获取数据
@@ -185,7 +185,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					success: function(data){
 						for (var i = 0; i < data.length; i++) {
 							var option = document.createElement("option");
-							option.value = data[i].id;
+							option.value = data[i].uid;
 							option.innerText = data[i].profession;
 							frag.appendChild(option);
 						}

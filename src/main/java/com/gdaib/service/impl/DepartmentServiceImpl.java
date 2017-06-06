@@ -1,53 +1,59 @@
 package com.gdaib.service.impl;
 
-import com.gdaib.mapper.DepartmentMapper;
-import com.gdaib.mapper.UsersMapper;
-import com.gdaib.pojo.Department;
-import com.gdaib.pojo.DepartmentExample;
-import com.gdaib.pojo.Profession;
+
+import com.gdaib.mapper.DepartmentExtMapper;
+import com.gdaib.pojo.DepartmentCustom;
+import com.gdaib.pojo.DepartmentSelectVo;
+
 import com.gdaib.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by mahanzhen on 17-5-3.
+ * Created by MaHanZhen on 2017/6/5.
  */
 public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
-    public UsersMapper usersMapper;
+    private DepartmentExtMapper departmentExtMapper;
 
-    @Autowired
-    public DepartmentMapper departmentMapper;
 
-    /**
-     * 得到所有系
-     */
     @Override
-    public List<Department> getAllDepartment() throws Exception {
-        DepartmentExample departmentExample = new DepartmentExample();
-        DepartmentExample.Criteria criteria = departmentExample.createCriteria();
-        criteria.andParentEqualTo(0);
-
-        return departmentMapper.selectByExample(departmentExample);
-
+    public int insertDepartment(DepartmentSelectVo department) throws Exception {
+        int result = departmentExtMapper.insert(department);
+        return result;
     }
-    /**
-     * 得到该系的所有专业
-     */
+
+
     @Override
-    public List<Profession> getProfessionByDepartmentID(Integer departmentId) throws Exception {
-//        List<Profession> professions = new ArrayList<Profession>();
-//
-//        professions.add(new Profession(1,"软件技术",1));
-//        professions.add(new Profession(2,"计算机应用基础",1));
-//
-//        return professions;
+    public int deleteDepartment(List<String> uids) throws Exception {
 
-        List<Profession> professionById = usersMapper.findProfessionById(departmentId);
-
-        return professionById;
+//        uids.add("1");
+//        uids.add("2");
+        System.out.println(uids);
+        System.out.println(departmentExtMapper.deleteDepartment(uids));
+        return 0;
     }
+
+    @Override
+    public int updateDepartment(DepartmentSelectVo department) throws Exception {
+        departmentExtMapper.updateDepartment(department);
+        return 0;
+    }
+
+    @Override
+    public List<DepartmentCustom> selectDepartment(DepartmentSelectVo department) throws Exception {
+        return departmentExtMapper.selectDepartment(department);
+//        return null;
+    }
+
+    @Override
+    public List<HashMap<String,Object>> selectProfession(DepartmentSelectVo department) throws Exception {
+        return departmentExtMapper.selectProfessional(department);
+//        return null;
+    }
+
+
 }

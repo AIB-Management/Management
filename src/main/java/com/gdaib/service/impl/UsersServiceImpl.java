@@ -132,10 +132,8 @@ public class UsersServiceImpl implements UsersService {
                 registerPojo.getPwd().trim().equals("") ||
                 registerPojo.getConfirmpwd() == null ||
                 registerPojo.getConfirmpwd().trim().equals("") ||
-                registerPojo.getDepartmentId() == null ||
-                registerPojo.getDepartmentId().toString().equals("") ||
-                registerPojo.getSpecialId() == null ||
-                registerPojo.getSpecialId().toString().equals("") ||
+                registerPojo.getDepUid() == null ||
+                registerPojo.getDepUid().trim().equals("") ||
                 registerPojo.getEmail() == null ||
                 registerPojo.getEmail().trim().equals("") ||
                 registerPojo.getVtCode() == null ||
@@ -225,6 +223,7 @@ public class UsersServiceImpl implements UsersService {
         Object md5 = new SimpleHash("MD5", registerPojo.getPwd(), salt, 1024);
 
         registerPojo.setPwd(md5.toString());
+        registerPojo.setUid(UUID.randomUUID().toString());
 
         System.out.print("-----------------" + registerPojo.toString() + "----------------------------");
 
@@ -238,10 +237,13 @@ public class UsersServiceImpl implements UsersService {
      * 查找用户名是否存在
      */
     public Boolean findUsernameIsExists(String username) throws Exception {
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUsernameEqualTo(username);
 
-
+        int num = accountMapper.countByExample(accountExample);
         //查找用户是否存在
-        int num = usersMapper.findUsernameIsExists(username);
+//        int num = usersMapper.findUsernameIsExists(username);
         //账户不存在可以注册就返回true，否则false
         return num == 0 ? true : false;
     }
@@ -252,8 +254,13 @@ public class UsersServiceImpl implements UsersService {
     public Boolean findEmailIsExists(String email) throws Exception {
 
 
+
         //查找邮箱是否存在
-        int num = usersMapper.findEmailIsExists(email);
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andMailEqualTo(email);
+        int num = accountMapper.countByExample(accountExample);
+
 
         //邮箱不存在可以注册就返回true，否则false
         return num == 0 ? true : false;
@@ -264,11 +271,12 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public boolean findEmailAndUsernameIsExists(String username, String email) throws Exception {
         //得到Account
-        Account account = new Account();
-        account.setUsername(username);
-        account.setMail(email);
+        AccountExample account = new AccountExample();
+        AccountExample.Criteria criteria = account.createCriteria();
+        criteria.andUsernameEqualTo(username);
+        criteria.andMailEqualTo(email);
 
-        int bool = usersMapper.findEmailAndUsernameIsExists(account);
+        int bool = accountMapper.countByExample(account);
 
         //如果返回的是0的话，就代表邮箱或者用户名错误
         if (bool == 0) {
@@ -341,16 +349,20 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public List<AccountInfo> findAccountInfoByCharacter(String character,String departmentId) throws Exception {
 
-        AccountInfoExample accountInfoExample = new AccountInfoExample();
-        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
-        criteria.andRoleEqualTo(character);
-        if(departmentId!=null){
-            criteria.andDepartmentIdEqualTo(Integer.parseInt(departmentId));
-        }
-        accountInfoExample.setOrderByClause("id desc");
+//        AccountInfoExample accountInfoExample = new AccountInfoExample();
+//        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
+//        criteria.andRoleEqualTo(character);
+//        if(departmentId!=null){
+//            criteria.andDepartmentIdEqualTo(Integer.parseInt(departmentId));
+//        }
+//        accountInfoExample.setOrderByClause("id desc");
+//
+//        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setDepartmentId(departmentId);
+        accountInfo.setRole(character);
+        List<AccountInfo> accountInfos = usersMapper.findAccountInfo(accountInfo);
 
-        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
-        System.out.println(accountInfos);
 
         return accountInfos;
     }
@@ -365,7 +377,7 @@ public class UsersServiceImpl implements UsersService {
 
 
         int count = accountInfoMapper.countByExample(accountInfoExample);
-        System.out.println(count);
+
 
         return count;
     }
@@ -385,34 +397,32 @@ public class UsersServiceImpl implements UsersService {
 
     //批量修改用户状态
     @Override
-    public void updateBatchAccountByCharacter(List<Integer> ids, String character) throws Exception {
+    public void updateBatchAccountByCharacter(List<String> ids, String character) throws Exception {
         Account account = new Account();
         account.setRole(character);
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andIdIn(ids);
+        criteria.andUidIn(ids);
 
         accountMapper.updateByExampleSelective(account,accountExample);
     }
 
     //删除用户
-    public void deleteAccountById(List<Integer> ids) throws Exception{
-
+    public void deleteAccountById(List<String > ids) throws Exception{
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andIdIn(ids);
+        criteria.andUidIn(ids);
         accountMapper.deleteByExample(accountExample);
     }
 
 
     //根据id查询用户
     @Override
-    public List<AccountInfo> findAccountInfoForId(List<Integer> ids) throws Exception{
-        AccountInfoExample accountInfoExample = new AccountInfoExample();
-        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
-        criteria.andIdIn(ids);
-        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
-        return accountInfos;
+    public List<AccountInfo> findAccountInfoForId(List<String> ids) throws Exception{
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("accounts",ids);
+        List<AccountInfo> batchAccountInfo = usersMapper.findBatchAccountInfo(map);
+        return batchAccountInfo;
     }
 
     @Override

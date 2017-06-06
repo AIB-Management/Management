@@ -4,6 +4,7 @@ import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.DepartmentService;
+import com.gdaib.service.MailService;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import org.junit.Test;
@@ -197,14 +198,16 @@ public class NaviTest {
     public UsersMapper usersMapper;
 
     @Autowired
-    public DepartmentService departmentService;
+    public MailService mailService;
 
     @Test
     public void test3() throws Exception {
-        List<Department> allDepartment = departmentService.getAllDepartment();
-        Department department = allDepartment.get(0);
+        List<String> list = new ArrayList<String>();
+        list.add("c7fb2498-5f8f-4b21-9071-efe709010b33");
+        list.add("989194a5-a00d-4ffa-b25d-29f706580c92");
 
-        System.out.println(allDepartment);
+        List<AccountInfo> accountInfoForId = usersService.findAccountInfoForId(list);
+        System.out.println(accountInfoForId);
     }
 
 

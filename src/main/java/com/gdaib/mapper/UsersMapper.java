@@ -59,4 +59,7 @@ public interface UsersMapper {
 
     //<!--AccountInfo-->
     public List<AccountInfo> findAccountInfo(AccountInfo accountInfo) throws Exception;
+
+    //批量查询AccountInfo
+    public List<AccountInfo> findBatchAccountInfo(Map<String,Object> Uids) throws Exception;
 }

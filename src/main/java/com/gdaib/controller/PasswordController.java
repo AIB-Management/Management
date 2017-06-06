@@ -217,7 +217,7 @@ public class PasswordController {
     }
 
     /**
-     * 转发到修改密码页，并验证超时时间和用户名
+     * 修改密码
      */
     @RequestMapping(value = "/public/modifypwd")
     public ModelAndView modifypwd(String username, String Code, String pwd, String confirmpwd) throws Exception {

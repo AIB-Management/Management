@@ -8,6 +8,9 @@
         <if test="id != null and id != ''">
             and id = #{id}
         </if>
+        <if test="uid != null and uid != ''">
+            and uid = #{uid}
+        </if>
         <if test="username != null and username != ''">
             and username = #{username}
         </if>
@@ -17,8 +20,11 @@
         <if test="mail != null and mail != ''">
             and mail = #{mail}
         </if>
+        <if test="role != null and role != ''">
+            and role = #{role}
+        </if>
         <if test="departmentId != null and departmentId != ''">
-            and departmentId = #{departmentId}
+            and `t_department`.`parent` = #{departmentId}
         </if>
         <if test="depContent != null and depContent != ''">
             and depContent = #{depContent}
@@ -45,7 +51,7 @@
 
     <!--插入用户信息-->
     <select id="insertUserFromAccount" parameterType="RegisterPojo">
-        INSERT INTO `t_account`(username,PASSWORD,name,mail,profession_id) VALUES(#{username},#{pwd},#{name},#{email},#{specialId})
+        INSERT INTO `t_account`(uid,username,PASSWORD,name,mail,depUid) VALUES(#{uid},#{username},#{pwd},#{name},#{email},#{depUid})
     </select>
 
     <!--得到所有系-->
@@ -135,6 +141,7 @@
     <select id="findAccountInfo" parameterType="com.gdaib.pojo.AccountInfo" resultType="com.gdaib.pojo.AccountInfo">
     SELECT
       `t_account`.`id`         AS `id`,
+      `t_account`.`uid`         AS `uid`,
       `t_account`.`username`   AS `username`,
       `t_account`.`name`       AS `name`,
       `t_account`.`mail`       AS `mail`,
@@ -143,7 +150,7 @@
       (SELECT
          `t_department`.`content`
        FROM `t_department`
-       WHERE (`t_department`.`id` = `departmentId`)) AS `depContent`,
+       WHERE (`t_department`.`uid` = `departmentId`)) AS `depContent`,
       `t_department`.`uid`     AS `professionId`,
       `t_department`.`content` AS `content`
     FROM (`t_account`
@@ -152,6 +159,33 @@
     <where>
         <include refid="AccountInfo_s"/>
     </where>
+        GROUP BY id DESC
+
+    </select>
+
+    <!--批量查找 AccountInfo-->
+    <select id="findBatchAccountInfo" parameterType="Map" resultType="com.gdaib.pojo.AccountInfo">
+        SELECT
+        `t_account`.`id`         AS `id`,
+        `t_account`.`uid`         AS `uid`,
+        `t_account`.`username`   AS `username`,
+        `t_account`.`name`       AS `name`,
+        `t_account`.`mail`       AS `mail`,
+        `t_account`.`role`       AS `role`,
+        `t_department`.`parent`  AS `departmentId`,
+        (SELECT
+        `t_department`.`content`
+        FROM `t_department`
+        WHERE (`t_department`.`uid` = `departmentId`)) AS `depContent`,
+        `t_department`.`uid`     AS `professionId`,
+        `t_department`.`content` AS `content`
+        FROM (`t_account`
+        JOIN `t_department`
+        ON ((`t_account`.`depUid` = `t_department`.`uid`)))
+        <foreach collection="accounts" item="account" open="where `t_account`.`uid` in(" close=")" separator=",">
+            #{account}
+        </foreach>
+        GROUP BY id DESC
 
     </select>
 

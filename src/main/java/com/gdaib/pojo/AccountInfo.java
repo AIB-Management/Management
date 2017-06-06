@@ -11,13 +11,23 @@ public class AccountInfo {
 
     private String role;
 
-    private Integer departmentId;
+    private String departmentId;
 
     private String depContent;
 
     private String professionId;
 
     private String content;
+
+    private String uid;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public Integer getId() {
         return id;
@@ -59,11 +69,11 @@ public class AccountInfo {
         this.role = role == null ? null : role.trim();
     }
 
-    public Integer getDepartmentId() {
+    public String getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -99,10 +109,11 @@ public class AccountInfo {
                 ", name='" + name + '\'' +
                 ", mail='" + mail + '\'' +
                 ", role='" + role + '\'' +
-                ", departmentId=" + departmentId +
+                ", departmentId='" + departmentId + '\'' +
                 ", depContent='" + depContent + '\'' +
                 ", professionId='" + professionId + '\'' +
                 ", content='" + content + '\'' +
+                ", uid='" + uid + '\'' +
                 '}';
     }
 }

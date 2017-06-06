@@ -73,16 +73,16 @@ public class RunasController {
         System.out.println(accountInfo);
         PageHelper.startPage(pn,5);
 
-        List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(),account);
+//        List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(),account);
 
-
-
-        if (account != null){
-            PageInfo pageInfo = new PageInfo(allAccount,5);
-            msg.add("allAccount",pageInfo);
-        }else {
-            msg.add("allAccount",null);
-        }
+//
+//
+//        if (account != null){
+//            PageInfo pageInfo = new PageInfo(allAccount,5);
+//            msg.add("allAccount",pageInfo);
+//        }else {
+//            msg.add("allAccount",null);
+//        }
 
         return msg;
     }
@@ -99,12 +99,13 @@ public class RunasController {
         List<AccountInfo> account = runasService.getAccount(accountInfo.getUsername());
 
         //2. 得到所有该系用户,分页
-        PageHelper.startPage(pn,5);
-        List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(),account);
+//        PageHelper.startPage(pn,5);
+//        List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(),account);
 
         if (account != null){
-            PageInfo pageInfo = new PageInfo(allAccount,5);
-            return Msg.success().add("allAccount",pageInfo);
+//            PageInfo pageInfo = new PageInfo(allAccount,5);
+            return Msg.success();
+//                    .add("allAccount",pageInfo);
         }else {
             return Msg.success().add("allAccount",null);
         }
