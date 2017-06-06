@@ -99,7 +99,7 @@ public class LoginRealm extends AuthorizingRealm {
 
         //查到权限数据，返回授权信息(要包括 上边的permissions)
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-//将上边查询到授权信息填充到simpleAuthorizationInfo对象中
+        //将上边查询到授权信息填充到simpleAuthorizationInfo对象中
         simpleAuthorizationInfo.addStringPermissions(permissions);
 
         return simpleAuthorizationInfo;

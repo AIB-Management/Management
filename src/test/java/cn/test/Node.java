@@ -1,5 +1,12 @@
 package cn.test;
 
+import com.gdaib.pojo.Department;
+import com.gdaib.service.impl.DepartmentServiceImpl;
+import org.junit.Test;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * Created by znho on 2017/5/29.
  */
@@ -58,4 +65,9 @@ public class Node {
     }
 
 
+    @Test
+    public void test() throws Exception {
+        System.out.println(UUID.randomUUID().toString());
+
+    }
 }

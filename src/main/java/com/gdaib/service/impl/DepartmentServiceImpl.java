@@ -1,7 +1,9 @@
 package com.gdaib.service.impl;
 
+import com.gdaib.mapper.DepartmentMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.Department;
+import com.gdaib.pojo.DepartmentExample;
 import com.gdaib.pojo.Profession;
 import com.gdaib.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,19 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     public UsersMapper usersMapper;
 
+    @Autowired
+    public DepartmentMapper departmentMapper;
 
     /**
      * 得到所有系
      */
     @Override
     public List<Department> getAllDepartment() throws Exception {
-        return usersMapper.findDepartment();
+        DepartmentExample departmentExample = new DepartmentExample();
+        DepartmentExample.Criteria criteria = departmentExample.createCriteria();
+        criteria.andParentEqualTo(0);
+
+        return departmentMapper.selectByExample(departmentExample);
 
     }
     /**

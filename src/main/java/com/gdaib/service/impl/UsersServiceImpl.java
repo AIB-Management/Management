@@ -283,10 +283,9 @@ public class UsersServiceImpl implements UsersService {
     //根据用户名找到用户信息
     @Override
     public AccountInfo findAccountInfoByUsername(String username) throws Exception {
-        AccountInfoExample accountInfoExample = new AccountInfoExample();
-        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
-        criteria.andUsernameEqualTo(username);
-        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setUsername(username);
+        List<AccountInfo> accountInfos = usersMapper.findAccountInfo(accountInfo);
 
         return accountInfos == null ? null : accountInfos.get(0);
     }

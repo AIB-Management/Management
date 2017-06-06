@@ -2,6 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdaib.mapper.UsersMapper">
 
+    <!--AccountInfo的动态sql-->
+    <sql id="AccountInfo_s">
+        <!-- 判断语句,如果id里面没值就不添加id-->
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+        <if test="username != null and username != ''">
+            and username = #{username}
+        </if>
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+        <if test="mail != null and mail != ''">
+            and mail = #{mail}
+        </if>
+        <if test="departmentId != null and departmentId != ''">
+            and departmentId = #{departmentId}
+        </if>
+        <if test="depContent != null and depContent != ''">
+            and depContent = #{depContent}
+        </if>
+        <if test="professionId != null and professionId != ''">
+            and professionId = #{professionId}
+        </if>
+        <if test="content != null and content != ''">
+            and content = #{content}
+        </if>
+    </sql>
+
 
     <!--根据用户名找到用户-->
     <select id="selectByUsername" parameterType="string" resultType="account">
@@ -120,8 +149,12 @@
     FROM (`t_account`
        JOIN `t_department`
          ON ((`t_account`.`depUid` = `t_department`.`uid`)))
-    WHERE `t_account`.`id` = #{id}
+    <where>
+        <include refid="AccountInfo_s"/>
+    </where>
 
     </select>
+
+
 
 </mapper>

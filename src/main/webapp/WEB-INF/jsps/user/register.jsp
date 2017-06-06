@@ -40,7 +40,7 @@
 				<select id="department" name="departmentId">
 					<option value="">请选择系别</option>
 					<c:forEach items="${department}" var="dp">
-						<option value="${dp.id}">${dp.department}</option>
+						<option value="${dp.id}">${dp.content}</option>
 					</c:forEach>
 				</select>
 				<select id="special" name="specialId" >

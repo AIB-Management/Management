@@ -3,6 +3,7 @@ package cn.test;
 import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
+import com.gdaib.service.DepartmentService;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by znho on 2017/5/29.
@@ -193,13 +195,16 @@ public class NaviTest {
 
     @Autowired
     public UsersMapper usersMapper;
-    
+
+    @Autowired
+    public DepartmentService departmentService;
+
     @Test
     public void test3() throws Exception {
-        AccountInfo accountInfo = new AccountInfo();
-        accountInfo.setId(206);
-        List<AccountInfo> accountInfo1 = usersMapper.findAccountInfo(accountInfo);
-        System.out.println(accountInfo1);
+        List<Department> allDepartment = departmentService.getAllDepartment();
+        Department department = allDepartment.get(0);
+
+        System.out.println(allDepartment);
     }
 
 
