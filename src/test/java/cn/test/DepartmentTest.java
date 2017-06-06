@@ -53,7 +53,7 @@ public class DepartmentTest {
         }
     }
 
-    @Test
+//    @Test
     public void tetstDeleteDepartment() throws Exception{
         List<String> uids = new ArrayList<String>();
         uids.add("dfadf");
@@ -62,7 +62,7 @@ public class DepartmentTest {
         departmentService.deleteDepartment(uids);
     }
 
-    @Test
+//    @Test
     public void tesetUpdateDepartment() throws Exception{
         DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
         departmentSelectVo.setUid("5e16e60b-cfa1-470d-ad42-2f5b852bf511");

@@ -1,6 +1,8 @@
 package com.gdaib.mapper;
 
 import com.gdaib.pojo.Navigation;
+import com.gdaib.pojo.NavigationCustom;
+import com.gdaib.pojo.NavigationSelectVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -10,14 +12,9 @@ import java.util.List;
  */
 public interface NavigationExtMapper extends NavigationMapper {
 
-    //查看是否还存在parent为id的子目录 0没有 >0有
-    public Integer selectCountByParent(Integer parent) throws Exception;
+    public int deleteNavigation(List<String> uids) throws Exception;
 
-    //获取某系下的某个级别的导航 0为一级
-    public List<Navigation> selectNavigationByDepartmentIdAndParent(
-            @Param("departmentId") Integer departmentId,
-            @Param("parent") Integer parent) throws Exception;
+    public int updateNavigation(NavigationSelectVo navigation) throws Exception;
 
-    //插入导航后更新extend和URL
-    public void upExtendByParent(int parent) throws Exception;
+    public List<NavigationCustom> selectNavigation(NavigationSelectVo navigation) throws Exception;
 }

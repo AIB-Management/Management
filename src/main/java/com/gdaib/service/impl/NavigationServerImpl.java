@@ -28,9 +28,6 @@ public class NavigationServerImpl implements NavigationServer {
     @Autowired
     NavigationExtMapper navigationExtMapper;
 
-    @Autowired
-    public NavigationMapper navigationMapper;
-
 
 //    @Override
 //    public Integer insertNavigation(Navigation navigation) throws Exception {
@@ -272,4 +269,26 @@ public class NavigationServerImpl implements NavigationServer {
     }
 
 
+    @Override
+    public int insertNavigation(NavigationSelectVo navigation) throws Exception {
+        return navigationExtMapper.insert(navigation);
+    }
+
+    @Override
+    public int deleteNavigation(List<String> uids) throws Exception {
+
+        return navigationExtMapper.deleteNavigation(uids);
+    }
+
+    @Override
+    public int updateNavigation(NavigationSelectVo navigation) throws Exception {
+
+        return navigationExtMapper.updateNavigation(navigation);
+    }
+
+    @Override
+    public List<NavigationCustom> selectNavigation(NavigationSelectVo navigation) throws Exception {
+
+        return navigationExtMapper.selectNavigation(navigation);
+    }
 }
