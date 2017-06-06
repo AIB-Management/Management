@@ -10,7 +10,6 @@ public class FileInfoUrlPojo {
     private int navigationId;
 
 
-
     public FileInfoUrlPojo(String action, int navigationId) {
         this.action = action;
         this.navigationId = navigationId;

@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * Created by mahanzhen on 17-6-6.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 //得到webapplication的ioc容器
 @WebAppConfiguration
 //加入mvc和spring的配置文件

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gdaib.mapper.FileExtMapper">
+    <resultMap id="FileCustom" type="com.gdaib.pojo.FileCustom">
+        <id column="id" property="file.id" jdbcType="INTEGER"/>
+        <id column="uid" property="file.uid" jdbcType="VARCHAR"/>
+        <result column="accUid" property="file.accuid" jdbcType="VARCHAR"/>
+        <result column="navUid" property="file.navuid" jdbcType="VARCHAR"/>
+        <result column="upTime" property="file.uptime" jdbcType="TIMESTAMP"/>
+        <result column="title" property="file.title" jdbcType="VARCHAR"/>
+        <result column="url" property="file.url" jdbcType="VARCHAR"/>
+        <result column="filePath" property="file.filepath" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="where_File_Select_vo">
+        <if test="id!=null">
+            AND id=#{id}
+        </if>
+        <if test="uid!=null">
+            AND uid=#{uid}
+        </if>
+        <if test="accuid!=null">
+            AND accuid=#{accuid}
+        </if>
+        <if test="navuid!=null">
+            AND navuid=#{navuid}
+        </if>
+        <if test="uptime!=null">
+            AND uptime=#{uptime}
+        </if>
+        <if test="title!=null">
+            AND title=#{title}
+        </if>
+        <if test="url!=null">
+            AND url=#{url}
+        </if>
+        <if test="filepath!=null">
+            AND filepath=#{filepath}
+        </if>
+    </sql>
+
+    <delete id="deleteFile" parameterType="List">
+        <if test="uids!=null">
+            DELETE FROM `t_file`
+            <where>
+                <foreach collection="uids" item="uid" open="AND uid IN (" close=")" separator=",">
+                    #{uid}
+                </foreach>
+            </where>
+        </if>
+    </delete>
+
+    <select id="selectFile" parameterType="com.gdaib.pojo.FileSelectVo" resultMap="FileCustom">
+        SELECT * FROM `t_file`
+        <where>
+            <include refid="where_File_Select_vo"></include>
+        </where>
+    </select>
+
+    <update id="updateFile" parameterType="com.gdaib.pojo.FileSelectVo">
+        <if test="uid!=null">
+            UPDATE `t_file`
+            <set>
+                <if test="navuid!=null">
+                    navuid=#{navuid},
+                </if>
+                <if test="uptime!=null">
+                    uptime=#{uptime},
+                </if>
+                <if test="title!=null">
+                    title=#{title},
+                </if>
+                <if test="url!=null">
+                    url=#{url},
+                </if>
+                <if test="filepath!=null">
+                    filepath=#{filepath},
+                </if>
+            </set>
+            WHERE uid=#{uid}
+        </if>
+    </update>
+</mapper>
