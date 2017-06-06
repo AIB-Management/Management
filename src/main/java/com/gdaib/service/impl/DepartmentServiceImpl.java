@@ -22,6 +22,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public int insertDepartment(DepartmentSelectVo department) throws Exception {
+        judgeDepartmentSelectVo(department);
         int result = departmentExtMapper.insert(department);
         return result;
     }
@@ -29,30 +30,71 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public int deleteDepartment(List<String> uids) throws Exception {
+        if (uids == null) {
+            throw new Exception("参数不能为空");
+        }
 
-//        uids.add("1");
-//        uids.add("2");
-        System.out.println(uids);
-        System.out.println(departmentExtMapper.deleteDepartment(uids));
-        return 0;
+
+        for (String uid : uids) {
+            DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
+            departmentSelectVo.setParent(uid);
+            List<DepartmentCustom> departmentCustoms = departmentExtMapper.selectDepartment(departmentSelectVo);
+            if (departmentCustoms != null) {
+                throw new Exception("该系存在一个多或多个专业，请删除相应专业后重试");
+            }
+        }
+
+        int result;
+        result = departmentExtMapper.deleteDepartment(uids);
+        return result;
+
     }
 
     @Override
     public int updateDepartment(DepartmentSelectVo department) throws Exception {
-        departmentExtMapper.updateDepartment(department);
-        return 0;
+        if (department == null || department.getUid() == null || department.getUid().equals("")) {
+            throw new Exception("参数无效");
+        }
+
+        int result;
+        result = departmentExtMapper.updateDepartment(department);
+        return result;
     }
 
     @Override
     public List<DepartmentCustom> selectDepartment(DepartmentSelectVo department) throws Exception {
+        if (department == null) {
+            throw new Exception("请确保该参数中至少有一个或多个有值");
+        }
+
         return departmentExtMapper.selectDepartment(department);
-//        return null;
     }
 
     @Override
-    public List<HashMap<String,Object>> selectProfession(DepartmentSelectVo department) throws Exception {
+    public List<HashMap<String, Object>> selectProfession(DepartmentSelectVo department) throws Exception {
+        if (department == null) {
+            throw new Exception("请确保该参数中至少有一个或多个有值");
+        }
+
         return departmentExtMapper.selectProfessional(department);
-//        return null;
+    }
+
+    private void judgeDepartmentSelectVo(DepartmentSelectVo department) throws Exception {
+        if (department == null) {
+            throw new Exception("参数不能为空");
+        }
+
+        if (department.getUid() == null || department.getUid().equals("")) {
+            throw new Exception("uid不能为空");
+        }
+
+        if (department.getContent() == null || department.getContent().equals("")) {
+            throw new Exception("内容不能为空");
+        }
+
+        if (department.getParent() == null || department.getParent().equals("")) {
+            throw new Exception("上级目录不能为空");
+        }
     }
 
 

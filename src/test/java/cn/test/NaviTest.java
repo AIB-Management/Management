@@ -101,9 +101,9 @@ public class NaviTest {
         //遍历导航，查找出是否存在子导航
         for(NavigationCustom navigationCustom: navigationCustoms){
             //如果有子导航
-            if(navigationCustom.getUrl() == null || navigationCustom.getUrl().equals("")){
+            if(navigationCustom.getNavigation().getUrl() == null || navigationCustom.getNavigation().getUrl().equals("")){
                 //传入系Id和父导航id
-                List<NavigationCustom> childNav = getChildNav(100, navigationCustom.getId());
+                List<NavigationCustom> childNav = getChildNav(100, navigationCustom.getNavigation().getId());
                 navigationCustom.setChiren(childNav);
 
                 childNavigationCustoms.add(navigationCustom);
