@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gdaib.mapper.DepartmentExtMapper">
+    <resultMap id="DepartmentCustom" type="com.gdaib.pojo.DepartmentCustom">
+        <id column="id" property="department.id" jdbcType="INTEGER"/>
+        <id column="uid" property="department.uid" jdbcType="VARCHAR"/>
+        <result column="content" property="department.content" jdbcType="VARCHAR"/>
+        <result column="parent" property="department.parent" jdbcType="VARCHAR"/>
+        <!--<result column="profession" property="professions" jdbcType="VARCHAR" />-->
+    </resultMap>
+
+    <sql id="where_department_select_vo">
+        <if test="content!=null">
+            and content LIKE '%${content}%'
+        </if>
+        <if test="parent!=null">
+            and parent= #{parent}
+        </if>
+        <if test="uid!=null">
+            AND uid=#{uid}
+        </if>
+        <if test="id!=null">
+            AND id=#{id}
+        </if>
+    </sql>
+
+
+    <delete id="deleteDepartment" parameterType="List">
+        <if test="uids!=null">
+            DELETE FROM `t_department`
+            <where>
+                <foreach collection="uids" item="uid" open="AND uid IN (" close=")" separator=",">
+                    #{uid}
+                </foreach>
+            </where>
+        </if>
+    </delete>
+
+    <update id="updateDepartment" parameterType="com.gdaib.pojo.DepartmentSelectVo">
+        <if test="uid">
+            UPDATE `t_department`
+            <set>
+                <if test="content!=null">
+                    `content`=#{content},
+                </if>
+                <if test="parent!=null">
+                    `parent`=#{parent},
+                </if>
+            </set>
+            WHERE `uid`=#{uid}
+        </if>
+
+    </update>
+
+    <select id="selectDepartment" resultMap="DepartmentCustom">
+        SELECT * FROM t_department WHERE parent='0'
+    </select>
+
+    <select id="selectProfessional" parameterType="com.gdaib.pojo.DepartmentSelectVo" resultType="HashMap">
+        SELECT content profession,uid FROM t_department
+        <where>
+            <include refid="where_department_select_vo"></include>
+        </where>
+    </select>
+
+</mapper>

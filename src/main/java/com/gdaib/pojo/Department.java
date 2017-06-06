@@ -3,7 +3,7 @@ package com.gdaib.pojo;
 public class Department extends DepartmentKey {
     private String content;
 
-    private Integer parent;
+    private String parent;
 
     public String getContent() {
         return content;
@@ -13,11 +13,11 @@ public class Department extends DepartmentKey {
         this.content = content == null ? null : content.trim();
     }
 
-    public Integer getParent() {
+    public String getParent() {
         return parent;
     }
 
-    public void setParent(Integer parent) {
-        this.parent = parent;
+    public void setParent(String parent) {
+        this.parent = parent == null ? null : parent.trim();
     }
 }

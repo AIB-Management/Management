@@ -314,52 +314,62 @@ public class DepartmentExample {
             return (Criteria) this;
         }
 
-        public Criteria andParentEqualTo(Integer value) {
+        public Criteria andParentEqualTo(String value) {
             addCriterion("parent =", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentNotEqualTo(Integer value) {
+        public Criteria andParentNotEqualTo(String value) {
             addCriterion("parent <>", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentGreaterThan(Integer value) {
+        public Criteria andParentGreaterThan(String value) {
             addCriterion("parent >", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentGreaterThanOrEqualTo(Integer value) {
+        public Criteria andParentGreaterThanOrEqualTo(String value) {
             addCriterion("parent >=", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentLessThan(Integer value) {
+        public Criteria andParentLessThan(String value) {
             addCriterion("parent <", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentLessThanOrEqualTo(Integer value) {
+        public Criteria andParentLessThanOrEqualTo(String value) {
             addCriterion("parent <=", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentIn(List<Integer> values) {
+        public Criteria andParentLike(String value) {
+            addCriterion("parent like", value, "parent");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentNotLike(String value) {
+            addCriterion("parent not like", value, "parent");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIn(List<String> values) {
             addCriterion("parent in", values, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentNotIn(List<Integer> values) {
+        public Criteria andParentNotIn(List<String> values) {
             addCriterion("parent not in", values, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentBetween(Integer value1, Integer value2) {
+        public Criteria andParentBetween(String value1, String value2) {
             addCriterion("parent between", value1, value2, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentNotBetween(Integer value1, Integer value2) {
+        public Criteria andParentNotBetween(String value1, String value2) {
             addCriterion("parent not between", value1, value2, "parent");
             return (Criteria) this;
         }
