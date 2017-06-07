@@ -76,6 +76,7 @@
     <if test="distinct" >
       distinct
     </if>
+    'true' as QUERYID,
     <include refid="Base_Column_List" />
     from t_navigation
     <if test="_parameter != null" >

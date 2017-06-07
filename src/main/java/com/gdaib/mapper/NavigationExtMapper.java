@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface NavigationExtMapper extends NavigationMapper {
 
-    public int deleteNavigation(List<String> uids) throws Exception;
+    public int deleteNavigation(@Param("uids") List<String> uids) throws Exception;
 
     public int updateNavigation(NavigationSelectVo navigation) throws Exception;
 

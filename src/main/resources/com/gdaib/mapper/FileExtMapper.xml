@@ -10,6 +10,7 @@
         <result column="title" property="file.title" jdbcType="VARCHAR"/>
         <result column="url" property="file.url" jdbcType="VARCHAR"/>
         <result column="filePath" property="file.filepath" jdbcType="VARCHAR"/>
+        <result column="author" property="author" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="where_File_Select_vo">
@@ -51,7 +52,19 @@
     </delete>
 
     <select id="selectFile" parameterType="com.gdaib.pojo.FileSelectVo" resultMap="FileCustom">
-        SELECT * FROM `t_file`
+        SELECT
+        t_file.uid,
+        t_file.filePath,
+        t_file.url,
+        t_file.title,
+        t_file.upTime,
+        t_file.navUid,
+        t_file.accUid,
+        t_file.id,
+        t_account.`name` AS author
+        FROM
+        t_account
+        INNER JOIN t_file ON t_file.accUid = t_account.uid
         <where>
             <include refid="where_File_Select_vo"></include>
         </where>

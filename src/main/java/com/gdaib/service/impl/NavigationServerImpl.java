@@ -3,6 +3,7 @@ package com.gdaib.service.impl;
 import com.gdaib.mapper.NavigationExtMapper;
 import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.pojo.*;
+import com.gdaib.service.FileService;
 import com.gdaib.service.NavigationServer;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,6 +28,9 @@ public class NavigationServerImpl implements NavigationServer {
 
     @Autowired
     NavigationExtMapper navigationExtMapper;
+
+    @Autowired
+    FileService fileService;
 
 
 //    @Override
@@ -271,24 +275,78 @@ public class NavigationServerImpl implements NavigationServer {
 
     @Override
     public int insertNavigation(NavigationSelectVo navigation) throws Exception {
+        if (navigation == null) {
+            throw new Exception("参数为空");
+        }
+        if (navigation.getTitle() == null || navigation.getTitle().equals("")) {
+            throw new Exception("标题为空");
+        }
+        if (navigation.getUid() == null || navigation.getUid().equals("")) {
+            throw new Exception("uid为空");
+        }
+        if (navigation.getDepuid() == null || navigation.getDepuid().equals("")) {
+            throw new Exception("系别id为空");
+        }
+        if (navigation.getParent() == null || navigation.getParent().equals("")) {
+            throw new Exception("上级目录为空");
+        }
         return navigationExtMapper.insert(navigation);
     }
 
     @Override
     public int deleteNavigation(List<String> uids) throws Exception {
+        if (uids == null || uids.toString().equals("") || uids.size() == 0) {
+            throw new Exception("参数为空");
+        }
+        NavigationSelectVo navigationSelectVo;
+        for (String uid : uids) {
+            navigationSelectVo = new NavigationSelectVo();
+            navigationSelectVo.setUid(uid);
+            List<NavigationCustom> navigationCustoms = selectNavigation(navigationSelectVo);
+            if (navigationCustoms.size() > 0) {
+                throw new Exception("一个或者多个目录下存在文件目录");
+            }
+        }
+        FileSelectVo fileSelectVo;
+        for (String navUid : uids) {
+            fileSelectVo = new FileSelectVo();
+            fileSelectVo.setNavuid(navUid);
+            List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
+            if (fileCustoms.size() > 0) {
+                throw new Exception("一个或者多个目录下存在文件");
+            }
+        }
 
         return navigationExtMapper.deleteNavigation(uids);
     }
 
     @Override
     public int updateNavigation(NavigationSelectVo navigation) throws Exception {
+        if (navigation == null) {
+            throw new Exception("参数为空");
+        }
+
+        if (navigation.getUid().equals("") || navigation.getUid() == null) {
+            throw new Exception("uid为空");
+        }
+
+        if (navigation.getTitle().equals("") || navigation.getTitle() == null) {
+            throw new Exception("标题为空");
+        }
 
         return navigationExtMapper.updateNavigation(navigation);
     }
 
     @Override
     public List<NavigationCustom> selectNavigation(NavigationSelectVo navigation) throws Exception {
-
+        if (navigation == null) {
+            throw new Exception("参数为空");
+        }
+        if (navigation.getDepuid() == null || navigation.getDepuid().equals("")) {
+            throw new Exception("部门UID为空");
+        }
+        if (navigation.getParent() == null || navigation.getParent().equals("")) {
+        }
         return navigationExtMapper.selectNavigation(navigation);
     }
 }

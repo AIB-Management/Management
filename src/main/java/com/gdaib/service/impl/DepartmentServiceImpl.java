@@ -1,9 +1,9 @@
 package com.gdaib.service.impl;
 
 
+import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.DepartmentExtMapper;
-import com.gdaib.pojo.DepartmentCustom;
-import com.gdaib.pojo.DepartmentSelectVo;
+import com.gdaib.pojo.*;
 
 import com.gdaib.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private DepartmentExtMapper departmentExtMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
 
     @Override
@@ -34,15 +37,27 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new Exception("参数不能为空");
         }
 
-
+        List<DepartmentCustom> departmentCustoms;
         for (String uid : uids) {
             DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
             departmentSelectVo.setParent(uid);
-            List<DepartmentCustom> departmentCustoms = departmentExtMapper.selectDepartment(departmentSelectVo);
-            if (departmentCustoms != null) {
-                throw new Exception("该系存在一个多或多个专业，请删除相应专业后重试");
+            departmentCustoms = departmentExtMapper.selectDepartment(departmentSelectVo);
+
+            System.out.println("size" + departmentCustoms.size());
+            if (departmentCustoms.size() > 0) {
+                throw new Exception("该系存在一个多或多个专业");
             }
+
+            AccountExample example = new AccountExample();
+            AccountExample.Criteria criteria = example.createCriteria();
+            criteria.andDepuidEqualTo(uid);
+            List<Account> accounts = accountMapper.selectByExample(example);
+            if (accounts.size() > 0) {
+                throw new Exception("该专业存在一个或多个用户");
+            }
+
         }
+
 
         int result;
         result = departmentExtMapper.deleteDepartment(uids);

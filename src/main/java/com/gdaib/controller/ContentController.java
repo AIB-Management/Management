@@ -1,23 +1,26 @@
 package com.gdaib.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gdaib.pojo.*;
-import com.gdaib.service.FileInfoService;
+import com.gdaib.service.DepartmentService;
 import com.gdaib.service.FileService;
 import com.gdaib.service.NavigationServer;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.Utils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author:马汉真
@@ -35,6 +38,9 @@ public class ContentController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
 
     public static final String DEPARTMENTPAGE = "/teacher/departmentpage.jsp";
@@ -61,7 +67,7 @@ public class ContentController {
     }
 
 
-    @RequestMapping(value = "/content/ajaxFindNavAndFile", params = {"uid", "depuid"})
+    @RequestMapping(value = "/content/ajaxFindNavAndFile", params = {"parent", "depuid"})
     @ResponseBody
     public Msg ajaxFindNavAndFile(NavigationSelectVo navigationSelectVo) throws Exception {
         HashMap<String, List<HashMap<String, Object>>> navAndFile = new HashMap<String, List<HashMap<String, Object>>>();
@@ -72,7 +78,7 @@ public class ContentController {
             for (NavigationCustom custom : navigationCustoms) {
                 Navigation navigation = custom.getNavigation();
                 HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                hashMap.put("uid", navigation.getUrl());
+                hashMap.put("uid", navigation.getUid());
                 hashMap.put("nav", navigation.getTitle());
                 navs.add(hashMap);
             }
@@ -82,7 +88,7 @@ public class ContentController {
 
 
         FileSelectVo fileSelectVo = new FileSelectVo();
-        fileSelectVo.setNavuid(navigationSelectVo.getUid());
+        fileSelectVo.setNavuid(navigationSelectVo.getParent());
 
         List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
         List<HashMap<String, Object>> files = new ArrayList<HashMap<String, Object>>();
@@ -105,6 +111,105 @@ public class ContentController {
 
 
         return Msg.success().add("navs", navs).add("files", files);
+    }
+
+    @RequestMapping(value = "/content/ajaxAddNav", params = {"title", "parent", "depuid"})
+    @ResponseBody
+    public Msg ajaxAddNav(NavigationSelectVo navigationSelectVo) throws Exception {
+
+        navigationSelectVo.setExtend(1);
+        String uid = UUID.randomUUID().toString();
+        navigationSelectVo.setUid(uid);
+
+        navigationSelectVo.setUrl("/content/ajaxFindNavAndFile.action?parent=" + uid + "&depuid=" + navigationSelectVo.getDepuid());
+        System.out.println(navigationSelectVo.toString());
+        int result = navigationServer.insertNavigation(navigationSelectVo);
+
+        if (result > 0) {
+            return Msg.success();
+        }
+
+        return Msg.fail();
+    }
+
+
+    @RequestMapping(value = "/content/ajaxDeleteNav", params = {"uids"})
+    @ResponseBody
+    public Msg ajaxDeleteNav(String uids) throws Exception {
+        if (uids == null || uids.trim().equals("")) {
+            throw new Exception("参数为空");
+        }
+
+        List<String> uidList = Utils.toList(uids);
+
+        System.out.println(uidList);
+        int result = navigationServer.deleteNavigation(uidList);
+
+        if (result > 0) {
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    @RequestMapping(value = "/content/ajaxUpdateNav", params = {"uid", "title"})
+    @ResponseBody
+    public Msg ajaxUpdateNav(NavigationSelectVo navigationSelectVo) throws Exception {
+        int result = navigationServer.updateNavigation(navigationSelectVo);
+        if (result > 0) {
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    @RequestMapping(value = "/content/ajaxAddDep", params = {"content", "parent"})
+    @ResponseBody
+    public Msg ajaxAddDep(DepartmentSelectVo departmentSelectVo) throws Exception {
+        if (departmentSelectVo.getContent() == null || departmentSelectVo.getContent().trim().equals("")) {
+            throw new Exception("内容为空");
+        }
+        if (departmentSelectVo.getParent() == null || departmentSelectVo.getParent().trim().equals("")) {
+            throw new Exception("上级参数为空,为0时是系");
+        }
+
+        departmentSelectVo.setUid(UUID.randomUUID().toString());
+
+        int result = departmentService.insertDepartment(departmentSelectVo);
+
+        if (result > 0) {
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    @RequestMapping(value = "/content/ajaxDeleteDep", params = {"uids"})
+    @ResponseBody
+    public Msg ajaxDeleteDep(String uids) throws Exception {
+        if (uids == null || uids.trim().equals("")) {
+            throw new Exception("参数为空");
+        }
+        List<String> uidList = Utils.toList(uids);
+        int result = departmentService.deleteDepartment(uidList);
+        if (result > 0) {
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    @RequestMapping(value = "/content/ajaxUpdateDep", params = {"uid", "content"})
+    @ResponseBody
+    public Msg ajaxUpdateDep(DepartmentSelectVo departmentSelectVo) throws Exception {
+        if (departmentSelectVo.getUid().trim().equals("") || departmentSelectVo.getUid() == null) {
+            throw new Exception("主键不能为空");
+        }
+
+        if (departmentSelectVo.getContent().trim().equals("") || departmentSelectVo.getContent() == null) {
+            throw new Exception("内容不能为空");
+        }
+        int result = departmentService.updateDepartment(departmentSelectVo);
+        if (result > 0) {
+            return Msg.success();
+        }
+        return Msg.fail();
     }
 
 
