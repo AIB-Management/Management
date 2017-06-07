@@ -3,6 +3,7 @@ package com.gdaib.util;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by mahanzhen on 17-5-29.
@@ -11,6 +12,8 @@ public class Utils {
 
     //获取本地IP
     public static String getLocalADDress() throws Exception {
+
+        Properties properties = new Properties();
         return null;
     }
 

@@ -1,11 +1,9 @@
 package com.gdaib.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.gdaib.pojo.Msg;
-import com.gdaib.pojo.Navigation;
-import com.gdaib.pojo.NavigationCustom;
-import com.gdaib.pojo.VFileInfo;
+import com.gdaib.pojo.*;
 import com.gdaib.service.FileInfoService;
+import com.gdaib.service.FileService;
 import com.gdaib.service.NavigationServer;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,12 +29,13 @@ public class ContentController {
     @Autowired
     private UsersService usersService;
 
-    @Autowired
-    private FileInfoService fileInfoService;
-
 
     @Autowired
     private NavigationServer navigationServer;
+
+    @Autowired
+    private FileService fileService;
+
 
     public static final String DEPARTMENTPAGE = "/teacher/departmentpage.jsp";
     public static final String PERSONALPAGE = "/teacher/personalpage.jsp";
@@ -53,67 +54,58 @@ public class ContentController {
 
     @RequestMapping("/content/personalpage")
     @RequiresPermissions("content:query")//执行personalpage需要content:query权限
-    public ModelAndView personalpage() throws Exception{
-        ModelAndView modelAndView =new ModelAndView();
+    public ModelAndView personalpage() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(PERSONALPAGE);
         return modelAndView;
     }
 
-    //获取某个导航里面的内容
-    @RequestMapping("/content/ajaxFindFileInfoByNavId")
+
+    @RequestMapping(value = "/content/ajaxFindNavAndFile", params = {"uid", "depuid"})
     @ResponseBody
-    public Msg ajaxFindFileInfoByNavId(int navigationId) throws Exception {
-        List<VFileInfo> vFileInfos = fileInfoService.selectFileByNavId(navigationId);
+    public Msg ajaxFindNavAndFile(NavigationSelectVo navigationSelectVo) throws Exception {
+        HashMap<String, List<HashMap<String, Object>>> navAndFile = new HashMap<String, List<HashMap<String, Object>>>();
 
-        return Msg.success().add("FileInfos",vFileInfos);
+        List<NavigationCustom> navigationCustoms = navigationServer.selectNavigation(navigationSelectVo);
+        List<HashMap<String, Object>> navs = new ArrayList<HashMap<String, Object>>();
+        if (navigationCustoms != null || navigationCustoms.size() > 0) {
+            for (NavigationCustom custom : navigationCustoms) {
+                Navigation navigation = custom.getNavigation();
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("uid", navigation.getUrl());
+                hashMap.put("nav", navigation.getTitle());
+                navs.add(hashMap);
+            }
+        } else {
+            navs = null;
+        }
+
+
+        FileSelectVo fileSelectVo = new FileSelectVo();
+        fileSelectVo.setNavuid(navigationSelectVo.getUid());
+
+        List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
+        List<HashMap<String, Object>> files = new ArrayList<HashMap<String, Object>>();
+        if (fileCustoms != null || fileCustoms.size() > 0) {
+            for (FileCustom custom : fileCustoms) {
+                File file = custom.getFile();
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("uid", file.getUid());
+                hashMap.put("title", file.getTitle());
+                hashMap.put("upTime", file.getUptime());
+                hashMap.put(" author", custom.getAuthor());
+                files.add(hashMap);
+            }
+        } else {
+            files = null;
+        }
+
+        navAndFile.put("navs", navs);
+        navAndFile.put("files", files);
+
+
+        return Msg.success().add("navs", navs).add("files", files);
     }
-
-    /**
-     *  PATH :http://localhost:8080/Management/content/ajaxFindExtNavByParent.action
-     *  Param:departmentId
-     *  Param:parent
-     *
-     * SUCCEED:
-     *
-     * {"code":100,"msg":"处理成功！","extend":{
-     *  "navigations":
-     *      [
-     *          {"id":39,"departmentid":100,"parent":0,"title":"一級导航0","url":"http://127.0.0.1:8080/Management/content/ajaxFindFileInfoByNavId.action?navigationId=39","extend":0},
-     *          {"id":40,"departmentid":100,"parent":0,"title":"一級导航1","url":"http://127.0.0.1:8080/Management/content/ajaxFindExtNavByParent.action?departmentId=100&parent=40","extend":1},
-     *          {"id":41,"departmentid":100,"parent":0,"title":"一級导航2","url":"http://127.0.0.1:8080/Management/content/ajaxFindFileInfoByNavId.action?navigationId=41","extend":0}
-     *       ]
-     *   }
-     *}
-     * FAIL:{"code":200,"msg":"处理失败！","extend":{}}
-     * */
-    @RequestMapping("/content/ajaxFindExtNavByParent")
-    @ResponseBody()
-    public Msg ajaxExtNavByParent(int departmentId, @RequestParam(defaultValue = "0") int parent) throws Exception {
-        List<Navigation> navigations;
-//        navigations = navigationServer.selectNecByDepartIdAndParent(departmentId, parent);
-//        if (navigations != null) {
-//            return Msg.success().add("navigations", navigations);
-//        } else {
-//            return Msg.fail();
-//        }
-        return null;
-    }
-
-    /**
-     * 根据系id,一级导航id找到剩下的所有导航
-     */
-    @RequestMapping("/content/ajaxNavCustomById")
-    @ResponseBody()
-    public Msg ajaxNavCustomById(Integer departmentId,Integer parentId) throws Exception {
-//        List<NavigationCustom> childNav = navigationServer.getChildNav(departmentId, parentId);
-//        System.out.println(childNav);
-
-
-//        return Msg.success().add("navigations",childNav);
-        return null;
-    }
-
-
 
 
 }
