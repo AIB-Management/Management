@@ -53,7 +53,6 @@ public class FileInfoServiceImpl implements FileInfoService {
         criteria.andUsernameEqualTo(username);
 
 
-
         return null;
     }
 
@@ -70,8 +69,6 @@ public class FileInfoServiceImpl implements FileInfoService {
 
 
     public Integer updateFileByPrimaryKey(int fileId, String title) throws Exception {
-
-
 
 
         return null;
@@ -133,21 +130,19 @@ public class FileInfoServiceImpl implements FileInfoService {
     }
 
     public List<HashMap<String, Object>> findFileItemByFilePath(String localPath, String sqlPath) throws Exception {
-        List<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
-
-        File file = new File(localPath);
-
-        String[] fileNames = file.list();
-
-
-        for(int i=0;i<fileNames.length;i++){
-            HashMap<String, Object> hashMap = new HashMap<String, Object>();
-            hashMap.put("filename", fileNames[i]);
-            hashMap.put("url", UrlPojo.getUrlPojo().toString() + "/" + sqlPath + "/" + fileNames[i]);
-            items.add(hashMap);
-        }
-
-
+//        List<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
+//
+//        File file = new File(localPath);
+//
+//        String[] fileNames = file.list();
+//
+//
+//        for(int i=0;i<fileNames.length;i++){
+//            HashMap<String, Object> hashMap = new HashMap<String, Object>();
+//            hashMap.put("filename", fileNames[i]);
+//            hashMap.put("url", UrlPojo.getUrlPojo().toString() + "/" + sqlPath + "/" + fileNames[i]);
+//            items.add(hashMap);
+//        }
 
 
 //        for (String fileName : fileNames) {
@@ -158,7 +153,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 //        }
 
 
-        return items;
+        return null;
 
     }
 
@@ -178,37 +173,37 @@ public class FileInfoServiceImpl implements FileInfoService {
 
     @Override
     public void writeFileToTeachersFile(String path, CommonsMultipartFile[] files) throws Exception {
-        File f = new File(path);
-        if (!f.exists())
-            f.mkdirs();
-
-        for (int i = 0; i < files.length; i++) {
-            // 获得原始文件名
-            String fileName = files[i].getOriginalFilename();
-
-            System.out.println("原始文件名:" + fileName);
-
-            //新文件名
-            String newFileName = (i + 1) + ":" + fileName;
-
-            if (!files[i].isEmpty()) {
-                try {
-                    FileOutputStream fos = new FileOutputStream(path
-                            + newFileName);
-                    InputStream in = files[i].getInputStream();
-                    int b = 0;
-                    while ((b = in.read()) != -1) {
-                        fos.write(b);
-                    }
-                    fos.close();
-                    in.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            System.out.println("上传文件到:" + path + newFileName);
-
-        }
+//        File f = new File(path);
+//        if (!f.exists())
+//            f.mkdirs();
+//
+//        for (int i = 0; i < files.length; i++) {
+//            // 获得原始文件名
+//            String fileName = files[i].getOriginalFilename();
+//
+//            System.out.println("原始文件名:" + fileName);
+//
+//            //新文件名
+//            String newFileName = (i + 1) + ":" + fileName;
+//
+//            if (!files[i].isEmpty()) {
+//                try {
+//                    FileOutputStream fos = new FileOutputStream(path
+//                            + newFileName);
+//                    InputStream in = files[i].getInputStream();
+//                    int b = 0;
+//                    while ((b = in.read()) != -1) {
+//                        fos.write(b);
+//                    }
+//                    fos.close();
+//                    in.close();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            System.out.println("上传文件到:" + path + newFileName);
+//
+//        }
     }
 
     //删除文件

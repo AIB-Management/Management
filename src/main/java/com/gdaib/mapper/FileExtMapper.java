@@ -2,6 +2,7 @@ package com.gdaib.mapper;
 
 import com.gdaib.pojo.FileCustom;
 import com.gdaib.pojo.FileSelectVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface FileExtMapper extends FileMapper {
 
-    public int deleteFile(List<String> uids) throws Exception;
+    public int deleteFile( FileSelectVo fileSelectVo) throws Exception;
 
     public List<FileCustom> selectFile(FileSelectVo file) throws Exception;
 

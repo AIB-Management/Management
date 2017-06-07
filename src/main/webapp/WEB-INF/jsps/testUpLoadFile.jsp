@@ -13,8 +13,8 @@
 </head>
 <body>
 <form action="${pageContext.request.contextPath}/file/doUploadFile.action" method="post" enctype="multipart/form-data">
-    账号:<input type="text" name="username" value="lalalala"><<br>
-    账号:<input type="text" name="navigationid" value="1"><<br>
+    账号:<input type="text" name="accuid" value="835b8a58-f545-41ef-97b4-a561ef72c7d4"><<br>
+    账号:<input type="text" name="navuid" value="1"><<br>
     标题:<input type="text" name="title"></br>
     <input type="file" name="file"><br>
     <input type="file" name="file"><br>

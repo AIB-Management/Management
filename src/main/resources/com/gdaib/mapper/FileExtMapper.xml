@@ -40,14 +40,15 @@
         </if>
     </sql>
 
-    <delete id="deleteFile" parameterType="List">
-        <if test="uids!=null">
-            DELETE FROM `t_file`
-            <where>
-                <foreach collection="uids" item="uid" open="AND uid IN (" close=")" separator=",">
-                    #{uid}
-                </foreach>
-            </where>
+    <delete id="deleteFile" parameterType="com.gdaib.pojo.FileSelectVo">
+        <if test="uid!=null">
+            <if test="accuid!=null">
+                DELETE FROM
+                `t_file`
+                <where>
+                    <include refid="where_File_Select_vo"></include>
+                </where>
+            </if>
         </if>
     </delete>
 

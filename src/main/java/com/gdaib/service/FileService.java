@@ -13,7 +13,7 @@ public interface FileService {
 
     public int insertFile(FileSelectVo file) throws Exception;
 
-    public int deleteFile(List<String> uids) throws Exception;
+    public int deleteFile( FileSelectVo file) throws Exception;
 
     public int updateFile(FileSelectVo file) throws Exception;
 }

@@ -71,7 +71,6 @@ public class ContentController {
     @ResponseBody
     public Msg ajaxFindNavAndFile(NavigationSelectVo navigationSelectVo) throws Exception {
         HashMap<String, List<HashMap<String, Object>>> navAndFile = new HashMap<String, List<HashMap<String, Object>>>();
-
         List<NavigationCustom> navigationCustoms = navigationServer.selectNavigation(navigationSelectVo);
         List<HashMap<String, Object>> navs = new ArrayList<HashMap<String, Object>>();
         if (navigationCustoms != null || navigationCustoms.size() > 0) {
@@ -100,6 +99,7 @@ public class ContentController {
                 hashMap.put("title", file.getTitle());
                 hashMap.put("upTime", file.getUptime());
                 hashMap.put(" author", custom.getAuthor());
+                hashMap.put("accuid", file.getAccuid());
                 files.add(hashMap);
             }
         } else {
@@ -109,108 +109,38 @@ public class ContentController {
         navAndFile.put("navs", navs);
         navAndFile.put("files", files);
 
-
         return Msg.success().add("navs", navs).add("files", files);
     }
 
-    @RequestMapping(value = "/content/ajaxAddNav", params = {"title", "parent", "depuid"})
+    @RequestMapping(value = "/content/ajaxFindDepOrPro", params = {"parent"})
     @ResponseBody
-    public Msg ajaxAddNav(NavigationSelectVo navigationSelectVo) throws Exception {
-
-        navigationSelectVo.setExtend(1);
-        String uid = UUID.randomUUID().toString();
-        navigationSelectVo.setUid(uid);
-
-        navigationSelectVo.setUrl("/content/ajaxFindNavAndFile.action?parent=" + uid + "&depuid=" + navigationSelectVo.getDepuid());
-        System.out.println(navigationSelectVo.toString());
-        int result = navigationServer.insertNavigation(navigationSelectVo);
-
-        if (result > 0) {
-            return Msg.success();
-        }
-
-        return Msg.fail();
-    }
-
-
-    @RequestMapping(value = "/content/ajaxDeleteNav", params = {"uids"})
-    @ResponseBody
-    public Msg ajaxDeleteNav(String uids) throws Exception {
-        if (uids == null || uids.trim().equals("")) {
-            throw new Exception("参数为空");
-        }
-
-        List<String> uidList = Utils.toList(uids);
-
-        System.out.println(uidList);
-        int result = navigationServer.deleteNavigation(uidList);
-
-        if (result > 0) {
-            return Msg.success();
-        }
-        return Msg.fail();
-    }
-
-    @RequestMapping(value = "/content/ajaxUpdateNav", params = {"uid", "title"})
-    @ResponseBody
-    public Msg ajaxUpdateNav(NavigationSelectVo navigationSelectVo) throws Exception {
-        int result = navigationServer.updateNavigation(navigationSelectVo);
-        if (result > 0) {
-            return Msg.success();
-        }
-        return Msg.fail();
-    }
-
-    @RequestMapping(value = "/content/ajaxAddDep", params = {"content", "parent"})
-    @ResponseBody
-    public Msg ajaxAddDep(DepartmentSelectVo departmentSelectVo) throws Exception {
-        if (departmentSelectVo.getContent() == null || departmentSelectVo.getContent().trim().equals("")) {
-            throw new Exception("内容为空");
-        }
+    public Msg ajaxFindDepOrPro(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getParent() == null || departmentSelectVo.getParent().trim().equals("")) {
-            throw new Exception("上级参数为空,为0时是系");
+            throw new Exception("上级不能为空");
         }
+        List<HashMap<String, Object>> depAndpro = new ArrayList<HashMap<String, Object>>();
+        if (departmentSelectVo.getParent().equals("0")) {
+            List<DepartmentCustom> departmentCustoms = departmentService.selectDepartment(departmentSelectVo);
+            if (departmentCustoms.size() > 0) {
+                for (DepartmentCustom departmentCustom : departmentCustoms) {
+                    Department department = departmentCustom.getDepartment();
+                    HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                    hashMap.put("dep", department.getContent());
+                    hashMap.put("uid", department.getUid());
 
-        departmentSelectVo.setUid(UUID.randomUUID().toString());
+                    departmentSelectVo.setParent(department.getUid());
+                    List<HashMap<String, Object>> pros = departmentService.selectProfession(departmentSelectVo);
 
-        int result = departmentService.insertDepartment(departmentSelectVo);
+                    hashMap.put("pros", pros);
+                    depAndpro.add(hashMap);
+                }
+                return Msg.success().add("deps", depAndpro);
+            }
 
-        if (result > 0) {
-            return Msg.success();
-        }
-        return Msg.fail();
-    }
-
-    @RequestMapping(value = "/content/ajaxDeleteDep", params = {"uids"})
-    @ResponseBody
-    public Msg ajaxDeleteDep(String uids) throws Exception {
-        if (uids == null || uids.trim().equals("")) {
-            throw new Exception("参数为空");
-        }
-        List<String> uidList = Utils.toList(uids);
-        int result = departmentService.deleteDepartment(uidList);
-        if (result > 0) {
-            return Msg.success();
-        }
-        return Msg.fail();
-    }
-
-    @RequestMapping(value = "/content/ajaxUpdateDep", params = {"uid", "content"})
-    @ResponseBody
-    public Msg ajaxUpdateDep(DepartmentSelectVo departmentSelectVo) throws Exception {
-        if (departmentSelectVo.getUid().trim().equals("") || departmentSelectVo.getUid() == null) {
-            throw new Exception("主键不能为空");
-        }
-
-        if (departmentSelectVo.getContent().trim().equals("") || departmentSelectVo.getContent() == null) {
-            throw new Exception("内容不能为空");
-        }
-        int result = departmentService.updateDepartment(departmentSelectVo);
-        if (result > 0) {
-            return Msg.success();
+        } else {
+            List<HashMap<String, Object>> pros = departmentService.selectProfession(departmentSelectVo);
+            return Msg.success().add("pros", pros);
         }
         return Msg.fail();
     }
-
-
 }

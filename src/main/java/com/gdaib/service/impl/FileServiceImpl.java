@@ -22,13 +22,12 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public int insertFile(FileSelectVo file) throws Exception {
-
         return fileExtMapper.insert(file);
     }
 
     @Override
-    public int deleteFile(List<String> uids) throws Exception {
-        return fileExtMapper.deleteFile(uids);
+    public int deleteFile(FileSelectVo file) throws Exception {
+        return fileExtMapper.deleteFile(file);
     }
 
     @Override

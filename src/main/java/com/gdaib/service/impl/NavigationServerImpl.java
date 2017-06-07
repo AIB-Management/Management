@@ -301,7 +301,7 @@ public class NavigationServerImpl implements NavigationServer {
         NavigationSelectVo navigationSelectVo;
         for (String uid : uids) {
             navigationSelectVo = new NavigationSelectVo();
-            navigationSelectVo.setUid(uid);
+            navigationSelectVo.setParent(uid);
             List<NavigationCustom> navigationCustoms = selectNavigation(navigationSelectVo);
             if (navigationCustoms.size() > 0) {
                 throw new Exception("一个或者多个目录下存在文件目录");
@@ -312,6 +312,7 @@ public class NavigationServerImpl implements NavigationServer {
             fileSelectVo = new FileSelectVo();
             fileSelectVo.setNavuid(navUid);
             List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
+            System.out.println("size:"+fileCustoms.size());
             if (fileCustoms.size() > 0) {
                 throw new Exception("一个或者多个目录下存在文件");
             }
@@ -330,9 +331,9 @@ public class NavigationServerImpl implements NavigationServer {
             throw new Exception("uid为空");
         }
 
-        if (navigation.getTitle().equals("") || navigation.getTitle() == null) {
-            throw new Exception("标题为空");
-        }
+//        if (navigation.getTitle().equals("") || navigation.getTitle() == null) {
+//            throw new Exception("标题为空");
+//        }
 
         return navigationExtMapper.updateNavigation(navigation);
     }
@@ -342,11 +343,12 @@ public class NavigationServerImpl implements NavigationServer {
         if (navigation == null) {
             throw new Exception("参数为空");
         }
-        if (navigation.getDepuid() == null || navigation.getDepuid().equals("")) {
-            throw new Exception("部门UID为空");
-        }
-        if (navigation.getParent() == null || navigation.getParent().equals("")) {
-        }
+//        if (navigation.getDepuid() == null || navigation.getDepuid().equals("")) {
+//            throw new Exception("部门UID为空");
+//        }
+//        if (navigation.getParent() == null || navigation.getParent().equals("")) {
+//            throw new Exception("上级目录为空");
+//        }
         return navigationExtMapper.selectNavigation(navigation);
     }
 }
