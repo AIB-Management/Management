@@ -4,13 +4,14 @@
   <resultMap id="BaseResultMap" type="com.gdaib.pojo.Account" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <id column="username" property="username" jdbcType="VARCHAR" />
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="mail" property="mail" jdbcType="VARCHAR" />
-    <result column="profession_id" property="professionId" jdbcType="INTEGER" />
     <result column="role" property="role" jdbcType="VARCHAR" />
     <result column="validataCode" property="validatacode" jdbcType="VARCHAR" />
     <result column="outDate" property="outdate" jdbcType="TIMESTAMP" />
+    <result column="depUid" property="depuid" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, password, name, mail, profession_id, role, validataCode, outDate
+    id, username, uid, password, name, mail, role, validataCode, outDate, depUid
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.AccountExample" >
     select
@@ -93,11 +94,13 @@
     from t_account
     where id = #{id,jdbcType=INTEGER}
       and username = #{username,jdbcType=VARCHAR}
+      and uid = #{uid,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.gdaib.pojo.AccountKey" >
     delete from t_account
     where id = #{id,jdbcType=INTEGER}
       and username = #{username,jdbcType=VARCHAR}
+      and uid = #{uid,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.gdaib.pojo.AccountExample" >
     delete from t_account
@@ -106,14 +109,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.gdaib.pojo.Account" >
-    insert into t_account (id, username, password, 
-      name, mail, profession_id, 
-      role, validataCode, outDate
-      )
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{professionId,jdbcType=INTEGER}, 
-      #{role,jdbcType=VARCHAR}, #{validatacode,jdbcType=VARCHAR}, #{outdate,jdbcType=TIMESTAMP}
-      )
+    insert into t_account (id, username, uid, 
+      password, name, mail, 
+      role, validataCode, outDate, 
+      depUid)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, 
+      #{role,jdbcType=VARCHAR}, #{validatacode,jdbcType=VARCHAR}, #{outdate,jdbcType=TIMESTAMP}, 
+      #{depuid,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.gdaib.pojo.Account" >
     insert into t_account
@@ -124,6 +127,9 @@
       <if test="username != null" >
         username,
       </if>
+      <if test="uid != null" >
+        uid,
+      </if>
       <if test="password != null" >
         password,
       </if>
@@ -132,9 +138,6 @@
       </if>
       <if test="mail != null" >
         mail,
-      </if>
-      <if test="professionId != null" >
-        profession_id,
       </if>
       <if test="role != null" >
         role,
@@ -145,6 +148,9 @@
       <if test="outdate != null" >
         outDate,
       </if>
+      <if test="depuid != null" >
+        depUid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -152,6 +158,9 @@
       </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
       </if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
@@ -162,9 +171,6 @@
       <if test="mail != null" >
         #{mail,jdbcType=VARCHAR},
       </if>
-      <if test="professionId != null" >
-        #{professionId,jdbcType=INTEGER},
-      </if>
       <if test="role != null" >
         #{role,jdbcType=VARCHAR},
       </if>
@@ -173,6 +179,9 @@
       </if>
       <if test="outdate != null" >
         #{outdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="depuid != null" >
+        #{depuid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -191,6 +200,9 @@
       <if test="record.username != null" >
         username = #{record.username,jdbcType=VARCHAR},
       </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=VARCHAR},
+      </if>
       <if test="record.password != null" >
         password = #{record.password,jdbcType=VARCHAR},
       </if>
@@ -199,9 +211,6 @@
       </if>
       <if test="record.mail != null" >
         mail = #{record.mail,jdbcType=VARCHAR},
-      </if>
-      <if test="record.professionId != null" >
-        profession_id = #{record.professionId,jdbcType=INTEGER},
       </if>
       <if test="record.role != null" >
         role = #{record.role,jdbcType=VARCHAR},
@@ -212,6 +221,9 @@
       <if test="record.outdate != null" >
         outDate = #{record.outdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.depuid != null" >
+        depUid = #{record.depuid,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -221,13 +233,14 @@
     update t_account
     set id = #{record.id,jdbcType=INTEGER},
       username = #{record.username,jdbcType=VARCHAR},
+      uid = #{record.uid,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       mail = #{record.mail,jdbcType=VARCHAR},
-      profession_id = #{record.professionId,jdbcType=INTEGER},
       role = #{record.role,jdbcType=VARCHAR},
       validataCode = #{record.validatacode,jdbcType=VARCHAR},
-      outDate = #{record.outdate,jdbcType=TIMESTAMP}
+      outDate = #{record.outdate,jdbcType=TIMESTAMP},
+      depUid = #{record.depuid,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -244,9 +257,6 @@
       <if test="mail != null" >
         mail = #{mail,jdbcType=VARCHAR},
       </if>
-      <if test="professionId != null" >
-        profession_id = #{professionId,jdbcType=INTEGER},
-      </if>
       <if test="role != null" >
         role = #{role,jdbcType=VARCHAR},
       </if>
@@ -256,20 +266,25 @@
       <if test="outdate != null" >
         outDate = #{outdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="depuid != null" >
+        depUid = #{depuid,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
       and username = #{username,jdbcType=VARCHAR}
+      and uid = #{uid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.gdaib.pojo.Account" >
     update t_account
     set password = #{password,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       mail = #{mail,jdbcType=VARCHAR},
-      profession_id = #{professionId,jdbcType=INTEGER},
       role = #{role,jdbcType=VARCHAR},
       validataCode = #{validatacode,jdbcType=VARCHAR},
-      outDate = #{outdate,jdbcType=TIMESTAMP}
+      outDate = #{outdate,jdbcType=TIMESTAMP},
+      depUid = #{depuid,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
       and username = #{username,jdbcType=VARCHAR}
+      and uid = #{uid,jdbcType=VARCHAR}
   </update>
 </mapper>

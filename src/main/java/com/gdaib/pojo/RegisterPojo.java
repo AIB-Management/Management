@@ -4,6 +4,8 @@ package com.gdaib.pojo;
  * Created by tom on 17-5-1.
  */
 public class RegisterPojo {
+    //uid
+    private String uid;
     //用户账号
     private String username;
     //用户名
@@ -13,13 +15,12 @@ public class RegisterPojo {
     //确认密码
     private String confirmpwd;
     //专业ID
-    private Integer specialId;
+    private String depUid;
     //邮箱地址
     private String  email;
     //验证码
     private String vtCode;
-    //系别ID
-    private Integer departmentId;
+
 
     //旧密码
     private String oldpwd;
@@ -84,36 +85,33 @@ public class RegisterPojo {
         this.vtCode = vtCode;
     }
 
-
-    public Integer getSpecialId() {
-        return specialId;
+    public String getDepUid() {
+        return depUid;
     }
 
-    public void setSpecialId(Integer specialId) {
-        this.specialId = specialId;
+    public void setDepUid(String depUid) {
+        this.depUid = depUid;
     }
 
-
-    public Integer getDepartmentId() {
-        return departmentId;
+    public String getUid() {
+        return uid;
     }
 
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
-
 
     @Override
     public String toString() {
         return "RegisterPojo{" +
-                "username='" + username + '\'' +
+                "uid='" + uid + '\'' +
+                ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", pwd='" + pwd + '\'' +
                 ", confirmpwd='" + confirmpwd + '\'' +
-                ", specialId=" + specialId +
+                ", depUid='" + depUid + '\'' +
                 ", email='" + email + '\'' +
                 ", vtCode='" + vtCode + '\'' +
-                ", departmentId=" + departmentId +
                 ", oldpwd='" + oldpwd + '\'' +
                 '}';
     }

@@ -67,7 +67,7 @@ public class ManageController {
     @RequestMapping("/admin/ajaxGetAllDepartment")
     @ResponseBody
     public Msg ajaxGetAllDepartment() throws Exception {
-        List<Department> allDepartment = departmentService.getAllDepartment();
+        List<DepartmentCustom> allDepartment = departmentService.selectDepartment(null);
         Msg msg = new Msg(100, "请求成功");
         msg.add("Department", allDepartment);
         return msg;
@@ -117,12 +117,12 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxGetAccountInfoIsPass")
     @ResponseBody
-    public Msg ajaxGetAccountInfoIsPass(@RequestParam(value = "pn",defaultValue = "1") Integer pn,String departmentId) throws Exception {
-
+    public Msg ajaxGetAccountInfoIsPass(@RequestParam(value = "pn",defaultValue = "1") Integer pn,String parent) throws Exception {
+        System.out.println(parent);
         // 引入PageHelper分页插件
     // 在查询之前只需要调用，传入页码，以及每页的大小
     PageHelper.startPage(pn,5);
-    List<AccountInfo>   accountInfo = usersService.findAccountInfoByCharacter("teacher",departmentId);
+    List<AccountInfo>   accountInfo = usersService.findAccountInfoByCharacter("teacher",parent);
 
     PageInfo page = new PageInfo(accountInfo,5);
         return Msg.success().add("page",page);
@@ -134,26 +134,26 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxPassAccount")
     @ResponseBody
-    public Msg ajaxPassAccount(String id) throws Exception {
-        if(id == null || id.equals("")){
+    public Msg ajaxPassAccount(String uid) throws Exception {
+        if(uid == null || uid.equals("")){
             return Msg.fail();
 
         }else{
-            List<Integer> ids = new ArrayList<Integer>();
+            List<String> ids = new ArrayList<String>();
             //验证字符串是否带有逗号，有就是多个
-            if (id.contains(",")){
+            if (uid.contains(",")){
 
 
                 //得到的字符串切割
-                String[] split = id.split(",");
+                String[] split = uid.split(",");
                 for(String sp : split){
-                    ids.add(Integer.parseInt(sp));
+                    ids.add(sp);
                 }
 
 
 
             }else{
-                ids.add(Integer.parseInt(id));
+                ids.add(uid);
             }
 
             usersService.updateBatchAccountByCharacter(ids,"teacher");
@@ -165,32 +165,29 @@ public class ManageController {
 
 
     /**
-
      *      拒绝验证,单个多个二合一
-
-
      */
     @RequestMapping("/admin/ajaxRejectAccount")
     @ResponseBody
-    public Msg ajaxRejectAccount(String id, String content, HttpServletRequest request) throws Exception {
-        if(id == null || id.equals("")){
+    public Msg ajaxRejectAccount(String uid, String content, HttpServletRequest request) throws Exception {
+        if(uid == null || uid.equals("")){
             return Msg.fail();
 
         }else{
 
 
             MailPojo mailPojo = new MailPojo();
-            List<Integer> ids = new ArrayList<Integer>();
+            List<String> ids = new ArrayList<String>();
 
 
             //验证字符串是否带有逗号，有就是多个
-            if (id.contains(",")){
+            if (uid.contains(",")){
                 //得到的字符串切割
-                String[] split = id.split(",");
+                String[] split = uid.split(",");
 
                 //遍历切割的字符串，把所有id加入list中
                 for(String sp : split){
-                    ids.add(Integer.parseInt(sp));
+                    ids.add(sp);
                 }
 
 
@@ -224,7 +221,7 @@ public class ManageController {
 
 
             }else {//否则就是单个
-                ids.add(Integer.parseInt(id));
+                ids.add(uid);
                 List<AccountInfo> accountInfos = usersService.findAccountInfoForId(ids);
 
 
@@ -278,26 +275,24 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxWithdrawAccount")
     @ResponseBody
-    public Msg ajaxWithdrawAccount(String id,String content) throws Exception {
-
-
-        if(id == null || id.equals("")){
+    public Msg ajaxWithdrawAccount(String uid,String content) throws Exception {
+        if(uid == null || uid.equals("")){
             return Msg.fail();
 
         }else{
 
             MailPojo mailPojo = new MailPojo();
-            List<Integer> ids = new ArrayList<Integer>();
+            List<String> ids = new ArrayList<String>();
 
 
             //验证字符串是否带有逗号，有就是多个
-            if (id.contains(",")){
+            if (uid.contains(",")){
                 //得到的字符串切割
-                String[] split = id.split(",");
+                String[] split = uid.split(",");
 
                 //遍历切割的字符串，把所有id加入list中
                 for(String sp : split){
-                    ids.add(Integer.parseInt(sp));
+                    ids.add(sp);
                 }
 
                 //查询list中所有的用户
@@ -327,8 +322,9 @@ public class ManageController {
 
 
 
+
             }else {//否则就是单个
-                ids.add(Integer.parseInt(id));
+                ids.add(uid);
                 List<AccountInfo> accountInfos = usersService.findAccountInfoForId(ids);
 
 
@@ -393,9 +389,9 @@ public class ManageController {
     public Msg ajaxInsertNev(Navigation navigation, HttpServletRequest request) throws Exception {
         System.out.println(navigation.getTitle());
 
-        if (navigation == null || navigation.getDepartmentid() == null || navigation.getTitle() == null) {
-            return Msg.fail();
-        }
+//        if (navigation == null || navigation.getDepartmentid() == null || navigation.getTitle() == null) {
+//            return Msg.fail();
+//        }
 
         String title = navigation.getTitle();
         if(request.getCharacterEncoding().equals("iso-8859-1")){
@@ -405,14 +401,14 @@ public class ManageController {
         System.out.println("转换后" + title);
         navigation.setTitle(title);
 
-        if (navigation.getParent() == null) {
-            navigation.setParent(0);
-        }
+//        if (navigation.getParent() == null) {
+//            navigation.setParent(0);
+//        }
         navigation.setExtend(0);
 
         System.out.println("charaSet:" + request.getCharacterEncoding() + "navigation:" + navigation.toString());
         int result = 0;
-        result = navigationServer.insertNavigation(navigation);
+//        result = navigationServer.insertNavigation(navigation);
 
         if (result > 0) {
             return Msg.success();
@@ -438,11 +434,11 @@ public class ManageController {
             return Msg.fail();
         }
 
-        int result = navigationServer.deleteNavByPrimaryKey(navigationId);
-        System.out.println("result:" + result);
-        if (result > 0) {
-            return Msg.success();
-        }
+//        int result = navigationServer.deleteNavByPrimaryKey(navigationId);
+//        System.out.println("result:" + result);
+//        if (result > 0) {
+//            return Msg.success();
+//        }
 
         return Msg.fail();
     }
@@ -469,7 +465,7 @@ public class ManageController {
         }
         int result = 0;
 
-        result = navigationServer.updateNavByPrimaryKey(navigationId, toUtf(title));
+//        result = navigationServer.updateNavByPrimaryKey(navigationId, toUtf(title));
 
         if (result > 0) {
             return Msg.success();

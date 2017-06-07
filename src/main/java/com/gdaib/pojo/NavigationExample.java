@@ -164,63 +164,73 @@ public class NavigationExample {
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidIsNull() {
-            addCriterion("departmentId is null");
+        public Criteria andUidIsNull() {
+            addCriterion("uid is null");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidIsNotNull() {
-            addCriterion("departmentId is not null");
+        public Criteria andUidIsNotNull() {
+            addCriterion("uid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidEqualTo(Integer value) {
-            addCriterion("departmentId =", value, "departmentid");
+        public Criteria andUidEqualTo(String value) {
+            addCriterion("uid =", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidNotEqualTo(Integer value) {
-            addCriterion("departmentId <>", value, "departmentid");
+        public Criteria andUidNotEqualTo(String value) {
+            addCriterion("uid <>", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidGreaterThan(Integer value) {
-            addCriterion("departmentId >", value, "departmentid");
+        public Criteria andUidGreaterThan(String value) {
+            addCriterion("uid >", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("departmentId >=", value, "departmentid");
+        public Criteria andUidGreaterThanOrEqualTo(String value) {
+            addCriterion("uid >=", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidLessThan(Integer value) {
-            addCriterion("departmentId <", value, "departmentid");
+        public Criteria andUidLessThan(String value) {
+            addCriterion("uid <", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidLessThanOrEqualTo(Integer value) {
-            addCriterion("departmentId <=", value, "departmentid");
+        public Criteria andUidLessThanOrEqualTo(String value) {
+            addCriterion("uid <=", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidIn(List<Integer> values) {
-            addCriterion("departmentId in", values, "departmentid");
+        public Criteria andUidLike(String value) {
+            addCriterion("uid like", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidNotIn(List<Integer> values) {
-            addCriterion("departmentId not in", values, "departmentid");
+        public Criteria andUidNotLike(String value) {
+            addCriterion("uid not like", value, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidBetween(Integer value1, Integer value2) {
-            addCriterion("departmentId between", value1, value2, "departmentid");
+        public Criteria andUidIn(List<String> values) {
+            addCriterion("uid in", values, "uid");
             return (Criteria) this;
         }
 
-        public Criteria andDepartmentidNotBetween(Integer value1, Integer value2) {
-            addCriterion("departmentId not between", value1, value2, "departmentid");
+        public Criteria andUidNotIn(List<String> values) {
+            addCriterion("uid not in", values, "uid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUidBetween(String value1, String value2) {
+            addCriterion("uid between", value1, value2, "uid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUidNotBetween(String value1, String value2) {
+            addCriterion("uid not between", value1, value2, "uid");
             return (Criteria) this;
         }
 
@@ -234,52 +244,62 @@ public class NavigationExample {
             return (Criteria) this;
         }
 
-        public Criteria andParentEqualTo(Integer value) {
+        public Criteria andParentEqualTo(String value) {
             addCriterion("parent =", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentNotEqualTo(Integer value) {
+        public Criteria andParentNotEqualTo(String value) {
             addCriterion("parent <>", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentGreaterThan(Integer value) {
+        public Criteria andParentGreaterThan(String value) {
             addCriterion("parent >", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentGreaterThanOrEqualTo(Integer value) {
+        public Criteria andParentGreaterThanOrEqualTo(String value) {
             addCriterion("parent >=", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentLessThan(Integer value) {
+        public Criteria andParentLessThan(String value) {
             addCriterion("parent <", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentLessThanOrEqualTo(Integer value) {
+        public Criteria andParentLessThanOrEqualTo(String value) {
             addCriterion("parent <=", value, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentIn(List<Integer> values) {
+        public Criteria andParentLike(String value) {
+            addCriterion("parent like", value, "parent");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentNotLike(String value) {
+            addCriterion("parent not like", value, "parent");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentIn(List<String> values) {
             addCriterion("parent in", values, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentNotIn(List<Integer> values) {
+        public Criteria andParentNotIn(List<String> values) {
             addCriterion("parent not in", values, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentBetween(Integer value1, Integer value2) {
+        public Criteria andParentBetween(String value1, String value2) {
             addCriterion("parent between", value1, value2, "parent");
             return (Criteria) this;
         }
 
-        public Criteria andParentNotBetween(Integer value1, Integer value2) {
+        public Criteria andParentNotBetween(String value1, String value2) {
             addCriterion("parent not between", value1, value2, "parent");
             return (Criteria) this;
         }
@@ -481,6 +501,76 @@ public class NavigationExample {
 
         public Criteria andExtendNotBetween(Integer value1, Integer value2) {
             addCriterion("extend not between", value1, value2, "extend");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidIsNull() {
+            addCriterion("depUid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidIsNotNull() {
+            addCriterion("depUid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidEqualTo(String value) {
+            addCriterion("depUid =", value, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidNotEqualTo(String value) {
+            addCriterion("depUid <>", value, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidGreaterThan(String value) {
+            addCriterion("depUid >", value, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidGreaterThanOrEqualTo(String value) {
+            addCriterion("depUid >=", value, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidLessThan(String value) {
+            addCriterion("depUid <", value, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidLessThanOrEqualTo(String value) {
+            addCriterion("depUid <=", value, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidLike(String value) {
+            addCriterion("depUid like", value, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidNotLike(String value) {
+            addCriterion("depUid not like", value, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidIn(List<String> values) {
+            addCriterion("depUid in", values, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidNotIn(List<String> values) {
+            addCriterion("depUid not in", values, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidBetween(String value1, String value2) {
+            addCriterion("depUid between", value1, value2, "depuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepuidNotBetween(String value1, String value2) {
+            addCriterion("depUid not between", value1, value2, "depuid");
             return (Criteria) this;
         }
     }

@@ -1,11 +1,7 @@
 package com.gdaib.pojo;
 
-public class Navigation {
-    private Integer id;
-
-    private Integer departmentid;
-
-    private Integer parent;
+public class Navigation extends NavigationKey {
+    private String parent;
 
     private String title;
 
@@ -13,28 +9,14 @@ public class Navigation {
 
     private Integer extend;
 
-    public Integer getId() {
-        return id;
-    }
+    private String depuid;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getDepartmentid() {
-        return departmentid;
-    }
-
-    public void setDepartmentid(Integer departmentid) {
-        this.departmentid = departmentid;
-    }
-
-    public Integer getParent() {
+    public String getParent() {
         return parent;
     }
 
-    public void setParent(Integer parent) {
-        this.parent = parent;
+    public void setParent(String parent) {
+        this.parent = parent == null ? null : parent.trim();
     }
 
     public String getTitle() {
@@ -61,15 +43,11 @@ public class Navigation {
         this.extend = extend;
     }
 
-    @Override
-    public String toString() {
-        return "Navigation{" +
-                "id=" + id +
-                ", departmentid=" + departmentid +
-                ", parent=" + parent +
-                ", title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", extend=" + extend +
-                '}';
+    public String getDepuid() {
+        return depuid;
+    }
+
+    public void setDepuid(String depuid) {
+        this.depuid = depuid == null ? null : depuid.trim();
     }
 }

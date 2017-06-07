@@ -1,23 +1,34 @@
 package com.gdaib.pojo;
 
-public class Department {
-    private Integer id;
+public class Department extends DepartmentKey {
+    private String content;
 
-    private String department;
+    private String parent;
 
-    public Integer getId() {
-        return id;
+    public String getContent() {
+        return content;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
-    public String getDepartment() {
-        return department;
+    public String getParent() {
+        return parent;
     }
 
-    public void setDepartment(String department) {
-        this.department = department == null ? null : department.trim();
+    public void setParent(String parent) {
+        this.parent = parent == null ? null : parent.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "content='" + content + '\'' +
+                ", parent='" + parent + '\'' +
+                ", uid='" + getUid() + '\'' +
+                '}';
+    }
+
+
 }

@@ -1,7 +1,10 @@
 package cn.test;
 
 import com.gdaib.mapper.NavigationMapper;
+import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
+import com.gdaib.service.DepartmentService;
+import com.gdaib.service.MailService;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import org.junit.Test;
@@ -17,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by znho on 2017/5/29.
@@ -85,8 +89,7 @@ public class NaviTest {
         //根据两个参数查找对应的子导航
         NavigationExample navigationExample = new NavigationExample();
         NavigationExample.Criteria criteria = navigationExample.createCriteria();
-        criteria.andDepartmentidEqualTo(DepartmentId);
-        criteria.andParentEqualTo(ParentId);
+
 
         List<Navigation> navigations = navigationMapper.selectByExample(navigationExample);
 
@@ -98,9 +101,9 @@ public class NaviTest {
         //遍历导航，查找出是否存在子导航
         for(NavigationCustom navigationCustom: navigationCustoms){
             //如果有子导航
-            if(navigationCustom.getUrl() == null || navigationCustom.getUrl().equals("")){
+            if(navigationCustom.getNavigation().getUrl() == null || navigationCustom.getNavigation().getUrl().equals("")){
                 //传入系Id和父导航id
-                List<NavigationCustom> childNav = getChildNav(100, navigationCustom.getId());
+                List<NavigationCustom> childNav = getChildNav(100, navigationCustom.getNavigation().getId());
                 navigationCustom.setChiren(childNav);
 
                 childNavigationCustoms.add(navigationCustom);
@@ -135,7 +138,7 @@ public class NaviTest {
     public void Test(){
         Navigation navigation = new Navigation();
         navigation.setId(1);
-        navigation.setDepartmentid(232);
+
 
         NavigationCustom navigationCustom = new NavigationCustom();
         fatherToChild(navigation,navigationCustom);
@@ -191,11 +194,20 @@ public class NaviTest {
     @Autowired
     public RunasService runasService;
 
-    
-    
+    @Autowired
+    public UsersMapper usersMapper;
+
+    @Autowired
+    public MailService mailService;
+
     @Test
     public void test3() throws Exception {
-        runasService.grant("lalalala","5edbf5edbf");
+        List<String> list = new ArrayList<String>();
+        list.add("c7fb2498-5f8f-4b21-9071-efe709010b33");
+        list.add("989194a5-a00d-4ffa-b25d-29f706580c92");
+
+        List<AccountInfo> accountInfoForId = usersService.findAccountInfoForId(list);
+        System.out.println(accountInfoForId);
     }
 
 

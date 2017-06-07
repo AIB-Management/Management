@@ -201,7 +201,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		//用作向后台传值及向弹出层传值
 		var parent = this.parentNode.parentNode;
 		var nameTd = parent.querySelectorAll("td")[1];
-		var id = nameTd.title;
+		var uid = nameTd.title;
 		//发送一个ajax 给后台
 		//然后刷新更新后的表格
 		//...ajaxCode
@@ -209,7 +209,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			url: 'http://localhost:8080/Management/admin/ajaxPassAccount.action',
 			type: 'POST',
 			dataType: 'json',
-			data: "id=" + id,
+			data: "uid=" + uid,
 			success: function(data){
 				alert("操作成功");
 				//返回数据的时候回到操作前停留的页码处
@@ -308,17 +308,17 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			//创建一个教师姓名包裹 td
 			var userTd = createElem("td");
 			userTd.innerText = dataList[i].name;
-			userTd.title = dataList[i].id;
+			userTd.title = dataList[i].uid;
 			tr.appendChild(userTd);
 
 			//创建一个系别包裹 td
 			var departmentTd = createElem("td");
-			departmentTd.innerText = dataList[i].department;
+			departmentTd.innerText = dataList[i].depContent;
 			tr.appendChild(departmentTd);
 
 			//创建一个专业包裹 td
 			var professionTd = createElem("td");
-			professionTd.innerText = dataList[i].profession;
+			professionTd.innerText = dataList[i].content;
 			tr.appendChild(professionTd);
 
 			//创建一个按钮包裹 td
@@ -528,7 +528,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				url: 'http://localhost:8080/Management/admin/ajaxPassAccount.action',
 				type: 'POST',
 				dataType: 'json',
-				data: "id=" + list,
+				data: "uid=" + list,
 				success: function(data){
 					if (data.code == 100) {
 						toUnexamiePage(curUnexamieModulePage);
@@ -634,8 +634,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
  				var result = data.extend.Department;
  				for (var i = 0; i < result.length; i++) {
  					var option = createElem("option");
- 					option.value = result[i].id;
- 					option.innerText = result[i].department;
+ 					option.value = result[i].department.uid;
+ 					option.innerText = result[i].department.content;
  					frag.appendChild(option);
  				}
 
@@ -730,17 +730,17 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			//创建一个教师姓名包裹 td
 			var userTd = createElem("td");
 			userTd.innerText = dataList[i].name;
-			userTd.title = dataList[i].id;
+			userTd.title = dataList[i].uid;
 			tr.appendChild(userTd);
 
 			//创建一个系别包裹 td
 			var departmentTd = createElem("td");
-			departmentTd.innerText = dataList[i].department;
+			departmentTd.innerText = dataList[i].depContent;
 			tr.appendChild(departmentTd);
 
 			//创建一个专业包裹 td
 			var professionTd = createElem("td");
-			professionTd.innerText = dataList[i].profession;
+			professionTd.innerText = dataList[i].content;
 			tr.appendChild(professionTd);
 
 			//创建一个按钮包裹 td
@@ -905,7 +905,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		var result = "";
 		//整理参数
 		if (id != "") {
-			result = "pn=" + pn + "&departmentId=" + id;
+			result = "pn=" + pn + "&parent=" + id;
 		}else{
 			result = "pn=" + pn;
 		}
@@ -1207,7 +1207,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
 			type: 'POST',
 			dataType: 'json',
-			data: "id=" + idVal + "&content=" + refuseVal,
+			data: "uid=" + idVal + "&content=" + refuseVal,
 			beforeSend: function(){
 				icon.style.visibility = 'visible';
 			},
@@ -1243,7 +1243,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
 			type: 'POST',
 			dataType: 'json',
-			data: "id=" + idVal,
+			data: "uid=" + idVal,
 			beforeSend: function(){
 				icon.style.visibility = 'visible';
 			},
@@ -1304,7 +1304,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			url: 'http://localhost:8080/Management/admin/ajaxWithdrawAccount.action',
 			type: 'GET',
 			dataType: 'json',
-			data: "id=" + idVal + "&content=" + reason,
+			data: "uid=" + idVal + "&content=" + reason,
 			beforeSend: function(){
 				icon.style.visibility = 'visible';
 			},

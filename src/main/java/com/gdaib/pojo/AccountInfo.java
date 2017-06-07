@@ -1,23 +1,33 @@
 package com.gdaib.pojo;
 
-import java.io.Serializable;
-
-public class AccountInfo implements Serializable{
+public class AccountInfo {
     private Integer id;
 
     private String username;
 
-    private String mail;
-
-    private String profession;
-
-    private String department;
-
-    private Integer departmentId;
-
     private String name;
 
+    private String mail;
+
     private String role;
+
+    private String departmentId;
+
+    private String depContent;
+
+    private String professionId;
+
+    private String content;
+
+    private String uid;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public Integer getId() {
         return id;
@@ -35,44 +45,20 @@ public class AccountInfo implements Serializable{
         this.username = username == null ? null : username.trim();
     }
 
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail == null ? null : mail.trim();
-    }
-
-    public String getProfession() {
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-        this.profession = profession == null ? null : profession.trim();
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department == null ? null : department.trim();
-    }
-
-    public Integer getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail == null ? null : mail.trim();
     }
 
     public String getRole() {
@@ -83,17 +69,51 @@ public class AccountInfo implements Serializable{
         this.role = role == null ? null : role.trim();
     }
 
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getDepContent() {
+        return depContent;
+    }
+
+    public void setDepContent(String depContent) {
+        this.depContent = depContent == null ? null : depContent.trim();
+    }
+
+    public String getProfessionId() {
+        return professionId;
+    }
+
+    public void setProfessionId(String professionId) {
+        this.professionId = professionId == null ? null : professionId.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
     @Override
     public String toString() {
         return "AccountInfo{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", mail='" + mail + '\'' +
-                ", profession='" + profession + '\'' +
-                ", department='" + department + '\'' +
-                ", departmentId=" + departmentId +
                 ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
                 ", role='" + role + '\'' +
+                ", departmentId='" + departmentId + '\'' +
+                ", depContent='" + depContent + '\'' +
+                ", professionId='" + professionId + '\'' +
+                ", content='" + content + '\'' +
+                ", uid='" + uid + '\'' +
                 '}';
     }
 }

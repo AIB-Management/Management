@@ -2,6 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdaib.mapper.UsersMapper">
 
+    <!--AccountInfo的动态sql-->
+    <sql id="AccountInfo_s">
+        <!-- 判断语句,如果id里面没值就不添加id-->
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+        <if test="uid != null and uid != ''">
+            and uid = #{uid}
+        </if>
+        <if test="username != null and username != ''">
+            and username = #{username}
+        </if>
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+        <if test="mail != null and mail != ''">
+            and mail = #{mail}
+        </if>
+        <if test="role != null and role != ''">
+            and role = #{role}
+        </if>
+        <if test="departmentId != null and departmentId != ''">
+            and `t_department`.`parent` = #{departmentId}
+        </if>
+        <if test="depContent != null and depContent != ''">
+            and depContent = #{depContent}
+        </if>
+        <if test="professionId != null and professionId != ''">
+            and professionId = #{professionId}
+        </if>
+        <if test="content != null and content != ''">
+            and content = #{content}
+        </if>
+    </sql>
+
 
     <!--根据用户名找到用户-->
     <select id="selectByUsername" parameterType="string" resultType="account">
@@ -16,7 +51,7 @@
 
     <!--插入用户信息-->
     <select id="insertUserFromAccount" parameterType="RegisterPojo">
-        INSERT INTO `t_account`(username,PASSWORD,name,mail,profession_id) VALUES(#{username},#{pwd},#{name},#{email},#{specialId})
+        INSERT INTO `t_account`(uid,username,PASSWORD,name,mail,depUid) VALUES(#{uid},#{username},#{pwd},#{name},#{email},#{depUid})
     </select>
 
     <!--得到所有系-->
@@ -100,5 +135,60 @@
     <select id="findAccountName" parameterType="String" resultType="com.gdaib.pojo.AccountInfo">
         SELECT a.id,a.name FROM `t_account` a,`t_mapping_ugom` m WHERE a.`username` = m.`be_acco` AND m.`account` = #{account}
     </select>
+
+
+    <!--AccountInfo-->
+    <select id="findAccountInfo" parameterType="com.gdaib.pojo.AccountInfo" resultType="com.gdaib.pojo.AccountInfo">
+    SELECT
+      `t_account`.`id`         AS `id`,
+      `t_account`.`uid`         AS `uid`,
+      `t_account`.`username`   AS `username`,
+      `t_account`.`name`       AS `name`,
+      `t_account`.`mail`       AS `mail`,
+      `t_account`.`role`       AS `role`,
+      `t_department`.`parent`  AS `departmentId`,
+      (SELECT
+         `t_department`.`content`
+       FROM `t_department`
+       WHERE (`t_department`.`uid` = `departmentId`)) AS `depContent`,
+      `t_department`.`uid`     AS `professionId`,
+      `t_department`.`content` AS `content`
+    FROM (`t_account`
+       JOIN `t_department`
+         ON ((`t_account`.`depUid` = `t_department`.`uid`)))
+    <where>
+        <include refid="AccountInfo_s"/>
+    </where>
+        GROUP BY id DESC
+
+    </select>
+
+    <!--批量查找 AccountInfo-->
+    <select id="findBatchAccountInfo" parameterType="Map" resultType="com.gdaib.pojo.AccountInfo">
+        SELECT
+        `t_account`.`id`         AS `id`,
+        `t_account`.`uid`         AS `uid`,
+        `t_account`.`username`   AS `username`,
+        `t_account`.`name`       AS `name`,
+        `t_account`.`mail`       AS `mail`,
+        `t_account`.`role`       AS `role`,
+        `t_department`.`parent`  AS `departmentId`,
+        (SELECT
+        `t_department`.`content`
+        FROM `t_department`
+        WHERE (`t_department`.`uid` = `departmentId`)) AS `depContent`,
+        `t_department`.`uid`     AS `professionId`,
+        `t_department`.`content` AS `content`
+        FROM (`t_account`
+        JOIN `t_department`
+        ON ((`t_account`.`depUid` = `t_department`.`uid`)))
+        <foreach collection="accounts" item="account" open="where `t_account`.`uid` in(" close=")" separator=",">
+            #{account}
+        </foreach>
+        GROUP BY id DESC
+
+    </select>
+
+
 
 </mapper>

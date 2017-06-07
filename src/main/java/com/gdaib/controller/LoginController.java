@@ -36,7 +36,8 @@ public class LoginController {
     private UsersService usersService;
 
     @RequestMapping("/public/login")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,String id) {
+        System.out.println(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(LOGIN);
         return modelAndView;
@@ -72,7 +73,6 @@ public class LoginController {
             //把用户名密码都封装到UsernamePasswordToken中
             UsernamePasswordToken token = new UsernamePasswordToken(registerPojo.getUsername(), registerPojo.getPwd());
 
-
             try {
                 //登录，执行realm中的认证方法
                 subject.login(token);
@@ -91,14 +91,15 @@ public class LoginController {
                 return modelAndView;
             }
         }
-        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
+        subject.getSession().setAttribute("AccountInfo",accountInfo);
         if (accountInfo.getRole().equals("admin")){
             modelAndView.setViewName("redirect:/admin/rootPage.action");
             return modelAndView;
         }
 
-        subject.getSession().setAttribute("AccountInfo",accountInfo);
+
         modelAndView.setViewName("redirect:/content/departmentpage.action");
         return modelAndView;
 

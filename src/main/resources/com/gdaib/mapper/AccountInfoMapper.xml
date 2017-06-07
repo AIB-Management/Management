@@ -4,12 +4,13 @@
   <resultMap id="BaseResultMap" type="com.gdaib.pojo.AccountInfo" >
     <result column="id" property="id" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="mail" property="mail" jdbcType="VARCHAR" />
-    <result column="profession" property="profession" jdbcType="VARCHAR" />
-    <result column="department" property="department" jdbcType="VARCHAR" />
-    <result column="department_id" property="departmentId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="mail" property="mail" jdbcType="VARCHAR" />
     <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="department_id" property="departmentId" jdbcType="INTEGER" />
+    <result column="dep_content" property="depContent" jdbcType="VARCHAR" />
+    <result column="profession_id" property="professionId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, mail, profession, department, department_id, name, role
+    id, username, name, mail, role, department_id, dep_content, profession_id, content
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.AccountInfoExample" >
     select
@@ -93,12 +94,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.gdaib.pojo.AccountInfo" >
-    insert into v_account_info (id, username, mail, 
-      profession, department, department_id, 
-      name, role)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, 
-      #{profession,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
-      #{name,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR})
+    insert into v_account_info (id, username, name, 
+      mail, role, department_id, 
+      dep_content, profession_id, content
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{mail,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
+      #{depContent,jdbcType=VARCHAR}, #{professionId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.gdaib.pojo.AccountInfo" >
     insert into v_account_info
@@ -109,23 +112,26 @@
       <if test="username != null" >
         username,
       </if>
+      <if test="name != null" >
+        name,
+      </if>
       <if test="mail != null" >
         mail,
       </if>
-      <if test="profession != null" >
-        profession,
-      </if>
-      <if test="department != null" >
-        department,
+      <if test="role != null" >
+        role,
       </if>
       <if test="departmentId != null" >
         department_id,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="depContent != null" >
+        dep_content,
       </if>
-      <if test="role != null" >
-        role,
+      <if test="professionId != null" >
+        profession_id,
+      </if>
+      <if test="content != null" >
+        content,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -135,23 +141,26 @@
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
       </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
       <if test="mail != null" >
         #{mail,jdbcType=VARCHAR},
       </if>
-      <if test="profession != null" >
-        #{profession,jdbcType=VARCHAR},
-      </if>
-      <if test="department != null" >
-        #{department,jdbcType=VARCHAR},
+      <if test="role != null" >
+        #{role,jdbcType=VARCHAR},
       </if>
       <if test="departmentId != null" >
         #{departmentId,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="depContent != null" >
+        #{depContent,jdbcType=VARCHAR},
       </if>
-      <if test="role != null" >
-        #{role,jdbcType=VARCHAR},
+      <if test="professionId != null" >
+        #{professionId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -170,23 +179,26 @@
       <if test="record.username != null" >
         username = #{record.username,jdbcType=VARCHAR},
       </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.mail != null" >
         mail = #{record.mail,jdbcType=VARCHAR},
       </if>
-      <if test="record.profession != null" >
-        profession = #{record.profession,jdbcType=VARCHAR},
-      </if>
-      <if test="record.department != null" >
-        department = #{record.department,jdbcType=VARCHAR},
+      <if test="record.role != null" >
+        role = #{record.role,jdbcType=VARCHAR},
       </if>
       <if test="record.departmentId != null" >
         department_id = #{record.departmentId,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.depContent != null" >
+        dep_content = #{record.depContent,jdbcType=VARCHAR},
       </if>
-      <if test="record.role != null" >
-        role = #{record.role,jdbcType=VARCHAR},
+      <if test="record.professionId != null" >
+        profession_id = #{record.professionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -197,12 +209,13 @@
     update v_account_info
     set id = #{record.id,jdbcType=INTEGER},
       username = #{record.username,jdbcType=VARCHAR},
-      mail = #{record.mail,jdbcType=VARCHAR},
-      profession = #{record.profession,jdbcType=VARCHAR},
-      department = #{record.department,jdbcType=VARCHAR},
-      department_id = #{record.departmentId,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
-      role = #{record.role,jdbcType=VARCHAR}
+      mail = #{record.mail,jdbcType=VARCHAR},
+      role = #{record.role,jdbcType=VARCHAR},
+      department_id = #{record.departmentId,jdbcType=INTEGER},
+      dep_content = #{record.depContent,jdbcType=VARCHAR},
+      profession_id = #{record.professionId,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

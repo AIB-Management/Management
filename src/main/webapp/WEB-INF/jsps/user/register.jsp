@@ -9,7 +9,7 @@
 	<meta http-equiv = "X-UA-Compatible" content = "IE=Edge" /> 
 	<title>注册</title>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js"
-			defer async="true" data-main="${pageContext.request.contextPath}/resources/js/registerMain.js?t=170512-1"></script>
+			defer async="true" data-main="${pageContext.request.contextPath}/resources/js/registerMain.js?t=170606-23"></script>
 </head>
 <body>
 	<div class="form-wrap">
@@ -40,10 +40,10 @@
 				<select id="department" name="departmentId">
 					<option value="">请选择系别</option>
 					<c:forEach items="${department}" var="dp">
-						<option value="${dp.id}">${dp.department}</option>
+						<option value="${dp.department.uid}">${dp.department.content}</option>
 					</c:forEach>
 				</select>
-				<select id="special" name="specialId" >
+				<select id="special" name="depUid" >
 					<option value="">请选择专业</option>
 				</select>
 			</p>

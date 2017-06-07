@@ -56,4 +56,10 @@ public interface UsersMapper {
 
     //得到用户授权给别人的身份
     public List<AccountInfo> findAccountName(String account) throws Exception;
+
+    //<!--AccountInfo-->
+    public List<AccountInfo> findAccountInfo(AccountInfo accountInfo) throws Exception;
+
+    //批量查询AccountInfo
+    public List<AccountInfo> findBatchAccountInfo(Map<String,Object> Uids) throws Exception;
 }

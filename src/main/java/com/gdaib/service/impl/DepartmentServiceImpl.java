@@ -1,45 +1,101 @@
 package com.gdaib.service.impl;
 
-import com.gdaib.mapper.UsersMapper;
-import com.gdaib.pojo.Department;
-import com.gdaib.pojo.Profession;
+
+import com.gdaib.mapper.DepartmentExtMapper;
+import com.gdaib.pojo.DepartmentCustom;
+import com.gdaib.pojo.DepartmentSelectVo;
+
 import com.gdaib.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by mahanzhen on 17-5-3.
+ * Created by MaHanZhen on 2017/6/5.
  */
 public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
-    public UsersMapper usersMapper;
+    private DepartmentExtMapper departmentExtMapper;
 
 
-    /**
-     * 得到所有系
-     */
     @Override
-    public List<Department> getAllDepartment() throws Exception {
-        return usersMapper.findDepartment();
+    public int insertDepartment(DepartmentSelectVo department) throws Exception {
+        judgeDepartmentSelectVo(department);
+        int result = departmentExtMapper.insert(department);
+        return result;
+    }
+
+
+    @Override
+    public int deleteDepartment(List<String> uids) throws Exception {
+        if (uids == null) {
+            throw new Exception("参数不能为空");
+        }
+
+
+        for (String uid : uids) {
+            DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
+            departmentSelectVo.setParent(uid);
+            List<DepartmentCustom> departmentCustoms = departmentExtMapper.selectDepartment(departmentSelectVo);
+            if (departmentCustoms != null) {
+                throw new Exception("该系存在一个多或多个专业，请删除相应专业后重试");
+            }
+        }
+
+        int result;
+        result = departmentExtMapper.deleteDepartment(uids);
+        return result;
 
     }
-    /**
-     * 得到该系的所有专业
-     */
+
     @Override
-    public List<Profession> getProfessionByDepartmentID(Integer departmentId) throws Exception {
-//        List<Profession> professions = new ArrayList<Profession>();
-//
-//        professions.add(new Profession(1,"软件技术",1));
-//        professions.add(new Profession(2,"计算机应用基础",1));
-//
-//        return professions;
+    public int updateDepartment(DepartmentSelectVo department) throws Exception {
+        if (department == null || department.getUid() == null || department.getUid().equals("")) {
+            throw new Exception("参数无效");
+        }
 
-        List<Profession> professionById = usersMapper.findProfessionById(departmentId);
-
-        return professionById;
+        int result;
+        result = departmentExtMapper.updateDepartment(department);
+        return result;
     }
+
+    @Override
+    public List<DepartmentCustom> selectDepartment(DepartmentSelectVo department) throws Exception {
+        if (department == null) {
+            throw new Exception("请确保该参数中至少有一个或多个有值");
+        }
+
+        return departmentExtMapper.selectDepartment(department);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> selectProfession(DepartmentSelectVo department) throws Exception {
+        if (department == null) {
+            throw new Exception("请确保该参数中至少有一个或多个有值");
+        }
+
+        return departmentExtMapper.selectProfessional(department);
+    }
+
+    private void judgeDepartmentSelectVo(DepartmentSelectVo department) throws Exception {
+        if (department == null) {
+            throw new Exception("参数不能为空");
+        }
+
+        if (department.getUid() == null || department.getUid().equals("")) {
+            throw new Exception("uid不能为空");
+        }
+
+        if (department.getContent() == null || department.getContent().equals("")) {
+            throw new Exception("内容不能为空");
+        }
+
+        if (department.getParent() == null || department.getParent().equals("")) {
+            throw new Exception("上级目录不能为空");
+        }
+    }
+
+
 }
