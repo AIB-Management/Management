@@ -91,11 +91,21 @@ public class LoginRealm extends AuthorizingRealm {
         System.out.println("授权");
 
         List<String> permissions = new ArrayList<String>();
-
-        if (accountInfo.getUsername().equals("lalalala")) {
-
-            permissions.add("content:query");
+        System.out.println(accountInfo.getRole());
+        List<Permission> permisson = null;
+        try {
+            permisson = usersService.findPermisson(accountInfo.getRole());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+
+        for(Permission per : permisson){
+            permissions.add(per.getPermission());
+            System.out.println("permisson" + per.getPermission());
+        }
+
+
+
 
         //查到权限数据，返回授权信息(要包括 上边的permissions)
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();

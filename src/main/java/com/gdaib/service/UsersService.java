@@ -3,6 +3,7 @@ package com.gdaib.service;
 
 import com.gdaib.pojo.Account;
 import com.gdaib.pojo.AccountInfo;
+import com.gdaib.pojo.Permission;
 import com.gdaib.pojo.RegisterPojo;
 import org.springframework.http.HttpRequest;
 
@@ -74,4 +75,5 @@ public interface UsersService {
     //获取登录后的账号
     public String getLoggingUserName() throws Exception;
 
+    public List<Permission> findPermisson(String role) throws Exception;
 }

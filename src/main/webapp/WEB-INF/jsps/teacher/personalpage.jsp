@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,23 +13,23 @@
 			<h3>个人信息列表</h3>
 			<p class="personal-info-wrap">
 				<span>姓名</span>
-				<span id="personal-name">${AccountInfo.name}</span>
+				<span id="personal-name">${AccountInfo.name}<shiro:principal property="name"/></span>
 			</p>
 			<p class="personal-info-wrap">
 				<span>账号</span>
-				<span id="personal-account">${AccountInfo.username}</span>
+				<span id="personal-account">${AccountInfo.username}<shiro:principal property="username"/></span>
 			</p>
 			<p class="personal-info-wrap">
 				<span>系别</span>
-				<span id="personal-department">${AccountInfo.department}</span>
+				<span id="personal-department">${AccountInfo.depContent}<shiro:principal property="depContent"/></span>
 			</p>
 			<p class="personal-info-wrap">
 				<span>专业</span>
-				<span id="personal-specified">${AccountInfo.profession}</span>
+				<span id="personal-specified">${AccountInfo.content}<shiro:principal property="content"/></span>
 			</p>
 			<p class="personal-info-wrap">
 				<span>邮箱</span>
-				<span id="personal-email">${AccountInfo.mail}</span>
+				<span id="personal-email">${AccountInfo.mail}<shiro:principal property="mail"/></span>
 			</p>
 		</div>
 	</div>

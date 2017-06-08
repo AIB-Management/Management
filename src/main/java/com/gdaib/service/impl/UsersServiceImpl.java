@@ -3,6 +3,7 @@ package com.gdaib.service.impl;
 
 import com.gdaib.mapper.AccountInfoMapper;
 import com.gdaib.mapper.AccountMapper;
+import com.gdaib.mapper.PermissionMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.UsersService;
@@ -35,6 +36,8 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     private AccountInfoMapper accountInfoMapper;
 
+    @Autowired
+    public PermissionMapper permissionMapper;
     /**
      * 根据用户名找到用户
      */
@@ -432,4 +435,17 @@ public class UsersServiceImpl implements UsersService {
         return accountInfo.getUsername();
 
     }
+
+
+    @Override
+    public List<Permission> findPermisson(String role) throws Exception {
+        PermissionExample permissionExample = new PermissionExample();
+        PermissionExample.Criteria criteria = permissionExample.createCriteria();
+        criteria.andRoleEqualTo(role);
+
+        List<Permission> permissions = permissionMapper.selectByExample(permissionExample);
+        return permissions;
+    }
+
+
 }

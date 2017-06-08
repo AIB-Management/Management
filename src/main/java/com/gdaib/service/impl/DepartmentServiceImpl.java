@@ -63,9 +63,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentCustom> selectDepartment(DepartmentSelectVo department) throws Exception {
-        if (department == null) {
-            throw new Exception("请确保该参数中至少有一个或多个有值");
-        }
+
 
         return departmentExtMapper.selectDepartment(department);
     }
