@@ -63,7 +63,7 @@
     </select>
 
     <select id="selectProfessional" parameterType="com.gdaib.pojo.DepartmentSelectVo" resultType="HashMap">
-        SELECT content profession,uid FROM t_department
+        SELECT content pro,uid FROM t_department
         <where>
             <include refid="where_department_select_vo"></include>
         </where>

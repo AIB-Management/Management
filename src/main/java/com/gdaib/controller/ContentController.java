@@ -1,23 +1,26 @@
 package com.gdaib.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.gdaib.pojo.Msg;
-import com.gdaib.pojo.Navigation;
-import com.gdaib.pojo.NavigationCustom;
-import com.gdaib.pojo.VFileInfo;
-import com.gdaib.service.FileInfoService;
+import com.gdaib.pojo.*;
+import com.gdaib.service.DepartmentService;
+import com.gdaib.service.FileService;
 import com.gdaib.service.NavigationServer;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.Utils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author:马汉真
@@ -29,12 +32,16 @@ public class ContentController {
     @Autowired
     private UsersService usersService;
 
-    @Autowired
-    private FileInfoService fileInfoService;
-
 
     @Autowired
     private NavigationServer navigationServer;
+
+    @Autowired
+    private FileService fileService;
+
+    @Autowired
+    private DepartmentService departmentService;
+
 
     public static final String DEPARTMENTPAGE = "/teacher/departmentpage.jsp";
     public static final String PERSONALPAGE = "/teacher/personalpage.jsp";
@@ -53,67 +60,87 @@ public class ContentController {
 
     @RequestMapping("/content/personalpage")
     @RequiresPermissions("content:query")//执行personalpage需要content:query权限
-    public ModelAndView personalpage() throws Exception{
-        ModelAndView modelAndView =new ModelAndView();
+    public ModelAndView personalpage() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(PERSONALPAGE);
         return modelAndView;
     }
 
-    //获取某个导航里面的内容
-    @RequestMapping("/content/ajaxFindFileInfoByNavId")
+
+    @RequestMapping(value = "/content/ajaxFindNavAndFile", params = {"parent", "depuid"})
     @ResponseBody
-    public Msg ajaxFindFileInfoByNavId(int navigationId) throws Exception {
-        List<VFileInfo> vFileInfos = fileInfoService.selectFileByNavId(navigationId);
+    public Msg ajaxFindNavAndFile(NavigationSelectVo navigationSelectVo) throws Exception {
+        HashMap<String, List<HashMap<String, Object>>> navAndFile = new HashMap<String, List<HashMap<String, Object>>>();
+        List<NavigationCustom> navigationCustoms = navigationServer.selectNavigation(navigationSelectVo);
+        List<HashMap<String, Object>> navs = new ArrayList<HashMap<String, Object>>();
+        if (navigationCustoms != null || navigationCustoms.size() > 0) {
+            for (NavigationCustom custom : navigationCustoms) {
+                Navigation navigation = custom.getNavigation();
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("uid", navigation.getUid());
+                hashMap.put("nav", navigation.getTitle());
+                navs.add(hashMap);
+            }
+        } else {
+            navs = null;
+        }
 
-        return Msg.success().add("FileInfos",vFileInfos);
+
+        FileSelectVo fileSelectVo = new FileSelectVo();
+        fileSelectVo.setNavuid(navigationSelectVo.getParent());
+
+        List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
+        List<HashMap<String, Object>> files = new ArrayList<HashMap<String, Object>>();
+        if (fileCustoms != null || fileCustoms.size() > 0) {
+            for (FileCustom custom : fileCustoms) {
+                File file = custom.getFile();
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("uid", file.getUid());
+                hashMap.put("title", file.getTitle());
+                hashMap.put("upTime", file.getUptime());
+                hashMap.put(" author", custom.getAuthor());
+                hashMap.put("accuid", file.getAccuid());
+                files.add(hashMap);
+            }
+        } else {
+            files = null;
+        }
+
+        navAndFile.put("navs", navs);
+        navAndFile.put("files", files);
+
+        return Msg.success().add("navs", navs).add("files", files);
     }
 
-    /**
-     *  PATH :http://localhost:8080/Management/content/ajaxFindExtNavByParent.action
-     *  Param:departmentId
-     *  Param:parent
-     *
-     * SUCCEED:
-     *
-     * {"code":100,"msg":"处理成功！","extend":{
-     *  "navigations":
-     *      [
-     *          {"id":39,"departmentid":100,"parent":0,"title":"一級导航0","url":"http://127.0.0.1:8080/Management/content/ajaxFindFileInfoByNavId.action?navigationId=39","extend":0},
-     *          {"id":40,"departmentid":100,"parent":0,"title":"一級导航1","url":"http://127.0.0.1:8080/Management/content/ajaxFindExtNavByParent.action?departmentId=100&parent=40","extend":1},
-     *          {"id":41,"departmentid":100,"parent":0,"title":"一級导航2","url":"http://127.0.0.1:8080/Management/content/ajaxFindFileInfoByNavId.action?navigationId=41","extend":0}
-     *       ]
-     *   }
-     *}
-     * FAIL:{"code":200,"msg":"处理失败！","extend":{}}
-     * */
-    @RequestMapping("/content/ajaxFindExtNavByParent")
-    @ResponseBody()
-    public Msg ajaxExtNavByParent(int departmentId, @RequestParam(defaultValue = "0") int parent) throws Exception {
-        List<Navigation> navigations;
-//        navigations = navigationServer.selectNecByDepartIdAndParent(departmentId, parent);
-//        if (navigations != null) {
-//            return Msg.success().add("navigations", navigations);
-//        } else {
-//            return Msg.fail();
-//        }
-        return null;
+    @RequestMapping(value = "/content/ajaxFindDepOrPro", params = {"parent"})
+    @ResponseBody
+    public Msg ajaxFindDepOrPro(DepartmentSelectVo departmentSelectVo) throws Exception {
+        if (departmentSelectVo.getParent() == null || departmentSelectVo.getParent().trim().equals("")) {
+            throw new Exception("上级不能为空");
+        }
+        List<HashMap<String, Object>> depAndpro = new ArrayList<HashMap<String, Object>>();
+        if (departmentSelectVo.getParent().equals("0")) {
+            List<DepartmentCustom> departmentCustoms = departmentService.selectDepartment(departmentSelectVo);
+            if (departmentCustoms.size() > 0) {
+                for (DepartmentCustom departmentCustom : departmentCustoms) {
+                    Department department = departmentCustom.getDepartment();
+                    HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                    hashMap.put("dep", department.getContent());
+                    hashMap.put("uid", department.getUid());
+
+                    departmentSelectVo.setParent(department.getUid());
+                    List<HashMap<String, Object>> pros = departmentService.selectProfession(departmentSelectVo);
+
+                    hashMap.put("pros", pros);
+                    depAndpro.add(hashMap);
+                }
+                return Msg.success().add("deps", depAndpro);
+            }
+
+        } else {
+            List<HashMap<String, Object>> pros = departmentService.selectProfession(departmentSelectVo);
+            return Msg.success().add("pros", pros);
+        }
+        return Msg.fail();
     }
-
-    /**
-     * 根据系id,一级导航id找到剩下的所有导航
-     */
-    @RequestMapping("/content/ajaxNavCustomById")
-    @ResponseBody()
-    public Msg ajaxNavCustomById(Integer departmentId,Integer parentId) throws Exception {
-//        List<NavigationCustom> childNav = navigationServer.getChildNav(departmentId, parentId);
-//        System.out.println(childNav);
-
-
-//        return Msg.success().add("navigations",childNav);
-        return null;
-    }
-
-
-
-
 }

@@ -6,6 +6,16 @@ package com.gdaib.pojo;
 public class FileCustom {
     private File file;
 
+    private String  author;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public File getFile() {
         return file;
     }
