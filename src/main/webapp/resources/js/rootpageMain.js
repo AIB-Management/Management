@@ -111,70 +111,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
 
-	//修改导航栏模块按钮点击事件
-	//真正调用此函数是当数据完全获取完毕后调用
-	// function modifyModuleBtn(){
-	// 	//获取导航栏信息表格中的全部按钮
-	// 	var btns = ss("#all-tag-list tbody tr td button");
-	// 	for (var i = 0; i < btns.length; i++) {
-	// 		EventUntil.addHandler(btns[i],"click",function(){
-	// 			//如果点击的按钮类名为 modify-tag
-	// 			//执行自定义的 getDetailInfo 方法
-	// 			//获取到所有信息后再将所有信息填入弹出层对应的输入框中
-	// 			if (this.className.indexOf("modify-tag") != -1) {
-	// 				//获取点击按钮对应的信息
-	// 				var infoList = getDetailInfo(this);
-	// 				//获取弹出层
-	// 				var floor = s("#floor");
-	// 				//执行自定义信息输入函数
-	// 				setFloorInfo(ss("#floor .modify-nav-info"),infoList);
-	// 				//拒绝用户注册弹出层隐藏
-	// 				s("#refuse-info").style.display = 'none';
-	// 				//撤回用户弹出层隐藏
-	// 				s("#recall-user").style.display = 'none';
-	// 				//删除导航弹出层隐藏
-	// 				s("#delete-nav").style.display = 'none';
-	// 				//修改导航明细弹出层显示
-	// 				s("#modify-nav-info").style.display = 'block';
-	// 				//弹出层背景显示
-	// 				floor.style.visibility = "visible";
-
-	// 			}else if(this.className.indexOf("delete-tag") != -1){
-	// 				//点击删除导航按钮的时候
-	// 				//显示删除导航提示框隐藏其他弹出层
-	// 				//获取要删除导航的名字和id
-	// 				//向提示框传递此时要删除导航栏的 id和名字参数
-
-	// 				//获取父元素
-	// 				var parent = this.parentNode.parentNode;
-	// 				var tagNameTd = parent.querySelectorAll("td")[0];
-
-	// 				//获取提示标签名的元素
-	// 				var deleteTagName = s("#delete-navname");
-
-	// 				//获取弹出层
-	// 				var floor = s("#floor");
-	// 				//拒绝用户注册弹出层隐藏
-	// 				s("#refuse-info").style.display = 'none';
-	// 				//撤回用户弹出层隐藏
-	// 				s("#recall-user").style.display = 'none';
-	// 				//修改导航明细弹出层显示
-	// 				s("#modify-nav-info").style.display = 'none';
-	// 				//删除导航弹出层隐藏
-	// 				s("#delete-nav").style.display = 'block';
-	// 				//向提示字符元素填充内容
-	// 				deleteTagName.innerText = tagNameTd.innerText;
-	// 				deleteTagName.title = tagNameTd.title;
-
-	// 				//弹出层背景显示
-	// 				floor.style.visibility = "visible";
-	// 			}
-	// 		})
-	// 	}
-
-	// }
-
-
 
 	//页面加载完成时 显示新增未注册用户数量
 	function showUnexamieUserNums(){
@@ -190,6 +126,13 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		
 		
 	}
+
+	// ---------------- 文件夹管理(导航栏管理)模块开始
+
+
+
+
+	// ---------------- 文件夹管理模块结束
 
 
 	//--------------  未审核模块的操作事件 ------------
@@ -590,8 +533,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					s("#modify-nav-info").style.display = 'none';
 					//隐藏撤回用户模块弹出层
 					s("#recall-user").style.display = 'none';
-					//隐藏删除导航弹出层
-					s("#delete-nav").style.display = 'none';
 					//显示填写拒绝信息模块弹出层
 					s("#refuse-info").style.display = 'block';
 					//显示弹出层
@@ -619,7 +560,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
 	//----------------- 已审核模块操作事件开始 -----------------------
-	//为筛选下拉框填充内容
+	//为筛选系别下拉框填充内容
 	function initDepFilter(){
 		var select = s("#examie-filter");
 		var frag = document.createDocumentFragment();
@@ -667,8 +608,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		var floor = s("#floor");
 		//隐藏修改导航模块弹出层
 		s("#modify-nav-info").style.display = 'none';
-		//隐藏删除导航弹出层
-		s("#delete-nav").style.display = 'none';
 		//显示填写拒绝信息模块弹出层
 		s("#refuse-info").style.display = 'none';
 		//显示撤回用户模块弹出层
@@ -959,8 +898,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			var floor = s("#floor");
 			//隐藏修改导航模块弹出层
 			s("#modify-nav-info").style.display = 'none';
-			//隐藏删除导航弹出层
-			s("#delete-nav").style.display = 'none';
 			//显示填写拒绝信息模块弹出层
 			s("#refuse-info").style.display = 'none';
 			//显示撤回用户模块弹出层
@@ -993,11 +930,10 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 
 
-	//侧边栏多个tag 点击事件
+	//侧边栏除管理文件夹标签意外的元素点击事件
 	function tagsClick(){
 		var tags = ss(".child-tag");
 		var contents = ss(".content-wrap");
-		var loadingIcon = ss(".loading-icon-wrap");
 
 		for (var i = 0; i < tags.length; i++) {
 			tags[i].index = i;
@@ -1013,6 +949,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					}
 					contents[i].style.display = "none";
 				}
+
 				contents[index].style.display = 'block';
 
 				//为当前点击的 tag增加激活状态样式
@@ -1029,16 +966,26 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					//如果当前点击的tag 为未审核列表
 					//读取已审核用户数据的第一页，且部门筛选为 "全部" 的内容
 					toexamiedPage(1,curDepartmentId);
+
 				}
 			});
 		}
 	};
+
+
+	function manageFileTagClick(){
+		EventUntil.addHandler(s("#manage-floder"),"click",function(){
+			s("#manage-file-floor").style.display = 'block';
+		})
+	}
  
 	
 
 	//页面加载完成时要做的预处理
 	function init(){
-		//为侧边栏的标签绑定点击事件
+		//管理文件夹标签点击事件
+		manageFileTagClick();
+		//为侧边栏的除管理文件夹标签意外的元素绑定点击事件
 		tagsClick();
 		//显示未审核用户数量
 		showUnexamieUserNums();
@@ -1048,125 +995,21 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 	//--------------定义层结束-------------
 
+
+
 	//初始化页面
 	init();
 
+	//-----------文件夹管理(导航栏管理)模块功能开始------------
 
-	//初始化子导航栏提示信息
-	checkBy.init({
-		childTagContent: {hint:"多个子导航请用英文逗号分隔"},
-		childTagInfo: {hint:"多个子导航请用英文逗号分隔"}
-	})
-
-
-
-
-	//-----------右侧内容增加导航栏模块功能-------
-	//子导航选择框点击事件
-	EventUntil.addHandler(s("#has-child-tag"),"click",function(){
-		if (this.checked == true) {
-			s("#child-tag-wrap").style.display = "block";
-		}else{
-			s("#child-tag-wrap").style.display = "none";
-		}
-	})
-
-	//子导航输入框聚焦事件
-	EventUntil.addHandler(s("#childTagContent"),"focus",function(){
-		checkBy.onFocus(this,"span","#333333");
-	})
-	//子导航栏输入框失焦事件
-	EventUntil.addHandler(s("#childTagContent"),"blur",function(){
-		var parent = this.parentNode;
-		var hintContent = parent.querySelectorAll("span")[0];
-		//增加子导航栏输入框失焦时 输入框border颜色为 #999
-		s("#childTagContent").style.borderColor = "#999999";
-		hintContent.innerText = "";
-	})
-
-	//-------------右侧内容增加导航栏模块功能结束-------------
-
-
-
-	//------------ 弹出层事件 ----------------
-
-
-	//--------------- 修改导航栏弹出层开始 ----------------
-	//1、弹出层子导航栏内容修改输入框事件
-	EventUntil.addHandler(s("#childTagInfo"),"focus",function(){
-		checkBy.onFocus(this,"#modify-childNav-hint","#408DD2");
-	})
-
-	//2、弹出层子导航栏信息框失焦事件
-	EventUntil.addHandler(s("#childTagInfo"),"blur",function(){
-
-		var parent = this.parentNode;
-		var hintContent = parent.querySelector("#modify-childNav-hint");
-		hintContent.innerText = "";
-		this.style.borderColor = "#000000";
-	})
-
-	//3、修改导航弹出层关闭按钮点击事件
-	EventUntil.addHandler(s("#modify-nav-close-btn"),"click",function(){
-		s("#floor").style.display = "none";
-	})
-
-	//4、修改弹出层提交按钮点击事件
-	EventUntil.addHandler(s("#modify-btn"),"click",function(){
-		s("#floor").style.display = "none";
-	})
-
-	//----------------- 修改导航栏弹出层功能结束 -------------------
-
-
-
-	//删除导航栏弹出层功能
-	//1、取消删除导航按钮点击事件
-	EventUntil.addHandler(s("#cancel-delete-nav"),"click",function(){
-		//整个弹出层直接隐藏
-		s("#floor").style.display = "none";
-	})
-
-	//2、确认删除导航按钮点击事件
-	EventUntil.addHandler(s("#confirm-delete-nav"),"click",function(){
-		//确认删除导航栏按钮点击时
-		//获取此时提示元素的 title 值，将id 传给后台
-		//loading 图标显示
-		//后台返回更新后的数据
-		//前端更新新的数据
-		//loading图标隐藏 (src = "")
-		//弹出层隐藏
-
-		//获取提示元素的title 值
-		var navId = s("#delete-navname").title;
-		$.ajax({
-			url: '',
-			type: 'GET',
-			dataType: 'json',
-			//发送title 值给后台
-			data: {deleteNavId: navId},
-			beforeSend: function(){
-				//发送请求之前先显示加载图标
-				s("#deleteNav-loading-icon").src = "../../resources/images/loading.gif";
-			},
-
-			success: function(data){
-				//1、遍历后台数据
-				//2、输出元素
-				//3、调用modifyModuleBtn() 方法为新加载的元素绑定事件
-				//4、loading图标隐藏（src = ""）
-				//5、弹出层隐藏
-				toUnexamiePage(1);
-				s("#deleteNav-loading-icon").src = "";
-				s("#floor").style.display = 'none';
-			}
-		});
-		
-		
+	//管理文件弹出层关闭按钮点击事件
+	EventUntil.addHandler(s("#filemanage-close-btn"),"click",function(){
+		s("#manage-file-floor").style.display = 'none';
 	});
+	
 
-	//---------------------- 删除导航弹出层功能结束 ------------------
-
+	
+	//-----------------文件夹管理(导航栏管理)模块功能结束 -----------
 
 
 	//----------------- 拒绝用户弹出层功能开始 -------------------

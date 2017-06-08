@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>主页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170605-2"></script>
 </head>
 <body>
 	<div id="release-msg-content">
@@ -72,110 +72,112 @@
 				</ul>
 			</div>
 		</div>
-		<div class="head-nav">
-			<ul id="head-nav-content">
-				<li class="first-nav">一级导航栏</li>
-				<li class="first-nav">一级导航栏多了1个字</li>
-				<li class="first-nav">一级导航栏多了1 2个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7 8个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7 8 9个字</li>
-				<li id="show-more-btn" title="更多导航栏">>></li>
+		<div id="bread-crumb">
+			<b class="crumb-hint">当前路径：</b>
+			<ul class="breadcrumb" id="breadcurmb-nav-wrap">
+				<li><a href="#">文件名1</a></li>
+				<li><a href="#">文件名1</a></li>
+				<li><a href="#">文件名1</a></li>
+				<li><a href="#">文件名1</a></li>
+				<li><a href="#">文件名1</a></li>
+				<li><a href="#">文件名123456</a></li>
+				<li><a href="#">文件名12345678</a></li>
+				<li><a href="#">你敢再长一点吗</a></li>
+				<li><a href="#">我就长给你看你看我够长吗够长吗够长吗</a></li>
+				<li><a href="#">我也很长很长很长的</a></li>
+				<li><a href="#">听说现在还不够长我来一发</a></li>
 			</ul>
-			<ul id="nav-overflow-contain"></ul>
-		</div>
-		<div class="mainbody">
-			<div class="side-bar">
-				<h6 class="tag-title">二级导航栏</h6>
-				<ul id="tag-content">
-					<li class="second-nav">这四个字的导航1</li>
-					<li class="second-nav">这四个字的导航2</li>
-					<li class="second-nav">这四个字的导航3</li>
-					<li class="second-nav">这四个字的导航4</li>
-					<li class="second-nav">这四个字的导航5</li>
-					<li class="second-nav">这四个字的导航6</li>
-					<li class="second-nav">这四个字的导航7</li>
-					<li class="second-nav">这四个字的导航8</li>
-				</ul>
+
+			<div class="hidden-meun-item-btn">
+				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
+				<span class="caret"></span>
+				</button>
+				<ul id="overflow-item-wrap"></ul>
 			</div>
+		</div>
+		
+
+		<div class="mainbody">
 			<div class="content">
-				<div id="bread-crumb">
-					<span class="crumb-hint">当前路径：</span>
-					<span id="bread-crumb-nav" class="crumb-wrap"></span>
+				<div class="main-tool-bar">
+					<button class="btn btn-primary">
+						<span class="glyphicon glyphicon-cloud-upload"></span>
+						上传文件
+					</button>
 				</div>
-				<div class="main-content-wrap">
-					<p class="main-content-header">
-						<span class="title header-style">标题</span>
-						<span class="author header-style">作者</span>
-						<span class="public-time header-style">发布日期</span>
-					</p>
-					<ul id="main-content-list">
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-					</ul>	
+				<div class="main-content-title">
+					<div class="content-name">名称</div>
+					<div class="content-author">上传者</div>
+					<div class="content-publish-time">上传时间</div>
 				</div>
+				<ul id="main-content-wrap">
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
-
+	
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css?20170607-2">
 </body>
 </html>
