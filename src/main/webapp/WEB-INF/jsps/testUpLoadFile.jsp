@@ -13,9 +13,9 @@
 </head>
 <body>
 <form action="${pageContext.request.contextPath}/file/doUploadFile.action" method="post" enctype="multipart/form-data">
-    账号:<input type="text" name="accuid" value="835b8a58-f545-41ef-97b4-a561ef72c7d4"><<br>
-    账号:<input type="text" name="navuid" value="1"><<br>
-    标题:<input type="text" name="title"></br>
+    账号:<input type="text" name="accuid" value="835b8a58-f545-41ef-97b4-a561ef72c7d4"><br>
+    上级目录:<input type="text" name="navuid" value="bb6d06d1-f070-49fb-af30-ecb597f58aee"><br>
+    标题:<input type="text" name="title" value="震惊!八旬老爷爷居然"></br>
     <input type="file" name="file"><br>
     <input type="file" name="file"><br>
     <input type="submit"><<br>

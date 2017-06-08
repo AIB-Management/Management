@@ -1,24 +1,16 @@
 package com.gdaib.controller;
 
 import com.gdaib.pojo.*;
-import com.gdaib.service.FileInfoService;
 import com.gdaib.service.FileService;
 import com.gdaib.service.UsersService;
-import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.portlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -30,10 +22,6 @@ public class FileController {
     public static final String UP_FILE_PATH = "/TeachersFile";
 
     public static final String UPLOAD_FILE_JSP = "testUpLoadFile.jsp";
-
-
-    @Autowired
-    FileInfoService fileInfoService;
 
     @Autowired
     FileService fileService;
@@ -49,7 +37,7 @@ public class FileController {
 
 
     //上传文件
-    @RequestMapping(value = "/file/doUploadFile", method = RequestMethod.POST, params = {"title", "file",""})
+    @RequestMapping(value = "/file/doUploadFile", method = RequestMethod.POST)
     @ResponseBody
     public Msg doUploadFile(
 
@@ -77,15 +65,14 @@ public class FileController {
         String sqlPath = UP_FILE_PATH + "/" + fileSelectVo.getAccuid() + "/" + UUID.randomUUID();
         fileSelectVo.setFilepath(sqlPath);
 
-        ServletContext sc = request.getSession().getServletContext();
         // 上传位置
+        ServletContext sc = request.getSession().getServletContext();
         String path = sc.getRealPath(sqlPath) + "/";  // 设定文件保存的目录
 
+        fileService.writeFileToLocal(path, files);
 
-        System.out.println("path:" + path);
-
-        Utils.writeFileToLocal(path, files);
-
+        fileSelectVo.setUid(UUID.randomUUID().toString());
+        fileSelectVo.setUrl("this is url");
         int result = fileService.insertFile(fileSelectVo);
         if (result > 0) {
             return Msg.success();
@@ -95,27 +82,28 @@ public class FileController {
 
 
     //获取上传文件的条目级链接
-    @RequestMapping("/file/ajaxFindFileItemByFileId")
+    @RequestMapping(value = "/file/ajaxGetServerFileItem", params = {"uid"})
     @ResponseBody
-    public Msg ajaxFindFileItemByFileId(HttpServletRequest request,
-                                        int fileId,
-                                        HttpServletResponse response) throws Exception {
+    public Msg ajaxGetServerFileItem(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
 
-        System.out.println(fileId);
-        String sqlPath = fileInfoService.selectFileById(fileId).getFilePath();
+        List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
+        if (fileCustoms.size() == 0) {
+            throw new Exception("文件不存在");
+        }
         ServletContext sc = request.getSession().getServletContext();
+        String sqlPath = fileCustoms.get(0).getFile().getFilepath();
         String localPath = sc.getRealPath(sqlPath) + "/";
-        List<HashMap<String, Object>> filenames = fileInfoService.findFileItemByFilePath(localPath, sqlPath);
-//        List<HashMap<String,Object>> resetFileNames = fileInfoService.resetFileNames(filenames);
 
-        if (filenames == null) {
-            return Msg.fail();
+        List<HashMap<String, Object>> filenames = fileService.selectLocalFileItem(localPath, sqlPath);
+
+        if (filenames != null) {
+            return Msg.success().add("filenames", filenames);
         }
 
-        return Msg.success().add("filenames", filenames);
+        return Msg.fail();
     }
 
-    @RequestMapping(value = "/file/ajaxDeleteFile", params = {"uid"})
+    @RequestMapping(value = "/file/ajaxDeleteFile", params = {"uid", "accuid"})
     @ResponseBody
     public Msg ajaxDeleteFile(FileSelectVo fileSelectVo, HttpServletRequest request) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
@@ -127,54 +115,44 @@ public class FileController {
             //从登陆的账号获取
         }
 
-        String sqlPath = fileService.selectFile(fileSelectVo).get(0).getFile().getFilepath();
+        //添加判断上传账号与登陆账号是否相等
+        List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
+        if (fileCustoms.size() == 0) {
+            throw new Exception("文件不存在");
+        }
 
         ServletContext sc = request.getSession().getServletContext();
+        String sqlPath = fileCustoms.get(0).getFile().getFilepath();
         String localPath = sc.getRealPath(sqlPath) + "/";
 
-        Utils.deleteLocalFile(localPath);
+        fileService.deleteLocalFile(localPath);
 
         int result = fileService.deleteFile(fileSelectVo);
         if (result > 0) {
-            Msg.success();
+            return Msg.success();
         }
 
         return Msg.fail();
     }
 
+    @RequestMapping(value = "/file/ajaxUpdateFile", params = {"uid", "accuid"})
+    @ResponseBody
+    public Msg ajaxUpdateFile(FileSelectVo fileSelectVo) throws Exception {
+        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
+            throw new Exception("UID不能为空");
+        }
 
-//    @RequestMapping("/content/fileContent")
-//    public ModelAndView fileContent(HttpServletRequest request, HttpServletResponse response, int fileId) throws Exception {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("filecontent.jsp");
-//        VFileInfo vFileInfo = fileInfoService.selectFileById(fileId);
-//        modelAndView.addObject("fileInfo", vFileInfo);
-//
-//
-//        ServletContext sc = request.getSession().getServletContext();
-//        String sqlPath = vFileInfo.getFilePath();
-//        String localPath = sc.getRealPath(sqlPath) + "/";
-//
-//        List<HashMap<String, Object>> fileNames = fileInfoService.findFileItemByFilePath(localPath, sqlPath);
-//        modelAndView.addObject("fileNames", fileNames);
-//
-//        return modelAndView;
-//    }
+        if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
+            throw new Exception("账号ID不能为空");
+        }
+        //添加判断上传账号与登陆账号是否相等
 
-    @RequestMapping("/content/fileContent")
-    public String fileContent(HttpServletRequest request, HttpServletResponse response, int fileId) throws Exception {
+        int result = fileService.updateFile(fileSelectVo);
 
-        VFileInfo vFileInfo = fileInfoService.selectFileById(fileId);
-        request.setAttribute("fileInfo", vFileInfo);
-
-
-        ServletContext sc = request.getSession().getServletContext();
-        String sqlPath = vFileInfo.getFilePath();
-        String localPath = sc.getRealPath(sqlPath) + "/";
-
-        List<HashMap<String, Object>> fileNames = Utils.getLocalFileItem(localPath, sqlPath);
-        request.setAttribute("fileNames", fileNames);
-
-        return "filecontent.jsp";
+        if (result > 0) {
+            return Msg.success();
+        }
+        return Msg.fail();
     }
+
 }

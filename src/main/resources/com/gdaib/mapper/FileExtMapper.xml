@@ -15,28 +15,28 @@
 
     <sql id="where_File_Select_vo">
         <if test="id!=null">
-            AND id=#{id}
+            AND t_file.id=#{id}
         </if>
         <if test="uid!=null">
-            AND uid=#{uid}
+            AND t_file.uid=#{uid}
         </if>
         <if test="accuid!=null">
-            AND accuid=#{accuid}
+            AND t_file.accuid=#{accuid}
         </if>
         <if test="navuid!=null">
-            AND navuid=#{navuid}
+            AND t_file.navuid=#{navuid}
         </if>
         <if test="uptime!=null">
-            AND uptime=#{uptime}
+            AND t_file.uptime=#{uptime}
         </if>
         <if test="title!=null">
-            AND title=#{title}
+            AND t_file.title=#{title}
         </if>
         <if test="url!=null">
-            AND url=#{url}
+            AND t_file.url=#{url}
         </if>
         <if test="filepath!=null">
-            AND filepath=#{filepath}
+            AND t_file.filepath=#{filepath}
         </if>
     </sql>
 
