@@ -3,6 +3,10 @@ require.config({
 	shim:{
 		'jquery.min':{
 			exports: '$'
+		},
+
+		'bootstrap.min':{
+			deps:['jquery.min']
 		}
 
 	}
@@ -10,7 +14,7 @@ require.config({
 })
 
 //departmentpage 脚本main函数
-require(["jquery.min","overborwserEvent"],function main($,EventUntil){
+require(["jquery.min","overborwserEvent","bootstrap.min"],function main($,EventUntil){
 
 	//封装选择器函数
 	function s(name){
@@ -38,6 +42,14 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 			
 		}
 	}
+
+	//自定义获取滚动条位置函数
+	function getScrollTop(){
+		var scrollTop = 0;
+		scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+		return scrollTop;
+	}
 	
 
 	// //面包屑导航点击事件调用函数
@@ -49,8 +61,40 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 	// 		})
 	// 	}
 	// }
-	
 
+
+	function controlNavNums(navWrap,childnode,moreNavContain,icon){
+		//获取父元素的宽度
+		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
+		console.log('父元素总宽：' + parentWidth);
+
+		//获取全部子元素的宽度
+		var childWidthTotal = 0;
+		for (var i = 0; i < childnode.length; i++) {
+			//获取每一个子元素的实际宽度
+			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
+			childWidthTotal += curChildWidth;
+			//获取父元素与此时子元素总宽度的差值
+			var diffWidth = parentWidth - childWidthTotal;
+			
+			//如果此时的差值不能容纳下子元素
+			if (diffWidth < curChildWidth) {
+				//将此时的子元素添加到溢出导航包裹层里面
+				moreNavContain.appendChild(childnode[i]);
+			}
+			
+
+			if (moreNavContain.childNodes.length != 0) {
+				icon.style.display = "inline-block";
+			}
+
+		
+		}
+	}
+	
+	//调试
+	controlNavNums(s("#breadcurmb-nav-wrap"),ss("#breadcurmb-nav-wrap li"),
+			s("#overflow-item-wrap"),s("#breadcurmb-nav-wrap"));
 
 	
 
@@ -69,6 +113,31 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 		floor.style.visibility = "visible";
 		
 	});
+
+
+	//隐藏导航点击按钮事件
+	EventUntil.addHandler(s("#show-hidden-menu"),"click",function(){
+		
+		//获取按钮的宽度
+		var curWidth = parseInt(getCurStyle(this,null,"width"));
+		
+		//获取按钮高度
+		var curHeight = parseInt(getCurStyle(this,null,"height"));
+
+		if (s("#overflow-item-wrap").style.display == "" || s("#overflow-item-wrap").style.display == "none") {
+
+			s("#overflow-item-wrap").style.right = (curWidth / 2) + "px";
+			
+			s("#overflow-item-wrap").style.top = (curHeight + 20) + "px";
+
+			s("#overflow-item-wrap").style.display = "block";
+
+		}else{
+
+			s("#overflow-item-wrap").style.display = "none";
+		}
+
+	})
 
 	//用户操作下拉框鼠标移入事件
 	EventUntil.addHandler(s("#user-operate"),"mouseover",function(){

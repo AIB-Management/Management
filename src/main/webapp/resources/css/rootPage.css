@@ -1,3 +1,171 @@
+thead,tbody,tbody tr,tbody tr td{
+	height: 35px;
+	line-height: 35px;
+}
+/*管理文件夹弹出层样式*/
+#manage-file-floor{
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+	z-index: 30;
+}
+/*文件夹管理弹出层*/
+.filemanage-info{
+	width: 80%;
+	height: 600px;
+	margin: 20px auto 0 auto;
+	border-radius: 5px;
+	background-color: #fff;
+	box-shadow: 0 5px 10px rgba(160,162,122,0.5);
+}
+.close-btn{
+	padding-right: 10px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: right;
+}
+.close-btn .close{
+	font-size: 30px;
+}
+.manage-tool-bar{
+	height: 30px;
+	line-height: 30px;
+	padding-left: 10px;
+	background-color: #fff;
+}
+.crumb-nav{
+	height: 30px;
+	line-height: 30px;
+	margin-top: 10px;
+	word-spacing: -6px;
+}
+.crumb-nav .crumb-hint{
+	display: inline-block;
+	width: 10%;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 10px;
+}
+.crumb-nav .breadcrumb{
+	display: inline-block;
+	vertical-align: middle;
+	width: 90%;
+	height: 25px;
+	line-height: 25px;
+	padding: 0;
+	margin: 0;
+	background-color: #fff;
+	word-spacing: 0px;
+}
+.manage-nav-main{
+	height: 450px;
+	margin-top: 30px;
+}
+#manage-side-bar{
+	float: left;
+	width: 20%;
+	height: 100%;
+	border-right: 1px solid #ccc;
+	box-shadow: 0 5px 0 0 5px rgba(160,162,122,0.5);
+}
+#manage-side-bar h3{
+	font-size: 20px;
+	font-weight: bold;
+	padding-left: 10px;
+}
+#manage-side-item{
+	margin-top: 10px;
+}
+#manage-side-item li{
+	height: 45px;
+	line-height: 45px;
+	padding-left: 10px;
+}
+#manage-side-item li:hover{
+	background-color: #E4E9EC;
+}
+#manage-side-item li a{
+	text-decoration: none;
+	font-size: 15px;
+	color: #333;
+}
+.manage-main-content{
+	position: relative;
+	float: right;
+	width: 80%;
+	height: 100%;
+	padding-top: 40px;
+}
+.content-title{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	word-spacing: -6px;
+	border-bottom: 1px solid #ccc;
+	background-color: #fff;
+	z-index: 20;
+}
+.title-1,.title-2,.title-3{
+	display: inline-block;
+	vertical-align: middle;
+	height: 37px;
+	line-height: 37px;
+	padding-left: 5px;
+	word-spacing: 0;
+}
+.title-1{
+	width: 132px;
+}
+.title-2{
+	width: 318px;
+}
+.title-3{
+	width: 405px;
+}
+.manage-main-content .table{
+	width: 100%;
+	height: 450px;
+}
+.file-content-item{
+	height: 400px;
+	overflow-y: scroll;
+}
+.manage-main-content .table thead{
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	background-color: #fff;
+	z-index: 30;
+}
+.manage-main-content .table tbody tr{
+	vertical-align: middle;
+	height: 25px;
+	line-height: 25px;
+}
+.manage-main-content .table tbody tr td{
+	vertical-align: middle;
+	height: 25px;
+	line-height: 25px;
+}
+.floder:before{
+	content: url(../images/flodericon1.png);
+	display: inline-block;
+	vertical-align: middle;
+}
+/*左侧边栏活动状态样式*/
+.filedep-item-active{
+	background-color: #E4E9EC;
+}
+/*文件夹管理弹出层结束*/
 /*弹出层样式*/
 #floor{
 	display: none;
@@ -9,80 +177,23 @@
 	background-color: rgba(0,0,0,0.6);
 	z-index: 20;
 }
-/*关闭按钮样式*/
-.close-btn-wrap{
-	padding-right: 15px;
-	font-size: 25px;
-	text-align: right;
-}
-/*修改导航弹出层关闭按钮 和 拒绝注册弹出层关闭按钮样式*/
-#modify-nav-close-btn,#refuse-close-btn{
-	cursor: pointer;
-}
-/*修改导航栏内容，拒绝用户注册最外层样式*/
-#modify-nav-info,#refuse-info{
+/*拒绝用户信息包裹层样式*/
+#refuse-info{
 	width: 600px;
-	background-color: #fff;
+	height: 400px;
 	margin: 10% auto 0 auto;
-	padding-bottom: 50px;
+	padding-top: 1px;
+	background-color: #ffffff;
+	border-radius: 10px;
 }
-/*修改导航弹出层标题 和 拒绝注册弹出层标题样式*/
-#modify-nav-info h3,#refuse-info h3{
-	text-align: center;
-}
-/*修改导航弹出层输入框样式*/
-.modify-info-wrap{
-	text-align: left;
-	margin-top: 20px;
-	padding-left: 20px;
-}
-/*修改导航弹出层按钮包裹层样式*/
-.modify-btn-wrap{
-	text-align: center;
-	margin-top: 20px;
-	padding-left: 20px;
-}
-/*修改导航栏label 元素样式*/
-.modify-info-wrap label{
-	display: inline-block;
-	width: 120px;
-	height: 35px;
-	line-height: 35px;
-	text-align: right;
-}
-/*修改导航栏输入框样式*/
-.modify-info-wrap input{
-	display: inline-block;
-	width: 287px;
+.close{
+	width: 30px;
 	height: 30px;
-	line-height: 30px;
-	padding-left: 3px;
-	border: 1px solid #000;
+	margin-right: 10px;
 }
-/*修改导航栏弹出层系别选择下拉框样式*/
-#belong-department,#refuse-content{
-	display: inline-block;
-	height: 30px;
-	font-size: 15px;
-	border: 1px solid #000;
-}
-/*修改导航栏弹出层--子导航栏内容输入框样式*/
-#childTagInfo{
-	width: 287px;
-	height: 120px;
-	vertical-align: middle;
-	padding-left: 3px;
-	border: 1px solid #000;
-}
-/*修改导航栏按钮样式*/
-#modify-btn{
-	display: inline-block;
-	width: 120px;
-	height: 40px;
-	line-height: 40px;
-	background-color: #3F92D2;
-	text-align: center;
-	color: #fff;
+#refuse-info h3{
+	width: 90%;
+	margin: 10px auto 0 auto;
 }
 /*撤回用户弹出层 和 拒绝注册弹出层包裹层样式*/
 .recall-user-wrap,.refuse-info-wrap{
@@ -119,37 +230,25 @@
 #no-refuse-reason{
 	background-color: #d20003;
 }
-/*删除导航弹出层样式*/
-#delete-nav{
-	width: 450px;
-	height: 149px;
-	margin: 15% auto 0 auto;
-	padding-top: 1px;
-	background-color: #ffffff; 
-}
 /*撤回用户使用权弹出层提示内容包裹层 和 删除导航弹出层内容包裹层样式*/
-.recall-user-wrap,.delete-nav-wrap{
+.recall-user-wrap{
 	width: 90%;
 	margin: 15px auto 0 auto;
 }
 /*取消撤回按钮、确认撤回按钮、取消删除导航按钮、确认删除导航按钮综合样式*/
-#cancel-recall-user,#confirm-recall-user,#cancel-delete-nav,#confirm-delete-nav{
+#cancel-recall-user,#confirm-recall-user{
 	width: 80px;
 	height: 40px;
 	line-height: 40px;
 	color: #fff;
-	border-radius: 10px;
+	border-radius: 5px;
 }
 /*取消撤回按钮和取消删除导航按钮 单独样式*/
-#cancel-recall-user,#cancel-delete-nav{
+#cancel-recall-user{
 	background-color: #44BB44;
 }
-/*确认删除按钮单独样式*/
-#confirm-delete-nav{
-	background-color: #E61A1A;
-}
 /*删除主体名称提示字段样式*/
-#delete-navname,#refuse-username,#recall-username{
+#refuse-username,#recall-username{
 	font-size: 17px;
 	color: #000;
 }
@@ -160,6 +259,7 @@
 	margin: 10% auto 0 auto;
 	padding-top: 1px;
 	background-color: #ffffff; 
+	border-radius: 10px;
 }
 /*确认撤回按钮独立样式*/
 #confirm-recall-user{
@@ -245,11 +345,27 @@
 	height: 100%;
 	background-color: #494E52;
 }
+.side-bar li{
+	height: 45px;
+	line-height: 45px;
+	font-size: 15px;
+}
 #tag-manage,#user-manage{
 	line-height: 40px;
 	background-color: #BEC2C5;
 	text-align: center;
 	cursor: default;
+}
+#manage-floder{
+	height: 45px;
+	line-height: 45px;
+	padding-left: 30px;
+	color: #fff;
+	cursor: default;
+}
+#manage-floder:hover{
+	background-color: #fff;
+	color: #434343;
 }
 .child-tag{
 	line-height: 30px;
@@ -281,10 +397,6 @@
 /*右侧模块包裹层*/
 .content-wrap{
 	display: none;
-}
-/*页面预加载 第一个内容选择框自动显示*/
-.content-wrap:nth-child(1){
-	display: block;
 }
 /*右侧模块包裹层下加载显示层样式（loading 图标层）*/
 .loading-icon-wrap{
@@ -354,35 +466,6 @@
 .pass{
 	margin-right: 5px;
 }
-/*
-.refuse{
-	width: 90px;
-	height: 25px;
-	line-height: 25px;
-	background-color: #FF3300;
-	color: #fff;
-}*/
-/*.recall{
-	width: 50px;
-	height: 25px;
-	line-height: 25px;
-	background-color: #FF7081;
-	color: #fff;
-}
-.modify-tag{
-	width: 50px;
-	height: 25px;
-	line-height: 25px;
-	background-color: #3470A6;
-	color: #fff;
-}
-.delete-tag{
-	width: 50px;
-	height: 25px;
-	line-height: 25px;
-	background-color: #FF3300;
-	color: #fff;
-}*/
 .divid-page-wrap{
 	text-align: center;
 }

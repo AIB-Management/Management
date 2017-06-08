@@ -9,55 +9,176 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-3"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-4"></script>
 </head>
 <body>
-	<div id="floor">
+	<div id="manage-file-floor">
 		<!-- 修改导航弹出层内容 -->
-		<form action="" method="post" id="modify-nav-info">
-			<p class="close-btn-wrap"><span id="modify-nav-close-btn">×</span></p>
-			<h3>修改导航信息</h3>
-			<p class="modify-info-wrap">
-				<label>导航名：</label>
-				<input type="text" id="tag-name" class="modify-nav-info">
-			</p>
-			<p class="modify-info-wrap">
-				<label>所属系别：</label>
-				<select name="modifyDepartment" id="belong-department" class="modify-nav-info">
-					<option value="0">财经系</option>
-					<option value="1">计算机系</option>
-					<option value="2">管理系</option>
-					<option value="3">商务系</option>
-					<option value="4">艺术系</option>
-				</select>
-			</p>
-			<p class="modify-info-wrap">
-				<label>二级导航明细：</label>
-				<textarea name="second-childNav-content" id="childTagInfo" class="modify-nav-info"></textarea>
-				<span id="modify-childNav-hint"></span>
-			</p>
-			<p class="modify-btn-wrap">
-				<button id="modify-btn">确认修改</button>
-			</p>
-		</form>
-		
-
-		<!-- 删除导航栏提示信息弹出层 -->
-		<div id="delete-nav">
-			<p class="delete-nav-wrap">
-				<span class="operate-hint">你确认要删除<b id="delete-navname">xxx</b>一级导航吗？此操作将不可回撤</span>
-			</p>
-			<p class="delete-nav-wrap">
-				<button type="button" id="cancel-delete-nav">取消</button>
-				<button type="button" id="confirm-delete-nav">确认</button>
-				<img src="" alt="" id="deleteNav-loading-icon">
-			</p>
+		<div class="filemanage-info">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="filemanage-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="manage-tool-bar">
+				<button class="btn btn-primary btn-sm">
+					<span class="glyphicon glyphicon-plus"></span> 
+					新建文件夹
+				</button>
+				<button class="btn btn-default btn-sm">
+					<span class="glyphicon glyphicon-edit"></span> 
+					修改文件夹名
+				</button>
+				<button class="btn btn-default btn-sm">
+					<span class="glyphicon glyphicon-trash"></span> 
+					删除文件夹
+				</button>
+			</div>
+			<div class="crumb-nav">
+				<b class="crumb-hint">当前路径：</b>
+				<ul class="breadcrumb" id="breadcurmb-nav-wrap">
+					<li><a href="#">文件名1</a></li>
+					<li><a href="#">文件名1</a></li>
+					<li><a href="#">文件名1</a></li>
+					<li><a href="#">文件名1</a></li>
+					<li><a href="#">文件名1</a></li>
+				</ul>
+			</div>
+			<div class="manage-nav-main clearfix">
+				<div id="manage-side-bar">
+					<h3>请选择系别</h3>
+					<ul id="manage-side-item">
+						<li class="filedep-item-active"><a href="#">计算机系</a></li>
+						<li><a href="#">财经系</a></li>
+						<li><a href="#">管理系</a></li>
+						<li><a href="#">商务系</a></li>
+						<li><a href="#">外语系</a></li>
+						<li><a href="#">艺术系</a></li>
+						<li><a href="#">机电系</a></li>
+						<li><a href="#">热作系</a></li>
+						<li><a href="#">btec国际交流学院</a></li>
+					</ul>
+				</div>
+				<div class="manage-main-content">
+					<div class="content-title">
+						<div class="title-1">选择</div>
+						<div class="title-2">文件夹名</div>
+						<div class="title-3">建立时间</div>
+					</div>
+					<div class="file-content-item">
+						<table class="table table-striped table-hover">
+							<tbody class="file-list-wrap">
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder">
+										<a href="#">文件夹1</a>
+									</td>
+									<td>
+										2017-06-08 09:47
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
+	</div>
 
-
+	<div id="floor">
 		<!-- 拒绝用户注册回馈信息弹出层 -->
 		<div id="refuse-info">
-			<p class="close-btn-wrap"><span id="refuse-close-btn">×</span></p>
+			<div class="close-btn-wrap clearfix">
+				<button type="button" class="close" aria-label="Close" id="refuse-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
 			<h3>拒绝信息填写</h3>
 			<p class="refuse-info-wrap refuse-hint">
 				<span class="operate-hint">你可以为<b id="refuse-username"></b>发送拒绝信息,以便用户可以获知账号的实时状态</span>
@@ -103,10 +224,9 @@
 		<div class="mainbody">
 			<div class="side-bar">
 				<div class="item-wrap-1">
-					<div id="tag-manage" class="sidebar-tag-header">导航栏管理</div>
+					<div id="tag-manage" class="sidebar-tag-header">各系信息管理</div>
 					<ul class="child-tag-wrap">
-						<li class="child-tag sidebar-tag-active">添加导航栏</li>
-						<li class="child-tag">修改/删除导航栏</li>
+						<li id="manage-floder">信息文档管理</li>
 					</ul>
 				</div>
 				<div class="item-wrap-2">
@@ -118,122 +238,6 @@
 				</div>
 			</div>
 			<div class="content">
-
-				<!-- 右侧添加导航栏模块 -->
-				<div class="content-wrap">
-					<div class="add-tag-wrap">
-						<h3 class="add-tag-title">添加导航栏</h3>
-						<p>导航名：<input type="text" id="father-tag-content"></p>
-						<p>
-							系别选择：
-							<select id="add-tag-department" name="departmentId">
-								<option value="">请选择系别</option>
-								<c:forEach items="${department}" var="dp">
-									<option value="${dp.id}">${dp.department}</option>
-								</c:forEach>
-							</select>
-						</p>
-						<p><input type="checkbox" id="has-child-tag">二级导航</p>
-						<p id="child-tag-wrap">
-							二级导航名：
-							<input type="text" id="childTagContent">
-							<span class="chile-tag-hint"></span>
-						</p>
-						<p>
-							<button id="add-tag-btn" type="button">添加导航</button>
-							<span id="add-tag-hint">已有此标签</span>
-						</p>
-					</div>
-				</div>
-				<!-- 右侧添加导航栏模块结束 -->
-
-				<!-- 右侧删除/修改导航栏模块 -->
-				<div class="content-wrap">
-					<div class="modify-tag-wrap">
-						<span>筛选</span>
-						<select id="modify-tag-filter" class="filter-style" name="departmentId">
-							<option value="全部">全部</option>
-							<option value="计算机系">计算机系</option>
-							<option value="管理系">管理系</option>
-							<option value="商务系">商务系</option>
-							<option value="财经系">财经系</option>
-							<option value="热作系">热作系</option>
-							<option value="机电系">机电系</option>
-							<option value="BTEC国际交流学院">BTEC国际交流学院</option>
-						</select>
-
-
-						<table id="all-tag-list" class="message-list" cellspacing="0">
-							<caption>已存在的导航栏</caption>
-							<thead>
-								<tr>
-									<th>导航名</th>
-									<th>系别</th>
-									<th>二级导航栏</th>
-									<th>操作</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td title="1">标签1</td>
-									<td>计算机系</td>
-									<td>二级导航栏,二级导航栏,二级导航栏,二级导航栏</td>
-									<td>
-										<button class="modify-tag">修改</button>
-										<button class="delete-tag">删除</button>
-									</td>
-								</tr>
-								<tr>
-									<td title="2">标签1</td>
-									<td>管理系</td>
-									<td>二级导航栏,二级导航栏,二级导航栏,二级导航栏</td>
-									<td>
-										<button class="modify-tag">修改</button>
-										<button class="delete-tag">删除</button>
-									</td>
-								</tr>
-								<tr>
-									<td title="3">标签1</td>
-									<td>计算机系</td>
-									<td>二级导航栏,二级导航栏,二级导航栏,二级导航栏</td>
-									<td>
-										<button class="modify-tag">修改</button>
-										<button class="delete-tag">删除</button>
-									</td>
-								</tr>
-								<tr>
-									<td title="4">标签1</td>
-									<td>计算机系</td>
-									<td>二级导航栏,二级导航栏,二级导航栏,二级导航栏</td>
-									<td>
-										<button class="modify-tag">修改</button>
-										<button class="delete-tag">删除</button>
-									</td>
-								</tr>
-								<tr>
-									<td title="5">标签1</td>
-									<td>计算机系</td>
-									<td>无</td>
-									<td>
-										<button class="modify-tag">修改</button>
-										<button class="delete-tag">删除</button>
-									</td>
-								</tr>
-								<tr>
-									<td title="6">标签1</td>
-									<td>计算机系</td>
-									<td>无</td>
-									<td>
-										<button class="modify-tag">修改</button>
-										<button class="delete-tag">删除</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>	
-				</div>
-				<!-- 右侧删除/修改导航栏模块结束 -->
-				
 				<!-- 右侧待审核用户列表模块 -->
 				<div class="content-wrap">
 					<div class="unexamie-wrap" id="unexamie-main-content-wrap">
@@ -308,83 +312,83 @@
 					</div>
 				</div>
 			</div>
-				<!-- 右侧待审核用户列表模块结束 -->			
+			<!-- 右侧待审核用户列表模块结束 -->			
 	
 	
-				<!-- 右侧已审核用户列表模块 -->
-				<div class="content-wrap">
-					<div class="examie-wrap">
-						<span>筛选</span>
-						<select id="examie-filter" class="filter-style">
-							<option value="">全部</option>
-						</select>
-						<table id="examied" class="message-list table table-striped table-hover" cellspacing="0">
-							<thead>
-								<tr>
-									<th>
-										<input type="checkbox" id="examied-select-all">全选
-									</th>
-									<th>姓名</th>
-									<th>系别</th>
-									<th>专业</th>
-									<th>操作</th>
-								</tr>
-							</thead>
-							<tbody id="examied-main-content">
-								<tr>
-									<td>
-										<input type="checkbox" class="examied-select">
-									</td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="recall btn btn-danger btn-sm" type="button">
-											<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-											撤回
-										</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<!-- 批量撤回按钮包裹层 -->
-						<div class="batcn-opetate-btn-wrap">
-							<button class="btn btn-danger btn-md" id="examie-recall-all">
-								<span class="glyphicon glyphicon-erase" aria-hidden="true"></span> 
-								批量撤回
-							</button>
-						</div>
-						<!-- 已审核列表分页组建包裹层 -->
-						<div class="divid-page-wrap">
-							<nav aria-label="Page navigation">
-							  <ul class="pagination" id="examied-pagination-content">
-							  	<li>
-							      <a href="#" aria-label="Previous">首页</a>
-							    </li>
-							    <li>
-							      <a href="#" aria-label="Previous">
-							        <span aria-hidden="true">&laquo;</span>
-							      </a>
-							    </li>
-							    <li><a href="#">1</a></li>
-							    <li><a href="#">2</a></li>
-							    <li><a href="#">3</a></li>
-							    <li><a href="#">4</a></li>
-							    <li><a href="#">5</a></li>
-							    <li>
-							      <a href="#" aria-label="Next">
-							        <span aria-hidden="true">&raquo;</span>
-							      </a>
-							    </li>
-							    <li>
-							      <a href="#" aria-label="Previous">末页</a>
-							    </li>
-								</ul>
-							</nav>
-						</div>
+			<!-- 右侧已审核用户列表模块 -->
+			<div class="content-wrap">
+				<div class="examie-wrap">
+					<span>筛选</span>
+					<select id="examie-filter" class="filter-style">
+						<option value="">全部</option>
+					</select>
+					<table id="examied" class="message-list table table-striped table-hover" cellspacing="0">
+						<thead>
+							<tr>
+								<th>
+									<input type="checkbox" id="examied-select-all">全选
+								</th>
+								<th>姓名</th>
+								<th>系别</th>
+								<th>专业</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="examied-main-content">
+							<tr>
+								<td>
+									<input type="checkbox" class="examied-select">
+								</td>
+								<td title="1">老师1</td>
+								<td>计算机系</td>
+								<td>移动互联应用技术</td>
+								<td>
+									<button class="recall btn btn-danger btn-sm" type="button">
+										<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+										撤回
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<!-- 批量撤回按钮包裹层 -->
+					<div class="batcn-opetate-btn-wrap">
+						<button class="btn btn-danger btn-md" id="examie-recall-all">
+							<span class="glyphicon glyphicon-erase" aria-hidden="true"></span> 
+							批量撤回
+						</button>
+					</div>
+					<!-- 已审核列表分页组建包裹层 -->
+					<div class="divid-page-wrap">
+						<nav aria-label="Page navigation">
+						  <ul class="pagination" id="examied-pagination-content">
+						  	<li>
+						      <a href="#" aria-label="Previous">首页</a>
+						    </li>
+						    <li>
+						      <a href="#" aria-label="Previous">
+						        <span aria-hidden="true">&laquo;</span>
+						      </a>
+						    </li>
+						    <li><a href="#">1</a></li>
+						    <li><a href="#">2</a></li>
+						    <li><a href="#">3</a></li>
+						    <li><a href="#">4</a></li>
+						    <li><a href="#">5</a></li>
+						    <li>
+						      <a href="#" aria-label="Next">
+						        <span aria-hidden="true">&raquo;</span>
+						      </a>
+						    </li>
+						    <li>
+						      <a href="#" aria-label="Previous">末页</a>
+						    </li>
+							</ul>
+						</nav>
 					</div>
 				</div>
-				<!-- 右侧已审核用户列表模块 -->
+			</div>
+			<!-- 右侧已审核用户列表模块 -->
 			</div>
 		</div>
 	</div>

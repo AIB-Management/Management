@@ -1,3 +1,7 @@
+/*
+	固定元素高度总和：header:50; tool-bar: 50; content-title: 50;
+	150
+*/
 /*上传文件弹出层样式*/
 #release-msg-content{
 	display: none;
@@ -148,23 +152,31 @@
 	border-bottom: 1px solid #ccc;
 	background-color: #fff;
 	word-spacing: -6px;
+	z-index: 20;
 }
 #bread-crumb .breadcrumb{
 	display: inline-block;
-	width: 90%;
+	width: 85%;
 	height: 45px;
 	padding: 0;
 	margin: 0;
 	background-color: #fff;
 	word-spacing: 0px;
 }
-#bread-crumb .breadcrumb ol{
+#bread-crumb .breadcrumb ul{
 	width: 100%;
 	height: 50px;
 }
-#bread-crumb .breadcrumb ol li{
+#bread-crumb .breadcrumb ul li{
 	width: 100%;
 	height: 50px;
+}
+.hidden-meun-item-btn{
+	position: relative;
+	display: none;
+	padding-left: 5px;
+	display: inline-block;
+	z-index: 10;
 }
 .crumb-hint{
 	display: inline-block;
@@ -174,37 +186,104 @@
 	word-spacing: 0px;
 }
 .content{
-	padding-top: 110px;
+	padding-top: 200px;
 	word-spacing: -6px;
 }
 #main-content-wrap{
+	margin-top: 20px;
 	word-spacing: -6px;
 }
-/*文件样式包裹层*/
-.file-wrap{
-	display: inline-block;
-	width: 10%;
-	padding: 10px;
-	word-spacing: 0px;
-	text-align: center;
-	word-spacing: 0px;
+#overflow-item-wrap{
+	display: none;
+	position: absolute;
+	width: 220px;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	box-shadow: 0px 5px 10px #666;
+	border-radius: 5px;
+	z-index: 20;
 	border: 1px solid red;
 }
-.file-icon{
-	width: 80px;
-	height: 80px;
-	margin: 0 auto;
-	border: 1px solid blue;
+#overflow-item-wrap li{
+	padding-top: 10px;
+}
+#overflow-item-wrap li a{
+	text-decoration: none;
+}
+#overflow-item-wrap li:hover{
+	background-color: #f5f5f5;
+}
+/*功能栏样式*/
+.main-tool-bar{
+	position: fixed;
+	top: 100px;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	padding-left: 10px;
+	background-color: #fff;
+}
+/*标题栏样式*/
+.main-content-title{
+	position: fixed;
+	top: 150px;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	padding-left: 10px;
+	background-color: #fff;
+	box-shadow: 0 5px 8px rgba(0,0,0,0.4);
+}
+.content-name,.content-author,.content-publish-time{
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 10px;
+}
+.content-name{
+	width: 80%;
+}
+.content-author,.content-publish-time{
+	width: 10%;
+}
+/*文件样式包裹层*/
+#main-content-wrap li{
+	height: 50px;
+	line-height: 50px;
+	word-spacing: -6px;
+	border-top: 1px solid #F2F6FD;
+	border-bottom: 1px solid #F2F6FD;
+}
+#main-content-wrap li:hover{
+	background-color: #F6FAFF;
+	border-top: 1px solid #F6FAFF;
+	border-bottom: 1px solid #F6FAFF;
+}
+.item-name,.item-author,.item-publish-time{
+	display: inline-block;
+	vertical-align: middle;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 10px;
+	word-spacing: 0;
+}
+.item-name{
+	width: 80%;
+}
+.item-author,.item-publish-time{
+	width: 10%;
 }
 /*定义文件夹背景类*/
-.floder{
-	background-image: url(../images/flodericon.png);
-	background-size: cover;
-	background-position: center;
+.floder:before{
+	content: url(../images/flodericon1.png);
+	display: inline-block;
+	vertical-align: middle;
 }
 /*定义文件背景类*/
-.file{
-	background-image: url(../images/fileicon.png);
-	background-size: cover;
-	background-position: center;
+.file:before{
+	content: url(../images/fileicon1.png);
+	display: inline-block;
+	vertical-align: middle;
 }

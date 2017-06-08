@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>主页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170605-1"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170605-2"></script>
 </head>
 <body>
 	<div id="release-msg-content">
@@ -74,32 +74,110 @@
 		</div>
 		<div id="bread-crumb">
 			<b class="crumb-hint">当前路径：</b>
-			<ol class="breadcrumb">
+			<ul class="breadcrumb" id="breadcurmb-nav-wrap">
 				<li><a href="#">文件名1</a></li>
 				<li><a href="#">文件名1</a></li>
 				<li><a href="#">文件名1</a></li>
 				<li><a href="#">文件名1</a></li>
 				<li><a href="#">文件名1</a></li>
-			</ol>
+				<li><a href="#">文件名123456</a></li>
+				<li><a href="#">文件名12345678</a></li>
+				<li><a href="#">你敢再长一点吗</a></li>
+				<li><a href="#">我就长给你看你看我够长吗够长吗够长吗</a></li>
+				<li><a href="#">我也很长很长很长的</a></li>
+				<li><a href="#">听说现在还不够长我来一发</a></li>
+			</ul>
+
+			<div class="hidden-meun-item-btn">
+				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
+				<span class="caret"></span>
+				</button>
+				<ul id="overflow-item-wrap"></ul>
+			</div>
 		</div>
+		
+
 		<div class="mainbody">
 			<div class="content">
-				<div id="main-content-wrap">
-					<div class="file-wrap">
-						<div class="file-icon floder"></div>
-						<p class="file-name">文件夹名1</p>
-					</div>
-					<div class="file-wrap">
-						<div class="file-icon file"></div>
-						<p class="file-name">文件名1</p>
-					</div>
+				<div class="main-tool-bar">
+					<button class="btn btn-primary">
+						<span class="glyphicon glyphicon-cloud-upload"></span>
+						上传文件
+					</button>
 				</div>
+				<div class="main-content-title">
+					<div class="content-name">名称</div>
+					<div class="content-author">上传者</div>
+					<div class="content-publish-time">上传时间</div>
+				</div>
+				<ul id="main-content-wrap">
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name floder"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+					<li>
+						<div class="item-name file"><a href="#">文件1</a></div>
+						<div class="item-author">xx老师</div>
+						<div class="item-publish-time">2017-06-07 21:43</div>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css?20170607-2">
 </body>
 </html>
