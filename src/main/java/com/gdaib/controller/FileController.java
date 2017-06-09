@@ -3,6 +3,7 @@ package com.gdaib.controller;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class FileController {
 
     public static final String UPLOAD_FILE_JSP = "testUpLoadFile.jsp";
 
+
     @Autowired
     FileService fileService;
 
@@ -37,7 +39,7 @@ public class FileController {
 
 
     //上传文件
-    @RequestMapping(value = "/file/doUploadFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/file/doUploadFile", method = RequestMethod.POST, params = {"title", "navuid"})
     @ResponseBody
     public Msg doUploadFile(
 
@@ -46,17 +48,29 @@ public class FileController {
             HttpServletRequest request
 
     ) throws Exception {
-        if (fileSelectVo.getTitle().trim().equals("") || fileSelectVo.getTitle() == null) {
+        if (fileSelectVo.getTitle() == null || fileSelectVo.getTitle().trim().equals("")) {
             throw new Exception("标题不能为空");
         }
-        if (files == null) {
-            throw new Exception("文件无效");
+        if (fileSelectVo.getNavuid() == null || fileSelectVo.getNavuid().trim().equals("")) {
+            throw new Exception("上级目录不能为空");
         }
-//        if(fileSelectVo.getAccuid() ==null || fileSelectVo.getAccuid().equals("")){
-//            //查看用户是否登陆
-//            throw new Exception("账号ID无效");
-//        }
 
+        if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
+            fileSelectVo.setAccuid(Utils.getAccountUid());
+        }
+
+        for (int i = 0; i < files.length; i++) {
+            // 获得原始文件名
+            String fileName = files[i].getOriginalFilename();
+            if (fileName == null || fileName.trim().equals("")) {
+                throw new Exception("文件名不能为空");
+            }
+
+            String contentType = files[i].getContentType();
+            if (!fileService.judgeContentType(contentType)) {
+                throw new Exception("上传文件中有不允许的文件种类");
+            }
+        }
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() / 1000 * 1000);
         fileSelectVo.setUptime(timestamp);
@@ -65,9 +79,10 @@ public class FileController {
         String sqlPath = UP_FILE_PATH + "/" + fileSelectVo.getAccuid() + "/" + UUID.randomUUID();
         fileSelectVo.setFilepath(sqlPath);
 
-        // 上传位置
+        // 项目位置
         ServletContext sc = request.getSession().getServletContext();
-        String path = sc.getRealPath(sqlPath) + "/";  // 设定文件保存的目录
+        // 设定文件保存的目录
+        String path = sc.getRealPath(sqlPath) + "/";
 
         fileService.writeFileToLocal(path, files);
 
@@ -85,18 +100,22 @@ public class FileController {
     @RequestMapping(value = "/file/ajaxGetServerFileItem", params = {"uid"})
     @ResponseBody
     public Msg ajaxGetServerFileItem(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
+        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
+            throw new Exception("uid不能为空");
+        }
 
         List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
         if (fileCustoms.size() == 0) {
             throw new Exception("文件不存在");
         }
+
         ServletContext sc = request.getSession().getServletContext();
         String sqlPath = fileCustoms.get(0).getFile().getFilepath();
         String localPath = sc.getRealPath(sqlPath) + "/";
 
         List<HashMap<String, Object>> filenames = fileService.selectLocalFileItem(localPath, sqlPath);
 
-        if (filenames != null) {
+        if (filenames != null && filenames.size() > 0) {
             return Msg.success().add("filenames", filenames);
         }
 
@@ -111,11 +130,18 @@ public class FileController {
         }
 
         if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
-//            throw new Exception("上传作者uid不能为空");
-            //从登陆的账号获取
+            throw new Exception("上传作者uid不能为空");
+        }
+
+        if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
+            throw new Exception("登录账号不是作者账号");
         }
 
         //添加判断上传账号与登陆账号是否相等
+        if(!fileSelectVo.getAccuid().trim().equals(Utils.getAccountUid())){
+            throw new Exception("登录的账号不是作者账号");
+        }
+
         List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
         if (fileCustoms.size() == 0) {
             throw new Exception("文件不存在");
@@ -147,6 +173,9 @@ public class FileController {
         }
         //添加判断上传账号与登陆账号是否相等
 
+        if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
+            throw new Exception("登录账号不是作者账号");
+        }
         int result = fileService.updateFile(fileSelectVo);
 
         if (result > 0) {

@@ -25,4 +25,7 @@ public interface FileService {
 
 
     public List<HashMap<String, Object>> selectLocalFileItem(String localPath, String sqlPath) throws Exception;
+
+    //判断上传文件类型
+    public boolean judgeContentType(String contentType) throws Exception;
 }

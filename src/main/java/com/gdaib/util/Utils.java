@@ -1,8 +1,11 @@
 package com.gdaib.util;
 
+import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.UrlPojo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,10 +37,6 @@ public class Utils {
     }
 
 
-
-
-
-
     //装换参数为List
     public static List<String> toList(String uids) throws Exception {
         List<String> list = new ArrayList<String>();
@@ -50,4 +49,10 @@ public class Utils {
         return list;
     }
 
+    //获取登录后账号的uid
+    public static String getAccountUid() throws Exception {
+        org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipals();
+        return accountInfo.getUid();
+    }
 }
