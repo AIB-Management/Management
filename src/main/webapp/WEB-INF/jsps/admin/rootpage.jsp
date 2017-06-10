@@ -9,10 +9,28 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-4"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-7"></script>
 </head>
 <body>
 	<div id="manage-file-floor">
+		<!-- 修改文件夹名对话框 -->
+		<div id="modify-file-name-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="modify-flodername-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="input-wrap">
+				<div class="self-input-group">
+					<label class="hint">新文件名</label>
+					<input type="text" id="new-file-name">
+				</div>
+				<p id="modify-msg-hint"></p>
+			</div>
+			<div class="input-wrap">
+				<div class="self-input-group btn-align">
+					<button class="btn btn-primary" id="rename-submit">重命名</button>
+				</div>
+			</div>
+		</div>
 		<!-- 修改导航弹出层内容 -->
 		<div class="filemanage-info">
 			<div class="close-btn clearfix">
@@ -24,23 +42,19 @@
 					新建文件夹
 				</button>
 				<button class="btn btn-default btn-sm">
-					<span class="glyphicon glyphicon-edit"></span> 
-					修改文件夹名
-				</button>
-				<button class="btn btn-default btn-sm">
 					<span class="glyphicon glyphicon-trash"></span> 
 					删除文件夹
 				</button>
 			</div>
 			<div class="crumb-nav">
 				<b class="crumb-hint">当前路径：</b>
-				<ul class="breadcrumb" id="breadcurmb-nav-wrap">
-					<li><a href="#">文件名1</a></li>
-					<li><a href="#">文件名1</a></li>
-					<li><a href="#">文件名1</a></li>
-					<li><a href="#">文件名1</a></li>
-					<li><a href="#">文件名1</a></li>
-				</ul>
+				<ul class="breadcrumb" id="breadcurmb-nav-wrap"></ul>
+				<div id="hidden-meun-item-btn">
+				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
+					<span class="caret"></span>
+				</button>
+				<ul id="overflow-item-wrap"></ul>
+			</div>
 			</div>
 			<div class="manage-nav-main clearfix">
 				<div id="manage-side-bar">
@@ -62,107 +76,94 @@
 						<div class="title-1">选择</div>
 						<div class="title-2">文件夹名</div>
 						<div class="title-3">建立时间</div>
+						<div class="title-4">操作</div>
 					</div>
 					<div class="file-content-item">
 						<table class="table table-striped table-hover">
-							<tbody class="file-list-wrap">
+							<tbody class="file-list-wrap" id="file-list-content">
 								<tr>
 									<td>
 										<input type="checkbox">
 									</td>
-									<td class="floder">
+									<td class="floder-name floder">
 										<a href="#">文件夹1</a>
 									</td>
 									<td>
 										2017-06-08 09:47
+									</td>
+									<td>
+										<button class="btn btn-default btn-sm">
+											<span class="glyphicon glyphicon-edit"></span> 
+											修改文件夹名
+										</button>
 									</td>
 								</tr>
 								<tr>
 									<td>
 										<input type="checkbox">
 									</td>
-									<td class="floder">
+									<td class="floder-name floder">
 										<a href="#">文件夹1</a>
 									</td>
 									<td>
 										2017-06-08 09:47
+									</td>
+									<td>
+										<button class="btn btn-default btn-sm">
+											<span class="glyphicon glyphicon-edit"></span> 
+											修改文件夹名
+										</button>
 									</td>
 								</tr>
 								<tr>
 									<td>
 										<input type="checkbox">
 									</td>
-									<td class="floder">
+									<td class="floder-name floder">
 										<a href="#">文件夹1</a>
 									</td>
 									<td>
 										2017-06-08 09:47
+									</td>
+									<td>
+										<button class="btn btn-default btn-sm">
+											<span class="glyphicon glyphicon-edit"></span> 
+											修改文件夹名
+										</button>
 									</td>
 								</tr>
 								<tr>
 									<td>
 										<input type="checkbox">
 									</td>
-									<td class="floder">
+									<td class="floder-name floder">
 										<a href="#">文件夹1</a>
 									</td>
 									<td>
 										2017-06-08 09:47
+									</td>
+									<td>
+										<button class="btn btn-default btn-sm">
+											<span class="glyphicon glyphicon-edit"></span> 
+											修改文件夹名
+										</button>
 									</td>
 								</tr>
 								<tr>
 									<td>
 										<input type="checkbox">
 									</td>
-									<td class="floder">
+									<td class="floder-name floder">
 										<a href="#">文件夹1</a>
 									</td>
 									<td>
 										2017-06-08 09:47
 									</td>
-								</tr>
-								<tr>
 									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										2017-06-08 09:47
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										2017-06-08 09:47
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										2017-06-08 09:47
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										2017-06-08 09:47
+										<button class="btn btn-default btn-sm">
+											<span class="glyphicon glyphicon-edit"></span> 
+											修改文件夹名
+										</button>
 									</td>
 								</tr>
 							</tbody>
@@ -395,6 +396,6 @@
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-37">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-38">
 </body>
 </html>

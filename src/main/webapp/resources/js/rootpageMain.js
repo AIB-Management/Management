@@ -49,6 +49,17 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		return document.createElement(elemName);
 	}
 
+	//获取浏览器最终样式的函数
+	function getCurStyle(elem,pusedo,targetProperty){
+		if (elem.currentStyle != undefined) {
+			return elem.currentStyle[targetProperty];
+			
+		}else{
+			return window.getComputedStyle(elem,pusedo)[targetProperty];
+			
+		}
+	}
+
 	//定义获取导航栏表格行内信息方法
 	function getDetailInfo(elem){
 		//获取按钮所在行
@@ -129,7 +140,253 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 	// ---------------- 文件夹管理(导航栏管理)模块开始
 
+	//溢出导航包裹层里面的li 子元素点击事件
+	function overflowNavItemClick(){
+		//获取溢出导航包裹层
+		var overflowNavWrap = s("#overflow-item-wrap");
+		//获取所有溢出导航层的li 子元素
+		var overflowNavItemList = ss("#overflow-item-wrap li");
+		//为每一个溢出导航绑定点击事件
+		for (var i = 0; i < overflowNavItemList.length; i++) {
+			EventUntil.addHandler(overflowNavItemList[i],"click",function(){
+				//点击时重新获取
+				overflowNavItemList = ss("#overflow-item-wrap li");
+				//获取当前元素的索引
+				var index = Array.prototype.indexOf.call(overflowNavItemList,this);
+				//遍历删除
+				if (index != -1) {
+					//遍历删除这个元素后面的元素
+					for (var j = index + 1; j < overflowNavItemList.length; j++) {
+						overflowNavWrap.removeChild(overflowNavItemList[j]);
+					}
 
+					//...发送ajax 请求
+				}
+			})
+		}
+	}
+
+
+	//面包屑导航栏每个导航标签点击事件
+	function breadCrumbItemClick(){
+		//获取面包屑导航的外包裹层
+		var breadCrumbWrap = s("#breadcurmb-nav-wrap");
+		//获取所有面包屑导航的li
+		var breadCrumbList = ss("#breadcurmb-nav-wrap li");
+		//为每一个导航绑定点击事件
+		for (var i = 0; i < breadCrumbList.length; i++) {
+			EventUntil.addHandler(breadCrumbList[i],"click",function(event){
+				var event = EventUntil.getEvent(event);
+				//如果点击的目标元素是 a标签
+				if (event.target.tagName.toLowerCase() == "a") {
+					//阻止其默认事件
+					EventUntil.preventDefault(event);
+				}
+
+				//每次点击li 都要重新获取一次当前的li 个数
+				breadCrumbList = ss("#breadcurmb-nav-wrap li");
+				//然后再获取当前元素在元素集里面的位置
+				var index = Array.prototype.indexOf.call(breadCrumbList,this);
+				//如果点击当前的元素不为最后一个
+				if (index != breadCrumbList - 1) {
+					//遍历删除这个元素后面的元素
+					for (var i = index + 1; i < breadCrumbList.length; i++) {
+						breadCrumbWrap.removeChild(breadCrumbList[i]);
+					}
+					//清空移除导航包裹层的所有子元素
+					s("#overflow-item-wrap").innerHTML = "";
+					//隐藏显示溢出导航按钮
+					s("#show-hidden-menu").style.display = 'none';
+					s("#overflow-item-wrap").style.display = 'none';
+
+					//...发送ajax 请求刷新下面的文件导航
+				}
+
+				
+			})
+			
+		}
+	}
+	
+
+
+	function controlNavNums(navWrap,childnode,moreNavContain,icon){
+		//获取父元素的宽度
+		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
+
+		//获取全部子元素的宽度
+		var childWidthTotal = 0;
+		for (var i = 0; i < childnode.length; i++) {
+			//获取每一个子元素的实际宽度
+			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
+			childWidthTotal += curChildWidth;
+			//获取父元素与此时子元素总宽度的差值
+			var diffWidth = parentWidth - childWidthTotal;
+			
+			//如果此时的差值不能容纳下子元素
+			if (diffWidth < curChildWidth) {
+				//复制这个节点
+				var temp = childnode[i].cloneNode(true);
+				//为每个复制的节点绑定事件函数  overflowNavItemClick
+				EventUntil.addHandler(temp,"click",overflowNavItemClick);
+				//将此时的子元素添加到溢出导航包裹层里面
+				moreNavContain.appendChild(temp);
+				//面包屑导航栏移除子元素
+				navWrap.removeChild(childnode[i]);
+				
+			}
+			
+		}
+
+		if (moreNavContain.childNodes.length != 0) {
+			icon.style.display = "inline-block";
+
+		}else{
+			icon.style.display = "none";
+		}
+	}
+	
+	//调试
+	controlNavNums(s("#breadcurmb-nav-wrap"),ss("#breadcurmb-nav-wrap li"),
+			s("#overflow-item-wrap"),s("#show-hidden-menu"));
+
+	
+
+
+	//创建面包屑导航栏子元素 li的方法
+	function createBradCurmbItem(event){
+		//获取面包屑导航栏外包裹层
+		var curmbNav = s("#breadcurmb-nav-wrap");
+
+		//阻止默认事件发生
+		event = EventUntil.getEvent(event);
+		EventUntil.preventDefault(event);
+
+		//创建元素碎片器 创建元素并添加到包裹层中
+		var frag = document.createDocumentFragment();
+		var li = createElem("li"),
+			a = this.cloneNode(true);
+
+		a.title = this.innerText;
+		li.appendChild(a);
+
+		frag.appendChild(li);
+
+		curmbNav.appendChild(frag);
+
+		//更新每一个面包屑导航里面的li 元素 并绑定点击事件函数 breadCrumbItemClick
+		breadCrumbItemClick();
+		//每一次添加都进行一次导航数量的控制
+		controlNavNums(s("#breadcurmb-nav-wrap"),ss("#breadcurmb-nav-wrap li"),
+			s("#overflow-item-wrap"),s("#show-hidden-menu"));
+
+	}
+
+
+
+
+	//文件夹列表文件名点击事件
+	function fileListclick(){
+		var name = ss(".floder-name a");
+
+		for (var i = 0; i < name.length; i++) {
+			//为每一个a 标签绑定点击事件函数 createBradCurmbItem
+			EventUntil.addHandler(name[i],"click",createBradCurmbItem);
+		}
+	}
+
+
+	//修改文件夹名字按钮点击事件执行函数
+	function modifyFloderName(){
+		//获取button 的父元素
+		var parent = this.parentNode.parentNode,
+			//获取文件的名字
+			floderName = parent.querySelectorAll("a")[0].innerText;
+		//为修改名字弹出层的input输入框插入内容	
+		s("#new-file-name").value = floderName;
+		//显示修改文件夹名弹出层
+		s("#modify-file-name-wrap").style.display = 'block';
+	}
+
+
+	//侧边栏系别点击事件执行函数
+	function selectDepClick(event){
+		var depList = ss("#manage-side-item li");
+		event = EventUntil.getEvent(event);
+		if ((event.target.tagName.toLowerCase()) == "a") {
+			//如果点击对象a 元素
+			//阻止其默认事件
+			EventUntil.preventDefault(event);
+		}
+		//清空li 的活动样式
+		for (var i = 0; i < depList.length; i++) {
+			if (depList[i].className.indexOf("filedep-item-active") != -1) {
+				removeClass(depList[i],"filedep-item-active");
+			}
+		}
+
+		this.className += "filedep-item-active";
+
+		//调整完样式后发送ajax 到后台请求
+		//取出数据
+	}
+
+
+
+	//隐藏导航点击按钮事件
+	EventUntil.addHandler(s("#show-hidden-menu"),"click",function(){
+		
+		//获取按钮的宽度
+		var curWidth = parseInt(getCurStyle(this,null,"width"));
+		
+		//获取按钮高度
+		var curHeight = parseInt(getCurStyle(this,null,"height"));
+
+		if (s("#overflow-item-wrap").style.display == "" || s("#overflow-item-wrap").style.display == "none") {
+
+			s("#overflow-item-wrap").style.right = (curWidth / 2) + "px";
+			
+			s("#overflow-item-wrap").style.top = (curHeight + 15) + "px";
+
+			s("#overflow-item-wrap").style.display = "block";
+
+		}else{
+
+			s("#overflow-item-wrap").style.display = "none";
+		}
+
+	});
+
+	//修改文件夹名弹出层关闭按钮点击事件
+	EventUntil.addHandler(s("#modify-flodername-close-btn"),"click",function(){
+		s("#modify-file-name-wrap").style.display = 'none';
+	});
+
+
+	//修改文件夹名弹出层提交按钮点击事件
+	EventUntil.addHandler(s("#rename-submit"),"click",function(){
+		//发送ajax 给后台
+		//如果有同名 后台发送回数据提示错误
+		//如果没有 后台发送会数据提示修改成功
+		//前端获取修改名字的文件夹对象
+		//将对象的名字在前端修改
+		//最后修改名字的弹出层关闭
+	})
+
+
+	//调试
+	//实际情况由ajax 获取数据输出完毕后调用此函数
+	fileListclick();
+
+	//调试修改文件夹名字按钮点击事件
+	//实际由遍历ajax 数据中为其绑定
+	for (var i = 0; i < ss("#file-list-content button").length; i++) {
+		EventUntil.addHandler(ss("#file-list-content button")[i],"click",modifyFloderName);
+	}
+
+	for (var i = 0; i < ss("#manage-side-item li").length; i++) {
+		EventUntil.addHandler(ss("#manage-side-item li")[i],"click",selectDepClick);
+	}
 
 
 	// ---------------- 文件夹管理模块结束
