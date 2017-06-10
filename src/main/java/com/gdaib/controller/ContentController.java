@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,21 +39,50 @@ public class ContentController {
     private NavigationServer navigationServer;
 
     @Autowired
-    private FileService fileService;
-
-    @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private FileService fileService;
 
     public static final String DEPARTMENTPAGE = "/teacher/departmentpage.jsp";
     public static final String PERSONALPAGE = "/teacher/personalpage.jsp";
+    public static final String FILECONTENTPAGE="filecontent.jsp";
 
 
     //获取页面内容的接口
-    @RequestMapping("/content/departmentpage")
-    public ModelAndView departmentpage() throws Exception {
+    @RequestMapping(value = "/content/departmentpage")
+    public ModelAndView departmentpage(FileSelectVo fileSelectVo) throws Exception {
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(DEPARTMENTPAGE);
+        return modelAndView;
+    }
+
+    //获取页面内容的接口
+    @RequestMapping(value = "/content/filecontent",params = {"uid"})
+    public ModelAndView filecontent(HttpServletRequest request,FileSelectVo fileSelectVo) throws Exception {
+        if(fileSelectVo.getUid() ==null||fileSelectVo.getUid().trim().equals("")){
+            throw new Exception("uid不能为空");
+        }
+        ModelAndView modelAndView = new ModelAndView();
+
+        List<FileCustom> customs = fileService.selectFile(fileSelectVo);
+        if(customs.size()==0){
+            throw new Exception("无效文件");
+        }
+
+        FileCustom fileCustom = customs.get(0);
+        modelAndView.addObject("fileCustom",fileCustom);
+
+        String sqlPath = fileCustom.getFile().getFilepath();
+        // 上传位置
+        ServletContext sc = request.getSession().getServletContext();
+        String path = sc.getRealPath(sqlPath) + "/";  // 设定文件保存的目录
+
+        List<HashMap<String,Object>> fileItems = fileService.selectLocalFileItem(path,sqlPath);
+        modelAndView.addObject("fileItems",fileItems);
+
+        modelAndView.setViewName(FILECONTENTPAGE);
         return modelAndView;
     }
 

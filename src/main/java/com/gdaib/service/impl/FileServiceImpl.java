@@ -22,6 +22,17 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private FileExtMapper fileExtMapper;
 
+    //允许上传的文件类型 doc docx pdf swf png jpg gif
+    public static final String[] UP_FILE_Kind = {"application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/x-shockwave-flash",
+            "application/pdf",
+            "image/png",
+            "image/jpeg",
+            "image/gif"
+    };
+
+
     @Override
     public List<FileCustom> selectFile(FileSelectVo file) throws Exception {
         if (file == null) {
@@ -147,5 +158,20 @@ public class FileServiceImpl implements FileService {
             items.add(hashMap);
         }
         return items;
+    }
+
+
+    @Override
+    public boolean judgeContentType(String contentType) throws Exception {
+        if(contentType ==null || contentType.trim().equals("")){
+            throw new Exception("参数不能为空");
+        }
+
+        for (String str : UP_FILE_Kind) {
+            if (contentType.equals(str)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
