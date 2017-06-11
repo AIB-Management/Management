@@ -78,24 +78,13 @@
 			<div class="manage-nav-main clearfix">
 				<div id="manage-side-bar">
 					<h3>请选择系别</h3>
-					<ul id="manage-side-item">
-						<li class="filedep-item-active"><a href="#">计算机系</a></li>
-						<li><a href="#">财经系</a></li>
-						<li><a href="#">管理系</a></li>
-						<li><a href="#">商务系</a></li>
-						<li><a href="#">外语系</a></li>
-						<li><a href="#">艺术系</a></li>
-						<li><a href="#">机电系</a></li>
-						<li><a href="#">热作系</a></li>
-						<li><a href="#">btec国际交流学院</a></li>
-					</ul>
+					<ul id="manage-side-item"></ul>
 				</div>
 				<div class="manage-main-content">
 					<div class="content-title">
 						<div class="title-1">选择</div>
 						<div class="title-2">文件夹名</div>
-						<div class="title-3">建立时间</div>
-						<div class="title-4">操作</div>
+						<div class="title-3">操作</div>
 					</div>
 					<div class="file-content-item">
 						<table class="table table-striped table-hover">
@@ -108,7 +97,18 @@
 										<a href="#">文件夹1</a>
 									</td>
 									<td>
-										2017-06-08 09:47
+										<button class="btn btn-default btn-sm">
+											<span class="glyphicon glyphicon-edit"></span> 
+											修改文件夹名
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="checkbox">
+									</td>
+									<td class="floder-name floder">
+										<a href="#">文件夹1</a>
 									</td>
 									<td>
 										<button class="btn btn-default btn-sm">
@@ -125,9 +125,6 @@
 										<a href="#">文件夹1</a>
 									</td>
 									<td>
-										2017-06-08 09:47
-									</td>
-									<td>
 										<button class="btn btn-default btn-sm">
 											<span class="glyphicon glyphicon-edit"></span> 
 											修改文件夹名
@@ -142,9 +139,6 @@
 										<a href="#">文件夹1</a>
 									</td>
 									<td>
-										2017-06-08 09:47
-									</td>
-									<td>
 										<button class="btn btn-default btn-sm">
 											<span class="glyphicon glyphicon-edit"></span> 
 											修改文件夹名
@@ -157,26 +151,6 @@
 									</td>
 									<td class="floder-name floder">
 										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										2017-06-08 09:47
-									</td>
-									<td>
-										<button class="btn btn-default btn-sm">
-											<span class="glyphicon glyphicon-edit"></span> 
-											修改文件夹名
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder-name floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										2017-06-08 09:47
 									</td>
 									<td>
 										<button class="btn btn-default btn-sm">

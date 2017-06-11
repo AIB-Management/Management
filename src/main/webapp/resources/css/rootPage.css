@@ -198,14 +198,11 @@ thead,tbody,tbody tr,tbody tr td{
 	height: 45px;
 	line-height: 45px;
 	padding-left: 10px;
+	color: #333;
+	cursor: pointer;
 }
 #manage-side-item li:hover{
 	background-color: #E4E9EC;
-}
-#manage-side-item li a{
-	text-decoration: none;
-	font-size: 15px;
-	color: #333;
 }
 .manage-main-content{
 	position: relative;
@@ -226,7 +223,7 @@ thead,tbody,tbody tr,tbody tr td{
 	background-color: #fff;
 	z-index: 5;
 }
-.title-1,.title-2,.title-3,.title-4{
+.title-1,.title-2,.title-3{
 	display: inline-block;
 	vertical-align: middle;
 	height: 37px;
@@ -234,11 +231,11 @@ thead,tbody,tbody tr,tbody tr td{
 	padding-left: 5px;
 	word-spacing: 0;
 }
-.title-1,.title-3,.title-4{
+.title-1,.title-3{
 	width: 20%;
 }
 .title-2{
-	width: 40%;
+	width: 60%;
 }
 .manage-main-content .table{
 	width: 100%;
@@ -259,12 +256,11 @@ thead,tbody,tbody tr,tbody tr td{
 	line-height: 25px;
 }
 .manage-main-content .table tbody tr td:nth-child(1),
-.manage-main-content .table tbody tr td:nth-child(3),
-.manage-main-content .table tbody tr td:nth-child(4){
+.manage-main-content .table tbody tr td:nth-child(3){
 	width: 20%;
 }
 .manage-main-content .table tbody tr td:nth-child(2){
-	width: 40%;
+	width: 60%;
 }
 .floder:before{
 	content: url(../images/flodericon1.png);
