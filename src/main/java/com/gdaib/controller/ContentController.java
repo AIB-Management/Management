@@ -129,7 +129,7 @@ public class ContentController {
                 hashMap.put("uid", file.getUid());
                 hashMap.put("title", file.getTitle());
                 hashMap.put("upTime", file.getUptime());
-                hashMap.put(" author", custom.getAuthor());
+                hashMap.put("author", custom.getAuthor());
                 hashMap.put("accuid", file.getAccuid());
                 files.add(hashMap);
             }
