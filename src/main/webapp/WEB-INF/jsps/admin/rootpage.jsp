@@ -18,9 +18,10 @@
 			<div class="close-btn clearfix">
 				<button type="button" class="close" aria-label="Close" id="modify-flodername-close-btn"><span aria-hidden="true">&times;</span></button>
 			</div>
+			<h3>修改文件夹名</h3>
 			<div class="input-wrap">
 				<div class="self-input-group">
-					<label class="hint">新文件名</label>
+					<label class="hint">文件名</label>
 					<input type="text" id="new-file-name">
 				</div>
 				<p id="modify-msg-hint"></p>
@@ -31,18 +32,36 @@
 				</div>
 			</div>
 		</div>
+		<div id="new-file-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="new-floder-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>新建文件夹</h3>
+			<div class="input-wrap">
+				<div class="self-input-group">
+					<label class="hint">文件名</label>
+					<input type="text" id="new-file-name">
+				</div>
+				<p id="newfloder-msg-hint"></p>
+			</div>
+			<div class="input-wrap">
+				<div class="self-input-group btn-align">
+					<button class="btn btn-primary" id="newfloder-submit">新建</button>
+				</div>
+			</div>
+		</div>
 		<!-- 修改导航弹出层内容 -->
 		<div class="filemanage-info">
 			<div class="close-btn clearfix">
 				<button type="button" class="close" aria-label="Close" id="filemanage-close-btn"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<div class="manage-tool-bar">
-				<button class="btn btn-primary btn-sm">
+				<button class="btn btn-primary btn-sm" id="newfloder-btn">
 					<span class="glyphicon glyphicon-plus"></span> 
 					新建文件夹
 				</button>
 				<button class="btn btn-default btn-sm">
-					<span class="glyphicon glyphicon-trash"></span> 
+					<span class="glyphicon glyphicon-trash" id="dropfloder-btn"></span> 
 					删除文件夹
 				</button>
 			</div>

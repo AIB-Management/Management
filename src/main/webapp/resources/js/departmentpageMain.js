@@ -61,6 +61,24 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 		}
 	}
 
+	function formateDate(dateStr){
+		var date = new Date(dateStr);
+
+		var year = date.getFullYear(),
+			month = date.getMonth(),
+			day = date.getDate(),
+			h = date.getHours(),
+			m = date.getMinutes(),
+			sec = date.getSeconds();
+
+			month<9?"0"+ m+1 : m+1;
+			h<10?"0" + h : h;
+			m<10?"0" + m : m;
+			sec<10?"0" + sec : sec;
+
+			return year + "-" + month + "-" + day + "    " + h + ":" + m + ":" + sec;
+	}
+
 
 	//溢出导航包裹层里面的li 子元素点击事件
 	function overflowNavItemClick(){
@@ -122,6 +140,9 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 					s("#overflow-item-wrap").style.display = 'none';
 
 					//...发送ajax 请求刷新下面的文件导航
+					//调用 createFileList(path,depId) 函数刷新下面的文件夹内容
+					//path 为这个面包屑导航的 data-path 属性
+					//depId 为页面的系别的id 
 				}
 
 				
@@ -176,7 +197,7 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 
 
 	//创建面包屑导航栏子元素 li的方法
-	function createBradCurmbItem(event){
+	function createBradCurmbItem(event,target){
 		//获取面包屑导航栏外包裹层
 		var curmbNav = s("#breadcurmb-nav-wrap");
 
@@ -184,12 +205,13 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 		event = EventUntil.getEvent(event);
 		EventUntil.preventDefault(event);
 
+
 		//创建元素碎片器 创建元素并添加到包裹层中
 		var frag = document.createDocumentFragment();
 		var li = createElem("li"),
-			a = this.cloneNode(true);
+			a = target.cloneNode(true);
 
-		a.title = this.innerText;
+		a.title = target.innerText;
 		li.appendChild(a);
 
 		frag.appendChild(li);
@@ -204,23 +226,172 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 
 	}
 
+	//文件夹点击回掉函数
+	function floderNameClick(event){
+		event = EventUntil.getEvent(event);
+		EventUntil.preventDefault(event);
 
+		//获取点击这个元素的 href 属性 这个属性就是后台要获取的文件夹路径id
+		var path = this.getAttribute("data-path");
+		//获取当前页面的系别id 实际情况由后台初始化页面时输出这个id
+		//这里先写死
+		var depId = "dbd02728-ba0f-4bc6-8561-e05fa0370e58";
+		console.log(path);
 
-
-	//文件夹列表文件名点击事件
-	function fileListclick(){
-		var name = ss(".file-name a");
-
-		for (var i = 0; i < name.length; i++) {
-			//为每一个a 标签绑定点击事件函数 createBradCurmbItem
-			EventUntil.addHandler(name[i],"click",createBradCurmbItem);
-		}
+		//点击下面的文件夹名
+		//刷新下面的文件列表
+		createFileList(path,depId);
+		//创建面包屑导航
+		createBradCurmbItem(event,this);
 	}
 
-	//调试
-	//实际情况由ajax 获取完数据输出后再调用此方法
-	fileListclick();
+	//文件点击事件回调函数
+	function fileNameClick(event){}
 
+	//遍历输出文件夹数据函数
+	function ergFloderList(list){
+		var checkBox = createElem("input"),
+			tr = createElem("tr"),
+			td = createElem("td"),
+			a = createElem("a"),
+			frag = document.createDocumentFragment();
+
+		checkBox.type = "checkbox";
+		checkBox.className = "disabled";
+
+		for (var i = 0; i < list.length; i++) {
+			row = tr.cloneNode(true);
+			checkboxCol = td.cloneNode(true);
+			checkboxCol.className = "item-selectbox";
+			floderNameCol = td.cloneNode(true);
+			floderNameCol.className = "file-name floder";
+			authorCol = td.cloneNode(true);
+			authorCol.className = "item-author";
+			timeCol = td.cloneNode(true);
+			timeCol.className = "ite-publish-time";
+			operateCol = td.cloneNode(true);
+			operateCol.className = "operate-btn";
+
+			checkbox = checkBox.cloneNode(true);
+			floderName = a.cloneNode(true);
+			floderName.innerText = list[i].nav;
+			floderName.href = "#";
+			floderName.setAttribute("data-path", list[i].uid);
+			//为a 元素绑定事件
+			EventUntil.addHandler(floderName,"click",floderNameClick);
+
+			checkboxCol.appendChild(checkbox);
+			floderNameCol.appendChild(floderName);
+			authorCol.innerText = "管理员";
+			timeCol.innerText = "-";
+			operateCol.innerText = "无";
+
+			row.appendChild(checkboxCol);
+			row.appendChild(floderNameCol);
+			row.appendChild(authorCol);
+			row.appendChild(timeCol);
+			row.appendChild(operateCol);
+
+			frag.appendChild(row);
+		}
+		//返回文本碎片
+		return frag;
+	}
+
+	//遍历文件函数
+	function ergFileList(list){
+		var checkBox = createElem("input"),
+			button = createElem("button"),
+			tr = createElem("tr"),
+			td = createElem("td"),
+			a = createElem("a"),
+			span = createElem("span"),
+			frag = document.createDocumentFragment();
+		
+		span.className = "glyphicon glyphicon-edit";
+		checkBox.type = "checkbox";
+		button.className = "btn btn-default btn-sm";
+		button.appendChild(span);
+		button.innerHTML += "修改文件";
+		
+
+		for (var i = 0; i < list.length; i++) {
+			row = tr.cloneNode(true);
+			checkboxCol = td.cloneNode(true);
+			checkboxCol.className = "item-selectbox";
+			floderNameCol = td.cloneNode(true);
+			floderNameCol.className = "file-name file";
+			authorCol = td.cloneNode(true);
+			authorCol.className = "item-author";
+			timeCol = td.cloneNode(true);
+			timeCol.className = "ite-publish-time";
+			operateCol = td.cloneNode(true);
+			operateCol.className = "operate-btn";
+
+			//实际输出时应该获得登陆的用户名做匹配
+			//判断是否给checkbox 加上 disabled 类名
+			checkbox = checkBox.cloneNode(true);
+			floderName = a.cloneNode(true);
+			floderName.href = "#";
+			floderName.setAttribute("data-path", list[i].uid)
+			floderName.innerText = list[i].title;
+			operateBtn = button.cloneNode(true);
+
+
+
+			checkboxCol.appendChild(checkbox);
+			floderNameCol.appendChild(floderName);
+			authorCol.innerText = list[i][" author"];
+			timeCol.innerText = formateDate(list[i].upTime);
+			operateCol.appendChild(operateBtn);
+
+			row.appendChild(checkboxCol);
+			row.appendChild(floderNameCol);
+			row.appendChild(authorCol);
+			row.appendChild(timeCol);
+			row.appendChild(operateCol);
+
+			frag.appendChild(row);
+		}
+		//返回文本碎片
+		return frag;
+	}
+
+	//通过ajax获取导航栏 输出导航栏信息
+	function createFileList(path,depId){
+		//参数：path 导航栏的请求id 初始化页面的时候为0
+		//之后的点击在导航栏名字的 data-path 里面获取
+		//depId 当前页面的系别id
+		//此方法 将会在表格里面的文件夹名点击，面包屑导航，溢出导航点击时调用
+
+		//发送ajax 请求
+		$.ajax({
+			url: 'http://localhost:8080/Management/content/ajaxFindNavAndFile.action',
+			type: 'GET',
+			dataType: 'json',
+			data: "parent=" + path + "&depuid=" + depId,
+			success:function(data){
+				//第一步 清空文件列表
+				s("#main-content-list").innerHTML = "";
+				//第二步 获取文件夹和文件数据
+				var floderList = data.extend.navs;
+				var fileList = data.extend.files;
+				//第三步 判断文件夹列表是否为空
+				if (floderList.length != 0) {
+					s("#main-content-list").appendChild(ergFloderList(floderList));
+				}
+
+				if (fileList.length != 0) {
+					s("#main-content-list").appendChild(ergFileList(fileList));
+				}
+			}
+		})
+		
+	}
+
+	//调试 输出导航栏数据函数
+	createFileList(0,"dbd02728-ba0f-4bc6-8561-e05fa0370e58");
+		
 
 
 	//------------- 调用层 ----------------
@@ -308,7 +479,7 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
     }).on("fileuploaded", function(event, data) {
 
        userHeadImgSrc = data.response.message;
-       console.log(JSON.stringify(data));
+       console.log(data);
 
     });
 

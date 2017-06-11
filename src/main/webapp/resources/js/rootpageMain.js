@@ -357,15 +357,36 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 	});
 
+	//新建文件夹弹出层关闭按钮点击事件
+	EventUntil.addHandler(s("#new-floder-close-btn"),"click",function(){
+		s("#new-file-wrap").style.display = 'none';
+	})
+
+	//新建文件夹按钮点击事件
+	EventUntil.addHandler(s("#newfloder-btn"),"click",function(){
+		s("#new-file-wrap").style.display = "block";
+	})
+
+	//新建文件夹弹出层提交按钮点击事件
+	EventUntil.addHandler(s("#newfloder-submit"),"click",function(){
+		//判断路径 "breadcurmb-nav-wrap" 上面是否有元素
+		//来判断是否是在根目录上面创建
+		//为真 发送文件夹级层为0 部门id 为当前选中的部门id 新建文件夹名字 发送给后台
+		//最后从后台中刷新数据
+		//为假 判断溢出导航栏包裹层是否有元素 
+		//如果有 获取溢出导航包裹层最后一个元素的
+	})
+
 	//修改文件夹名弹出层关闭按钮点击事件
 	EventUntil.addHandler(s("#modify-flodername-close-btn"),"click",function(){
 		s("#modify-file-name-wrap").style.display = 'none';
-	});
+	})
 
 
 	//修改文件夹名弹出层提交按钮点击事件
 	EventUntil.addHandler(s("#rename-submit"),"click",function(){
 		//发送ajax 给后台
+		//先检测是否为空 不为空发送给后台
 		//如果有同名 后台发送回数据提示错误
 		//如果没有 后台发送会数据提示修改成功
 		//前端获取修改名字的文件夹对象
