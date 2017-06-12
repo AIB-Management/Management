@@ -6,15 +6,15 @@ thead,tbody,tbody tr,tbody tr td{
 	padding: 0 3px;
 }
 /*重命名文件夹对话框样式*/
-#modify-file-name-wrap{
+#modify-file-name-wrap,#new-file-wrap{
 	display: none;
 	position: absolute;
 	width: 450px;
-	height: 180px;
+	height: 220px;
 	top: 50%;
 	left: 50%;
 	margin-left: -225px;
-	margin-top: -90px;
+	margin-top: -110px;
 	background-color: #fff;
 	border-radius: 5px;
 	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
@@ -35,8 +35,8 @@ thead,tbody,tbody tr,tbody tr td{
 }
 .self-input-group label,.self-input-group input{
 	display: inline-block;
-	height: 38px;
-	line-height: 38px;
+	height: 35px;
+	line-height: 35px;
 }
 .self-input-group label{
 	width: 30%;
@@ -51,14 +51,16 @@ thead,tbody,tbody tr,tbody tr td{
 	border-radius: 0px 5px 5px 0px;
 	padding-left: 5px;
 }
-.self-input-group input:focus{
-	color: #666;
-}
-.self-input-group input:blur{
-	color: #ff0;
-}
 .btn-align{
 	text-align: right;
+}
+#new-file-wrap h3,#modify-file-name-wrap h3{
+	height: 38px;
+	line-height: 38px;
+	margin-bottom: 10px;
+	padding-left: 20px;
+	border-bottom: 1px solid #ccc;
+	font-size: 18px;
 }
 /*管理文件夹弹出层样式*/
 #manage-file-floor{
@@ -196,14 +198,11 @@ thead,tbody,tbody tr,tbody tr td{
 	height: 45px;
 	line-height: 45px;
 	padding-left: 10px;
+	color: #333;
+	cursor: pointer;
 }
 #manage-side-item li:hover{
 	background-color: #E4E9EC;
-}
-#manage-side-item li a{
-	text-decoration: none;
-	font-size: 15px;
-	color: #333;
 }
 .manage-main-content{
 	position: relative;
@@ -224,7 +223,7 @@ thead,tbody,tbody tr,tbody tr td{
 	background-color: #fff;
 	z-index: 5;
 }
-.title-1,.title-2,.title-3,.title-4{
+.title-1,.title-2,.title-3{
 	display: inline-block;
 	vertical-align: middle;
 	height: 37px;
@@ -232,11 +231,11 @@ thead,tbody,tbody tr,tbody tr td{
 	padding-left: 5px;
 	word-spacing: 0;
 }
-.title-1,.title-3,.title-4{
+.title-1,.title-3{
 	width: 20%;
 }
 .title-2{
-	width: 40%;
+	width: 60%;
 }
 .manage-main-content .table{
 	width: 100%;
@@ -257,12 +256,11 @@ thead,tbody,tbody tr,tbody tr td{
 	line-height: 25px;
 }
 .manage-main-content .table tbody tr td:nth-child(1),
-.manage-main-content .table tbody tr td:nth-child(3),
-.manage-main-content .table tbody tr td:nth-child(4){
+.manage-main-content .table tbody tr td:nth-child(3){
 	width: 20%;
 }
 .manage-main-content .table tbody tr td:nth-child(2){
-	width: 40%;
+	width: 60%;
 }
 .floder:before{
 	content: url(../images/flodericon1.png);

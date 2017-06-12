@@ -222,7 +222,6 @@
 /*底部内容表格包裹层样式*/
 .content{
 	padding-top: 200px;
-	word-spacing: -6px;
 }
 .content .table tbody tr{
 	height: 25px;
@@ -272,12 +271,12 @@
 	padding-left: 10px;
 }
 .content-name{
-	width: 60%;
+	width: 40%;
 	word-spacing: 0;
 }
 .content-select,.content-author,.content-publish-time,.content-edit-btn{
-	width: 10%;
-	word-spacing: 0;
+	width: 15%;
+	word-spacing: 20px;
 }
 .file-name,.item-author,.item-publish-time,.operate-btn{
 	vertical-align: middle;
@@ -286,10 +285,11 @@
 	padding-left: 10px;
 }
 .file-name{
-	width: 60%;
+	width: 40%;
 }
 .item-selectbox,.item-author,.item-publish-time,.operate-btn{
-	width: 10%;
+	width: 15%;
+	word-spacing: 0;
 }
 /*定义文件夹背景类*/
 .floder:before{

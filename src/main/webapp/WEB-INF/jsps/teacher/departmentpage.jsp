@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>主页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170605-12"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170605-13"></script>
 </head>
 <body>
 	<div id="upload-file-floor">
@@ -50,7 +50,11 @@
 				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
 					<span class="caret"></span>
 				</button>
-				<ul id="overflow-item-wrap"></ul>
+				<ul id="overflow-item-wrap">
+					<li><a href="#" data-path="0">啦啦啦</a></li>
+					<li><a href="#" data-path="0">啦啦啦</a></li>
+					<li><a href="#" data-path="0">啦啦啦</a></li>
+				</ul>
 			</div>
 		</div>
 		
@@ -62,9 +66,9 @@
 						<span class="glyphicon glyphicon-cloud-upload"></span>
 						上传文件
 					</button>
-					<button class="btn btn-default btn-sm" id="delete-file">
+					<button class="btn btn-danger btn-sm" id="delete-file">
 						<span class="glyphicon glyphicon-trash"></span>
-						删除文件
+						删除
 					</button>
 				</div>
 				<div class="main-content-title">
