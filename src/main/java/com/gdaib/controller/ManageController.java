@@ -102,6 +102,7 @@ public class ManageController {
 
 
         List<AccountInfo> accountInfo = usersService.findAccountInfoByCharacter("reviewing", null);
+
         //navigatePages ：显示前后几页的页码
         PageInfo page = new PageInfo(accountInfo, 5);
         return Msg.success().add("page", page);

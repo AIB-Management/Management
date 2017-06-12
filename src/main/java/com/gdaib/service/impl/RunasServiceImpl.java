@@ -35,14 +35,14 @@ public class RunasServiceImpl implements RunasService{
     //得到用户授权给了谁
     @Override
     public List<AccountInfo> getAccount(String account) throws Exception {
-        return usersMapper.findAccountName("lalalala");
+        return usersMapper.findAccountName(account);
     }
 
     //得到该系所有用户
     @Override
-    public List<AccountInfo> getAllAccount(Integer departmentId,List<AccountInfo> accounts) throws Exception {
+    public List<AccountInfo> getAllAccount(String departmentUId,List<AccountInfo> accounts) throws Exception {
         Map<String,Object> map = new HashMap();
-        map.put("department_id",departmentId);
+        map.put("department_id",departmentUId);
         map.put("accounts",accounts);
         List<AccountInfo> usernameByDeparentId = usersMapper.findUsernameByDeparentId(map);
 

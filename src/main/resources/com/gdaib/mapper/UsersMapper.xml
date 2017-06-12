@@ -117,23 +117,22 @@
 
     <!--找到该系的所有教师-->
     <select id="findUsernameByDeparentId" parameterType="Map" resultType="com.gdaib.pojo.AccountInfo">
-        SELECT a.id,a.name FROM `v_account_info` a WHERE department_id = #{department_id} AND role = 'teacher'
+        SELECT a.uid,a.name FROM `t_account` a WHERE a.`depUid` IN(SELECT uid FROM `t_department` WHERE parent = 'a434d90d-a267-457c-8e10-89028ce6ed27') AND a.role = 'teacher'
         <if test="accounts != null and accounts.size() != 0">
-            <foreach collection="accounts" item="account" open="and id not in(" close=")" separator=",">
-                #{account.id}
+            <foreach collection="accounts" item="account" open="and uid not in(" close=")" separator=",">
+                #{account.uid}
             </foreach>
         </if>
     </select>
 
     <!--得到用户被别人授权的身份-->
     <select id="findBeAccountName" parameterType="String" resultType="com.gdaib.pojo.AccountInfo">
-        SELECT a.id,a.name FROM `t_account` a,`t_mapping_ugom` m WHERE a.`username` = m.`account` AND be_acco = #{be_acco}
-
+        SELECT a.uid,a.name FROM `t_account` a,`t_authorization` u WHERE a.`uid` = u.`accUid` AND u.`beAccUid` =  #{be_acco}
     </select>
 
     <!--得到用户授权给别人的身份-->
     <select id="findAccountName" parameterType="String" resultType="com.gdaib.pojo.AccountInfo">
-        SELECT a.id,a.name FROM `t_account` a,`t_mapping_ugom` m WHERE a.`username` = m.`be_acco` AND m.`account` = #{account}
+        SELECT a.uid,a.name FROM `t_account` a,`t_authorization` u WHERE a.`uid` = u.`beAccUid` AND u.`accUid` = #{account}
     </select>
 
 

@@ -51,7 +51,7 @@ public class RunasController {
 
         //1. 得到用户被授权账户
 
-        List<AccountInfo> beAccount = runasService.getBeAccount(accountInfo.getUsername());
+        List<AccountInfo> beAccount = runasService.getBeAccount(accountInfo.getUid());
         System.out.println(beAccount);
         if (beAccount != null){
             msg.add("beAccount",beAccount);
@@ -60,7 +60,7 @@ public class RunasController {
         }
 
         //2. 得到用户授权给了谁
-        List<AccountInfo> account = runasService.getAccount(accountInfo.getUsername());
+        List<AccountInfo> account = runasService.getAccount(accountInfo.getUid());
         System.out.println(account);
         if (account != null){
             msg.add("account",account);
@@ -73,16 +73,16 @@ public class RunasController {
         System.out.println(accountInfo);
         PageHelper.startPage(pn,5);
 
-//        List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(),account);
+        List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(),account);
 
-//
-//
-//        if (account != null){
-//            PageInfo pageInfo = new PageInfo(allAccount,5);
-//            msg.add("allAccount",pageInfo);
-//        }else {
-//            msg.add("allAccount",null);
-//        }
+
+
+        if (account != null){
+            PageInfo pageInfo = new PageInfo(allAccount,5);
+            msg.add("allAccount",pageInfo);
+        }else {
+            msg.add("allAccount",null);
+        }
 
         return msg;
     }

@@ -202,12 +202,8 @@ public class NaviTest {
 
     @Test
     public void test3() throws Exception {
-        List<String> list = new ArrayList<String>();
-        list.add("c7fb2498-5f8f-4b21-9071-efe709010b33");
-        list.add("989194a5-a00d-4ffa-b25d-29f706580c92");
-
-        List<AccountInfo> accountInfoForId = usersService.findAccountInfoForId(list);
-        System.out.println(accountInfoForId);
+        List<AccountInfo> beAccount = runasService.getAccount("552b5449-16b4-4f12-9111-54c475099e0f");
+        System.out.println(beAccount);
     }
 
 

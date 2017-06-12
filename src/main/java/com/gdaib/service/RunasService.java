@@ -17,7 +17,7 @@ public interface RunasService {
     public List<AccountInfo> getAccount(String account) throws Exception;
 
     //得到该系所有用户
-    public List<AccountInfo> getAllAccount(Integer departmentId,List<AccountInfo> accounts) throws Exception;
+    public List<AccountInfo> getAllAccount(String departmentUId,List<AccountInfo> accounts) throws Exception;
 
 
     //根据id得到用户
