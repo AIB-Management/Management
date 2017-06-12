@@ -54,6 +54,12 @@ thead,tbody,tbody tr,tbody tr td{
 .btn-align{
 	text-align: right;
 }
+#newfloder-msg-hint,#modify-msg-hint{
+	width: 80%;
+	height: 30px;
+	line-height: 30px;
+	margin: 0 auto;
+}
 #new-file-wrap h3,#modify-file-name-wrap h3{
 	height: 38px;
 	line-height: 38px;
@@ -239,27 +245,25 @@ thead,tbody,tbody tr,tbody tr td{
 }
 .manage-main-content .table{
 	width: 100%;
-	height: 450px;
 }
 .file-content-item{
 	height: 400px;
 	overflow-y: scroll;
 }
-.manage-main-content .table tbody tr{
-	/*vertical-align: middle;*/
+.file-content-item .table tr{
 	height: 25px;
 	line-height: 25px;
 }
-.manage-main-content .table tbody tr td{
+.file-content-item .table tr td{
 	vertical-align: middle;
 	height: 25px;
 	line-height: 25px;
 }
-.manage-main-content .table tbody tr td:nth-child(1),
-.manage-main-content .table tbody tr td:nth-child(3){
+.file-content-item .table tr td:nth-child(1),
+.file-content-item .table tr td:nth-child(3){
 	width: 20%;
 }
-.manage-main-content .table tbody tr td:nth-child(2){
+.file-content-item .table tr td:nth-child(2){
 	width: 60%;
 }
 .floder:before{

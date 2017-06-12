@@ -226,6 +226,7 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 		a.title = target.innerText;
 		li.appendChild(a);
 
+
 		frag.appendChild(li);
 
 		curmbNav.appendChild(frag);
