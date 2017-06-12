@@ -18,6 +18,10 @@
     标题:<input type="text" name="title" value="震惊!八旬老爷爷居然"></br>
     <input type="file" name="file"><br>
     <input type="file" name="file"><br>
+    <input type="file" name="file"><br>
+    <input type="file" name="file"><br>
+    <input type="file" name="file"><br>
+    <input type="file" name="file"><br>
     <input type="submit"><<br>
 </form>
 </body>

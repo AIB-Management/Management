@@ -1,61 +1,62 @@
+/*
+	固定元素高度总和：header:50; tool-bar: 50; content-title: 50;
+	150
+*/
+/*修改bootstrap 默认样式*/
+.table>tbody>tr>td{
+	vertical-align: middle !important; 
+}
+.glyphicon-edit:before{
+	position: relative;
+	z-index: 1;
+}
 /*上传文件弹出层样式*/
-#release-msg-content{
-	position: absolute;
-	top: 0;
-	left: 0;
+#upload-file-floor{
+	display: none;
+	position: fixed;
 	width: 100%;
 	height: 100%;
-	visibility: hidden;
 	background-color: rgba(0,0,0,0.4);
-	z-index: 20;
+	z-index: 80;
 }
-#release-msg-content form{
-	width: 500px;
-	height: 350px;
-	margin: 15% auto 0 auto;
+.upload-file-wrap{
+	width: 850px;
+	height: 500px;
+	margin: 5% auto 0 auto;
 	background-color: #fff;
+	border-radius: 10px;
 }
-#close-btn{
-	padding-right: 15px;
+.close-btn,.upload-file-title,.upload-file-content{
+	width: 90%;
+	margin: 0 auto;
+}
+.close-btn{
+	height: 45px;
+	line-height: 45px;
 	text-align: right;
-	font-size: 20px;
-	cursor: pointer;
 }
-#release-msg-content form h3{
-	text-align: center;
+.close-btn button{
+	display: inline-block;
+	vertical-align: middle;
+	height: 45px;
+	line-height: 45px;
+	font-size: 30px;
 }
-.release-msg-wrap{
-	width: 400px;
-	margin: 20px auto 0 auto;
+.upload-file-title{
+	text-align: left;	
 }
-.release-msg-wrap span{
-	display: block;
-}
-#first-nav-select,#second-nav-select{
-	border: 1px solid #ccc;
-	height: 30px;
-	margin-top: 10px;
-}
-#upload-file{
-	width: 80px;
-	height: 35px;
-	background-color: #339933;
-	color: #fff;
-}
-/*文件标题输入框样式*/
-#release-msg-title{
-	width: 210px;
-	height: 30px;
-	line-height: 20px;
-	padding-left: 3px;
-	border: 1px solid #ccc;
+.upload-file-content{
+	height: 350px;
+	margin-top: 20px;
 }
 /*顶部信息栏样式*/
 .header{
 	position: fixed;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 50px;
-	z-index: 20;
+	z-index: 21;
 	background-color: #333333;
 }
 .title-wrap{
@@ -108,7 +109,6 @@
 	left: 0;
 	width: 180px;
 	background-color: #242C37;
-	z-index: 999;
 	visibility: hidden;
 }
 #user-operate ul li{
@@ -135,174 +135,171 @@
 #logout-btn:hover{
 	color: #FF6600;
 }
-/*顶部一级导航栏样式*/
-.head-nav{
-	position: fixed;
-	top: 50px;
-	left: 0;
-	width: 100%;
-	height: 45px;
-	line-height: 45px;
-	background-color: #666;
-	word-spacing: -6px;
-	font-size: 0;
-	z-index: 0;
-}
-#head-nav-content{
-	display: inline-block;
-	width: 90%;
-	height: 100%;
-	word-spacing: 0px;
-	vertical-align: middle;
-}
-#head-nav-content .first-nav{
-	display: inline-block;
-	height: 35px;
-	line-height: 35px;
-	vertical-align: middle;
-	padding-left: 5px;
-	padding-right: 5px;
-	margin-left: 5px;
-	margin-right: 5px;
-	font-size: 14px;
-	text-align: center;
-	color: #fff;
-	cursor: pointer;
-	border: 1px solid #fff;
-	border-radius: 15px;
-}
-#show-more-btn{
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	line-height: 20px !important;
-	vertical-align: middle;
-	visibility: visible;
-	font-size: 12px;
-	color: #fff;
-	border: 1px solid #fff;
-	border-radius: 50%;
-	cursor: pointer;
-}
-/*溢出导航包裹层*/
-#nav-overflow-contain{
-	position: absolute;
-	top: 0;
-	left: 0;
-	visibility: hidden;
-	background-color: #666;
-	z-index: 40;
-}
-#nav-overflow-contain .first-nav{
-	line-height: 45px;
-	padding-left: 5px;
-	padding-right: 5px;
-	word-spacing: 0px;
-	text-align: center;
-	color: #fff;
-	font-size: 14px;
-	word-spacing: 0px;
-	cursor: pointer;
-}
-/*侧边栏样式*/
-.side-bar{
-	position: fixed;
-	top: 95px;
-	left: 0;
-	width: 200px;
-	height: 100%;
-	background-color: #F0F6F6;
-}
-.tag-title{
-	width: 80%;
-	height: 50px;
-	margin: 20px auto 0 auto;
-	line-height: 50px;
-	padding-left: 15px;
-	border-bottom: 1px solid #CADBE6;
-	color: #000;
-	font-size: 18px;
-}
-#tag-content{
-	margin: 20px auto 0 auto;
-}
-#tag-content li{
-	height: 40px;
-	line-height: 40px;
-	padding-left: 15px;
-	font-weight: bold;
-	color: #666;
-	cursor: default;
-}
-#tag-content li:hover{
-	color: #2277DD;
-	background-color: #D5E2EF;
-}
-.content{
-	padding-top: 95px;
-	padding-left: 210px;
-}
+/*面包屑导航栏样式*/
 #bread-crumb{
-	width: 90%;
-	margin: 20px auto 0 auto;
+	position: fixed;
+	width: 100%;
+	left: 0;
+	top: 50px;
 	height: 50px;
 	line-height: 50px;
 	border-bottom: 1px solid #ccc;
-}
-.crumb-hint,.crumb-wrap{
-	display: inline-block;
-}
-#bread-crumb-nav span{
-	color: #000;
-	cursor: pointer;
-}
-#bread-crumb-nav span:hover{
-	text-decoration: underline;
-}
-.main-content-wrap{
-	width: 90%;
-	margin: 30px auto 0 auto;
-}
-.main-content-header{
-	width: 100%;
-	height: 30px;
-	line-height: 30px;
+	background-color: #fff;
 	word-spacing: -6px;
-	border-bottom: 2px solid #000;
+	z-index: 20;
 }
-#main-content-list{
-	width: 100%;
-	margin-top: 20px;
-}
-.title{
+.crumb-hint{
 	display: inline-block;
-	vertical-align: middle;
-	width: 60%;
-	color: #000;
-	text-align: left;
-	word-spacing: 0px;
-}
-.author,.public-time{
-	display: inline-block;
-	vertical-align: middle;
-	width: 20%;
-	color: #000;
+	width: 10%;
+	height: 45px;
+	line-height: 45px;
 	text-align: center;
 	word-spacing: 0px;
 }
-.header-style{
-	font-size: 18px;
-	font-weight: bold;
-}
-#main-content-list li{
+#bread-crumb .breadcrumb{
+	display: inline-block;
+	vertical-align: top;
+	width: 85%;
 	height: 45px;
 	line-height: 45px;
-	word-spacing: -6px;
-	border-bottom: 2px dotted #999;
+	padding: 0;
+	margin: 0;
+	background-color: #fff;
 }
-#main-content-list li:hover{
-	background-color: #DDFFF5;
+#bread-crumb .breadcrumb li{
+	display: inline-block;
+	vertical-align: middle;
+	height: 25px;
+	line-height: 25px;
+	width: 10%;
+	word-spacing: 0px;
 }
-#main-content-list li a:hover{
+#bread-crumb .breadcrumb li a{
+	display: inline-block;
+	vertical-align: middle;
+	width: 70%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+#hidden-meun-item-btn{
+	position: relative;
+	padding-left: 5px;
+	display: inline-block;
+}
+#hidden-meun-item-btn .btn{
+	display: none;
+}
+/*溢出导航包裹层样式*/
+#overflow-item-wrap{
+	display: none;
+	position: absolute;
+	width: 220px;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	box-shadow: 0px 5px 10px #666;
+	border-radius: 5px;
+}
+#overflow-item-wrap li{
+	padding-top: 10px;
+	cursor: default;
+}
+#overflow-item-wrap li a{
+	display: inline-block;
+	vertical-align: middle;
+	width: 80%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+#overflow-item-wrap li a:hover{
 	text-decoration: underline;
+}
+#overflow-item-wrap li:hover{
+	background-color: #f5f5f5;
+}
+/*底部内容表格包裹层样式*/
+.content{
+	padding-top: 200px;
+}
+.content .table tbody tr{
+	height: 25px;
+	line-height: 25px;
+}
+.content .table tbody tr td{
+	vertical-align: middle;
+	height: 25px;
+	line-height: 25px;
+}
+#main-content-wrap{
+	margin-top: 20px;
+	word-spacing: -6px;
+}
+/*功能栏样式*/
+.main-tool-bar{
+	position: fixed;
+	top: 100px;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	padding-left: 10px;
+	background-color: #fff;
+	z-index: 5;
+}
+.main-tool-bar button{
+	margin-right: 5px;
+}
+/*标题栏样式*/
+.main-content-title{
+	position: fixed;
+	top: 150px;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	padding-left: 10px;
+	background-color: #fff;
+	box-shadow: 0 5px 8px rgba(0,0,0,0.4);
+	word-spacing: -6px;
+	z-index: 5;
+}
+.content-select,.content-name,.content-author,.content-publish-time,.content-edit-btn{
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 10px;
+}
+.content-name{
+	width: 40%;
+	word-spacing: 0;
+}
+.content-select,.content-author,.content-publish-time,.content-edit-btn{
+	width: 15%;
+	word-spacing: 20px;
+}
+.file-name,.item-author,.item-publish-time,.operate-btn{
+	vertical-align: middle;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 10px;
+}
+.file-name{
+	width: 40%;
+}
+.item-selectbox,.item-author,.item-publish-time,.operate-btn{
+	width: 15%;
+	word-spacing: 0;
+}
+/*定义文件夹背景类*/
+.floder:before{
+	content: url(../images/flodericon1.png);
+	display: inline-block;
+	vertical-align: middle;
+}
+/*定义文件背景类*/
+.file:before{
+	content: url(../images/fileicon1.png);
+	display: inline-block;
+	vertical-align: middle;
 }

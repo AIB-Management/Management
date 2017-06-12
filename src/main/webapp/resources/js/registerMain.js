@@ -186,7 +186,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 						for (var i = 0; i < data.length; i++) {
 							var option = document.createElement("option");
 							option.value = data[i].uid;
-							option.innerText = data[i].profession;
+							option.innerText = data[i].pro;
 							frag.appendChild(option);
 						}
 

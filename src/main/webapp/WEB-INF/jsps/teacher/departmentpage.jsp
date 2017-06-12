@@ -6,47 +6,21 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>主页</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170605-13"></script>
 </head>
 <body>
-	<div id="release-msg-content">
-		<form action=" " method="post" enctype="multipart/form-data">
-			<div id="close-btn">×</div>
-
-			<h3>上传文件</h3>
-			<p class="release-msg-wrap">
-				<span>文件标题</span>
-				<input type="text" id="release-msg-title" name="file-title">
-			</p>
-			<p class="release-msg-wrap">
-				<span>选择文件所属的导航栏</span>
-				<select name="first-nav" id="first-nav-select">
-					<option value="">请选择一级导航栏</option>
-					<option value="1">一级导航栏</option>
-					<option value="1">一级导航栏</option>
-					<option value="1">一级导航栏</option>
-					<option value="1">一级导航栏</option>
-					<option value="1">一级导航栏</option>
-				</select>
-				<select name="second-nav" id="second-nav-select">
-					<option value="">请选择二级导航栏</option>
-					<option value="null">无</option>
-					<option value="1">二级导航栏</option>
-					<option value="1">二级导航栏</option>
-					<option value="1">二级导航栏</option>
-					<option value="1">二级导航栏</option>
-					<option value="1">二级导航栏</option>
-				</select>
-				
-			</p>
-			<p class="release-msg-wrap">
-				<input type="file" name="release-file" id="select-file">
-			</p>
-			<p class="release-msg-wrap">
-				<input type="submit" value="提交" id="upload-file">
-			</p>
-		</form>
+	<div id="upload-file-floor">
+		<div class="upload-file-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="uploadfile-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<h3 class="upload-file-title">上传文件</h3>
+			<div class="upload-file-content">
+				<input type="file" name="file" id="fileupload" multiple="true">
+			</div>
+		</div>
 	</div>
+
 	<div class="wrapper">
 		<div class="header">
 			<div class="title-wrap">
@@ -54,9 +28,6 @@
 			</div>
 			<div class="header-tag">
 				<a href="${pageContext.request.contextPath}/content/toId.action" id="manage-msg">管理信息</a>
-			</div>
-			<div class="header-tag" id="add-file">
-				<span id="release-msg">发布信息</span>
 			</div>
 			<div class="header-tag overide">
 				<span>|</span>
@@ -72,110 +43,112 @@
 				</ul>
 			</div>
 		</div>
-		<div class="head-nav">
-			<ul id="head-nav-content">
-				<li class="first-nav">一级导航栏</li>
-				<li class="first-nav">一级导航栏多了1个字</li>
-				<li class="first-nav">一级导航栏多了1 2个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7 8个字</li>
-				<li class="first-nav">一级导航栏多了1 2 3 4 5 6 7 8 9个字</li>
-				<li id="show-more-btn" title="更多导航栏">>></li>
-			</ul>
-			<ul id="nav-overflow-contain"></ul>
-		</div>
-		<div class="mainbody">
-			<div class="side-bar">
-				<h6 class="tag-title">二级导航栏</h6>
-				<ul id="tag-content">
-					<li class="second-nav">这四个字的导航1</li>
-					<li class="second-nav">这四个字的导航2</li>
-					<li class="second-nav">这四个字的导航3</li>
-					<li class="second-nav">这四个字的导航4</li>
-					<li class="second-nav">这四个字的导航5</li>
-					<li class="second-nav">这四个字的导航6</li>
-					<li class="second-nav">这四个字的导航7</li>
-					<li class="second-nav">这四个字的导航8</li>
+		<div id="bread-crumb">
+			<b class="crumb-hint">当前路径：</b>
+			<ul class="breadcrumb" id="breadcurmb-nav-wrap"></ul>
+			<div id="hidden-meun-item-btn">
+				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
+					<span class="caret"></span>
+				</button>
+				<ul id="overflow-item-wrap">
+					<li><a href="#" data-path="0">啦啦啦</a></li>
+					<li><a href="#" data-path="0">啦啦啦</a></li>
+					<li><a href="#" data-path="0">啦啦啦</a></li>
 				</ul>
 			</div>
+		</div>
+		
+
+		<div class="mainbody">
 			<div class="content">
-				<div id="bread-crumb">
-					<span class="crumb-hint">当前路径：</span>
-					<span id="bread-crumb-nav" class="crumb-wrap"></span>
+				<div class="main-tool-bar">
+					<button class="btn btn-primary btn-sm" id="upload-file-btn">
+						<span class="glyphicon glyphicon-cloud-upload"></span>
+						上传文件
+					</button>
+					<button class="btn btn-danger btn-sm" id="delete-file">
+						<span class="glyphicon glyphicon-trash"></span>
+						删除
+					</button>
 				</div>
-				<div class="main-content-wrap">
-					<p class="main-content-header">
-						<span class="title header-style">标题</span>
-						<span class="author header-style">作者</span>
-						<span class="public-time header-style">发布日期</span>
-					</p>
-					<ul id="main-content-list">
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-						<li>
-							<a href="#" class="title">很长很长很长很长很长很长很长的标题</a>
-							<span class="author">xx老师</span>
-							<span class="public-time">2017-04-13</span>
-						</li>
-					</ul>	
+				<div class="main-content-title">
+					<div class="content-select">选择</div>
+					<div class="content-name">名称</div>
+					<div class="content-author">上传者</div>
+					<div class="content-publish-time">上传时间</div>
+					<div class="content-edit-btn">操作</div>
 				</div>
+				<table class="table table-striped table-hover main-content-wrap">
+					<tbody id="main-content-list">
+						<tr>
+							<td class="item-selectbox">
+								<input type="checkbox" class="disabled">
+							</td>
+							<td class="file-name floder">
+								<a href="#">文件夹1</a>
+							</td>
+							<td class="item-author">xx老师</td>
+							<td class="ite-publish-time">2016-06-09-12:58</td>
+							<td class="operate-btn">
+								<button class="btn btn-default btn-sm">
+									<span class="glyphicon glyphicon-edit"></span>修改文件
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td class="item-selectbox">
+								<input type="checkbox" class="disabled">
+							</td>
+							<td class="file-name floder">
+								<a href="#">文件夹1</a>
+							</td>
+							<td class="item-author">xx老师</td>
+							<td class="ite-publish-time">2016-06-09-12:58</td>
+							<td class="operate-btn">
+								<button class="btn btn-default btn-sm">
+									<span class="glyphicon glyphicon-edit"></span>修改文件
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td class="item-selectbox">
+								<input type="checkbox" class="disabled">
+							</td>
+							<td class="file-name floder">
+								<a href="#">文件夹1</a>
+							</td>
+							<td class="item-author">xx老师</td>
+							<td class="ite-publish-time">2016-06-09-12:58</td>
+							<td class="operate-btn">
+								<button class="btn btn-default btn-sm">
+									<span class="glyphicon glyphicon-edit"></span>修改文件
+								</button>
+							</td>
+						</tr>
+						<tr>
+							<td class="item-selectbox">
+								<input type="checkbox" class="disabled">
+							</td>
+							<td class="file-name floder">
+								<a href="#">文件夹1</a>
+							</td>
+							<td class="item-author">xx老师</td>
+							<td class="ite-publish-time">2016-06-09-12:58</td>
+							<td class="operate-btn">
+								<button class="btn btn-default btn-sm">
+									<span class="glyphicon glyphicon-edit"></span>修改文件
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
-
+	
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/fileinput.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css?20170607-10">
 </body>
 </html>
