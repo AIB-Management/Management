@@ -3,8 +3,8 @@ package com.gdaib.service.impl;
 import com.gdaib.mapper.FileExtMapper;
 import com.gdaib.pojo.FileCustom;
 import com.gdaib.pojo.FileSelectVo;
-import com.gdaib.pojo.UrlPojo;
 import com.gdaib.service.FileService;
+import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -154,7 +154,7 @@ public class FileServiceImpl implements FileService {
         for (int i = 0; i < fileNames.length; i++) {
             HashMap<String, Object> hashMap = new HashMap<String, Object>();
             hashMap.put("filename", fileNames[i]);
-            hashMap.put("url", UrlPojo.getUrlPojo().toString() + "/" + sqlPath + "/" + fileNames[i]);
+            hashMap.put("url", Utils.getLocalADDress() + "/" + sqlPath + "/" + fileNames[i]);
             items.add(hashMap);
         }
         return items;

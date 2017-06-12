@@ -1,5 +1,7 @@
 package com.gdaib.pojo;
 
+import com.gdaib.util.Utils;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -7,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 17-5-6
  * @role:
  */
-public class EmailUrlPojo  {
+public class EmailUrlPojo {
     //    private String scheme;               //协议
 //    private String serverName;           //服务器地址
 //    private String port;                 //端口
@@ -16,18 +18,6 @@ public class EmailUrlPojo  {
     private String mail;                //邮箱
     private String username;            //用户名
 
-    public EmailUrlPojo(
-//            String scheme, String serverName, String port, String contextPath,
-            HttpServletRequest request,
-            String action, String mail, String username) {
-//        this.scheme = scheme;
-//        this.serverName = serverName;
-//        this.port = port;
-//        this.contextPath = contextPath;contextPath
-        this.action = action;
-        this.mail = mail;
-        this.username = username;
-    }
 
     public String getMail() {
         return mail;
@@ -59,6 +49,11 @@ public class EmailUrlPojo  {
 
     @Override
     public String toString() {
-        return UrlPojo.getUrlPojo().toString() + action + "?username=" + username;
+        try {
+            return Utils.getLocalADDress() + action + "?username=" + username;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -7,6 +7,7 @@ import com.gdaib.pojo.MailPojo;
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.MailService;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.util.HashMap;
 
 /**
  * @Author:马汉真
@@ -37,7 +39,6 @@ public class PasswordController {
     @Autowired
     private UsersService usersService;
 
-    private static final String FROMADDRESS = "18707513901@163.com";
     private static final String FINDPASSWORD = "/user/findpassword.jsp";
 
     private static final String MODIFYPWD = "/user/resetpwd.jsp";
@@ -88,8 +89,6 @@ public class PasswordController {
             return modelAndView;
         }
 
-
-
         //修改密码
         usersService.updatePassword(registerPojo);
         modelAndView.addObject("success","修改成功，请重新登陆");
@@ -134,10 +133,7 @@ public class PasswordController {
 
         //把传过来的信息保存到UrlPojo中
         EmailUrlPojo urlPojo = new EmailUrlPojo();
-//        urlPojo.setScheme(request.getScheme());
-//        urlPojo.setServerName(request.getServerName());
-//        urlPojo.setPort(request.getServerPort() + "");
-//        urlPojo.setContextPath(request.getContextPath());
+
         urlPojo.setAction(MODIFYPWD_ACTION);
 
         //增加邮箱用户名
@@ -151,7 +147,6 @@ public class PasswordController {
 
     }
 
-
     /**
      * 发送找回密码的短信
      */
@@ -162,17 +157,22 @@ public class PasswordController {
 
         EmailUrlPojo urlPojo = (EmailUrlPojo) request.getAttribute("UrlPojo");
 
+        HashMap<String ,Object> mail = Utils.getMailInfo();
         MailPojo mailPojo = new MailPojo();
 
-        //发送的标题
-        mailPojo.setSubject("找回密码");
         //设置发送人
-        mailPojo.setFromAddress(FROMADDRESS);
+        mailPojo.setFromAddress(mail.get("username").toString());
+
+        //发送的标题
+        mailPojo.setSubject(mail.get("subject").toString());
+
         //发送的地址
         mailPojo.setToAddresses(urlPojo.getMail());
+
         //发送的内容
         String content = urlPojo.toString() + "&Code=" + mailService.insertTimeAndUUID(urlPojo.getUsername());
         System.out.println("cont>>>>" + content);
+
         mailPojo.setContent(
                 "<html><head></head><body>" +
                         "<a href=\"" + content + "\">点击链接进入系统密码找回页面,此链接30分钟内有效</a>" +
