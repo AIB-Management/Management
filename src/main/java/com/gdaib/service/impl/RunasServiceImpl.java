@@ -1,7 +1,6 @@
 package com.gdaib.service.impl;
 
 
-import com.gdaib.mapper.AccountInfoMapper;
 
 
 import com.gdaib.mapper.UsersMapper;
@@ -22,8 +21,7 @@ public class RunasServiceImpl implements RunasService{
     @Autowired
     public UsersMapper usersMapper;
 
-    @Autowired
-    public AccountInfoMapper accountInfoMapper;
+
 
     //得到用户被授权的身份
     @Override
@@ -54,13 +52,14 @@ public class RunasServiceImpl implements RunasService{
     //根据id得到用户
     @Override
     public AccountInfo getAccountInfoById(Integer id) throws Exception {
-        AccountInfoExample accountInfoExample = new AccountInfoExample();
-        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
-        criteria.andIdEqualTo(id);
-
-        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
-
-        return accountInfos == null ? null : accountInfos.get(0);
+//        AccountInfoExample accountInfoExample = new AccountInfoExample();
+//        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
+//        criteria.andIdEqualTo(id);
+//
+//        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
+//
+//        return accountInfos == null ? null : accountInfos.get(0);
+        return null;
     }
 
 

@@ -1,7 +1,7 @@
 package com.gdaib.service.impl;
 
 
-import com.gdaib.mapper.AccountInfoMapper;
+
 import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.PermissionMapper;
 import com.gdaib.mapper.UsersMapper;
@@ -33,8 +33,7 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     public AccountMapper accountMapper;
 
-    @Autowired
-    private AccountInfoMapper accountInfoMapper;
+
 
     @Autowired
     public PermissionMapper permissionMapper;
@@ -374,12 +373,11 @@ public class UsersServiceImpl implements UsersService {
     //入系id就根据系id查询
     @Override
     public int findAccountInfoCountByCharacter(String character) throws Exception {
-        AccountInfoExample accountInfoExample = new AccountInfoExample();
-        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
         criteria.andRoleEqualTo(character);
 
-
-        int count = accountInfoMapper.countByExample(accountInfoExample);
+        int count = accountMapper.countByExample(accountExample);
 
 
         return count;
