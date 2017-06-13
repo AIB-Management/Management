@@ -149,7 +149,7 @@
       (SELECT
          `t_department`.`content`
        FROM `t_department`
-       WHERE (`t_department`.`uid` = `departmentId`)) AS `depContent`,
+       WHERE (`t_department`.`uid` = `t_department`.`parent`)) AS `depContent`,
       `t_department`.`uid`     AS `professionId`,
       `t_department`.`content` AS `content`
     FROM (`t_account`
@@ -175,7 +175,7 @@
         (SELECT
         `t_department`.`content`
         FROM `t_department`
-        WHERE (`t_department`.`uid` = `departmentId`)) AS `depContent`,
+        WHERE (`t_department`.`uid` = `t_department`.`parent`)) AS `depContent`,
         `t_department`.`uid`     AS `professionId`,
         `t_department`.`content` AS `content`
         FROM (`t_account`
