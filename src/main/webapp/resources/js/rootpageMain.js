@@ -9,7 +9,7 @@ require.config({
 })
 
 //管理页主函数
-require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule"],function main($,checkBy,EventUntil,uexamiePage){
+require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModule","rootpagExamiePageModule"],function main($,checkBy,EventUntil,unexamiePage,examiePage){
 	//--------- 全局变量 --------
 	//文件夹管理弹出层右侧系别点击时保存的部门id
 	var curManageFloderDepId = "";
@@ -196,6 +196,11 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 
 		breadCrumb.appendChild(li);
 
+		//清空和隐藏溢出导航包裹层并且隐藏包裹层显示的的按钮
+		s("#overflow-item-wrap").innerHTML = "";
+		s("#overflow-item-wrap").style.display = 'none';
+		s("#show-hidden-menu").style.display = 'none';
+
 		//调整完样式后发送ajax 到后台请求
 		//取出数据
 		//为全局变量赋值
@@ -329,31 +334,31 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 
 			
 		var event = EventUntil.getEvent(event);
-		//如果点击的目标元素是 a标签
-		if (event.target.tagName.toLowerCase() == "a") {
-			//阻止其默认事件
-			EventUntil.preventDefault(event);
-		}
+		//阻止其默认事件
+		EventUntil.preventDefault(event);
 
 		//获取当前元素在元素集里面的位置
 		var index = Array.prototype.indexOf.call(breadCrumbList,this);
+		console.log("没有隐藏的导航栏的索引" + index);
 		//如果点击当前的元素不为最后一个
 		if (index != breadCrumbList.length - 1) {
 			//遍历删除这个元素后面的元素
 			for (var i = index + 1; i < breadCrumbList.length; i++) {
 				breadCrumbWrap.removeChild(breadCrumbList[i]);
 			}
-			//清空移除导航包裹层的所有子元素
-			s("#overflow-item-wrap").innerHTML = "";
-			//隐藏显示溢出导航按钮
-			s("#show-hidden-menu").style.display = 'none';
-			s("#overflow-item-wrap").style.display = 'none';
-
-			//整理完面包屑导航的样式后输出文件夹列表
-			//depId 通过当前系别的全局变量获得
-			var path = event.target.getAttribute("data-path");
-			createFloderList(path,curManageFloderDepId);
 		}
+
+		//无论如何 当点击面包屑导航栏处的导航栏
+		//清空并且移除溢出导航包裹层的所有子元素并且将其和现实按钮隐藏
+		s("#overflow-item-wrap").innerHTML = "";
+		//隐藏显示溢出导航按钮
+		s("#show-hidden-menu").style.display = 'none';
+		s("#overflow-item-wrap").style.display = 'none';
+
+		//整理完面包屑导航的样式后输出文件夹列表
+		//depId 通过当前系别的全局变量获得
+		var path = event.target.getAttribute("data-path");
+		createFloderList(path,curManageFloderDepId);
 		
 		
 	}
@@ -400,7 +405,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 	}
 
 	//溢出导航包裹层里面的li 子元素点击事件
-	function overflowNavItemClick(){
+	function overflowNavItemClick(event){
+		//获取event 对象并且组织默认事件
+		event = EventUntil.getEvent(event);
+		EventUntil.preventDefault(event);
 		//获取溢出导航包裹层
 		var overflowNavWrap = s("#overflow-item-wrap");
 		//获取所有溢出导航层的li 子元素
@@ -414,12 +422,12 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 			for (var j = index + 1; j < overflowNavItemList.length; j++) {
 				overflowNavWrap.removeChild(overflowNavItemList[j]);
 			}
-
-			var path = this.getAttribute("data-path");
-			//输出数据
-			createFloderList(path,depId);
 			
 		}
+
+		var path = event.target.getAttribute("data-path");
+		//输出数据
+		createFloderList(path,curManageFloderDepId);
 			
 		
 	}
@@ -453,7 +461,6 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 			//遍历表格内的所有a 元素内容，如果有同名文件夹马上报错
 			for (var i = 0; i < floderNameList.length; i++) {
 				if (floderNameList[i].innerText == val) {
-					console.log(floderNameList[i].innerText == val);
 					filenameStatus = false;
 					break;
 				}else if (floderNameList[i].innerText != val && i == floderNameList.length - 1) {
@@ -465,6 +472,47 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 		}
 
 		return filenameStatus;
+	}
+
+
+	//删除文件夹按钮点击事件回调函数
+	function dropFloder(){
+		
+		//如果当前选择了系别
+		if (curManageFloderDepId != "") {
+			var checkboxList = ss("#file-list-content tr td input:checked"),
+				//定义保存选中多选框的数组
+				dropFloderName = [],
+				dropFloderUid = [];
+
+			//检测是否有选中的多选框
+			if (checkboxList.length != 0) {
+				for (var i = 0; i < checkboxList.length; i++) {
+					//获取同辈a 元素的文本内容
+					var name = checkboxList[i].parentNode.parentNode.
+								querySelectorAll("a")[0].innerText;
+
+					var uid = checkboxList[i].parentNode.parentNode.
+								querySelectorAll("a")[0].getAttribute("data-path");
+
+					//将内容推进数组
+					dropFloderName.push(name);
+					dropFloderUid.push(uid);
+				}
+
+				//将保存的要删除文件夹的内容输出到确认弹出窗口中显示
+				s("#target-floder-name").innerText = dropFloderName.join(",");
+				s("#target-floder-name").title = dropFloderUid.join(",");
+				s("#drop-floder-wrap").style.display = 'block';
+
+			}else{
+				alert("你还没有选择要删除的文件夹");
+			}
+			
+		}else{
+			//如果还没选择系别 提示错误
+			alert("请先选择系别");
+		}
 	}
 
 
@@ -505,7 +553,6 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 		if (this.value.length != 0) {
 			s("#newfloder-submit").removeAttribute("disabled");
 			s("#newfloder-submit").className = "btn btn-primary";
-			console.log(this.value.length);
 		}else{
 			s("#newfloder-submit").disabled = "true";
 			s("#newfloder-submit").className = "btn btn-primary disabled";
@@ -580,6 +627,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 						s("#new-file-name").value = "";
 						//清空提示信息内容
 						s("#newfloder-msg-hint").innerText = "";
+						//重置提交按钮 设置其属性为 disabled
+						s("#newfloder-submit").disabled = "true";
+						//重置提交按钮样式
+						s("#newfloder-submit").className = "btn btn-primary disabled";
 						//关闭创建文件夹弹出层
 						s("#new-file-wrap").style.display = "none";
 					}
@@ -621,7 +672,9 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 
 
 		var overflowNavList = ss("#overflow-item-wrap li"),
-			breadCrumbNavs = ss("#breadcurmb-nav-wrap li");
+			breadCrumbNavs = ss("#breadcurmb-nav-wrap li"),
+			val = s("#rename-file").value;
+			
 
 		var floderNameIsCorrect = checkFloderName(val);
 
@@ -629,15 +682,15 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 		if (floderNameIsCorrect == false) {
 			s("#modify-msg-hint").style.color = "red";
 			s("#modify-msg-hint").innerText = "已有同名的文件夹";
-		}else if (floderNameIsCorrect == true) {
+		}else if (floderNameIsCorrect == true && s("#rename-file").value != "") {
 
-			//如果文件夹名合法 创建四个变量：文件夹的名字，文件夹的id，
-			//面包屑导航或溢出导航里面的最后一个子元素，当前路径的值
+			//如果名字合法且输入框内容不为空创建三个变量：文件夹的id，
+			//面包屑导航或溢出导航里面的最后一个子元素(当前路径的值)
 			//获取输入框的内容以及title 的值
-			var val = s("#rename-file").value,
-				uid = s("#rename-file").title,
+			var uid = s("#rename-file").title,
 				lastChild = null,
 				curPath = "";
+				
 
 			if (overflowNavList.length != 0) {
 				//如果溢出导航栏有元素
@@ -667,6 +720,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 						s("#rename-file").value = "";
 						//清空提示信息内容
 						s("#modify-msg-hint").innerText = "";
+						//重置提交按钮 设置其属性disabled 为 true
+						s("#rename-submit").disabled = "true";
+						//重置提交按钮样式
+						s("#rename-submit").className = "btn btn-primary disabled";
 						//关闭创建文件夹弹出层
 						s("#modify-file-name-wrap").style.display = "none";
 					}
@@ -679,6 +736,86 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 	})
 
 
+	//删除文件夹按钮点击事件
+	EventUntil.addHandler(s("#drop-floder-btn"),"click",dropFloder);
+
+	//删除文件夹弹窗取消按钮点击事件
+	EventUntil.addHandler(s("#cancel-drop-floder"),"click",function(){
+		s("#drop-floder-wrap").style.display = "none";
+	})
+
+	//删除文件夹弹窗关闭按钮点击事件
+	EventUntil.addHandler(s("#drop-floder-close-btn"),"click",function(){
+		s("#drop-floder-wrap").style.display = "none";
+	})
+
+	//删除文件夹弹窗删除按钮点击事件
+	EventUntil.addHandler(s("#confirm-drop-floder"),"click",function(){
+		//获取要删除文件夹的uid
+		var uids = s("#target-floder-name").title;
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxDeleteNav.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "uids=" + uids,
+			beforeSend: function(){
+				//发送之前显示加载图标
+				s("#drop-floder-loading-icon").style.visibility = 'visible';
+			},
+
+			success: function(data){
+				//发送成功之后显示提示
+				//隐藏加载图标
+				//关闭弹窗
+				//输出操作后的文件夹列表
+
+
+				//获取面包屑导航栏以及溢出导航栏
+				//获取溢出导航栏,面包屑导航栏的所有子元素
+				var overflowNavList = ss("#overflow-item-wrap li"),
+					breadCrumbNavs = ss("#breadcurmb-nav-wrap li");
+
+				//定义两个变量保存最后一个子元素和当前路径
+				var	lastChild = null,
+				curPath = "";
+
+				if (overflowNavList.length != 0) {
+					//如果溢出导航栏有元素
+					//获取最后一个元素的a 元素的 data-path 属性
+					lastChild = overflowNavList[overflowNavList.length - 1].querySelectorAll("a")[0];
+					curPath = lastChild.getAttribute("data-path");
+				
+				}else{
+					//如果溢出导航栏没有元素
+					//获取最后一个面包屑导航栏
+					lastChild = breadCrumbNavs[breadCrumbNavs.length - 1].querySelectorAll("a")[0];
+					curPath = lastChild.getAttribute("data-path");
+				}
+
+				//输出删除文件夹后的数据
+				createFloderList(curPath,curManageFloderDepId);
+				
+				s("#drop-floder-loading-icon").style.visibility = 'hidden';
+				s("#drop-floder-wrap").style.display = 'none';
+				alert("删除成功");
+			}
+		})
+		
+	})
+
+	//管理文件弹出层关闭按钮点击事件
+	EventUntil.addHandler(s("#filemanage-close-btn"),"click",function(){
+		//获取所有多选框
+		var checkboxList = ss("#file-list-content tr td input:checked");
+		//将他们全部取消选中
+		for (var i = 0; i < checkboxList.length; i++) {
+			checkboxList[i].checked = false;
+		}
+		console.log(checkboxList);
+		//关闭弹出层
+		s("#manage-file-floor").style.display = 'none';
+	});
+	
 
 	// ---------------- 文件夹管理模块结束 -------------------
 
@@ -715,7 +852,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 				data: "uid=" + list,
 				success: function(data){
 					if (data.code == 100) {
-						uexamiePage.toPage(uexamiePage.curPageNum);
+						unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
 						//如果当前操作是拒绝此页的全部用户申请
 						//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
 						//所以每次点击完之后都要把多选框的 checked 取消掉
@@ -776,6 +913,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 					s("#refuse-info").style.display = 'block';
 					//显示弹出层
 					floor.style.display = "block";
+					//将当页的全选多选框取消选中
+					s("#unexamie-select-all").checked = false;
 		}else{
 			alert("没有选中的用户");
 		}
@@ -783,8 +922,6 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 		
 	}
 	
-
-	//uexamiePage.toPage(uexamiePage.curPageNum);
 
 	//未审核用户 "选择全部多选框" 点击事件
 	EventUntil.addHandler(s("#unexamie-select-all"),"click", function(){
@@ -796,6 +933,104 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 
 	//未审核用户 "批量拒绝按钮" 点击事件
 	EventUntil.addHandler(s("#unexamie-refuse-all"),"click",unexamieRefuseAll);
+
+
+	//未审核用户模块弹出层事件
+
+	//拒绝用户弹出层功能
+	//1、拒绝用户注册模块关闭按钮点击事件
+	EventUntil.addHandler(s("#refuse-close-btn"),"click",function(){
+		
+		s("#floor").style.display = "none";
+	})
+
+	//2、拒绝理由信息输入框输入事件
+	EventUntil.addHandler(s("#refuse-content"),"keyup",function(){
+
+		var sendBtn = s("#send-refuse-info");
+
+		if (this.value.length == 0) {
+			sendBtn.disabled = "disabled";
+			sendBtn.style.backgroundColor = "#999999"
+		}else{
+			sendBtn.removeAttribute("disabled");
+			sendBtn.style.backgroundColor = "#05a828";
+		}
+	})
+
+	//3、拒绝用户注册模块 "提交拒绝信息" 按钮点击事件
+	EventUntil.addHandler(s("#send-refuse-info"),"click",function(){
+		//ajax 提交用户的id （即title属性）,拒绝理由 给后台处理
+		//当处理完毕后再将弹出层包裹层隐藏
+
+		//获取当前拒绝用户的后台 id 值
+		var idVal = s("#refuse-username").title;
+		//拒绝的理由
+		var refuseVal = s("#refuse-content").value;
+		//获取加载图片元素
+		var icon = s("#refuse-user-loading-icon");
+
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "uid=" + idVal + "&content=" + refuseVal,
+			beforeSend: function(){
+				icon.style.visibility = 'visible';
+			},
+
+			success: function(data){
+				//输出操作前停留页码处的未审核用户数据
+				unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+				//隐藏加载图标
+				icon.style.visibility = 'hidden';
+				//如果当前操作是拒绝此页的全部用户申请
+				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
+				//所以每次点击完之后都要把多选框的 checked 取消掉
+				s("#unexamie-select-all").checked = false;
+				//隐藏弹出层
+				s("#floor").style.display = "none";
+			}
+		});
+		
+		
+	})
+
+	//3、拒绝用户注册模块 "不填写拒绝信息" 按钮点击事件
+	EventUntil.addHandler(s("#no-refuse-reason"),"click",function(){
+		//ajax 提交用户的id 给后台，不提交拒绝理由
+		//数据提交完成后将包裹层隐藏
+
+		//获取当前拒绝用户的后台 id 值
+		var idVal = s("#refuse-username").title;
+		//获取加载图片元素
+		var icon = s("#refuse-user-loading-icon");
+
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "uid=" + idVal,
+			beforeSend: function(){
+				icon.style.visibility = 'visible';
+			},
+
+			success: function(data){
+
+				unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+				//隐藏加载图标
+				icon.style.visibility = 'hidden';
+				//如果当前操作是拒绝此页的全部用户申请
+				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
+				//所以每次点击完之后都要把多选框的 checked 取消掉
+				s("#unexamie-select-all").checked = false;
+				//隐藏弹出层
+				s("#floor").style.display = "none";
+			}
+		});
+		
+		
+	})
 
 	//------------- 未审核模块操作事件结束 -------------------------
 	
@@ -835,282 +1070,15 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 		//获取下拉框改变后的value
 		var curVal = this.value;
 		//为全局变量 curDepartmentId 赋值
-		curDepartmentId = curVal;
+		//这里的改变也应该赋值给模块的属性
+		examiePage.curDepartmentId = curVal;
 		//根据部门id 输出该部门注册用户列表的第一页
-		toexamiedPage(1,curDepartmentId);
-	}
-
-	function examiedModuleRecall(){
-		//获取注册用户姓名的单元格
-		var parent = this.parentNode.parentNode;
-		var nameTd = parent.querySelectorAll("td")[1];
-
-		//获取弹出层
-		var floor = s("#floor");
-		//显示填写拒绝信息模块弹出层
-		s("#refuse-info").style.display = 'none';
-		//显示撤回用户模块弹出层
-		s("#recall-user").style.display = 'block';
-		//为提示文字中的姓名字段添加内容
-		s("#recall-username").innerText = nameTd.innerText;
-		s("#recall-username").title = nameTd.title;
-		//显示弹出层
-		floor.style.display = "block";
+		//这里需要修改为模块引用函数
+		examiePage.toexamiedPage(1,examiePage.curDepartmentId);
 	}
 
 
-	//创建已审核用户表
-	//将后台 json 字符串转换为 dom 元素
-	function createExamiedTable(data){
-		s("#examied-main-content").innerHTML = "";
-		//创建元素碎片收集器
-		var frag = document.createDocumentFragment();
-
-		var dataList = data.extend.page.list;
-
-		//创建多选框
-		var checkBox = createElem("input");
-		checkBox.type = "checkbox";
-		checkBox.className = "examied-select";
-		
-		//创建撤回按钮
-		var recallBtn = createElem("button");
-		var recallBtnIcon = createElem("span");
-		recallBtnIcon.innerText = " ";
-		recallBtnIcon.className = "glyphicon glyphicon-erase";
-		recallBtnIcon.setAttribute("aria-hidden", "true");
-		//为撤回按钮添加图标
-		recallBtn.appendChild(recallBtnIcon);
-		
-
-		recallBtn.className = "refuse btn btn-danger btn-sm";
-
-		recallBtn.innerHTML += " 撤回";
-
-
-		
-
-		for (var i = 0; i < dataList.length; i++) {
-			//每次遍历创建一个 tr
-			var tr = createElem("tr");
-			//创建一个多选框包裹元素 td
-			var checkBoxTd = createElem("td");
-			var btnClone = checkBox.cloneNode(true);
-			checkBoxTd.appendChild(btnClone);
-
-			//为每一个多选框绑定点击事件
-			EventUntil.addHandler(btnClone,"click",function(){
-				selectAllCheckboxEvent(ss(".examied-select"),s("#examied-select-all"));
-			});
-			//tr 添加checkBoxTd
-			tr.appendChild(checkBoxTd);
-
-			//创建一个教师姓名包裹 td
-			var userTd = createElem("td");
-			userTd.innerText = dataList[i].name;
-			userTd.title = dataList[i].uid;
-			tr.appendChild(userTd);
-
-			//创建一个系别包裹 td
-			var departmentTd = createElem("td");
-			departmentTd.innerText = dataList[i].depContent;
-			tr.appendChild(departmentTd);
-
-			//创建一个专业包裹 td
-			var professionTd = createElem("td");
-			professionTd.innerText = dataList[i].content;
-			tr.appendChild(professionTd);
-
-			//创建一个按钮包裹 td
-			var btnTd = createElem("td");
-			var recallBtnClone = recallBtn.cloneNode(true);
-
-			btnTd.appendChild(recallBtnClone);
-			//为按钮绑定事件
-			EventUntil.addHandler(recallBtnClone,"click",examiedModuleRecall);
-
-			tr.appendChild(btnTd);
-
-
-
-			frag.appendChild(tr);
-		}
-
-		//表格元素添加数据
-		s("#examied-main-content").appendChild(frag);
-	}
-
-
-	// 创建分页导航方法
-	// 传入原始数据，分页导航的载体
-	function createExamiePageNav(data){
-		//每次执行都清空一次分页导航
-		s("#examied-pagination-content").innerHTML = "";
-		//获取分页导航输出分页数的数据
-		var pageList = data.extend.page.navigatepageNums;
-		//创建元素碎片收集器
-		var frag = document.createDocumentFragment();
-
-		//先创建首页，向前翻页，向后翻页，到末页按钮
-		//1、创建回首页按钮
-		var homePageBtn = createElem("li");
-		var homePageBtnContent = createElem("a");
-		homePageBtnContent.href = "#";
-		homePageBtnContent.setAttribute("aria-label", "homepage");
-		homePageBtnContent.innerText = "首页";
-		homePageBtn.appendChild(homePageBtnContent);
-
-		//2、创建向前翻页按钮
-		var prevPageBtn = createElem("li");
-		var prevPageBtnContent = createElem("a");
-		
-
-		prevPageBtnContent.href = "#";
-		prevPageBtnContent.setAttribute("aria-label", "homepage");
-		prevPageBtnContent.innerHTML = "&laquo;";
-
-		prevPageBtn.appendChild(prevPageBtnContent);
-
-		//如果当前后台返回的信息表示没有首页
-		//则禁用首页按钮和向前翻页按钮 并且不为他们绑定点击事件
-		if (data.extend.page.hasPreviousPage == false) {
-			homePageBtn.className = "disabled";
-			prevPageBtn.className = "disabled";
-		}else{
-
-			//如果有前一页
-			//点击上一页按钮的时候调用 toUnexamiePage 就是当前页 -1
-			//data.extend.page.pageNum 表示当前页
-			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
-			EventUntil.addHandler(prevPageBtn,"click",function(){
-				toexamiedPage(data.extend.page.pageNum - 1,curDepartmentId);
-			});
-
-			//点击返回首页的时候调用 toUnexamiePage 就是跳到总页数的第一页
-			//即传 1进去就可以了
-			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
-			EventUntil.addHandler(homePageBtn,"click",function(){
-				toexamiedPage(1,curDepartmentId);
-			});
-		}
-
-		frag.appendChild(homePageBtn);
-		frag.appendChild(prevPageBtn);
-
-
-
-		//3、创建向后翻页按钮
-		var nextPageBtn = createElem("li");
-		var nextPageBtnContent = createElem("a");
-
-		nextPageBtnContent.href = "#";
-		nextPageBtnContent.setAttribute("aria-label", "homepage");
-		nextPageBtnContent.innerHTML = "&raquo;";
-
-		nextPageBtn.appendChild(nextPageBtnContent);
-
-
-		//4、创建回到末页按钮
-		var lastPageBtn = createElem("li");
-		var lastPageBtnContent = createElem("a");
-
-		lastPageBtnContent.href = "#";
-		lastPageBtnContent.setAttribute("aria-label", "homepage");
-		lastPageBtnContent.innerText = "末页";
-
-		lastPageBtn.appendChild(lastPageBtnContent);
-
-		//如果当前后台返回的信息表示没有末页
-		//则禁用末页按钮和向后翻页按钮 并且不为他们绑定点击事件
-		if (data.extend.page.hasNextPage == false) {
-			nextPageBtn.className = "disabled";
-			lastPageBtn.className = "disabled";
-		}else{
-			//否则给他们都绑定点击事件
-			//下一页按钮就是当前页+1
-			//调用 toUnexamiePage 传入data.extend.page.pageNum + 1
-			//data.extend.page.pageNum 表示当前页
-			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
-			EventUntil.addHandler(nextPageBtn,"click",function(){
-				toexamiedPage(data.extend.page.pageNum + 1,curDepartmentId);
-			})
-
-			//末页按钮就直接跳到页数的总数位置
-			//调用 toUnexamiePage 传入 data.extend.page.pages
-			//data.extend.page.pageNum 表示当前页
-			//data.extend.page.pages 表示页的总数 即最后一页
-			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
-			EventUntil.addHandler(lastPageBtn,"click",function(){
-				toexamiedPage(data.extend.page.pages,curDepartmentId);
-			})
-		}
-
-
-		//5、遍历创建数字分页按钮
-		for (var i = 0; i < pageList.length; i++) {
-			var numLi = createElem("li");
-			var numLiIcon = createElem("a");
-			numLiIcon.href = "#";
-			numLiIcon.innerText = pageList[i];
-			numLi.appendChild(numLiIcon);
-
-			if (pageList[i] == data.extend.page.pageNum) {
-
-				numLi.className = "active";
-			}
-			//为每个分页数字按钮添加事件
-			//调用 toexamiedPage 传入当前分页按钮数字 ‘num’ 
-			//以及传入当前的筛选下拉框的值
-			//页面跳转时还需要传入当前下拉框的值 以便知道目前是查看那个系的审核用户
-			(function(num){
-				EventUntil.addHandler(numLi,"click",function(){
-					toexamiedPage(num,curDepartmentId);
-				})
-			})(pageList[i]);
-
-			frag.appendChild(numLi);
-		}
-
-		frag.appendChild(nextPageBtn);
-		frag.appendChild(lastPageBtn);
-		
-		//分页导航添加全部分页按钮元素
-		s("#examied-pagination-content").appendChild(frag);
-	}
-
-	//已审核用户列表页面跳转方法
-	function toexamiedPage(pn,id){
-		var result = "";
-		//整理参数
-		if (id != "") {
-			result = "pn=" + pn + "&parent=" + id;
-		}else{
-			result = "pn=" + pn;
-		}
-		//页面跳转时发送ajax 请求获取后台的数据
-		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsPass.action',
-			type: 'GET',
-			dataType: 'json',
-			data: result,
-
-			success: function(data){
-				if (data.code == 100) {
-					//输出已审核用户内容
-					createExamiedTable(data);
-					//输出分页导航栏
-					createExamiePageNav(data);
-					//为全局变量 curExamieModulePage （保存当前分页页码）
-					curExamieModulePage = data.extend.page.pageNum;
-
-
-				}else{
-					alert(data.msg);
-				}
-			}
-		})
-	}
-
+	//批量撤回按钮点击事件回调函数
 	function examiedModuleRecallAll(){
 		var checkboxList = ss(".examied-select");
 		//获取当前选中的多选框数量
@@ -1163,193 +1131,6 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 	//下拉选择框改变事件
 	EventUntil.addHandler(s("#examie-filter"),"change",filterOnChange);
 
-	//---------------- 已审核模块操作事件结束 ----------------------
-
-
-
-	//侧边栏除管理文件夹标签意外的元素点击事件
-	function tagsClick(){
-		var tags = ss(".child-tag");
-		var contents = ss(".content-wrap");
-
-		for (var i = 0; i < tags.length; i++) {
-			tags[i].index = i;
-
-			EventUntil.addHandler(tags[i],"click",function(){
-				var index = this.index;
-
-				//调整左侧tag 激活样式
-				for (var i = 0; i < tags.length; i++) {
-					if (tags[i].className.indexOf("sidebar-tag-active") != -1) {
-						//调用自定义 removeClass 方法
-						removeClass(tags[i],"sidebar-tag-active");
-					}
-					contents[i].style.display = "none";
-				}
-
-				contents[index].style.display = 'block';
-
-				//为当前点击的 tag增加激活状态样式
-				this.className += " sidebar-tag-active";
-				
-				//如果当前点击的tag 为未审核列表
-				//读取未审核用户数据的第一页内容
-				if (this.id == "unexamie-tag") {
-					s("#number-hints").style.display = 'none';
-					
-					uexamiePage.toPage(uexamiePage.curPageNum);
-		
-				}else if(this.id == "examied-tag"){
-					//如果当前点击的tag 为未审核列表
-					//读取已审核用户数据的第一页，且部门筛选为 "全部" 的内容
-					toexamiedPage(1,curDepartmentId);
-
-				}
-			});
-		}
-	};
-
-
-	function manageFileTagClick(){
-		EventUntil.addHandler(s("#manage-floder"),"click",function(){
-			s("#manage-file-floor").style.display = 'block';
-		})
-	}
- 
-	
-
-	//页面加载完成时要做的预处理
-	function init(){
-		//管理文件夹标签点击事件
-		manageFileTagClick();
-		//为侧边栏的除管理文件夹标签意外的元素绑定点击事件
-		tagsClick();
-		//显示未审核用户数量
-		showUnexamieUserNums();
-		//赋值下拉框
-		initDepFilter();
-		//初始化管理导航弹出层侧边栏系别内容
-		createDepList();
-	}
-
-	//--------------定义层结束-------------
-
-
-
-	//初始化页面
-	init();
-
-	//-----------文件夹管理(导航栏管理)模块功能开始------------
-
-	//管理文件弹出层关闭按钮点击事件
-	EventUntil.addHandler(s("#filemanage-close-btn"),"click",function(){
-		s("#manage-file-floor").style.display = 'none';
-	});
-	
-
-	
-	//-----------------文件夹管理(导航栏管理)模块功能结束 -----------
-
-
-	//----------------- 拒绝用户弹出层功能开始 -------------------
-	//拒绝用户弹出层功能
-	//1、拒绝用户注册模块关闭按钮点击事件
-	EventUntil.addHandler(s("#refuse-close-btn"),"click",function(){
-		
-		s("#floor").style.display = "none";
-	})
-
-	//2、拒绝理由信息输入框输入事件
-	EventUntil.addHandler(s("#refuse-content"),"keyup",function(){
-
-		var sendBtn = s("#send-refuse-info");
-
-		if (this.value.length == 0) {
-			sendBtn.disabled = "disabled";
-			sendBtn.style.backgroundColor = "#999999"
-		}else{
-			sendBtn.removeAttribute("disabled");
-			sendBtn.style.backgroundColor = "#05a828";
-		}
-	})
-
-	//3、拒绝用户注册模块 "提交拒绝信息" 按钮点击事件
-	EventUntil.addHandler(s("#send-refuse-info"),"click",function(){
-		//ajax 提交用户的id （即title属性）,拒绝理由 给后台处理
-		//当处理完毕后再将弹出层包裹层隐藏
-
-		//获取当前拒绝用户的后台 id 值
-		var idVal = s("#refuse-username").title;
-		//拒绝的理由
-		var refuseVal = s("#refuse-content").value;
-		//获取加载图片元素
-		var icon = s("#refuse-user-loading-icon");
-
-		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
-			type: 'POST',
-			dataType: 'json',
-			data: "uid=" + idVal + "&content=" + refuseVal,
-			beforeSend: function(){
-				icon.style.visibility = 'visible';
-			},
-
-			success: function(data){
-				//输出操作前停留页码处的未审核用户数据
-				toUnexamiePage(curUnexamieModulePage);
-				//隐藏加载图标
-				icon.style.visibility = 'hidden';
-				//如果当前操作是拒绝此页的全部用户申请
-				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
-				//所以每次点击完之后都要把多选框的 checked 取消掉
-				s("#unexamie-select-all").checked = false;
-				//隐藏弹出层
-				s("#floor").style.display = "none";
-			}
-		});
-		
-		
-	})
-
-	//3、拒绝用户注册模块 "不填写拒绝信息" 按钮点击事件
-	EventUntil.addHandler(s("#no-refuse-reason"),"click",function(){
-		//ajax 提交用户的id 给后台，不提交拒绝理由
-		//数据提交完成后将包裹层隐藏
-
-		//获取当前拒绝用户的后台 id 值
-		var idVal = s("#refuse-username").title;
-		//获取加载图片元素
-		var icon = s("#refuse-user-loading-icon");
-
-		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
-			type: 'POST',
-			dataType: 'json',
-			data: "uid=" + idVal,
-			beforeSend: function(){
-				icon.style.visibility = 'visible';
-			},
-
-			success: function(data){
-
-				toUnexamiePage(curUnexamieModulePage);
-				//隐藏加载图标
-				icon.style.visibility = 'hidden';
-				//如果当前操作是拒绝此页的全部用户申请
-				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
-				//所以每次点击完之后都要把多选框的 checked 取消掉
-				s("#unexamie-select-all").checked = false;
-				//隐藏弹出层
-				s("#floor").style.display = "none";
-			}
-		});
-		
-		
-	})
-	//----------------- 拒绝用户弹出层功能结束 -------------------
-
-
-	//----------------- 撤回用户弹出层功能开始 -------------------
 	//撤回用户弹出层功能
 	//1、取消撤回按钮点击事件
 	EventUntil.addHandler(s("#cancel-recall-user"),"click",function(){
@@ -1394,17 +1175,100 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUexamiePageModule
 			success: function(data){
 				//数据返回成功后
 				//根据当前筛选下拉框的部门id 输出操作前页码处的内容
-				toexamiedPage(curUnexamieModulePage,curDepartmentId);
+				examiePage.toexamiedPage(examiePage.curExamieModulePage,examiePage.curDepartmentId);
 				//loading 图标隐藏
 				icon.style.visibility = 'hidden';
 				//弹出层隐藏
 				s("#floor").style.display = 'none';
 				//清空撤回理由输入框内容
 				s("#recall-content").value = "";
+				//把确认按钮重设为disabled
+				s("#confirm-recall-user").disabled = true;
+				//重设确认按钮样式
+				s("#confirm-recall-user").style.backgroundColor = '#999999';
+				//取消全选多选按钮选中样式
+				s("#examied-select-all").checked = false;
 			}
 		});
 		
 	})
 
-	//----------------- 撤回用户弹出层功能结束 -------------------
+	//---------------- 已审核模块操作事件结束 ----------------------
+
+
+
+	//侧边栏除管理文件夹标签意外的元素点击事件
+	function tagsClick(){
+		var tags = ss(".child-tag");
+		var contents = ss(".content-wrap");
+
+		for (var i = 0; i < tags.length; i++) {
+			tags[i].index = i;
+
+			EventUntil.addHandler(tags[i],"click",function(){
+				var index = this.index;
+
+				//调整左侧tag 激活样式
+				for (var i = 0; i < tags.length; i++) {
+					if (tags[i].className.indexOf("sidebar-tag-active") != -1) {
+						//调用自定义 removeClass 方法
+						removeClass(tags[i],"sidebar-tag-active");
+					}
+					contents[i].style.display = "none";
+				}
+
+				contents[index].style.display = 'block';
+
+				//为当前点击的 tag增加激活状态样式
+				this.className += " sidebar-tag-active";
+				
+				//如果当前点击的tag 为未审核列表
+				//读取未审核用户数据的第一页内容
+				if (this.id == "unexamie-tag") {
+					s("#number-hints").style.display = 'none';
+					
+					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+		
+				}else if(this.id == "examied-tag"){
+					//如果当前点击的tag 为未审核列表
+					//读取已审核用户数据的第一页，且部门筛选为 "全部" 的内容
+					examiePage.toexamiedPage(1,examiePage.curDepartmentId);
+
+				}
+			});
+		}
+	};
+
+
+	//管理导航标签点击事件
+	function manageFileTagClick(){
+		EventUntil.addHandler(s("#manage-floder"),"click",function(){
+			s("#manage-file-floor").style.display = 'block';
+		})
+	}
+ 
+	
+
+	//页面加载完成时要做的预处理
+	function init(){
+		//管理文件夹标签点击事件
+		manageFileTagClick();
+		//为侧边栏的除管理文件夹标签意外的元素绑定点击事件
+		tagsClick();
+		//显示未审核用户数量
+		showUnexamieUserNums();
+		//赋值下拉框
+		initDepFilter();
+		//初始化管理导航弹出层侧边栏系别内容
+		createDepList();
+	}
+
+	//--------------定义层结束-------------
+
+
+
+	//初始化页面
+	init();
+
+
 })

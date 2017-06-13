@@ -50,6 +50,24 @@
 				</div>
 			</div>
 		</div>
+		<div id="drop-floder-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="drop-floder-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>删除文件夹</h3>
+			<p class="drop-floder-msg">你确认要删除<b id="target-floder-name"></b>这（几个/个）文件夹吗？若当前文件夹下有子目录此操作会造成异常！</p>
+			<div class="drop-floder-btn">
+				<button class="btn btn-success" id="cancel-drop-floder">
+					<span class="glyphicon glyphicon-remove"></span> 
+					取消
+				</button>
+				<button class="btn btn-danger" id="confirm-drop-floder">
+					<span class="glyphicon glyphicon-trash"></span> 
+					删除
+				</button>
+				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" id="drop-floder-loading-icon">
+			</div>
+		</div>
 		<!-- 修改导航弹出层内容 -->
 		<div class="filemanage-info">
 			<div class="close-btn clearfix">
@@ -60,7 +78,7 @@
 					<span class="glyphicon glyphicon-plus"></span> 
 					新建文件夹
 				</button>
-				<button class="btn btn-default btn-sm">
+				<button class="btn btn-default btn-sm" id="drop-floder-btn">
 					<span class="glyphicon glyphicon-trash" id="dropfloder-btn"></span> 
 					删除文件夹
 				</button>
