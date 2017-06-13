@@ -138,7 +138,6 @@
 
     <!--AccountInfo-->
     <select id="findAccountInfo" parameterType="com.gdaib.pojo.AccountInfo" resultType="com.gdaib.pojo.AccountInfo">
-<<<<<<< HEAD
         SELECT
         `t_account`.`id`         AS `id`,
         `t_account`.`uid`         AS `uid`,
@@ -159,28 +158,6 @@
         <where>
             <include refid="AccountInfo_s"/>
         </where>
-=======
-    SELECT
-      `t_account`.`id`         AS `id`,
-      `t_account`.`uid`         AS `uid`,
-      `t_account`.`username`   AS `username`,
-      `t_account`.`name`       AS `name`,
-      `t_account`.`mail`       AS `mail`,
-      `t_account`.`role`       AS `role`,
-      `t_department`.`parent`  AS `departmentId`,
-      (SELECT
-         `t_department`.`content`
-       FROM `t_department`
-       WHERE (`t_department`.`uid` = `t_department`.`parent`)) AS `depContent`,
-      `t_department`.`uid`     AS `professionId`,
-      `t_department`.`content` AS `content`
-    FROM (`t_account`
-       JOIN `t_department`
-         ON ((`t_account`.`depUid` = `t_department`.`uid`)))
-    <where>
-        <include refid="AccountInfo_s"/>
-    </where>
->>>>>>> origin/dev2.0
         GROUP BY id DESC
 
     </select>
@@ -196,15 +173,9 @@
         `t_account`.`role`       AS `role`,
         `t_department`.`parent`  AS `departmentId`,
         (SELECT
-<<<<<<< HEAD
         department.`content`
         FROM `t_department` department
         WHERE (department.`uid` = `t_department`.`parent`)) AS `depContent`,
-=======
-        `t_department`.`content`
-        FROM `t_department`
-        WHERE (`t_department`.`uid` = `t_department`.`parent`)) AS `depContent`,
->>>>>>> origin/dev2.0
         `t_department`.`uid`     AS `professionId`,
         `t_department`.`content` AS `content`
         FROM (`t_account`
