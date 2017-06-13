@@ -22,13 +22,13 @@
 			<div class="input-wrap">
 				<div class="self-input-group">
 					<label class="hint">文件名</label>
-					<input type="text" id="new-file-name">
+					<input type="text" id="rename-file">
 				</div>
 				<p id="modify-msg-hint"></p>
 			</div>
 			<div class="input-wrap">
 				<div class="self-input-group btn-align">
-					<button class="btn btn-primary" id="rename-submit">重命名</button>
+					<button class="btn btn-primary disabled" id="rename-submit" disabled="true">重命名</button>
 				</div>
 			</div>
 		</div>
@@ -46,7 +46,7 @@
 			</div>
 			<div class="input-wrap">
 				<div class="self-input-group btn-align">
-					<button class="btn btn-primary" id="newfloder-submit">新建</button>
+					<button class="btn btn-primary disabled" id="newfloder-submit" disabled="true">新建</button>
 				</div>
 			</div>
 		</div>
@@ -88,78 +88,7 @@
 					</div>
 					<div class="file-content-item">
 						<table class="table table-striped table-hover">
-							<tbody class="file-list-wrap" id="file-list-content">
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder-name floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										<button class="btn btn-default btn-sm">
-											<span class="glyphicon glyphicon-edit"></span> 
-											修改文件夹名
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder-name floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										<button class="btn btn-default btn-sm">
-											<span class="glyphicon glyphicon-edit"></span> 
-											修改文件夹名
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder-name floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										<button class="btn btn-default btn-sm">
-											<span class="glyphicon glyphicon-edit"></span> 
-											修改文件夹名
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder-name floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										<button class="btn btn-default btn-sm">
-											<span class="glyphicon glyphicon-edit"></span> 
-											修改文件夹名
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<input type="checkbox">
-									</td>
-									<td class="floder-name floder">
-										<a href="#">文件夹1</a>
-									</td>
-									<td>
-										<button class="btn btn-default btn-sm">
-											<span class="glyphicon glyphicon-edit"></span> 
-											修改文件夹名
-										</button>
-									</td>
-								</tr>
-							</tbody>
+							<tbody class="file-list-wrap" id="file-list-content"></tbody>
 						</table>
 					</div>
 				</div>

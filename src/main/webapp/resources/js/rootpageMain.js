@@ -128,7 +128,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	// ---------------- 文件夹管理(导航栏管理)模块开始 ---------------
 
 
-	//页面初始化的时候输出所有系别
+	//页面初始化的时候发送ajax 请求获取数据
+	//然后调用 createElemForDepList 函数输出数据
 	function createDepList(){
 		var depListWrap = s("#manage-side-item");
 
@@ -168,6 +169,11 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	function selectDepClick(){
 		var depList = ss("#manage-side-item li");
 		var floderListWrap = s("#file-list-content");
+
+		//获取面包屑导航栏包裹层
+		var breadCrumb = s("#breadcurmb-nav-wrap");
+		//清空面包屑导航栏元素
+		breadCrumb.innerHTML = "";
 		//清空li 的活动样式
 		for (var i = 0; i < depList.length; i++) {
 			if (depList[i].className.indexOf("filedep-item-active") != -1) {
@@ -177,13 +183,25 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 		this.className += "filedep-item-active";
 
+		//创建面包屑导航元素
+		var li = createElem("li"),
+			a = createElem("a");
+
+		a.href = "#";
+		a.setAttribute("data-path",0);
+		a.innerText = "根目录";
+		li.appendChild(a);
+		//为li 绑定点击事件
+		EventUntil.addHandler(li,"click",breadCrumbItemClick);
+
+		breadCrumb.appendChild(li);
+
 		//调整完样式后发送ajax 到后台请求
 		//取出数据
-		var depId = this.getAttribute("data-depId");
 		//为全局变量赋值
-		curManageFloderDepId = depId;
+		curManageFloderDepId = this.getAttribute("data-depId");
 		//输出元素
-		createFloderList(0,depId);
+		createFloderList(0,curManageFloderDepId);
 	}
 
 	//----------- 上面是管理文件弹出层初始化的函数 --------------
@@ -224,7 +242,10 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		a.href = "#";
 		span.className = "glyphicon glyphicon-edit";
 		button.appendChild(span);
+		button.className = "btn btn-default btn-sm";
 		button.innerHTML += "修改文件夹名";
+		//为每一个按钮绑定点击事件
+		EventUntil.addHandler(button,"click",modifyFloderName);
 
 		for (var i = 0; i < list.length; i++) {
 
@@ -239,11 +260,16 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			//为a 标签绑定点击事件
 			EventUntil.addHandler(floderName,"click",createBradCurmbItem);
 
-			checkboxCol.appendChild(input);
+			var checkbox = input.cloneNode(true);
+			checkboxCol.appendChild(checkbox);
 			floderNameCol.className = "floder-name floder";
 			floderNameCol.appendChild(floderName);
-
-			operateCol.appendChild(button);
+				
+			//创建一个操作按钮
+			var operateBtn = button.cloneNode(true);
+			//为每一个按钮绑定点击事件
+			EventUntil.addHandler(operateBtn,"click",modifyFloderName);
+			operateCol.appendChild(operateBtn);
 
 			row.appendChild(checkboxCol);
 			row.appendChild(floderNameCol);
@@ -255,6 +281,123 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		return frag;
 	}
 
+
+
+	//创建面包屑导航栏子元素 li的方法
+	//此方法会调用 breadCrumbItemClick 和 controlNavNums
+	//下面文件夹列表的a 标签点击事件会绑定这个函数
+	function createBradCurmbItem(event){
+		//获取面包屑导航栏外包裹层
+		var curmbNav = s("#breadcurmb-nav-wrap");
+
+		//阻止默认事件发生
+		event = EventUntil.getEvent(event);
+		EventUntil.preventDefault(event);
+
+		//创建元素碎片器 创建元素并添加到包裹层中
+		var frag = document.createDocumentFragment();
+		var li = createElem("li"),
+			a = this.cloneNode(true);
+
+		a.title = this.innerText;
+		li.appendChild(a);
+
+		//为创建的 面包屑导航绑定点击事件
+		EventUntil.addHandler(li,"click",breadCrumbItemClick);
+
+		frag.appendChild(li);
+
+		curmbNav.appendChild(frag);
+
+		//生成面包屑导航的同时也要刷新列表
+		var path = event.target.getAttribute("data-path");
+		createFloderList(path,curManageFloderDepId);
+
+		//每一次添加都进行一次导航数量的控制
+		controlNavNums(s("#breadcurmb-nav-wrap"),ss("#breadcurmb-nav-wrap li"),
+			s("#overflow-item-wrap"),s("#show-hidden-menu"));
+
+	}
+
+
+	//面包屑导航栏每个导航标签点击事件
+	function breadCrumbItemClick(event){
+		//获取面包屑导航的外包裹层
+		var breadCrumbWrap = s("#breadcurmb-nav-wrap");
+		//获取所有面包屑导航的li
+		var breadCrumbList = ss("#breadcurmb-nav-wrap li");
+
+			
+		var event = EventUntil.getEvent(event);
+		//如果点击的目标元素是 a标签
+		if (event.target.tagName.toLowerCase() == "a") {
+			//阻止其默认事件
+			EventUntil.preventDefault(event);
+		}
+
+		//获取当前元素在元素集里面的位置
+		var index = Array.prototype.indexOf.call(breadCrumbList,this);
+		//如果点击当前的元素不为最后一个
+		if (index != breadCrumbList.length - 1) {
+			//遍历删除这个元素后面的元素
+			for (var i = index + 1; i < breadCrumbList.length; i++) {
+				breadCrumbWrap.removeChild(breadCrumbList[i]);
+			}
+			//清空移除导航包裹层的所有子元素
+			s("#overflow-item-wrap").innerHTML = "";
+			//隐藏显示溢出导航按钮
+			s("#show-hidden-menu").style.display = 'none';
+			s("#overflow-item-wrap").style.display = 'none';
+
+			//整理完面包屑导航的样式后输出文件夹列表
+			//depId 通过当前系别的全局变量获得
+			var path = event.target.getAttribute("data-path");
+			createFloderList(path,curManageFloderDepId);
+		}
+		
+		
+	}
+	
+
+	//控制面包屑导航栏数量函数
+	//多出的导航会被添加到溢出导航包裹层 并且绑定函数 overflowNavItemClick
+	function controlNavNums(navWrap,childnode,moreNavContain,icon){
+		//获取父元素的宽度
+		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
+
+		//获取全部子元素的宽度
+		var childWidthTotal = 0;
+		for (var i = 0; i < childnode.length; i++) {
+			//获取每一个子元素的实际宽度
+			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
+			childWidthTotal += curChildWidth;
+			//获取父元素与此时子元素总宽度的差值
+			var diffWidth = parentWidth - childWidthTotal;
+			
+			//如果此时的差值不能容纳下子元素
+			if (diffWidth < curChildWidth) {
+				//复制这个节点
+				var temp = childnode[i].cloneNode(true);
+				//先为复制过来的元素解除之前的事件绑定
+				temp.onclick = null;
+				//再为每个复制的节点绑定事件函数  overflowNavItemClick
+				EventUntil.addHandler(temp,"click",overflowNavItemClick);
+				//将此时的子元素添加到溢出导航包裹层里面
+				moreNavContain.appendChild(temp);
+				//面包屑导航栏移除子元素
+				navWrap.removeChild(childnode[i]);
+				
+			}
+			
+		}
+
+		if (moreNavContain.childNodes.length != 0) {
+			icon.style.display = "inline-block";
+
+		}else{
+			icon.style.display = "none";
+		}
+	}
 
 	//溢出导航包裹层里面的li 子元素点击事件
 	function overflowNavItemClick(){
@@ -282,126 +425,48 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	}
 
 
-	//面包屑导航栏每个导航标签点击事件
-	function breadCrumbItemClick(event){
-		//获取面包屑导航的外包裹层
-		var breadCrumbWrap = s("#breadcurmb-nav-wrap");
-		//获取所有面包屑导航的li
-		var breadCrumbList = ss("#breadcurmb-nav-wrap li");
-
-			
-		var event = EventUntil.getEvent(event);
-		//如果点击的目标元素是 a标签
-		if (event.target.tagName.toLowerCase() == "a") {
-			//阻止其默认事件
-			EventUntil.preventDefault(event);
-		}
-
-		//获取当前元素在元素集里面的位置
-		var index = Array.prototype.indexOf.call(breadCrumbList,this);
-		//如果点击当前的元素不为最后一个
-		if (index != breadCrumbList - 1) {
-			//遍历删除这个元素后面的元素
-			for (var i = index + 1; i < breadCrumbList.length; i++) {
-				breadCrumbWrap.removeChild(breadCrumbList[i]);
-			}
-			//清空移除导航包裹层的所有子元素
-			s("#overflow-item-wrap").innerHTML = "";
-			//隐藏显示溢出导航按钮
-			s("#show-hidden-menu").style.display = 'none';
-			s("#overflow-item-wrap").style.display = 'none';
-
-			var path = event.target.getAttribute("data-path");
-			//depId 通过当前系别的全局变量获得
-			createFloderList(path,curManageFloderDepId);
-		}
-		
-		
-	}
-	
-
-	//控制面包屑导航栏数量函数
-	function controlNavNums(navWrap,childnode,moreNavContain,icon){
-		//获取父元素的宽度
-		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
-
-		//获取全部子元素的宽度
-		var childWidthTotal = 0;
-		for (var i = 0; i < childnode.length; i++) {
-			//获取每一个子元素的实际宽度
-			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
-			childWidthTotal += curChildWidth;
-			//获取父元素与此时子元素总宽度的差值
-			var diffWidth = parentWidth - childWidthTotal;
-			
-			//如果此时的差值不能容纳下子元素
-			if (diffWidth < curChildWidth) {
-				//复制这个节点
-				var temp = childnode[i].cloneNode(true);
-				//为每个复制的节点绑定事件函数  overflowNavItemClick
-				EventUntil.addHandler(temp,"click",overflowNavItemClick);
-				//将此时的子元素添加到溢出导航包裹层里面
-				moreNavContain.appendChild(temp);
-				//面包屑导航栏移除子元素
-				navWrap.removeChild(childnode[i]);
-				
-			}
-			
-		}
-
-		if (moreNavContain.childNodes.length != 0) {
-			icon.style.display = "inline-block";
-
-		}else{
-			icon.style.display = "none";
-		}
-	}
-
-	
-
-
-	//创建面包屑导航栏子元素 li的方法
-	function createBradCurmbItem(event){
-		//获取面包屑导航栏外包裹层
-		var curmbNav = s("#breadcurmb-nav-wrap");
-
-		//阻止默认事件发生
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-
-		//创建元素碎片器 创建元素并添加到包裹层中
-		var frag = document.createDocumentFragment();
-		var li = createElem("li"),
-			a = this.cloneNode(true);
-
-		a.title = this.innerText;
-		li.appendChild(a);
-
-		frag.appendChild(li);
-
-		curmbNav.appendChild(frag);
-
-		//更新每一个面包屑导航里面的li 元素 并绑定点击事件函数 breadCrumbItemClick
-		breadCrumbItemClick();
-		//每一次添加都进行一次导航数量的控制
-		controlNavNums(s("#breadcurmb-nav-wrap"),ss("#breadcurmb-nav-wrap li"),
-			s("#overflow-item-wrap"),s("#show-hidden-menu"));
-
-	}
-
-
 
 	//修改文件夹名字按钮点击事件执行函数
 	function modifyFloderName(){
 		//获取button 的父元素
 		var parent = this.parentNode.parentNode,
 			//获取文件的名字
-			floderName = parent.querySelectorAll("a")[0].innerText;
+			floderName = parent.querySelectorAll(".floder-name a")[0].innerText,
+			//获取文件的路径
+			floderPath = parent.querySelectorAll(".floder-name a")[0].getAttribute("data-path");
 		//为修改名字弹出层的input输入框插入内容	
-		s("#new-file-name").value = floderName;
+		s("#rename-file").value = floderName;
+		s("#rename-file").title = floderPath;
 		//显示修改文件夹名弹出层
 		s("#modify-file-name-wrap").style.display = 'block';
 	}
+
+	//定义检测创建文件名或修改文件名时 文件名是否有重复
+	function checkFloderName(val){
+		//获取下面的文件夹列表所有a 元素
+		var floderNameList = ss("#file-list-content tr td a"),
+			//定义文件夹名字状态初始值
+			filenameStatus = false;
+
+		//如果当前文件夹数不为0
+		if (floderNameList.length != 0) {
+			//遍历表格内的所有a 元素内容，如果有同名文件夹马上报错
+			for (var i = 0; i < floderNameList.length; i++) {
+				if (floderNameList[i].innerText == val) {
+					console.log(floderNameList[i].innerText == val);
+					filenameStatus = false;
+					break;
+				}else if (floderNameList[i].innerText != val && i == floderNameList.length - 1) {
+					filenameStatus = true;
+				}
+			}
+		}else{
+			filenameStatus = true;
+		}
+
+		return filenameStatus;
+	}
+
 
 
 
@@ -435,24 +500,108 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		s("#new-file-wrap").style.display = 'none';
 	})
 
+	//新建文件夹输入框键盘输入事件
+	EventUntil.addHandler(s("#new-file-name"),"keyup",function(){
+		if (this.value.length != 0) {
+			s("#newfloder-submit").removeAttribute("disabled");
+			s("#newfloder-submit").className = "btn btn-primary";
+			console.log(this.value.length);
+		}else{
+			s("#newfloder-submit").disabled = "true";
+			s("#newfloder-submit").className = "btn btn-primary disabled";
+		}
+	})
+
 	//新建文件夹按钮点击事件
 	EventUntil.addHandler(s("#newfloder-btn"),"click",function(){
-		s("#new-file-wrap").style.display = "block";
+		if (curManageFloderDepId == "") {
+			alert("请先选择系别");
+		}else{
+			s("#new-file-wrap").style.display = "block";
+		}
+		
 	})
 
 	//新建文件夹弹出层提交按钮点击事件
 	EventUntil.addHandler(s("#newfloder-submit"),"click",function(){
-		//判断路径 "breadcurmb-nav-wrap" 上面是否有元素
-		//来判断是否是在根目录上面创建
-		//为真 发送文件夹级层为0 部门id 为当前选中的部门id 新建文件夹名字 发送给后台
-		//最后从后台中刷新数据
-		//为假 判断溢出导航栏包裹层是否有元素 
-		//如果有 获取溢出导航包裹层最后一个元素的
+		//先判断溢出导航包裹层是否有元素
+		//有就获取溢出导航包裹层最后的一个元素的 data-path 以及全局变量 curManageFloderDepId
+		//没有就获取面包屑导航栏最后一个元素的 data-path 和 全局变量curManageFloderDepId
+		//从后台返回信息判断这个文件夹名字是否重复
+		//没有就输出数据 有就报错
+
+		//新建文件夹的必要参数
+		//parent == data-path; depuid == curManageFloderDepId; title == 输入框的value
+		
+		//获取溢出导航栏,面包屑导航栏的所有子元素
+		var overflowNavList = ss("#overflow-item-wrap li"),
+			breadCrumbNavs = ss("#breadcurmb-nav-wrap li");
+		//获取输入框的内容
+		var val = s("#new-file-name").value;
+		//调用 checkFloderName 函数判断文件名是否合法
+		var floderNameIsCorrect = checkFloderName(val);
+
+		//根据filenameStatus 判断文件名的合法性
+		if (floderNameIsCorrect == false) {
+			s("#newfloder-msg-hint").style.color = "red";
+			s("#newfloder-msg-hint").innerText = "已有同名的文件夹";
+		}else if (floderNameIsCorrect == true) {
+
+			//如果文件夹名合法 创建两个变量一个为保存最后一个子元素，
+			//另一个保存当前子元素的路径
+			var lastChild = null,
+				curPath = "";
+
+			if (overflowNavList.length != 0) {
+				//如果溢出导航栏有元素
+				//获取最后一个元素的a 元素的 data-path 属性
+				lastChild = overflowNavList[overflowNavList.length - 1].querySelectorAll("a")[0];
+				curPath = lastChild.getAttribute("data-path");
+			
+			}else{
+				//如果溢出导航栏没有元素
+				//获取最后一个面包屑导航栏
+				lastChild = breadCrumbNavs[breadCrumbNavs.length - 1].querySelectorAll("a")[0];
+				curPath = lastChild.getAttribute("data-path");
+			}
+
+			//赋值完毕后发送ajax 到后台
+			$.ajax({
+				url: 'http://localhost:8080/Management/admin/ajaxAddNav.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "parent=" + curPath + "&title=" + val + "&depuid=" + curManageFloderDepId,
+				success: function(data){
+					if (data.code == 100) {
+						alert("创建成功！");
+						//请求成功之后查询数据
+						createFloderList(curPath,curManageFloderDepId);
+						//关闭创建文件夹弹出层
+						s("#new-file-wrap").style.display = "none";
+					}
+				}
+			})
+			
+
+		}
+
+		
 	})
 
 	//修改文件夹名弹出层关闭按钮点击事件
 	EventUntil.addHandler(s("#modify-flodername-close-btn"),"click",function(){
 		s("#modify-file-name-wrap").style.display = 'none';
+	})
+
+	//修改文件夹输入框键盘输入事件
+	EventUntil.addHandler(s("#rename-file"),"keyup",function(){
+		if (this.value.length != 0) {
+			s("#rename-submit").removeAttribute("disabled");
+			s("#rename-submit").className = "btn btn-primary";
+		}else{
+			s("#rename-submit").disabled = "true";
+			s("#rename-submit").className = "btn btn-primary disabled";
+		}
 	})
 
 
@@ -465,18 +614,62 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		//前端获取修改名字的文件夹对象
 		//将对象的名字在前端修改
 		//最后修改名字的弹出层关闭
+
+
+		var overflowNavList = ss("#overflow-item-wrap li"),
+			breadCrumbNavs = ss("#breadcurmb-nav-wrap li");
+
+		var floderNameIsCorrect = checkFloderName(val);
+
+		//根据filenameStatus 判断文件名的合法性
+		if (floderNameIsCorrect == false) {
+			s("#modify-msg-hint").style.color = "red";
+			s("#modify-msg-hint").innerText = "已有同名的文件夹";
+		}else if (floderNameIsCorrect == true) {
+
+			//如果文件夹名合法 创建四个变量：文件夹的名字，文件夹的id，
+			//面包屑导航或溢出导航里面的最后一个子元素，当前路径的值
+			//获取输入框的内容以及title 的值
+			var val = s("#rename-file").value,
+				uid = s("#rename-file").title,
+				lastChild = null,
+				curPath = "";
+
+			if (overflowNavList.length != 0) {
+				//如果溢出导航栏有元素
+				//获取最后一个元素的a 元素的 data-path 属性
+				lastChild = overflowNavList[overflowNavList.length - 1].querySelectorAll("a")[0];
+				curPath = lastChild.getAttribute("data-path");
+			
+			}else{
+				//如果溢出导航栏没有元素
+				//获取最后一个面包屑导航栏
+				lastChild = breadCrumbNavs[breadCrumbNavs.length - 1].querySelectorAll("a")[0];
+				curPath = lastChild.getAttribute("data-path");
+			}
+
+			//赋值完毕后发送ajax 到后台
+			$.ajax({
+				url: 'http://localhost:8080/Management/admin/ajaxUpdateNav.action?',
+				type: 'POST',
+				dataType: 'json',
+				data: "uid=" + uid + "&title=" + val,
+				success: function(data){
+					if (data.code == 100) {
+						alert("修改成功！");
+						//请求成功之后查询数据
+						createFloderList(curPath,curManageFloderDepId);
+						//关闭创建文件夹弹出层
+						s("#modify-file-name-wrap").style.display = "none";
+					}
+				}
+			})
+			
+
+		}
+
 	})
 
-
-	//调试修改文件夹名字按钮点击事件
-	//实际由遍历ajax 数据中为其绑定
-	for (var i = 0; i < ss("#file-list-content button").length; i++) {
-		EventUntil.addHandler(ss("#file-list-content button")[i],"click",modifyFloderName);
-	}
-
-	for (var i = 0; i < ss("#manage-side-item li").length; i++) {
-		EventUntil.addHandler(ss("#manage-side-item li")[i],"click",selectDepClick);
-	}
 
 
 	// ---------------- 文件夹管理模块结束 -------------------
@@ -503,6 +696,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			success: function(data){
 				alert("操作成功");
 				//返回数据的时候回到操作前停留的页码处
+				//全局变量 curUnexamieModulePage
 				toUnexamiePage(curUnexamieModulePage);
 			}
 		});
@@ -552,7 +746,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		var passBtnIcon = createElem("span");
 		passBtnIcon.innerText = " ";
 		passBtnIcon.className = "glyphicon glyphicon-ok";
-		passBtnIcon.setAttribute("aria-hidden", "true");
 		//为按钮添加图标
 		passBtn.appendChild(passBtnIcon);
 		
@@ -561,7 +754,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		var refuseBtnIcon = createElem("span");
 		refuseBtnIcon.innerText = " ";
 		refuseBtnIcon.className = "glyphicon glyphicon-minus-sign";
-		refuseBtnIcon.setAttribute("aria-hidden", "true");
 		//为按钮添加图标
 		refuseBtn.appendChild(refuseBtnIcon);
 		
@@ -887,7 +1079,6 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		
 	}
 
-	//ss(".unexamie-select")
 	//未审核用户 "选择全部多选框" 点击事件
 	EventUntil.addHandler(s("#unexamie-select-all"),"click", function(){
 		selectAllBtnHandler.call(this,ss(".unexamie-select"));
