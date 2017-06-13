@@ -14,7 +14,7 @@
 define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 	//成员变量
-	var curUnexamieModulePage = 0;
+	var curUnexamieModulePage = 1;
 
 	//封装选择器函数
 	function s(name){
@@ -341,8 +341,10 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		
 	}
 
-
 	return {
-		toPage: toUnexamiePage
+		toPage: toUnexamiePage,
+		curPageNum: curUnexamieModulePage
 	}
+
+
 })

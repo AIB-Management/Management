@@ -41,8 +41,9 @@ public class NaviTest {
 
 
     List<NavigationCustom> navigationCustomList = new ArrayList<NavigationCustom>();
+
     @Test
-    public void NavTest(){
+    public void NavTest() {
 //        NavigationExample navigationExample = new NavigationExample();
 //        NavigationExample.Criteria criteria = navigationExample.createCriteria();
 //        criteria.andDepartmentidEqualTo(100);
@@ -80,8 +81,8 @@ public class NaviTest {
     }
 
     @Test
-    public void test2(){
-        getChildNav(100,2);
+    public void test2() {
+        getChildNav(100, 2);
     }
 
     //找到子导航
@@ -100,16 +101,16 @@ public class NaviTest {
         List<NavigationCustom> childNavigationCustoms = new ArrayList<NavigationCustom>();
 
         //遍历导航，查找出是否存在子导航
-        for(NavigationCustom navigationCustom: navigationCustoms){
+        for (NavigationCustom navigationCustom : navigationCustoms) {
             //如果有子导航
-            if(navigationCustom.getNavigation().getUrl() == null || navigationCustom.getNavigation().getUrl().equals("")){
+            if (navigationCustom.getNavigation().getUrl() == null || navigationCustom.getNavigation().getUrl().equals("")) {
                 //传入系Id和父导航id
                 List<NavigationCustom> childNav = getChildNav(100, navigationCustom.getNavigation().getId());
                 navigationCustom.setChiren(childNav);
 
                 childNavigationCustoms.add(navigationCustom);
                 System.out.print("");
-            }else {//如果没有子导航
+            } else {//如果没有子导航
                 //加入list中
                 childNavigationCustoms.add(navigationCustom);
             }
@@ -123,45 +124,45 @@ public class NaviTest {
 
     private List<NavigationCustom> toCustom(List<Navigation> navigations) {
         List<NavigationCustom> navigationCustoms = new ArrayList<NavigationCustom>();
-        for(Navigation navigation : navigations){
+        for (Navigation navigation : navigations) {
             NavigationCustom navigationCustom = new NavigationCustom();
             //将父类转换为子类
-            fatherToChild(navigation,navigationCustom);
+            fatherToChild(navigation, navigationCustom);
 
             navigationCustoms.add(navigationCustom);
         }
 
-        return  navigationCustoms;
+        return navigationCustoms;
 
     }
 
     @Test
-    public void Test(){
+    public void Test() {
         Navigation navigation = new Navigation();
         navigation.setId(1);
 
 
         NavigationCustom navigationCustom = new NavigationCustom();
-        fatherToChild(navigation,navigationCustom);
+        fatherToChild(navigation, navigationCustom);
         System.out.println(navigationCustom);
     }
 
 
     //反射方法，将父类转换为子类
-    public static void fatherToChild (Object father,Object child){
-        if(!(child.getClass().getSuperclass()==father.getClass())){
+    public static void fatherToChild(Object father, Object child) {
+        if (!(child.getClass().getSuperclass() == father.getClass())) {
             System.err.println("child不是father的子类");
         }
-        Class fatherClass= father.getClass();
-        Field ff[]= fatherClass.getDeclaredFields();
-        for(int i=0;i<ff.length;i++){
-            Field f=ff[i];//取出每一个属性，如deleteDate
-            Class type=f.getType();
+        Class fatherClass = father.getClass();
+        Field ff[] = fatherClass.getDeclaredFields();
+        for (int i = 0; i < ff.length; i++) {
+            Field f = ff[i];//取出每一个属性，如deleteDate
+            Class type = f.getType();
             try {
-                Method m = fatherClass.getMethod("get"+upperHeadChar(f.getName()));//方法getDeleteDate
+                Method m = fatherClass.getMethod("get" + upperHeadChar(f.getName()));//方法getDeleteDate
                 f.setAccessible(true);
-                Object obj=m.invoke(father);//取出属性值
-                f.set(child,obj);
+                Object obj = m.invoke(father);//取出属性值
+                f.set(child, obj);
             } catch (SecurityException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -180,12 +181,13 @@ public class NaviTest {
             }
         }
     }
+
     /**
      * 首字母大写，in:deleteDate，out:DeleteDate
      */
-    public static String upperHeadChar(String in){
-        String head=in.substring(0,1);
-        String out=head.toUpperCase()+in.substring(1,in.length());
+    public static String upperHeadChar(String in) {
+        String head = in.substring(0, 1);
+        String out = head.toUpperCase() + in.substring(1, in.length());
         return out;
     }
 
@@ -195,8 +197,6 @@ public class NaviTest {
     @Autowired
     public RunasService runasService;
 
-    @Autowired
-    public UsersMapper usersMapper;
 
     @Autowired
     public MailService mailService;
@@ -229,9 +229,31 @@ public class NaviTest {
 
     }
 
+    @Test
+    public void test4() throws Exception {
+        List<Account> accounts = new ArrayList<Account>();
+
+        for (int i = 0; i < 200; i++) {
+            RegisterPojo registerPojo = new RegisterPojo();
+            registerPojo.setUsername("hahahaha" + i);
+            registerPojo.setName("XXX老师" + i);
+            registerPojo.setEmail(i + i * i + "lalalala@163.com");
+            registerPojo.setUid(UUID.randomUUID().toString());
+            registerPojo.setPwd("qweqwe");
+            if (i % 7 == 0) {
+                registerPojo.setDepUid("29948d32-7d3a-4ada-8047-aebbd15e8636");
+            } else if (i % 5 == 0) {
+                registerPojo.setDepUid("7020304c-cc1d-41ea-bf17-d4b154378ae4");
+            } else if (i % 3 == 0) {
+                registerPojo.setDepUid("192cab96-5956-418b-a883-19519f99e2c5");
+            } else {
+                registerPojo.setDepUid("15fc2163-3bb6-4f61-bf60-abcd1136a4d5");
+            }
+            usersService.insertAccountByRegisterPojo(registerPojo);
+        }
 
 
-
+    }
 
 
 }
