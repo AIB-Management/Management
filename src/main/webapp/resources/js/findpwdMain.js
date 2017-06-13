@@ -78,9 +78,7 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 
       this.disabled = "true";
       this.style.backgroundColor = "#666666";
-      this.submit();
-
-      return true;
+      s("#forms").submit();
 
 
     } else {

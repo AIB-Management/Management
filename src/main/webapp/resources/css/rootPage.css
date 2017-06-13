@@ -60,13 +60,46 @@ thead,tbody,tbody tr,tbody tr td{
 	line-height: 30px;
 	margin: 0 auto;
 }
-#new-file-wrap h3,#modify-file-name-wrap h3{
+#new-file-wrap h3,#modify-file-name-wrap h3,#drop-floder-wrap h3{
 	height: 38px;
 	line-height: 38px;
 	margin-bottom: 10px;
 	padding-left: 20px;
 	border-bottom: 1px solid #ccc;
 	font-size: 18px;
+}
+#drop-floder-wrap{
+	display: none;
+	position: absolute;
+	width: 550px;
+	height: 300px;
+	top: 50%;
+	left: 50%;
+	margin-left: -275px;
+	margin-top: -150px;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
+	z-index: 30;
+}
+#drop-floder-wrap .drop-floder-msg{
+	width: 95%;
+	margin: 40px auto 0 auto;
+	border: 2px solid #eb3f2f;
+	background-color: rgba(235,63,47,0.6);
+	font-size: 14px;
+}
+#drop-floder-wrap .drop-floder-btn{
+	width: 95%;
+	margin: 70px auto 0 auto;
+}
+#target-floder-name{
+	font-size: 16px;
+}
+#drop-floder-loading-icon{
+	visibility: hidden;
+	width: 30px;
+	height: 30px;
 }
 /*管理文件夹弹出层样式*/
 #manage-file-floor{
