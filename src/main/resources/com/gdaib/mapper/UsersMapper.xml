@@ -6,22 +6,22 @@
     <sql id="AccountInfo_s">
         <!-- 判断语句,如果id里面没值就不添加id-->
         <if test="id != null and id != ''">
-            and id = #{id}
+            and `t_account`.id = #{id}
         </if>
         <if test="uid != null and uid != ''">
-            and uid = #{uid}
+            and `t_account`.uid = #{uid}
         </if>
         <if test="username != null and username != ''">
-            and username = #{username}
+            and `t_account`.username = #{username}
         </if>
         <if test="name != null and name != ''">
-            and name = #{name}
+            and `t_account`.name = #{name}
         </if>
         <if test="mail != null and mail != ''">
-            and mail = #{mail}
+            and `t_account`.mail = #{mail}
         </if>
         <if test="role != null and role != ''">
-            and role = #{role}
+            and `t_account`.role = #{role}
         </if>
         <if test="departmentId != null and departmentId != ''">
             and `t_department`.`parent` = #{departmentId}
@@ -117,7 +117,7 @@
 
     <!--找到该系的所有教师-->
     <select id="findUsernameByDeparentId" parameterType="Map" resultType="com.gdaib.pojo.AccountInfo">
-        SELECT a.uid,a.name FROM `t_account` a WHERE a.`depUid` IN(SELECT uid FROM `t_department` WHERE parent = 'a434d90d-a267-457c-8e10-89028ce6ed27') AND a.role = 'teacher'
+        SELECT a.uid,a.name FROM `t_account` a WHERE a.`depUid` IN(SELECT uid FROM `t_department` WHERE parent = #{department_id}) AND a.role = 'teacher'
         <if test="accounts != null and accounts.size() != 0">
             <foreach collection="accounts" item="account" open="and uid not in(" close=")" separator=",">
                 #{account.uid}

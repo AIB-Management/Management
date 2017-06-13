@@ -21,7 +21,7 @@ public interface RunasService {
 
 
     //根据id得到用户
-    public AccountInfo getAccountInfoById(Integer id) throws Exception;
+    public AccountInfo getAccountInfoByUId(String Uid) throws Exception;
 
 
 }

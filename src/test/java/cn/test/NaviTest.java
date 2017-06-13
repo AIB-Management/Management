@@ -18,10 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by znho on 2017/5/29.
@@ -228,32 +225,14 @@ public class NaviTest {
         }
 
     }
-
-    @Test
+@Autowired
+public UsersMapper usersMapper;
+@Test
     public void test4() throws Exception {
-        List<Account> accounts = new ArrayList<Account>();
+    AccountInfo accountInfoByUId = runasService.getAccountInfoByUId("552b5449-16b4-4f12-9111-54c475099e0f");
 
-        for (int i = 0; i < 200; i++) {
-            RegisterPojo registerPojo = new RegisterPojo();
-            registerPojo.setUsername("hahahaha" + i);
-            registerPojo.setName("XXX老师" + i);
-            registerPojo.setEmail(i + i * i + "lalalala@163.com");
-            registerPojo.setUid(UUID.randomUUID().toString());
-            registerPojo.setPwd("qweqwe");
-            if (i % 7 == 0) {
-                registerPojo.setDepUid("29948d32-7d3a-4ada-8047-aebbd15e8636");
-            } else if (i % 5 == 0) {
-                registerPojo.setDepUid("7020304c-cc1d-41ea-bf17-d4b154378ae4");
-            } else if (i % 3 == 0) {
-                registerPojo.setDepUid("192cab96-5956-418b-a883-19519f99e2c5");
-            } else {
-                registerPojo.setDepUid("15fc2163-3bb6-4f61-bf60-abcd1136a4d5");
-            }
-            usersService.insertAccountByRegisterPojo(registerPojo);
-        }
-
-
-    }
+    System.out.println(accountInfoByUId);
+}
 
 
 }

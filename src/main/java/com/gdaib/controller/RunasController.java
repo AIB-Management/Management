@@ -36,8 +36,6 @@ public class RunasController {
     @ResponseBody
     public Msg getRunasUser(@RequestParam(defaultValue = "1") Integer pn) throws Exception {
 
-
-
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
@@ -96,16 +94,15 @@ public class RunasController {
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
         //1. 得到用户授权给了谁
-        List<AccountInfo> account = runasService.getAccount(accountInfo.getUsername());
+        List<AccountInfo> account = runasService.getAccount(accountInfo.getUid());
 
-        //2. 得到所有该系用户,分页
-//        PageHelper.startPage(pn,5);
-//        List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(),account);
+//        2. 得到所有该系用户,分页
+        PageHelper.startPage(pn,5);
+        List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(),account);
 
         if (account != null){
-//            PageInfo pageInfo = new PageInfo(allAccount,5);
-            return Msg.success();
-//                    .add("allAccount",pageInfo);
+            PageInfo pageInfo = new PageInfo(allAccount,5);
+            return Msg.success().add("allAccount",pageInfo);
         }else {
             return Msg.success().add("allAccount",null);
         }
@@ -113,9 +110,9 @@ public class RunasController {
 
     //切换到被别人授权的身份
     @RequestMapping("/runas/switchTo")
-    public String switchTo(Integer id) throws Exception{
+    public String switchTo(String uid) throws Exception{
 
-        AccountInfo accountInfo = runasService.getAccountInfoById(id);
+        AccountInfo accountInfo = runasService.getAccountInfoByUId(uid);
 
         Subject subject = SecurityUtils.getSubject();
         subject.runAs(new SimplePrincipalCollection(accountInfo,""));

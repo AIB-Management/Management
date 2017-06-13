@@ -49,17 +49,14 @@ public class RunasServiceImpl implements RunasService{
 
 
 
-    //根据id得到用户
+    //根据uid得到用户
     @Override
-    public AccountInfo getAccountInfoById(Integer id) throws Exception {
-//        AccountInfoExample accountInfoExample = new AccountInfoExample();
-//        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
-//        criteria.andIdEqualTo(id);
-//
-//        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
-//
-//        return accountInfos == null ? null : accountInfos.get(0);
-        return null;
+    public AccountInfo getAccountInfoByUId(String uid) throws Exception {
+        AccountInfo accountInfo = new AccountInfo();
+        accountInfo.setUid(uid);
+        List<AccountInfo> accountInfo1 = usersMapper.findAccountInfo(accountInfo);
+
+        return accountInfo1 == null ? null : accountInfo1.get(0);
     }
 
 
