@@ -1,5 +1,6 @@
 package cn.test;
 
+import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
@@ -200,10 +201,32 @@ public class NaviTest {
     @Autowired
     public MailService mailService;
 
+    @Autowired
+    public AccountMapper accountMapper;
+
     @Test
     public void test3() throws Exception {
-        List<AccountInfo> beAccount = runasService.getAccount("552b5449-16b4-4f12-9111-54c475099e0f");
-        System.out.println(beAccount);
+        List<Account> accounts = new ArrayList<Account>();
+
+        for(int i = 0 ; i < 200 ; i ++){
+            RegisterPojo registerPojo = new RegisterPojo();
+            registerPojo.setUsername("hahahaha"+ i );
+            registerPojo.setName("XXX老师" + i);
+            registerPojo.setEmail(i+ i * i +"lalalala@163.com");
+            registerPojo.setUid(UUID.randomUUID().toString());
+            registerPojo.setPwd("qweqwe");
+            if(i %7 == 0){
+                registerPojo.setDepUid("29948d32-7d3a-4ada-8047-aebbd15e8636");
+            }else if (i % 5 == 0){
+                registerPojo.setDepUid("7020304c-cc1d-41ea-bf17-d4b154378ae4");
+            }else if( i % 3 == 0){
+                registerPojo.setDepUid("192cab96-5956-418b-a883-19519f99e2c5");
+            }else{
+                registerPojo.setDepUid("15fc2163-3bb6-4f61-bf60-abcd1136a4d5");
+            }
+            usersService.insertAccountByRegisterPojo(registerPojo);
+        }
+
     }
 
 
