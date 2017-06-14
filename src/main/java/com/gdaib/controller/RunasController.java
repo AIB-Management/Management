@@ -146,7 +146,7 @@ public class RunasController {
 
     //授权给别人自己的身份
     @RequestMapping("/runas/grant")
-    public String grant(String uid) throws Exception {
+    public String grant(String uid,@RequestParam(defaultValue = "1") Integer pn) throws Exception {
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
@@ -156,8 +156,8 @@ public class RunasController {
     }
 
     //取消授权给别人自己的身份
-    @RequestMapping("/runas/grant")
-    public String retract(String uid) throws Exception {
+    @RequestMapping("/runas/retract")
+    public String retract(String uid,@RequestParam(defaultValue = "1") Integer pn) throws Exception {
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
