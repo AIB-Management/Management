@@ -24,7 +24,7 @@
 	<div class="wrapper">
 		<div class="header">
 			<div class="title-wrap">
-				<h3><shiro:principal property="depContent"/>主页</h3>
+				<h3 title="<shiro:principal property="departmentId"/>"><shiro:principal property="depContent"/>主页</h3>
 			</div>
 			<div class="header-tag">
 				<a href="${pageContext.request.contextPath}/content/toId.action" id="manage-msg">管理信息</a>
