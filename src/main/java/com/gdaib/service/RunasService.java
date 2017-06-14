@@ -23,5 +23,13 @@ public interface RunasService {
     //根据id得到用户
     public AccountInfo getAccountInfoByUId(String Uid) throws Exception;
 
+    //检查是否具有授权的身份
+    public boolean checkIsBeAccount(String uid , String beUid)throws Exception;
+
+    //增加授权用户
+    public void insertRunasAccount(String uid,String beUid) throws Exception;
+
+    //删除授权用户
+    public void deleteRunasAccount(String uid,String beUid) throws Exception;
 
 }

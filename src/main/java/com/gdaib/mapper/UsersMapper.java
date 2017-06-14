@@ -62,4 +62,6 @@ public interface UsersMapper {
 
     //批量查询AccountInfo
     public List<AccountInfo> findBatchAccountInfo(Map<String,Object> Uids) throws Exception;
+
+
 }

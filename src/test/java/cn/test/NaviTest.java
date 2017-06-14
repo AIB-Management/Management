@@ -229,9 +229,8 @@ public class NaviTest {
 public UsersMapper usersMapper;
 @Test
     public void test4() throws Exception {
-    AccountInfo accountInfoByUId = runasService.getAccountInfoByUId("552b5449-16b4-4f12-9111-54c475099e0f");
+    runasService.deleteRunasAccount("430ce452-6360-425f-8c89-9509d4f7dd4c","fa701f87-6d4f-456d-834f-67680c5d304d");
 
-    System.out.println(accountInfoByUId);
 }
 
 

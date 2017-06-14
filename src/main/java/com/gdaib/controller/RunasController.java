@@ -111,10 +111,20 @@ public class RunasController {
     //切换到被别人授权的身份
     @RequestMapping("/runas/switchTo")
     public String switchTo(String uid) throws Exception{
+        Subject subject = SecurityUtils.getSubject();
+
+        AccountInfo account = (AccountInfo) subject.getPrincipal();
+        //检查是否具有授权的身份
+        boolean b = runasService.checkIsBeAccount(uid, account.getUid());
+        if(!b || subject.isRunAs()){
+            return "redirect:/content/departmentpage.action";
+        }
+
+
 
         AccountInfo accountInfo = runasService.getAccountInfoByUId(uid);
 
-        Subject subject = SecurityUtils.getSubject();
+
         subject.runAs(new SimplePrincipalCollection(accountInfo,""));
 
         return "redirect:/content/departmentpage.action";
@@ -136,8 +146,22 @@ public class RunasController {
 
     //授权给别人自己的身份
     @RequestMapping("/runas/grant")
-    public String grant(Integer id,Integer toId){
+    public String grant(String uid) throws Exception {
+        Subject subject = SecurityUtils.getSubject();
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
+        runasService.insertRunasAccount(accountInfo.getUid(),uid);
+
+        return "forward:/runas/getRunasUser.action";
+    }
+
+    //取消授权给别人自己的身份
+    @RequestMapping("/runas/grant")
+    public String retract(String uid) throws Exception {
+        Subject subject = SecurityUtils.getSubject();
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
+
+        runasService.deleteRunasAccount(accountInfo.getUid(),uid);
 
         return "forward:/runas/getRunasUser.action";
     }

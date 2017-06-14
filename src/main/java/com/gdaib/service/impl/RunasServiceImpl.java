@@ -3,6 +3,7 @@ package com.gdaib.service.impl;
 
 
 
+import com.gdaib.mapper.AuthorizationMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.RunasService;
@@ -21,6 +22,8 @@ public class RunasServiceImpl implements RunasService{
     @Autowired
     public UsersMapper usersMapper;
 
+    @Autowired
+    public AuthorizationMapper authorizationMapper;
 
 
     //得到用户被授权的身份
@@ -59,6 +62,37 @@ public class RunasServiceImpl implements RunasService{
         return accountInfo1 == null ? null : accountInfo1.get(0);
     }
 
+//    检查是否具有授权的身份
+    @Override
+    public boolean checkIsBeAccount(String uid, String beUid) throws Exception {
+
+
+        AuthorizationExample authorizationExample= new AuthorizationExample();
+        AuthorizationExample.Criteria criteria = authorizationExample.createCriteria();
+        criteria.andAccuidEqualTo(uid);
+        criteria.andBeaccuidEqualTo(beUid);
+        int i = authorizationMapper.countByExample(authorizationExample);
+
+
+        return i == 0 ? false : true;
+    }
+
+    @Override
+    public void insertRunasAccount(String uid, String beUid) throws Exception {
+        Authorization authorization = new Authorization();
+        authorization.setAccuid(uid);
+        authorization.setBeaccuid(beUid);
+        authorizationMapper.insertSelective(authorization);
+    }
+
+    @Override
+    public void deleteRunasAccount(String uid, String beUid) throws Exception {
+        AuthorizationExample authorizationExample = new AuthorizationExample();
+        AuthorizationExample.Criteria criteria = authorizationExample.createCriteria();
+        criteria.andAccuidEqualTo(uid);
+        criteria.andBeaccuidEqualTo(beUid);
+        authorizationMapper.deleteByExample(authorizationExample);
+    }
 
 
 }
