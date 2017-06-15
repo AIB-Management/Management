@@ -15,16 +15,19 @@
 				<button type="button" class="close" aria-label="Close" id="uploadfile-close-btn"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<h3 class="upload-file-title">上传文件</h3>
-			<div class="upload-file-content">
+			<div class="upload-file-input">
+				<label>文件标题</label>
+				<input type="text" id="fileTitle">
+			</div>
+			<div class="upload-file-dropzone">
 				<input type="file" name="file" id="fileupload" multiple="true">
 			</div>
 		</div>
 	</div>
-
 	<div class="wrapper">
 		<div class="header">
 			<div class="title-wrap">
-				<h3 title="<shiro:principal property="departmentId"/>"><shiro:principal property="depContent"/>主页</h3>
+				<h3 id="departmentId" title='<shiro:principal property="departmentId"/>'><shiro:principal property="depContent"/>主页</h3>
 			</div>
 			<div class="header-tag">
 				<a href="${pageContext.request.contextPath}/content/toId.action" id="manage-msg">管理信息</a>
@@ -50,11 +53,7 @@
 				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
 					<span class="caret"></span>
 				</button>
-				<ul id="overflow-item-wrap">
-					<li><a href="#" data-path="0">啦啦啦</a></li>
-					<li><a href="#" data-path="0">啦啦啦</a></li>
-					<li><a href="#" data-path="0">啦啦啦</a></li>
-				</ul>
+				<ul id="overflow-item-wrap"></ul>
 			</div>
 		</div>
 		

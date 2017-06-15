@@ -103,7 +103,6 @@ thead,tbody,tbody tr,tbody tr td{
 }
 /*管理文件夹弹出层样式*/
 #manage-file-floor{
-	position: relative;
 	display: none;
 	position: fixed;
 	top: 0;
@@ -115,7 +114,7 @@ thead,tbody,tbody tr,tbody tr td{
 }
 /*文件夹管理弹出层内容*/
 .filemanage-info{
-	width: 80%;
+	width: 1000px;
 	height: 600px;
 	margin: 20px auto 0 auto;
 	border-radius: 5px;
@@ -233,7 +232,7 @@ thead,tbody,tbody tr,tbody tr td{
 #manage-side-item{
 	margin-top: 10px;
 }
-#manage-side-item li{
+#manage-side-item li,#manage-department-list li{
 	height: 45px;
 	line-height: 45px;
 	padding-left: 10px;
@@ -309,6 +308,87 @@ thead,tbody,tbody tr,tbody tr td{
 	background-color: #E4E9EC;
 }
 /*文件夹管理弹出层结束*/
+/*管理系别及部门弹出层开始*/
+#manage-department-floor{
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+	z-index: 30;
+}
+#manage-department-floor h3{
+	height: 30px;
+	line-height: 30px;
+	padding-left: 10px;
+	font-size: 18px;
+	border-bottom: 1px solid #ccc;
+}
+.manage-department-wrap{
+	width: 1000px;
+	height: 600px;
+	margin: 20px auto 0 auto;
+	border-radius: 5px;
+	background-color: #fff;
+	box-shadow: 0 5px 10px rgba(160,162,122,0.5);
+}
+.manage-department-toolbar{
+	height: 30px;
+	line-height: 30px;
+	margin-top: 20px;
+	padding-left: 10px;
+}
+/*页面初始化的时候添加专业按钮隐藏*/
+#add-speciality{
+	display: none;
+}
+.manage-department-main{
+	height: 460px;
+	margin-top: 20px;
+}
+.manage-department-main-sidebar{
+	float: left;
+	width: 30%;
+	height: 460px;
+	border-right: 1px solid #ccc;
+}
+.manage-department-main-sidebar li{
+	height: 38px;
+	line-height: 38px;
+	padding-left: 10px;
+}
+.manage-department-main-sidebar li a{
+	font-size: 15px;
+	color: #333;
+	text-decoration: none;
+}
+.manage-department-main-sidebar li:hover{
+	background-color: #E4E9EC;
+}
+.manage-department-td button{
+	margin-right: 3px;
+}
+/*当不存在系别的时候添加这个类名显示提示背景*/
+.nodepartment-sidebar-bg{
+	background: url(../images/manage-department-sidebar-bg.jpg);
+	background-size: cover;
+	background-position: center;
+}
+/*管理系别弹出层右侧主内容*/
+.manage-department-maincontent{
+	float: right;
+	width: 70%;
+	height: 460px;
+	border-top: 1px solid #ccc;
+	overflow-y: scroll;
+}
+.manage-department-td{
+	width: 50%;
+	text-align: center;
+}
+/*管理系别及部门弹出层结束*/
 /*弹出层样式*/
 #floor{
 	display: none;
@@ -499,14 +579,14 @@ thead,tbody,tbody tr,tbody tr td{
 	text-align: center;
 	cursor: default;
 }
-#manage-floder{
+#manage-floder,#manage-department{
 	height: 45px;
 	line-height: 45px;
 	padding-left: 30px;
 	color: #fff;
 	cursor: default;
 }
-#manage-floder:hover{
+#manage-floder:hover,#manage-department:hover{
 	background-color: #fff;
 	color: #434343;
 }

@@ -12,8 +12,66 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-8"></script>
 </head>
 <body>
+	<!-- 管理部门模块模态框开始 -->
+	<div id="manage-department-floor">
+		<div class="manage-department-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="manage-department-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>管理系别及专业</h3>
+			<div class="manage-department-toolbar">
+				<button class="btn btn-primary btn-sm" id="add-department">
+					<span class="glyphicon glyphicon-plus"></span> 
+					新建系别
+				</button>
+				<button class="btn btn-danger btn-sm" id="drop-department">
+					<span class="glyphicon glyphicon-trash"></span> 
+					删除系别
+				</button>
+				<button class="btn btn-default btn-sm" id="add-speciality">
+					<span class="glyphicon glyphicon-plus"></span> 
+					增加专业
+				</button>
+			</div>
+			<div class="manage-department-main clearfix">
+				<ul class="manage-department-main-sidebar" id="manage-department-list"></ul>
+				<div class="manage-department-maincontent">
+					<table class="table table-striped table-hover">
+						<tbody class="speciality-list-wrap" id="speciality-list-content">
+							<tr>
+								<td class="manage-department-td">移动互联引用</td>
+								<td class="manage-department-td">
+									<button class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-edit"></span> 
+										修改专业名称
+									</button>
+									<button class="btn btn-danger btn-sm">
+										<span class="glyphicon glyphicon-trash"></span> 
+										删除专业
+									</button>
+								</td>
+							</tr>
+							<tr>
+								<td class="manage-department-td">移动互联引用</td>
+								<td class="manage-department-td">
+									<button class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-edit"></span> 
+										修改专业名称
+									</button>
+									<button class="btn btn-danger btn-sm">
+										<span class="glyphicon glyphicon-trash"></span> 
+										删除专业
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="manage-file-floor">
-		<!-- 修改文件夹名对话框 -->
+		<!-- 修改文件夹名模态框 -->
 		<div id="modify-file-name-wrap">
 			<div class="close-btn clearfix">
 				<button type="button" class="close" aria-label="Close" id="modify-flodername-close-btn"><span aria-hidden="true">&times;</span></button>
@@ -171,6 +229,12 @@
 					</ul>
 				</div>
 				<div class="item-wrap-2">
+					<div id="user-manage" class="sidebar-tag-header">系别及专业使用权限管理</div>
+					<ul class="child-tag-wrap">
+						<li id="manage-department">管理系别及专业</li>
+					</ul>
+				</div>
+				<div class="item-wrap-3">
 					<div id="user-manage" class="sidebar-tag-header">用户审核</div>
 					<ul class="child-tag-wrap">
 						<li class="child-tag" id="unexamie-tag">待审核<span id="number-hints">15</span></li>
