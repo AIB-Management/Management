@@ -15,6 +15,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	var curManageFloderDepId = "";
 	//部门管理弹出层左侧系别点击时保存的部门id
 	var curManageDepDepId = "";
+	//保存当前选择的部门名字
+	var curManageDepDepName = "";
 	//---------------------------
 
 	//封装选择器函数
@@ -453,11 +455,11 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		//显示修改文件夹名弹出层
 		s("#modify-file-name-wrap").style.display = 'block';
 	}
-
+	
 	//定义检测创建文件名或修改文件名时 文件名是否有重复
-	function checkFloderName(val){
+	function checkFloderName(elem,val){
 		//获取下面的文件夹列表所有a 元素
-		var floderNameList = ss("#file-list-content tr td a"),
+		var floderNameList = elem,
 			//定义文件夹名字状态初始值
 			filenameStatus = false;
 
@@ -584,7 +586,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		//获取输入框的内容
 		var val = s("#new-file-name").value;
 		//调用 checkFloderName 函数判断文件名是否合法
-		var floderNameIsCorrect = checkFloderName(val);
+		var floderNameIsCorrect = checkFloderName(ss("#file-list-content tr td a"),val);
 
 		//根据filenameStatus 判断文件名的合法性
 		if (floderNameIsCorrect == false) {
@@ -657,13 +659,13 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		var val = s("#rename-file").value;
 			
 
-		var floderNameIsCorrect = checkFloderName(val);
+		var floderNameIsCorrect = checkFloderName(ss("#file-list-content tr td a"),val);
 
 		//根据filenameStatus 判断文件名的合法性
 		if (floderNameIsCorrect == false) {
 			s("#modify-msg-hint").style.color = "red";
 			s("#modify-msg-hint").innerText = "已有同名的文件夹";
-		}else if (floderNameIsCorrect == true && s("#rename-file").value != "") {
+		}else if (floderNameIsCorrect == true) {
 
 			//如果名字合法且输入框内容不为空创建两个变量：文件夹的id，
 			//获取输入框的内容以及title 的值
@@ -775,23 +777,315 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		createManageDepDepsList();
 		//再显示
 		s("#manage-department-floor").style.display = 'block';
-	})
+	});
 
 	//点击管理系别弹出层关闭按钮事件
 	EventUntil.addHandler(s("#manage-department-close-btn"),"click",function(){
 		s("#manage-department-floor").style.display = 'none';
+	});
+
+	//新建系别按钮点击事件
+	EventUntil.addHandler(s("#add-department"),"click",function(){
+		s("#new-department-dialog").style.display = 'block';
+	});
+
+	//新建系别对话框关闭按钮点击事件
+	EventUntil.addHandler(s("#new-department-close-btn"),"click",function(){
+		s("#new-department-dialog").style.display = 'none';
+		s("#new-department-hint").innerText = "";
+	});
+
+	//新建系别对话框提交按钮点击事件
+	EventUntil.addHandler(s("#confirm-new-department"),"click",submitNewDepartment);
+
+	//新建专业按钮点击事件
+	EventUntil.addHandler(s("#add-speciality"),"click",function(){
+		
+		s("#new-specialy-dialog").style.display = 'block';
 	})
 
+	//新建专业对话框关闭按钮点击事件
+	EventUntil.addHandler(s("#new-specialy-close-btn"),"click",function(){
+		s("#new-specialy-dialog").style.display = 'none';
+		s("#new-specialy-hint").innerText = "";
+	})
+
+	//新建专业对话框提交按钮点击事件
+	EventUntil.addHandler(s("#confirm-new-specialy"),"click",submitNewSpecialy);
 	
 
-	//部门修改按钮点击事件
+	//修改系别对话框按钮点击事件
+	EventUntil.addHandler(s("#modify-department"),"click",function(){
+		//判断当前是否有选择的系别
+		if (curManageDepDepName != "") {
+			//有就显示修改系别对话框
+			s("#modify-department-name").value = curManageDepDepName;
+			s("#modify-department-dialog").style.display = 'block';
+
+		}else{
+			alert("你当前还没有选择系别");
+		}
+	})
+
+	//修改系别对话框关闭按钮点击事件
+	EventUntil.addHandler(s("#modify-department-close-btn"),"click",function(){
+		s("#modify-department-dialog").style.display = 'none';
+		s("#modify-department-name").value = "";
+		s("#modify-department-hint").innerText = "";
+	})
+
+	//修改系别对话框提交按钮点击事件
+	EventUntil.addHandler(s("#confirm-modify-department"),"click",submitModifyDepartment);
+
+	//删除系别按钮点击事件
+	EventUntil.addHandler(s("#drop-department"),"click",function(){
+		if (curManageDepDepId != "") {
+			//如果当前选择了系别 弹出对话框
+			var depName = curManageDepDepName;
+			s("#drop-dep-name").innerText = depName;
+			s("#drop-department-dialog").style.display = 'block';
+		}else{
+			alert("你当前还没选择系别");
+		}
+	})
+
+	//删除系别对话框确认删除按钮点击事件
+	EventUntil.addHandler(s("#confirm-drop-dep"),"click",confirmDropDep);
+
+	//删除系别对话框取消按钮点击事件
+	EventUntil.addHandler(s("#cancel-drop-dep"),"click",function(){
+		s("#drop-department-dialog").style.display = 'none';
+	})
+
+	//修改专业提交按钮点击事件
+	EventUntil.addHandler(s("#confirm-modify-specialy"),"click",submitModifySpec);
+
+	//修改专业关闭按钮点击事件
+	EventUntil.addHandler(s("#modify-specialy-close-btn"),"click",function(){
+		s("#modify-specialy-dialog").style.display = 'none';
+		s("#modify-specialy-hint").innerText = "";
+	})
+
+	//删除专业对话框取消按钮点击事件
+	EventUntil.addHandler(s("#cancel-drop-spec"),"click",function(){
+		s("#drop-specialy-dialog").style.display = 'none';
+		s("#modify-specialy-hint").innerText = "";
+	})
+
+	//删除专业对话框确认按钮点击事件
+	EventUntil.addHandler(s("#confirm-drop-spec"),"click",dropSpec);
+
+
+	//专业名修改按钮点击事件
 	function editSpecBtnClick(){
-		alert("你点击的是修改按钮");
+		//找出tr 元素
+		var parent = this.parentNode.parentNode;
+		//获取当前点击按钮对应的专业名
+		var specName = parent.querySelectorAll("td")[0].innerText;
+		//获取当前点击按钮对应的专业id
+		var specId = parent.querySelectorAll("td")[0].title;
+		//为对话框的输入框赋值
+		s("#modify-specialy-name").value = specName;
+		s("#modify-specialy-name").title = specId;
+		s("#modify-specialy-dialog").style.display = 'block';
+
 	}
 
-	//部门删除按钮点击事件
+	//专业名删除按钮点击事件
 	function dropSpecBtnClick(){
-		alert("你点击的是删除按钮");
+		//找出tr 元素
+		var parent = this.parentNode.parentNode;
+		//获取当前点击按钮对应的专业名
+		var specName = parent.querySelectorAll("td")[0].innerText;
+		//获取当前点击按钮对应的专业id
+		var specId = parent.querySelectorAll("td")[0].title;
+		//为对话框的输入框赋值
+		s("#drop-spec-name").innerText = specName;
+		s("#drop-spec-name").title = specId;
+		s("#drop-specialy-dialog").style.display = 'block';
+	}
+
+
+
+	//删除专业对话框提交按钮点击回调函数
+	function dropSpec(){
+		var id = s("#drop-spec-name").title;
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxDeleteDep.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "uids=" + id,
+			success: function(){
+				//修改成功之后刷新右侧专业栏
+				outputSpeciality(curManageDepDepId);
+				s("#drop-specialy-dialog").style.display = 'none';
+				alert("删除成功");
+			},
+			error: function(){
+				alert("删除失败！此专业下存在文件！");
+			}
+		})
+		
+	}
+
+
+	//修改专业对话框提交按钮点击回调函数
+	function submitModifySpec(){
+		//修改后的值
+		var val = s("#modify-specialy-name").value,
+			id = s("#modify-specialy-name").title
+			valIsCorrect = checkFloderName(ss("#speciality-list-content tr td"),val);
+
+		if (val != "" && valIsCorrect == true) {
+			//发送ajax
+			$.ajax({
+				url: 'http://localhost:8080/Management/admin/ajaxUpdateDep.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "uid=" + id + "&content=" + val,
+				success: function(){
+					//修改成功之后刷新右侧专业栏
+					outputSpeciality(curManageDepDepId);
+					//清空提示信息
+					s("#modify-specialy-hint").innerText = "";
+					//关闭对话框
+					s("#modify-specialy-dialog").style.display = 'none';
+					alert("修改成功！");
+				}
+			})
+			
+		}else{
+			s("#modify-specialy-hint").style.color = "red";
+			s("#modify-specialy-hint").innerText = "专业名名称有误";
+		}
+	}
+
+	//删除系别按钮点击的回调函数
+	function confirmDropDep(){
+		//发送ajax
+		$.ajax({
+			url: 'http://localhost:8080/Management/admin/ajaxDeleteDep.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "uids=" + curManageDepDepId,
+			success: function(){
+				//更新系别列表
+				createManageDepDepsList();
+				//删除系别对话框关闭
+				s("#drop-department-dialog").style.display = 'none';
+				alert("删除成功！");
+			},
+			error: function(){
+				alert("删除失败，此系别下存在专业！");
+			}
+		})
+		
+	}
+
+	//修改系别对话框提交按钮点击事件回调函数
+	function submitModifyDepartment(){
+		var modifyVal = s("#modify-department-name").value;
+		var modifyValIsCorrect = checkFloderName(ss("#manage-department-list li"),modifyVal);
+
+		if (modifyVal != "" && modifyValIsCorrect == true) {
+			//如果修改后的部门名称不为空且正确
+			$.ajax({
+				url: 'http://localhost:8080/Management/admin/ajaxUpdateDep.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "uid=" + curManageDepDepId + "&parent=0&content=" +  modifyVal,
+				success: function(){
+					//请求成功后
+					//刷新左侧部门列表
+					createManageDepDepsList();
+					//清空输入框的值
+					s("#modify-department-name").value = "";
+					//清空提示信息
+					s("#modify-department-hint").innerText;
+					//清空右侧专业内容
+					s("#speciality-list-content").innerHTML = "";
+					//关闭对话框
+					s("#modify-department-dialog").style.display = 'none';
+					alert("修改成功")
+				}
+			})
+			
+		}else{
+			s("#modify-department-hint").style.color = "red";
+			s("#modify-department-hint").innerText = "系别名错误";
+		}
+	}
+
+
+	//新建系别对话框提交按钮点击事件回调函数
+	function submitNewDepartment(){
+		var newDepName = s("#new-department-name").value;
+		var depNameIsCorrect = checkFloderName(ss("#manage-department-list li"),newDepName);
+		
+		//如果新系别名不为空且不重复发送数据给后台
+		if (newDepName != "" && depNameIsCorrect == true) {
+			$.ajax({
+				url: 'http://localhost:8080/Management/admin/ajaxAddDep.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "parent=0&content=" + newDepName,
+				success: function(data){
+					//输出数据
+					createManageDepDepsList();
+					//清空右侧专业内容
+					s("#speciality-list-content").innerHTML = "";
+					//清空输入框内容
+					s("#new-department-name").value = "";
+					//清空提示框信息
+					s("#new-department-hint").innerText = "";
+					//清空保存的系别id
+					curManageFloderDepId = "";
+					//关闭对话框
+					s("#new-department-dialog").style.display = 'none';
+					alert("创建成功");
+				}
+			});
+
+			
+		}else{
+			s("#new-department-hint").style.color = "red";
+			s("#new-department-hint").innerText = "系别名称错误";
+		}
+	}
+
+
+	//新建系别对话框提交按钮点击事件回调函数
+	function submitNewSpecialy(){
+		var newSpecName = s("#new-specialy-name").value;
+		var specNameIsCorrect = checkFloderName(ss("#speciality-list-content tr td"),newSpecName);
+
+		//如果新系别名不为空且不重复发送数据给后台
+		if (newSpecName != "" && specNameIsCorrect == true) {
+			$.ajax({
+				url: 'http://localhost:8080/Management/admin/ajaxAddDep.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "parent=" + curManageDepDepId + "&content=" + newSpecName,
+				success: function(data){
+					//输出专业数据
+					outputSpeciality(curManageDepDepId);
+					//清空输入框
+					s("#new-specialy-name").value = "";
+					//清空提示框
+					s("#new-specialy-hint").innerText = "";
+					//清空保存的系别id
+					curManageFloderDepId = "";
+					//关闭对话框
+					s("#new-specialy-dialog").style.display = 'none';
+					alert("创建成功");
+				}
+			});
+
+			
+		}else{
+			s("#new-specialy-hint").style.color = "red";
+			s("#new-specialy-hint").innerText = "专业名称错误";
+		}
 	}
 
 
@@ -906,7 +1200,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 	//创建系别管理弹出层侧边栏部门列表
 	function createManageDepDepsList(){
+
 		var depListWrap = s("#manage-department-list");
+		//清空所有系别内容
+		depListWrap.innerHTML = "";
 
 		$.ajax({
 			url: 'http://localhost:8080/Management/content/ajaxFindDepOrPro.action',
@@ -944,6 +1241,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		//侧边栏系别点击时
 		//获取这个系别的id
 		curManageDepDepId = this.getAttribute("data-depid");
+		//获取这个系别的名字
+		curManageDepDepName = this.innerText;
 		//输出数据
 		outputSpeciality(curManageDepDepId);
 

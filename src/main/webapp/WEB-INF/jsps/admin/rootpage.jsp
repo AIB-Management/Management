@@ -14,6 +14,102 @@
 <body>
 	<!-- 管理部门模块模态框开始 -->
 	<div id="manage-department-floor">
+		<div id="new-department-dialog">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="new-department-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>新建系别</h3>
+			<div class="department-content">
+				<label>系别名称</label>
+				<input type="text" id="new-department-name">
+				<p id="new-department-hint"></p>
+			</div>
+			<div class="department-content">
+				<button class="btn btn-primary btn-sm" id="confirm-new-department">
+					<span class="glyphicon glyphicon-ok"></span> 
+					提交
+				</button>
+			</div>
+		</div>
+		<div id="new-specialy-dialog">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="new-specialy-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>新建专业</h3>
+			<div class="department-content">
+				<label>专业名称</label>
+				<input type="text" id="new-specialy-name">
+				<p id="new-specialy-hint"></p>
+			</div>
+			<div class="department-content">
+				<button class="btn btn-primary btn-sm" id="confirm-new-specialy">
+					<span class="glyphicon glyphicon-ok"></span> 
+					提交
+				</button>
+			</div>
+		</div>
+		<div id="modify-specialy-dialog">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="modify-specialy-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>修改专业</h3>
+			<div class="department-content">
+				<label>专业名称</label>
+				<input type="text" id="modify-specialy-name">
+				<p id="modify-specialy-hint"></p>
+			</div>
+			<div class="department-content">
+				<button class="btn btn-primary btn-sm" id="confirm-modify-specialy">
+					<span class="glyphicon glyphicon-ok"></span> 
+					提交
+				</button>
+			</div>
+		</div>
+		<div id="modify-department-dialog">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close" id="modify-department-close-btn"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>修改系别</h3>
+			<div class="department-content">
+				<label>部门系别</label>
+				<input type="text" id="modify-department-name">
+				<p id="modify-department-hint"></p>
+			</div>
+			<div class="department-content">
+				<button class="btn btn-primary btn-sm" id="confirm-modify-department">
+					<span class="glyphicon glyphicon-ok"></span> 
+					提交
+				</button>
+			</div>
+		</div>
+		<div id="drop-department-dialog">
+			<h3 class="department-operate-title">删除系别</h3>
+			<p class="department-operate-wraming">确定要删除<b id="drop-dep-name"></b>吗？如果此系别下有专业存在会出现异常</p>
+			<div class="department-operate-btn">
+				<button class="btn btn-success btn-sm" id="cancel-drop-dep">
+					<span class="glyphicon glyphicon-remove"></span> 
+					取消
+				</button>
+				<button class="btn btn-danger btn-sm" id="confirm-drop-dep">
+					<span class="glyphicon glyphicon-trash"></span> 
+					删除
+				</button>
+			</div>
+		</div>
+		<div id="drop-specialy-dialog">
+			<h3 class="department-operate-title">删除专业</h3>
+			<p class="department-operate-wraming">确定要删除<b id="drop-spec-name"></b>吗？如果此专业下有文件存在会出现异常</p>
+			<div class="department-operate-btn">
+				<button class="btn btn-success btn-sm" id="cancel-drop-spec">
+					<span class="glyphicon glyphicon-remove"></span> 
+					取消
+				</button>
+				<button class="btn btn-danger btn-sm" id="confirm-drop-spec">
+					<span class="glyphicon glyphicon-trash"></span> 
+					删除
+				</button>
+			</div>
+		</div>
 		<div class="manage-department-wrap">
 			<div class="close-btn clearfix">
 				<button type="button" class="close" aria-label="Close" id="manage-department-close-btn"><span aria-hidden="true">&times;</span></button>
@@ -23,6 +119,10 @@
 				<button class="btn btn-primary btn-sm" id="add-department">
 					<span class="glyphicon glyphicon-plus"></span> 
 					新建系别
+				</button>
+				<button class="btn btn-success btn-sm" id="modify-department">
+					<span class="glyphicon glyphicon-edit"></span> 
+					修改系别
 				</button>
 				<button class="btn btn-danger btn-sm" id="drop-department">
 					<span class="glyphicon glyphicon-trash"></span> 
@@ -37,34 +137,7 @@
 				<ul class="manage-department-main-sidebar" id="manage-department-list"></ul>
 				<div class="manage-department-maincontent">
 					<table class="table table-striped table-hover">
-						<tbody class="speciality-list-wrap" id="speciality-list-content">
-							<tr>
-								<td class="manage-department-td">移动互联引用</td>
-								<td class="manage-department-td">
-									<button class="btn btn-default btn-sm">
-										<span class="glyphicon glyphicon-edit"></span> 
-										修改专业名称
-									</button>
-									<button class="btn btn-danger btn-sm">
-										<span class="glyphicon glyphicon-trash"></span> 
-										删除专业
-									</button>
-								</td>
-							</tr>
-							<tr>
-								<td class="manage-department-td">移动互联引用</td>
-								<td class="manage-department-td">
-									<button class="btn btn-default btn-sm">
-										<span class="glyphicon glyphicon-edit"></span> 
-										修改专业名称
-									</button>
-									<button class="btn btn-danger btn-sm">
-										<span class="glyphicon glyphicon-trash"></span> 
-										删除专业
-									</button>
-								</td>
-							</tr>
-						</tbody>
+						<tbody class="speciality-list-wrap" id="speciality-list-content"></tbody>
 					</table>
 				</div>
 			</div>
