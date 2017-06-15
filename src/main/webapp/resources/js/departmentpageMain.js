@@ -401,7 +401,6 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 		//之后的点击在导航栏名字的 data-path 里面获取
 		//depId 当前页面的系别id
 		//此方法 将会在表格里面的文件夹名点击，面包屑导航，溢出导航点击时调用
-
 		//发送ajax 请求
 		$.ajax({
 			url: 'http://localhost:8080/Management/content/ajaxFindNavAndFile.action',
