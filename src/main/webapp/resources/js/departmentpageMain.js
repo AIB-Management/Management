@@ -264,7 +264,7 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 
 		//调整完样式之后就可以输出数据了
 		var path = this.getAttribute("data-path");
-		createFileList(path,s("#departmentId"));
+		createFileList(path,s("#departmentId").title);
 	}
 
 	//文件点击事件回调函数

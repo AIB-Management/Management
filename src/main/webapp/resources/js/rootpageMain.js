@@ -782,7 +782,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		s("#manage-department-floor").style.display = 'none';
 	})
 
-	//
+	
 
 	//部门修改按钮点击事件
 	function editSpecBtnClick(){
