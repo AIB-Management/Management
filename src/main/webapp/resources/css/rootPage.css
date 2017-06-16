@@ -309,6 +309,48 @@ thead,tbody,tbody tr,tbody tr td{
 }
 /*文件夹管理弹出层结束*/
 /*管理系别及部门弹出层开始*/
+/*新建系别对话框样式*/
+#new-department-dialog,#new-specialy-dialog,
+#modify-department-dialog,#modify-specialy-dialog{
+	display: none;
+	position: absolute;
+	width: 550px;
+	height: 300px;
+	top: 50%;
+	left: 50%;
+	margin-left: -275px;
+	margin-top: -150px;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
+	z-index: 30;
+}
+.department-content{
+	width: 95%;
+	margin: 35px auto 0 auto;
+	word-spacing: -6px;
+}
+.department-content label,.department-content input{
+	display: inline-block;
+	word-spacing: 0px;
+}
+.department-content label{
+	width: 20%;
+	height: 35px;
+	line-height: 35px;
+	background-color: #337ab7;
+	border-radius: 5px 0px 0px 5px;
+	color: #fff;
+	text-align: center;
+}
+.department-content input{
+	width: 80%;
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #337ab7;
+	border-radius: 0px 5px 5px 0px;
+	padding-left: 5px;
+}
 #manage-department-floor{
 	display: none;
 	position: fixed;
@@ -387,6 +429,42 @@ thead,tbody,tbody tr,tbody tr td{
 .manage-department-td{
 	width: 50%;
 	text-align: center;
+}
+/*删除系别，删除部门对话框样式*/
+#drop-department-dialog,#drop-specialy-dialog{
+	display: none;
+	position: absolute;
+	width: 450px;
+	height: 200px;
+	top: 50%;
+	left: 50%;
+	margin-left: -225px;
+	margin-top: -100px;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
+	z-index: 30;
+}
+.department-operate-title{
+	display: block;
+	height: 50px;
+	padding-left: 10px;
+	border-bottom: 1px solid #ccc;
+	font-size: 18px;
+}
+.department-operate-wraming{
+	width: 98%;
+	margin: 40px auto 0 auto;
+	border: 2px solid #eb3f2f;
+	background-color: rgba(235,63,47,0.6);
+	font-size: 15px; 
+}
+.department-operate-wraming b{
+	font-size: 16px;
+}
+.department-operate-btn{
+	width: 98%;
+	margin: 30px auto 0 auto;
 }
 /*管理系别及部门弹出层结束*/
 /*弹出层样式*/
