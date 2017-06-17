@@ -66,14 +66,16 @@ public class RunasController {
         }
 
 
-        //3. 得到所有该系用户,分页
-        System.out.println(accountInfo);
+
+        //3. 得到所有该系用户
 
 
+        account.add(accountInfo);
         List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(), account);
+        account.remove(accountInfo);
+        System.out.println("all"+allAccount);
 
-
-        if (account != null) {
+        if (allAccount != null) {
 
             msg.add("allAccount", allAccount);
         } else {
@@ -147,6 +149,14 @@ public class RunasController {
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
+        //得到用户授权给了谁
+        List<AccountInfo> account = runasService.getAccount(accountInfo.getUid());
+
+        for(AccountInfo accountInfo1 : account){
+            if(accountInfo1.getUid().equals(uid)){
+                return "forward:/runas/getRunasUser.action";
+            }
+        }
         runasService.insertRunasAccount(accountInfo.getUid(),uid);
 
         return "forward:/runas/getRunasUser.action";
@@ -163,7 +173,7 @@ public class RunasController {
         return "forward:/runas/getRunasUser.action";
     }
 
-    //点击授权的时候，返回授权和被授权数据
+    //得到自己被别人授权身份
     @RequestMapping("/runas/getbeAccount")
     @ResponseBody
     public Msg getbeAccount() throws Exception {
