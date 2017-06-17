@@ -371,7 +371,8 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 			floderName.href = "#";
 			floderName.setAttribute("data-path", list[i].uid);
 			floderName.innerText = list[i].title;
-			//========> 这里的a 标签还需要添加点击回调函数
+			//为文件名绑定点击事件
+			EventUntil.addHandler(floderName,"click",fileNameClick);
 
 			var operateBtn = button.cloneNode(true);
 
@@ -490,10 +491,9 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 	});
 
 
-
-	//隐藏导航点击按钮事件
-	EventUntil.addHandler(s("#show-hidden-menu"),"click",function(){
-		
+	
+	//溢出导航栏按钮点击事件回调函数
+	function overFlowNavBtnClick(){
 		//获取按钮的宽度
 		var curWidth = parseInt(getCurStyle(this,null,"width"));
 		
@@ -512,22 +512,46 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 
 			s("#overflow-item-wrap").style.display = "none";
 		}
+	}
 
-	});
 
-	//工具栏上传文件按钮点击事件
-	EventUntil.addHandler(s("#upload-file-btn"),"click",function(){
-		s("#upload-file-floor").style.display = 'block';
-	})
 
-	//关闭上传文件弹出层按钮点击事件
-	EventUntil.addHandler(s("#uploadfile-close-btn"),"click",function(){
-		s("#upload-file-floor").style.display = 'none';
-	})
 
-	EventUntil.addHandler(s("#upload-file-btn"),"click",function(){
-		console.log(s("#fileupload").files[0]);
-	})
+
+	//事件委托函数
+	function entrustEvent(event){
+
+		event = EventUntil.getEvent(event);
+		//获取真正触发事件的对象
+		var target = event.target;
+
+		//隐藏溢出导航栏按钮事件
+		if (target.id == "show-hidden-menu") {
+			//执行溢出导航栏按钮点击事件回调函数
+			overFlowNavBtnClick();
+
+		}else if (target.id == "upload-file-btn") {
+			//上传文件按钮点击事件
+			s("#upload-file-floor").style.display = 'block';
+
+		}else if (target.id == "uploadfile-close-btn") {
+			//上传文件弹出层关闭按钮事件
+			s("#upload-file-floor").style.display = 'none';
+
+		}else if(target.id == "authority-manage-enter") {
+			//权限管理选项点击事件
+			//阻止默认事件
+			EventUntil.preventDefault(event);
+			s("#authority-manage-floor").style.display = "block";
+
+		}else if(target.id == "authority-manage-close-btn") {
+			//权限管理弹出层关闭按钮点击事件
+			s("#authority-manage-floor").style.display = "none";
+		}
+	}
+
+
+	EventUntil.addHandler(document,"click",entrustEvent);
 
 
 

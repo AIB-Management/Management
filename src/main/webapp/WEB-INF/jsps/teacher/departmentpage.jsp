@@ -12,7 +12,7 @@
 	<div id="upload-file-floor">
 		<div class="upload-file-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="uploadfile-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span id="uploadfile-close-btn" aria-hidden="true">&times;</span></button>
 			</div>
 			<h3 class="upload-file-title">上传文件</h3>
 			<div class="upload-file-input">
@@ -21,6 +21,79 @@
 			</div>
 			<div class="upload-file-dropzone">
 				<input type="file" name="file" id="fileupload" multiple="true">
+			</div>
+		</div>
+	</div>
+	<!-- 权限管理弹出层 -->
+	<div id="authority-manage-floor">
+		<div class="authority-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span  id="authority-manage-close-btn" aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>权限管理</h3>
+			<div class="authority-list-content">
+				<div class="has-authoritied-list-wrap">
+					<h4 class="table-title">可授权列表</h4>
+					<div class="authoritied-list-head">
+						<div class="authority-teacher-name">教师姓名</div>
+						<div class="authority-operate">操作</div>
+					</div>
+					<div class="authoritied-tabel-wrap">
+						<table class="table table-striped table-hover">
+							<tbody id="has-authoritied-list">
+								<tr>
+									<td>教师1</td>
+									<td class="operate-col">
+										<button class="btn btn-success btn-sm put-authority">授权</button>
+									</td>
+								</tr>
+								<tr>
+									<td>教师1</td>
+									<td class="operate-col">
+										<button class="btn btn-success btn-sm put-authority">授权</button>
+									</td>
+								</tr>
+								<tr>
+									<td>教师1</td>
+									<td class="operate-col">
+										<button class="btn btn-success btn-sm put-authority">授权</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="can-authoritied-list-wrap">
+					<h4 class="table-title">已授权列表</h4>
+					<div class="authoritied-list-head">
+						<div class="authority-teacher-name">教师姓名</div>
+						<div class="authority-operate">操作</div>
+					</div>
+					<div class="authoritied-tabel-wrap">
+						<table class="table table-striped table-hover">
+							<tbody id="can-authoritied-list">
+								<tr>
+									<td>教师1</td>
+									<td class="operate-col">
+										<button class="btn btn-danger btn-sm recall-authority">撤回</button>
+									</td>
+								</tr>
+								<tr>
+									<td>教师1</td>
+									<td class="operate-col">
+										<button class="btn btn-danger btn-sm recall-authority">撤回</button>
+									</td>
+								</tr>
+								<tr>
+									<td>教师1</td>
+									<td class="operate-col">
+										<button class="btn btn-danger btn-sm recall-authority">撤回</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -42,6 +115,7 @@
 				<ul>
 					<li><a href="${pageContext.request.contextPath}/content/personalpage.action">个人信息</a></li>
 					<li><a href="${pageContext.request.contextPath}/public/modifyPassword.action">修改密码</a></li>
+					<li><a href="#" id="authority-manage-enter">权限管理</a></li>
 					<li id="logout-btn"><a href="${pageContext.request.contextPath}/shiro/logout">退出</a></li>
 				</ul>
 			</div>
