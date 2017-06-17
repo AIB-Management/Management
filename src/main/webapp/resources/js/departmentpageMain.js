@@ -27,7 +27,7 @@ require.config({
 })
 
 //departmentpage 脚本main函数
-require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_locale_es","fileinput_locale_zh"],function main($,EventUntil){
+require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","fileinput","fileinput_locale_es","fileinput_locale_zh"],function main($,EventUntil,authorityModule){
 
 	//封装选择器函数
 	function s(name){
@@ -268,7 +268,16 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 	}
 
 	//文件点击事件回调函数
-	function fileNameClick(event){}
+	function fileNameClick(event){
+
+		var parent = this.parentNode.parentNode;
+		var fileName = parent.querySelectorAll(".file-name")[0].innerText;
+
+		//填充修改文件名输入框内容
+		s("#new-filename").value = fileName;
+		//显示修改文件名弹出层
+		s("#modify-filename-floor").style.display = 'block';
+	}
 
 	//遍历输出文件夹数据函数
 	//内部会为每一个保存文件夹名字的a 标签绑定点击事件函数floderNameClick
@@ -338,6 +347,8 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 			a = createElem("a"),
 			span = createElem("span"),
 			frag = document.createDocumentFragment();
+
+		var curUsername = s("#user-name").title;
 		
 		span.className = "glyphicon glyphicon-edit";
 		checkBox.type = "checkbox";
@@ -352,8 +363,8 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 			var checkboxCol = td.cloneNode(true);
 			checkboxCol.className = "item-selectbox";
 
-			var floderNameCol = td.cloneNode(true);
-			floderNameCol.className = "file-name file";
+			var filenameCol = td.cloneNode(true);
+			filenameCol.className = "file-name file";
 
 			var authorCol = td.cloneNode(true);
 			authorCol.className = "item-author";
@@ -366,26 +377,36 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 
 			//实际输出时应该获得登陆的用户名做匹配
 			//判断是否给checkbox 加上 disabled 类名
-			var checkbox = checkBox.cloneNode(true);
-			var floderName = a.cloneNode(true);
-			floderName.href = "#";
-			floderName.setAttribute("data-path", list[i].uid);
-			floderName.innerText = list[i].title;
+			if (list[i].accuid == curUsername) {
+
+				var checkbox = checkBox.cloneNode(true);
+				checkbox.className = "disabled";
+				operateCol.innerText = "无权限";
+				checkboxCol.appendChild(checkbox);
+
+			}else{
+				var checkbox = checkBox.cloneNode(true);
+				var operateBtn = button.cloneNode(true);
+				checkboxCol.appendChild(checkbox);
+				operateCol.appendChild(operateBtn);
+			}
+
+			
+			var filename = a.cloneNode(true);
+			filename.href = "#";
+			filename.setAttribute("data-path", list[i].uid);
+			filename.innerText = list[i].title;
 			//为文件名绑定点击事件
-			EventUntil.addHandler(floderName,"click",fileNameClick);
-
-			var operateBtn = button.cloneNode(true);
-
-
-			checkboxCol.appendChild(checkbox);
-			floderNameCol.appendChild(floderName);
+			EventUntil.addHandler(filename,"click",fileNameClick);
+	
+			filenameCol.appendChild(filename);
 			authorCol.innerText = list[i].author;
 
 			timeCol.innerHTML = formateDate(list[i].upTime);
-			operateCol.appendChild(operateBtn);
+			
 
 			row.appendChild(checkboxCol);
-			row.appendChild(floderNameCol);
+			row.appendChild(filenameCol);
 			row.appendChild(authorCol);
 			row.appendChild(timeCol);
 			row.appendChild(operateCol);
@@ -447,12 +468,41 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 
 	}
 
+	//初始化上传文件身份选择下拉列表
+	function initAuthorityList(){
+		$.ajax({
+			url: 'http://localhost:8080/Management/runas/getbeAccount.action',
+			type: 'GET',
+			dataType: 'json',
+			success: function(data){
+				if (data.code == 100) {
+					var list = data.extend.beAccount;
+					var frag = document.createDocumentFragment();
+					for (var i = 0; i < list.length; i++) {
+						var option = createElem("option");
+						option.innerText = list[i].name;
+						option.value = list[i].uid;
+						frag.appendChild(option);
+					}
+					//下拉列表添加元素
+					s("#all-identifies-list").appendChild(frag);
+				}
+			}
+		})
+
+	}
+
 	//初始化页面函数
 	function initPage(){
 		//调试 输出导航栏数据函数由页面获得
 		//var depuid = 由页面标题获得
 		createFileList(0,s("#departmentId").title);
+		//输出第一个面包屑导航
 		initCrumbNav();
+		//权限管理模块页面初始化的时候输出数据
+		authorityModule();
+		//初始化上传文件身份选择下拉框内容
+		initAuthorityList();
 	}
 		
 
@@ -532,7 +582,13 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 
 		}else if (target.id == "upload-file-btn") {
 			//上传文件按钮点击事件
-			s("#upload-file-floor").style.display = 'block';
+			var curPath = getCurPath();
+			if (curPath == 0) {
+				alert("不能够在根目录下发布文件！");
+
+			}else{
+				s("#upload-file-floor").style.display = 'block';
+			}
 
 		}else if (target.id == "uploadfile-close-btn") {
 			//上传文件弹出层关闭按钮事件
@@ -547,12 +603,15 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 		}else if(target.id == "authority-manage-close-btn") {
 			//权限管理弹出层关闭按钮点击事件
 			s("#authority-manage-floor").style.display = "none";
+
+		}else if (target.id == "modify-filename-close-btn") {
+			//修改文件标题弹出层关闭按钮点击事件
+			s("#modify-filename-floor").style.display = 'none';
 		}
 	}
 
 
 	EventUntil.addHandler(document,"click",entrustEvent);
-
 
 
 	//初始化拖拽上传插件
@@ -565,20 +624,23 @@ require(["jquery.min","overborwserEvent","bootstrap.min","fileinput","fileinput_
 	    enctype: 'multipart/form-data',
 	    showCaption: true,//是否显示标题
 	    showUpload: true, //取消上传按钮
+	    uploadAsync: false,//同步上传
 	    uploadIcon: '', //取消文件下面的上传按钮
-	    uploadExtraData: function(){
-            
+	    uploadExtraData: {
+	    	title: s("#fileTitle").value,
+	    	navuid: getCurPath(),
+	    	accuid: s("#all-identifies-list").value
         }, 
 	    browseClass: "btn btn-primary", //按钮样式             
-	    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+	    previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
 	    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
 
     }).on("fileuploaded", function(event, data) {
 
-       userHeadImgSrc = data.response.message;
        console.log(data);
 
-    });
+    })
+
 
 	
 })

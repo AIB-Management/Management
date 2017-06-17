@@ -15,6 +15,12 @@
 				<button type="button" class="close" aria-label="Close"><span id="uploadfile-close-btn" aria-hidden="true">&times;</span></button>
 			</div>
 			<h3 class="upload-file-title">上传文件</h3>
+			<div class="select-identify">
+				<label>选择发布身份</label>
+				<select id="all-identifies-list">
+					<option value='<shiro:principal property="uid"/>'>本人</option>
+				</select>
+			</div>
 			<div class="upload-file-input">
 				<label>文件标题</label>
 				<input type="text" id="fileTitle">
@@ -33,30 +39,30 @@
 			<h3>权限管理</h3>
 			<div class="authority-list-content">
 				<div class="has-authoritied-list-wrap">
-					<h4 class="table-title">可授权列表</h4>
+					<h4 class="table-title">未授权列表</h4>
 					<div class="authoritied-list-head">
 						<div class="authority-teacher-name">教师姓名</div>
 						<div class="authority-operate">操作</div>
 					</div>
 					<div class="authoritied-tabel-wrap">
 						<table class="table table-striped table-hover">
-							<tbody id="has-authoritied-list">
+							<tbody id="can-authoritied-list">
 								<tr>
 									<td>教师1</td>
 									<td class="operate-col">
-										<button class="btn btn-success btn-sm put-authority">授权</button>
+										<button class="btn btn-success btn-sm">授权</button>
 									</td>
 								</tr>
 								<tr>
 									<td>教师1</td>
 									<td class="operate-col">
-										<button class="btn btn-success btn-sm put-authority">授权</button>
+										<button class="btn btn-success btn-sm">授权</button>
 									</td>
 								</tr>
 								<tr>
 									<td>教师1</td>
 									<td class="operate-col">
-										<button class="btn btn-success btn-sm put-authority">授权</button>
+										<button class="btn btn-success btn-sm">授权</button>
 									</td>
 								</tr>
 							</tbody>
@@ -71,29 +77,44 @@
 					</div>
 					<div class="authoritied-tabel-wrap">
 						<table class="table table-striped table-hover">
-							<tbody id="can-authoritied-list">
+							<tbody id="has-authoritied-list">
 								<tr>
 									<td>教师1</td>
 									<td class="operate-col">
-										<button class="btn btn-danger btn-sm recall-authority">撤回</button>
+										<button class="btn btn-danger btn-sm">撤回</button>
 									</td>
 								</tr>
 								<tr>
 									<td>教师1</td>
 									<td class="operate-col">
-										<button class="btn btn-danger btn-sm recall-authority">撤回</button>
+										<button class="btn btn-danger btn-sm">撤回</button>
 									</td>
 								</tr>
 								<tr>
 									<td>教师1</td>
 									<td class="operate-col">
-										<button class="btn btn-danger btn-sm recall-authority">撤回</button>
+										<button class="btn btn-danger btn-sm">撤回</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modify-filename-floor">
+		<div class="modify-filename-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span  id="modify-filename-close-btn" aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>修改文件标题名称</h3>
+			<div class="modify-filename-content">
+				<label>文件名</label>
+				<input type="text" id="new-filename">
+			</div>
+			<div class="modify-filename-content">
+				<button class="btn btn-primary btn-sm disabled" id="submit-newfilename" disabled="true">修改</button>
 			</div>
 		</div>
 	</div>
@@ -109,7 +130,7 @@
 				<span>|</span>
 			</div>
 			<div class="header-tag" id="user-name-wrap">
-				<span id="user-name"><shiro:principal property="name"/></span>
+				<span id="user-name" title='<shiro:principal property="uid"/>'><shiro:principal property="name"/></span>
 			</div>
 			<div id="user-operate">
 				<ul>
