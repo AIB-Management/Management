@@ -1,5 +1,6 @@
 package com.gdaib.controller;
 
+import com.gdaib.Exception.GlobalException;
 import com.gdaib.pojo.*;
 import com.gdaib.service.DepartmentService;
 import com.gdaib.service.FileService;
@@ -62,13 +63,13 @@ public class ContentController {
     @RequestMapping(value = "/content/filecontent", params = {"uid"})
     public ModelAndView filecontent(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
-            throw new Exception("uid不能为空");
+             throw new GlobalException("uid不能为空");
         }
         ModelAndView modelAndView = new ModelAndView();
 
         List<FileCustom> customs = fileService.selectFile(fileSelectVo);
         if (customs.size() == 0) {
-            throw new Exception("无效文件");
+             throw new GlobalException("无效文件");
         }
 
         FileCustom fileCustom = customs.get(0);
@@ -149,7 +150,7 @@ public class ContentController {
     @ResponseBody
     public Msg ajaxFindDepOrPro(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getParent() == null || departmentSelectVo.getParent().trim().equals("")) {
-            throw new Exception("上级不能为空");
+             throw new GlobalException("上级不能为空");
         }
         List<HashMap<String, Object>> depAndpro = new ArrayList<HashMap<String, Object>>();
         if (departmentSelectVo.getParent().equals("0")) {

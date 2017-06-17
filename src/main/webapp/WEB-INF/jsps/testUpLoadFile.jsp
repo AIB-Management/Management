@@ -19,9 +19,6 @@
     <input type="file" name="file"><br>
     <input type="file" name="file"><br>
     <input type="file" name="file"><br>
-    <input type="file" name="file"><br>
-    <input type="file" name="file"><br>
-    <input type="file" name="file"><br>
     <input type="submit"><<br>
 </form>
 </body>

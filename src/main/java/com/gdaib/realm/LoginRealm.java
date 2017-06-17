@@ -1,6 +1,5 @@
 package com.gdaib.realm;
 
-import com.gdaib.mapper.AccountInfoMapper;
 import com.gdaib.pojo.*;
 
 import com.gdaib.pojo.Account;

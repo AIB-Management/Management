@@ -89,6 +89,22 @@ public class FileServiceImpl implements FileService {
         return fileExtMapper.updateFile(file);
     }
 
+    private FileOutputStream fos;
+    private InputStream in;
+
+    private void closeStream() throws Exception {
+
+        if (in != null) {
+            in.close();
+            in = null;
+        }
+
+        if (fos != null) {
+            fos.close();
+            fos = null;
+        }
+    }
+
     @Override
     public void writeFileToLocal(String path, CommonsMultipartFile[] files) throws Exception {
         File f = new File(path);
@@ -106,23 +122,25 @@ public class FileServiceImpl implements FileService {
 
             if (!files[i].isEmpty()) {
                 try {
-                    FileOutputStream fos = new FileOutputStream(path
+                    fos = new FileOutputStream(path
                             + newFileName);
-                    InputStream in = files[i].getInputStream();
+                    in = files[i].getInputStream();
                     int b = 0;
                     while ((b = in.read()) != -1) {
                         fos.write(b);
                     }
-                    fos.flush();
-                    fos.close();
-                    in.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    closeStream();
                 }
             }
+
             System.out.println("上传文件到:" + path + newFileName);
 
+
         }
+
     }
 
     @Override
@@ -163,7 +181,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public boolean judgeContentType(String contentType) throws Exception {
-        if(contentType ==null || contentType.trim().equals("")){
+        if (contentType == null || contentType.trim().equals("")) {
             throw new Exception("参数不能为空");
         }
 

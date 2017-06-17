@@ -1,5 +1,6 @@
 package com.gdaib.controller;
 
+import com.gdaib.Exception.GlobalException;
 import com.gdaib.pojo.*;
 import com.gdaib.service.DepartmentService;
 import com.gdaib.service.MailService;
@@ -370,10 +371,10 @@ public class ManageController {
     @ResponseBody
     public Msg ajaxAddDep(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getContent() == null || departmentSelectVo.getContent().trim().equals("")) {
-            throw new Exception("内容为空");
+             throw new GlobalException("内容为空");
         }
         if (departmentSelectVo.getParent() == null || departmentSelectVo.getParent().trim().equals("")) {
-            throw new Exception("上级参数为空,为0时是系");
+             throw new GlobalException("上级参数为空,为0时是系");
         }
 
         departmentSelectVo.setUid(UUID.randomUUID().toString());
@@ -390,7 +391,7 @@ public class ManageController {
     @ResponseBody
     public Msg ajaxDeleteDep(String uids) throws Exception {
         if (uids == null || uids.trim().equals("")) {
-            throw new Exception("参数为空");
+             throw new GlobalException("参数为空");
         }
         List<String> uidList = Utils.toList(uids);
         int result = departmentService.deleteDepartment(uidList);
@@ -404,11 +405,11 @@ public class ManageController {
     @ResponseBody
     public Msg ajaxUpdateDep(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getUid().trim().equals("") || departmentSelectVo.getUid() == null) {
-            throw new Exception("主键不能为空");
+             throw new GlobalException("主键不能为空");
         }
 
 //        if (departmentSelectVo.getContent().trim().equals("") || departmentSelectVo.getContent() == null) {
-//            throw new Exception("内容不能为空");
+//             throw new GlobalException("内容不能为空");
 //        }
         int result = departmentService.updateDepartment(departmentSelectVo);
         if (result > 0) {
@@ -421,15 +422,15 @@ public class ManageController {
     @ResponseBody
     public Msg ajaxAddNav(NavigationSelectVo navigationSelectVo) throws Exception {
         if (navigationSelectVo.getParent().trim().equals("") || navigationSelectVo.getParent() == null) {
-            throw new Exception("上级目录不能为空");
+             throw new GlobalException("上级目录不能为空");
         }
 
         if (navigationSelectVo.getDepuid().trim().equals("") || navigationSelectVo.getDepuid() == null) {
-            throw new Exception("部门参数不能为空");
+             throw new GlobalException("部门参数不能为空");
         }
 
         if (navigationSelectVo.getTitle().trim().equals("") || navigationSelectVo.getTitle() == null) {
-            throw new Exception("文件夹名不能为空");
+             throw new GlobalException("文件夹名不能为空");
         }
 
         navigationSelectVo.setExtend(1);
@@ -452,7 +453,7 @@ public class ManageController {
     @ResponseBody
     public Msg ajaxDeleteNav(String uids) throws Exception {
         if (uids == null || uids.trim().equals("")) {
-            throw new Exception("参数为空");
+             throw new GlobalException("参数为空");
         }
 
         List<String> uidList = Utils.toList(uids);
