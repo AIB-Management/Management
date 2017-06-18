@@ -103,6 +103,27 @@
 			</div>
 		</div>
 	</div>
+	<div id="drop-file-floor">
+		<div class="drop-file-dialog-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span  id="drop-file-close-btn" aria-hidden="true">&times;</span></button>
+			</div>
+			<h3>删除文件</h3>
+			<p class="drop-file-content">
+				你确定要删除<b id="drop-files-name"></b>这个文件吗？
+			</p>
+			<div class="drop-file-btn-wrap">
+				<button class="btn btn-success btn-sm" id="cancel-drop-file">
+					<span class="glyphicon glyphicon-remove"></span> 
+					取消
+				</button>
+				<button class="btn btn-danger btn-sm" id="confirm-drop-file">
+					<span class="glyphicon glyphicon-trash"></span> 
+					删除
+				</button>
+			</div>
+		</div>
+	</div>
 	<div id="modify-filename-floor">
 		<div class="modify-filename-wrap">
 			<div class="close-btn clearfix">
@@ -112,6 +133,7 @@
 			<div class="modify-filename-content">
 				<label>文件名</label>
 				<input type="text" id="new-filename">
+				<p id="new-filename-hint"></p>
 			</div>
 			<div class="modify-filename-content">
 				<button class="btn btn-primary btn-sm disabled" id="submit-newfilename" disabled="true">修改</button>
@@ -122,12 +144,6 @@
 		<div class="header">
 			<div class="title-wrap">
 				<h3 id="departmentId" title='<shiro:principal property="departmentId"/>'><shiro:principal property="depContent"/>主页</h3>
-			</div>
-			<div class="header-tag">
-				<a href="${pageContext.request.contextPath}/content/toId.action" id="manage-msg">管理信息</a>
-			</div>
-			<div class="header-tag overide">
-				<span>|</span>
 			</div>
 			<div class="header-tag" id="user-name-wrap">
 				<span id="user-name" title='<shiro:principal property="uid"/>'><shiro:principal property="name"/></span>
@@ -160,10 +176,6 @@
 						<span class="glyphicon glyphicon-cloud-upload"></span>
 						上传文件
 					</button>
-					<button class="btn btn-danger btn-sm" id="delete-file">
-						<span class="glyphicon glyphicon-trash"></span>
-						删除
-					</button>
 				</div>
 				<div class="main-content-title">
 					<div class="content-select">选择</div>
@@ -173,68 +185,7 @@
 					<div class="content-edit-btn">操作</div>
 				</div>
 				<table class="table table-striped table-hover main-content-wrap">
-					<tbody id="main-content-list">
-						<tr>
-							<td class="item-selectbox">
-								<input type="checkbox" class="disabled">
-							</td>
-							<td class="file-name floder">
-								<a href="#">文件夹1</a>
-							</td>
-							<td class="item-author">xx老师</td>
-							<td class="ite-publish-time">2016-06-09-12:58</td>
-							<td class="operate-btn">
-								<button class="btn btn-default btn-sm">
-									<span class="glyphicon glyphicon-edit"></span>修改文件
-								</button>
-							</td>
-						</tr>
-						<tr>
-							<td class="item-selectbox">
-								<input type="checkbox" class="disabled">
-							</td>
-							<td class="file-name floder">
-								<a href="#">文件夹1</a>
-							</td>
-							<td class="item-author">xx老师</td>
-							<td class="ite-publish-time">2016-06-09-12:58</td>
-							<td class="operate-btn">
-								<button class="btn btn-default btn-sm">
-									<span class="glyphicon glyphicon-edit"></span>修改文件
-								</button>
-							</td>
-						</tr>
-						<tr>
-							<td class="item-selectbox">
-								<input type="checkbox" class="disabled">
-							</td>
-							<td class="file-name floder">
-								<a href="#">文件夹1</a>
-							</td>
-							<td class="item-author">xx老师</td>
-							<td class="ite-publish-time">2016-06-09-12:58</td>
-							<td class="operate-btn">
-								<button class="btn btn-default btn-sm">
-									<span class="glyphicon glyphicon-edit"></span>修改文件
-								</button>
-							</td>
-						</tr>
-						<tr>
-							<td class="item-selectbox">
-								<input type="checkbox" class="disabled">
-							</td>
-							<td class="file-name floder">
-								<a href="#">文件夹1</a>
-							</td>
-							<td class="item-author">xx老师</td>
-							<td class="ite-publish-time">2016-06-09-12:58</td>
-							<td class="operate-btn">
-								<button class="btn btn-default btn-sm">
-									<span class="glyphicon glyphicon-edit"></span>修改文件
-								</button>
-							</td>
-						</tr>
-					</tbody>
+					<tbody id="main-content-list"></tbody>
 				</table>
 			</div>
 		</div>

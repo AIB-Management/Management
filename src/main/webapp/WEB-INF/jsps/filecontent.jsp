@@ -8,7 +8,10 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>内容页</title>
+	<title>文件内容</title>
+	<style type="text/css">
+		
+	</style>
 </head>
 <body>
 <% FileCustom fileCustom = (FileCustom) request.getAttribute("fileCustom");
@@ -37,7 +40,7 @@
 		}
 	%>
 </ul>
-<a href="http://blog.csdn.net/tandesir/article/details/7598544">HTML嵌入多媒体对象</a>
+<!-- <a href="http://blog.csdn.net/tandesir/article/details/7598544">HTML嵌入多媒体对象</a> -->
 
 </body>
 </html>

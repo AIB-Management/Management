@@ -9,10 +9,10 @@ require.config({
 })
 
 //管理页主函数
-require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModule","rootpagExamiePageModule"],function main($,checkBy,EventUntil,unexamiePage,examiePage){
+require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModule","rootpagExamiePageModule","rootpageManageFloderListModule"],function main($,checkBy,EventUntil,unexamiePage,examiePage,manageDepFloder){
 	//--------- 全局变量 --------
 	//文件夹管理弹出层左侧系别点击时保存的部门id
-	var curManageFloderDepId = "";
+	//var curManageFloderDepId = "";
 	//部门管理弹出层左侧系别点击时保存的部门id
 	var curManageDepDepId = "";
 	//保存当前选择的部门名字
@@ -59,6 +59,31 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		}
 	}
 
+	//获取当前路径函数
+	function getCurPath(){
+
+		var overflowNavList = ss("#overflow-item-wrap li"),
+			breadCrumbNavs = ss("#breadcurmb-nav-wrap li"),
+			lastChild = null,
+			curPath = "";
+
+		if (overflowNavList.length != 0) {
+				//如果溢出导航栏有元素
+				//获取最后一个元素的a 元素的 data-path 属性
+				lastChild = overflowNavList[overflowNavList.length - 1].querySelectorAll("a")[0];
+				curPath = lastChild.getAttribute("data-path");
+				return curPath;
+			
+			}else{
+				//如果溢出导航栏没有元素
+				//获取最后一个面包屑导航栏
+				lastChild = breadCrumbNavs[breadCrumbNavs.length - 1].querySelectorAll("a")[0];
+				curPath = lastChild.getAttribute("data-path");
+				return curPath;
+			}
+	}
+
+
 
 	//用户表 "选择全部" 多选框点击事件执行函数
 	function selectAllBtnHandler(checkboxList){
@@ -97,10 +122,11 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 	//文件管理标签点击事件
 	EventUntil.addHandler(s("#manage-floder"),"click",function(){
-		createManageFloderDepList();
+		manageDepFloder.createManageFloderDepList();
 		s("#manage-file-floor").style.display = 'block';
 	})
 
+	/*
 	//页面初始化的时候发送ajax 请求获取数据
 	//然后调用 createElemForDepList 函数输出数据
 	function createManageFloderDepList(){
@@ -126,30 +152,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	}
 
 
-	//获取当前路径函数
-	function getCurPath(){
-
-		var overflowNavList = ss("#overflow-item-wrap li"),
-			breadCrumbNavs = ss("#breadcurmb-nav-wrap li"),
-			lastChild = null,
-			curPath = "";
-
-		if (overflowNavList.length != 0) {
-				//如果溢出导航栏有元素
-				//获取最后一个元素的a 元素的 data-path 属性
-				lastChild = overflowNavList[overflowNavList.length - 1].querySelectorAll("a")[0];
-				curPath = lastChild.getAttribute("data-path");
-				return curPath;
-			
-			}else{
-				//如果溢出导航栏没有元素
-				//获取最后一个面包屑导航栏
-				lastChild = breadCrumbNavs[breadCrumbNavs.length - 1].querySelectorAll("a")[0];
-				curPath = lastChild.getAttribute("data-path");
-				return curPath;
-			}
-	}
-
+	
 	//从系别数据里面创建元素
 	//被 createDepList 调用
 	function createElemForDepList(data,handler){
@@ -455,10 +458,11 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		//显示修改文件夹名弹出层
 		s("#modify-file-name-wrap").style.display = 'block';
 	}
+	*/
 	
 	//定义检测创建文件名或修改文件名时 文件名是否有重复
 	function checkFloderName(elem,val){
-		//获取下面的文件夹列表所有a 元素
+		//获取相应的参照元素
 		var floderNameList = elem,
 			//定义文件夹名字状态初始值
 			filenameStatus = false;
@@ -480,13 +484,13 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 		return filenameStatus;
 	}
-
+	
 
 	//删除文件夹按钮点击事件回调函数
 	function dropFloder(){
 		
 		//如果当前选择了系别
-		if (curManageFloderDepId != "") {
+		if (manageDepFloder.curManageFloderDepId != "") {
 			var checkboxList = ss("#file-list-content tr td input:checked"),
 				//定义保存选中多选框的数组
 				dropFloderName = [],
@@ -548,6 +552,17 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 	});
 
+	//新建文件夹按钮点击事件
+	EventUntil.addHandler(s("#newfloder-btn"),"click",function(){
+		
+		if (manageDepFloder.curManageFloderDepId == "") {
+			alert("请先选择系别");
+		}else{
+			s("#new-file-wrap").style.display = "block";
+		}
+		
+	})
+
 	//新建文件夹弹出层关闭按钮点击事件
 	EventUntil.addHandler(s("#new-floder-close-btn"),"click",function(){
 		s("#new-file-wrap").style.display = 'none';
@@ -564,15 +579,6 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		}
 	})
 
-	//新建文件夹按钮点击事件
-	EventUntil.addHandler(s("#newfloder-btn"),"click",function(){
-		if (curManageFloderDepId == "") {
-			alert("请先选择系别");
-		}else{
-			s("#new-file-wrap").style.display = "block";
-		}
-		
-	})
 
 	//新建文件夹弹出层提交按钮点击事件
 	EventUntil.addHandler(s("#newfloder-submit"),"click",function(){
@@ -602,12 +608,12 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				url: 'http://localhost:8080/Management/admin/ajaxAddNav.action',
 				type: 'POST',
 				dataType: 'json',
-				data: "parent=" + curPath + "&title=" + val + "&depuid=" + curManageFloderDepId,
+				data: "parent=" + curPath + "&title=" + val + "&depuid=" + manageDepFloder.curManageFloderDepId,
 				success: function(data){
 					if (data.code == 100) {
 						alert("创建成功！");
 						//请求成功之后查询数据
-						createFloderList(curPath,curManageFloderDepId);
+						manageDepFloder.createFloderList(curPath,manageDepFloder.curManageFloderDepId);
 						//清空输入框的内容
 						s("#new-file-name").value = "";
 						//清空提示信息内容
@@ -683,7 +689,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 					if (data.code == 100) {
 						alert("修改成功！");
 						//请求成功之后查询数据
-						createFloderList(curPath,curManageFloderDepId);
+						manageDepFloder.createFloderList(curPath,manageDepFloder.curManageFloderDepId);
 						//清空输入框的内容
 						s("#rename-file").value = "";
 						//清空提示信息内容
@@ -741,7 +747,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				var	curPath = getCurPath();
 
 				//输出删除文件夹后的数据
-				createFloderList(curPath,curManageFloderDepId);
+				manageDepFloder.createFloderList(curPath,manageDepFloder.curManageFloderDepId);
 				
 				s("#drop-floder-loading-icon").style.visibility = 'hidden';
 				s("#drop-floder-wrap").style.display = 'none';
