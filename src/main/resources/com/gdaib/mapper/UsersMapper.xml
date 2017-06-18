@@ -159,7 +159,6 @@
         <where>
             <include refid="AccountInfo_s"/>
         </where>
-        GROUP BY id DESC
 
     </select>
 
@@ -185,7 +184,7 @@
         <foreach collection="accounts" item="account" open="where `t_account`.`uid` in(" close=")" separator=",">
             #{account}
         </foreach>
-        GROUP BY id DESC
+        ORDER BY `t_account`.id DESC
 
     </select>
 
