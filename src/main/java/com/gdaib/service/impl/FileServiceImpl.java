@@ -172,7 +172,7 @@ public class FileServiceImpl implements FileService {
         for (int i = 0; i < fileNames.length; i++) {
             HashMap<String, Object> hashMap = new HashMap<String, Object>();
             hashMap.put("filename", fileNames[i]);
-            hashMap.put("url", Utils.getLocalADDress() + "/" + sqlPath + "/" + fileNames[i]);
+            hashMap.put("url", Utils.getLocalADDress()  + sqlPath + "/" + fileNames[i]);
             items.add(hashMap);
         }
         return items;
