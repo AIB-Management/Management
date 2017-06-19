@@ -1,3 +1,16 @@
+/*修改placeholder 颜色*/
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #000;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #000;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #000;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #000;
+}
 #warning{
 	display: none;
 	position: absolute;
@@ -59,6 +72,8 @@
 	width: 50px;
 	height: 40px;
 	line-height: 40px;
+	border-radius: 5px 0 0 5px;
+	border: 0;
 	text-align: center;
 	background-color: #ccc;
 }
@@ -70,7 +85,14 @@
 	height: 40px;
 	line-height: 40px;
 	padding-left: 5px;
+	border: 0;
+	border-radius: 0 5px 5px 0;
+	background-color: rgba(255,255,255,0.5);
 	font-size: 14px;
+	color: #fff;
+}
+.input-content:focus{
+	box-shadow: 0 0 10px #408DD2;
 }
 /*输入框下方提示样式*/
 #login-hint{
@@ -93,6 +115,7 @@
 	height: 40px;
 	line-height: 40px;
 	padding-left: 5px;
+	border-radius: 5px 0 0 5px;
 }
 .vt-code-wrap img{
 	display: inline-block;

@@ -9,14 +9,14 @@ require.config({
 })
 
 //管理页主函数
-require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModule","rootpagExamiePageModule","rootpageManageFloderListModule"],function main($,checkBy,EventUntil,unexamiePage,examiePage,manageDepFloder){
+require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModule","rootpagExamiePageModule","rootpageManageFloderListModule","rootpageManageDepartmentModule"],function main($,checkBy,EventUntil,unexamiePage,examiePage,manageDepFloder,manageDep){
 	//--------- 全局变量 --------
 	//文件夹管理弹出层左侧系别点击时保存的部门id
 	//var curManageFloderDepId = "";
 	//部门管理弹出层左侧系别点击时保存的部门id
-	var curManageDepDepId = "";
+	//var curManageDepDepId = "";
 	//保存当前选择的部门名字
-	var curManageDepDepName = "";
+	//var curManageDepDepName = "";
 	//---------------------------
 
 	//封装选择器函数
@@ -117,351 +117,9 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		
 		
 	}
-
-	// ---------------- 文件夹管理(导航栏管理)模块开始 ---------------
-
-	//文件管理标签点击事件
-	EventUntil.addHandler(s("#manage-floder"),"click",function(){
-		manageDepFloder.createManageFloderDepList();
-		s("#manage-file-floor").style.display = 'block';
-	})
-
-	/*
-	//页面初始化的时候发送ajax 请求获取数据
-	//然后调用 createElemForDepList 函数输出数据
-	function createManageFloderDepList(){
-		var depListWrap = s("#manage-side-item");
-
-		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindDepOrPro.action',
-			type: 'GET',
-			dataType: 'json',
-			data: "parent=0",
-			success: function(data){
-				//如果没有部门数据
-				if (data.extend.deps.length == 0) {
-					//部门侧边栏更换提示背景
-					depListWrap.className = "nodepartment-sidebar-bg";
-				}else{
-					//如果有部门就输出数据
-					depListWrap.appendChild(createElemForDepList(data,manageFloderSelectDepClick));
-				}
-			}
-		})
-		
-	}
-
-
-	
-	//从系别数据里面创建元素
-	//被 createDepList 调用
-	function createElemForDepList(data,handler){
-		var frag = document.createDocumentFragment();
-		var depListData = data.extend.deps;
-
-		for (var i = 0; i < depListData.length; i++) {
-			var li = createElem("li");
-			li.innerText = depListData[i].dep;
-			li.setAttribute("data-depId", depListData[i].uid);
-
-			//为侧边栏的系别绑定点击事件
-			EventUntil.addHandler(li,"click",handler);
-
-			frag.appendChild(li);
-		}
-
-		return frag;
-	}
-
-	//侧边栏系别点击事件执行函数
-	function manageFloderSelectDepClick(){
-		var depList = ss("#manage-side-item li");
-		var floderListWrap = s("#file-list-content");
-
-		//获取面包屑导航栏包裹层
-		var breadCrumb = s("#breadcurmb-nav-wrap");
-		//清空面包屑导航栏元素
-		breadCrumb.innerHTML = "";
-		//清空li 的活动样式
-		for (var i = 0; i < depList.length; i++) {
-			if (depList[i].className.indexOf("filedep-item-active") != -1) {
-				removeClass(depList[i],"filedep-item-active");
-			}
-		}
-
-		this.className += "filedep-item-active";
-
-		//创建面包屑导航元素
-		var li = createElem("li"),
-			a = createElem("a");
-
-		a.href = "#";
-		a.setAttribute("data-path",0);
-		a.innerText = "根目录";
-		li.appendChild(a);
-		//为li 绑定点击事件
-		EventUntil.addHandler(li,"click",breadCrumbItemClick);
-
-		breadCrumb.appendChild(li);
-
-		//清空和隐藏溢出导航包裹层并且隐藏包裹层显示的的按钮
-		s("#overflow-item-wrap").innerHTML = "";
-		s("#overflow-item-wrap").style.display = 'none';
-		s("#show-hidden-menu").style.display = 'none';
-
-		//调整完样式后发送ajax 到后台请求
-		//取出数据
-		//为全局变量赋值
-		curManageFloderDepId = this.getAttribute("data-depId");
-		//输出元素
-		createFloderList(0,curManageFloderDepId);
-	}
-
-	//----------- 上面是管理文件弹出层初始化的函数 --------------
-
-
-	//输出数据函数
-	//文件夹名点击，面包屑导航点击，溢出导航点击，创建文件夹提交，修改文件名提交均调用此函数
-	function createFloderList(path,depId){
-		var floderList = s("#file-list-content");
-		floderList.innerHTML = "";
-
-		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindNavAndFile.action',
-			type: 'GET',
-			dataType: 'json',
-			data: "parent=" + path + "&depuid=" + depId,
-			success: function(data){
-				//请求成功的时候插入元素
-				floderList.appendChild(ergFloderList(data));
-			}
-		})
-		
-	}
-
-	//将数据转换为元素执行方法
-	//被 createFloderList 调用
-	function ergFloderList(data){
-		var list = data.extend.navs;
-		var frag = document.createDocumentFragment(),
-			tr = createElem("tr"),
-			td = createElem("td"),
-			input = createElem("input"),
-			span = createElem("span"),
-			a = createElem("a"),
-			button = createElem("button");
-
-		input.type = "checkbox";
-		a.href = "#";
-		span.className = "glyphicon glyphicon-edit";
-		button.appendChild(span);
-		button.className = "btn btn-default btn-sm";
-		button.innerHTML += "修改文件夹名";
-		//为每一个按钮绑定点击事件
-		EventUntil.addHandler(button,"click",modifyFloderName);
-
-		for (var i = 0; i < list.length; i++) {
-
-			var row = tr.cloneNode(true),
-				checkboxCol = td.cloneNode(true),
-				floderNameCol = td.cloneNode(true),
-				operateCol = td.cloneNode(true);
-
-			var floderName = a.cloneNode(true);
-			floderName.innerText = list[i].nav;
-			floderName.setAttribute("data-path", list[i].uid);
-			//为a 标签绑定点击事件
-			EventUntil.addHandler(floderName,"click",createBradCurmbItem);
-
-			var checkbox = input.cloneNode(true);
-			checkboxCol.appendChild(checkbox);
-			floderNameCol.className = "floder-name floder";
-			floderNameCol.appendChild(floderName);
-				
-			//创建一个操作按钮
-			var operateBtn = button.cloneNode(true);
-			//为每一个按钮绑定点击事件
-			EventUntil.addHandler(operateBtn,"click",modifyFloderName);
-			operateCol.appendChild(operateBtn);
-
-			row.appendChild(checkboxCol);
-			row.appendChild(floderNameCol);
-			row.appendChild(operateCol);
-
-			frag.appendChild(row);
-		}
-
-		return frag;
-	}
-
-
-
-	//创建面包屑导航栏子元素 li的方法
-	//此方法会调用 breadCrumbItemClick 和 controlNavNums
-	//下面文件夹列表的a 标签点击事件会绑定这个函数
-	function createBradCurmbItem(event){
-		//获取面包屑导航栏外包裹层
-		var curmbNav = s("#breadcurmb-nav-wrap");
-
-		//阻止默认事件发生
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-
-		//创建元素碎片器 创建元素并添加到包裹层中
-		var frag = document.createDocumentFragment();
-		var li = createElem("li"),
-			a = this.cloneNode(true);
-
-		a.title = this.innerText;
-		li.appendChild(a);
-
-		//为创建的 面包屑导航绑定点击事件
-		EventUntil.addHandler(li,"click",breadCrumbItemClick);
-
-		frag.appendChild(li);
-
-		curmbNav.appendChild(frag);
-
-		//生成面包屑导航的同时也要刷新列表
-		var path = event.target.getAttribute("data-path");
-		createFloderList(path,curManageFloderDepId);
-
-		//每一次添加都进行一次导航数量的控制
-		controlNavNums(s("#breadcurmb-nav-wrap"),ss("#breadcurmb-nav-wrap li"),
-			s("#overflow-item-wrap"),s("#show-hidden-menu"));
-
-	}
-
-
-	//面包屑导航栏每个导航标签点击事件
-	function breadCrumbItemClick(event){
-		//获取面包屑导航的外包裹层
-		var breadCrumbWrap = s("#breadcurmb-nav-wrap");
-		//获取所有面包屑导航的li
-		var breadCrumbList = ss("#breadcurmb-nav-wrap li");
-
-			
-		var event = EventUntil.getEvent(event);
-		//阻止其默认事件
-		EventUntil.preventDefault(event);
-
-		//获取当前元素在元素集里面的位置
-		var index = Array.prototype.indexOf.call(breadCrumbList,this);
-
-		//如果点击当前的元素不为最后一个
-		if (index != breadCrumbList.length - 1) {
-			//遍历删除这个元素后面的元素
-			for (var i = index + 1; i < breadCrumbList.length; i++) {
-				breadCrumbWrap.removeChild(breadCrumbList[i]);
-			}
-		}
-
-		//无论如何 当点击面包屑导航栏处的导航栏
-		//清空并且移除溢出导航包裹层的所有子元素并且将其和现实按钮隐藏
-		s("#overflow-item-wrap").innerHTML = "";
-		//隐藏显示溢出导航按钮
-		s("#show-hidden-menu").style.display = 'none';
-		s("#overflow-item-wrap").style.display = 'none';
-
-		//整理完面包屑导航的样式后输出文件夹列表
-		//depId 通过当前系别的全局变量获得
-		var path = event.target.getAttribute("data-path");
-		createFloderList(path,curManageFloderDepId);
-		
-		
-	}
-	
-
-	//控制面包屑导航栏数量函数
-	//多出的导航会被添加到溢出导航包裹层 并且绑定函数 overflowNavItemClick
-	function controlNavNums(navWrap,childnode,moreNavContain,icon){
-		//获取父元素的宽度
-		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
-
-		//获取全部子元素的宽度
-		var childWidthTotal = 0;
-		for (var i = 0; i < childnode.length; i++) {
-			//获取每一个子元素的实际宽度
-			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
-			childWidthTotal += curChildWidth;
-			//获取父元素与此时子元素总宽度的差值
-			var diffWidth = parentWidth - childWidthTotal;
-			
-			//如果此时的差值不能容纳下子元素
-			if (diffWidth < curChildWidth) {
-				//复制这个节点
-				var temp = childnode[i].cloneNode(true);
-				//先为复制过来的元素解除之前的事件绑定
-				temp.onclick = null;
-				//再为每个复制的节点绑定事件函数  overflowNavItemClick
-				EventUntil.addHandler(temp,"click",overflowNavItemClick);
-				//将此时的子元素添加到溢出导航包裹层里面
-				moreNavContain.appendChild(temp);
-				//面包屑导航栏移除子元素
-				navWrap.removeChild(childnode[i]);
-				
-			}
-			
-		}
-
-		if (moreNavContain.childNodes.length != 0) {
-			icon.style.display = "inline-block";
-
-		}else{
-			icon.style.display = "none";
-		}
-	}
-
-	//溢出导航包裹层里面的li 子元素点击事件
-	function overflowNavItemClick(event){
-		//获取event 对象并且组织默认事件
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-		//获取溢出导航包裹层
-		var overflowNavWrap = s("#overflow-item-wrap");
-		//获取所有溢出导航层的li 子元素
-		var overflowNavItemList = ss("#overflow-item-wrap li");
-		
-		//获取当前元素的索引
-		var index = Array.prototype.indexOf.call(overflowNavItemList,this);
-		//如果点击的溢出导航不为最后一个遍历删除它后面的所有导航
-		if (index != breadCrumbList.length - 1) {
-			//遍历删除这个元素后面的元素
-			for (var j = index + 1; j < overflowNavItemList.length; j++) {
-				overflowNavWrap.removeChild(overflowNavItemList[j]);
-			}
-			//获取当前的路径
-			var path = event.target.getAttribute("data-path");
-			//输出数据
-			createFloderList(path,curManageFloderDepId);
-			
-		}
-
-		
-			
-		
-	}
-
-
-
-	//修改文件夹名字按钮点击事件执行函数
-	function modifyFloderName(){
-		//获取button 的父元素
-		var parent = this.parentNode.parentNode,
-			//获取文件的名字
-			floderName = parent.querySelectorAll(".floder-name a")[0].innerText,
-			//获取文件的路径
-			floderPath = parent.querySelectorAll(".floder-name a")[0].getAttribute("data-path");
-		//为修改名字弹出层的input输入框插入内容	
-		s("#rename-file").value = floderName;
-		s("#rename-file").title = floderPath;
-		//显示修改文件夹名弹出层
-		s("#modify-file-name-wrap").style.display = 'block';
-	}
-	*/
 	
 	//定义检测创建文件名或修改文件名时 文件名是否有重复
-	function checkFloderName(elem,val){
+	function nameIsRepeat(elem,val){
 		//获取相应的参照元素
 		var floderNameList = elem,
 			//定义文件夹名字状态初始值
@@ -527,9 +185,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	}
 
 
-
-	//隐藏导航点击按钮事件
-	EventUntil.addHandler(s("#show-hidden-menu"),"click",function(){
+	//溢出导航隐藏按钮点击事件
+	function overflowNavBtnClick(){
 		
 		//获取按钮的宽度
 		var curWidth = parseInt(getCurStyle(this,null,"width"));
@@ -550,38 +207,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			s("#overflow-item-wrap").style.display = "none";
 		}
 
-	});
-
-	//新建文件夹按钮点击事件
-	EventUntil.addHandler(s("#newfloder-btn"),"click",function(){
-		
-		if (manageDepFloder.curManageFloderDepId == "") {
-			alert("请先选择系别");
-		}else{
-			s("#new-file-wrap").style.display = "block";
-		}
-		
-	})
-
-	//新建文件夹弹出层关闭按钮点击事件
-	EventUntil.addHandler(s("#new-floder-close-btn"),"click",function(){
-		s("#new-file-wrap").style.display = 'none';
-	})
-
-	//新建文件夹输入框键盘输入事件
-	EventUntil.addHandler(s("#new-file-name"),"keyup",function(){
-		if (this.value.length != 0) {
-			s("#newfloder-submit").removeAttribute("disabled");
-			s("#newfloder-submit").className = "btn btn-primary";
-		}else{
-			s("#newfloder-submit").disabled = "true";
-			s("#newfloder-submit").className = "btn btn-primary disabled";
-		}
-	})
+	}
 
 
-	//新建文件夹弹出层提交按钮点击事件
-	EventUntil.addHandler(s("#newfloder-submit"),"click",function(){
+	function submitNewFloder(){
 		//遍历文件夹列表的所有a 标签文本判断是否与新建文件夹同名
 		//有就提示错误 不允许创建
 		//没有 创建成功 刷新文件夹列表
@@ -591,8 +220,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		
 		//获取输入框的内容
 		var val = s("#new-file-name").value;
-		//调用 checkFloderName 函数判断文件名是否合法
-		var floderNameIsCorrect = checkFloderName(ss("#file-list-content tr td a"),val);
+		//调用 nameIsRepeat 函数判断文件名是否合法
+		var floderNameIsCorrect = nameIsRepeat(ss("#file-list-content tr td a"),val);
 
 		//根据filenameStatus 判断文件名的合法性
 		if (floderNameIsCorrect == false) {
@@ -632,27 +261,11 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		}
 
 		
-	})
-
-	//修改文件夹名弹出层关闭按钮点击事件
-	EventUntil.addHandler(s("#modify-flodername-close-btn"),"click",function(){
-		s("#modify-file-name-wrap").style.display = 'none';
-	})
-
-	//修改文件夹输入框键盘输入事件
-	EventUntil.addHandler(s("#rename-file"),"keyup",function(){
-		if (this.value.length != 0) {
-			s("#rename-submit").removeAttribute("disabled");
-			s("#rename-submit").className = "btn btn-primary";
-		}else{
-			s("#rename-submit").disabled = "true";
-			s("#rename-submit").className = "btn btn-primary disabled";
-		}
-	})
+	}
 
 
-	//修改文件夹名弹出层提交按钮点击事件
-	EventUntil.addHandler(s("#rename-submit"),"click",function(){
+
+	function submitModifyFloderName(){
 		//发送ajax 给后台
 		//先检测是否为空 不为空发送给后台
 		//如果有同名 后台发送回数据提示错误
@@ -665,7 +278,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		var val = s("#rename-file").value;
 			
 
-		var floderNameIsCorrect = checkFloderName(ss("#file-list-content tr td a"),val);
+		var floderNameIsCorrect = nameIsRepeat(ss("#file-list-content tr td a"),val);
 
 		//根据filenameStatus 判断文件名的合法性
 		if (floderNameIsCorrect == false) {
@@ -707,24 +320,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 		}
 
-	})
+	}
 
-
-	//删除文件夹按钮点击事件
-	EventUntil.addHandler(s("#drop-floder-btn"),"click",dropFloder);
-
-	//删除文件夹弹窗取消按钮点击事件
-	EventUntil.addHandler(s("#cancel-drop-floder"),"click",function(){
-		s("#drop-floder-wrap").style.display = "none";
-	})
-
-	//删除文件夹弹窗关闭按钮点击事件
-	EventUntil.addHandler(s("#drop-floder-close-btn"),"click",function(){
-		s("#drop-floder-wrap").style.display = "none";
-	})
-
-	//删除文件夹弹窗删除按钮点击事件
-	EventUntil.addHandler(s("#confirm-drop-floder"),"click",function(){
+	//删除文件夹弹出层删除按钮点击事件回调函数
+	function doDropFloder(){
 		//获取要删除文件夹的uid
 		var uids = s("#target-floder-name").title;
 		$.ajax({
@@ -755,131 +354,41 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			}
 		})
 		
+	}
+
+
+	//新建文件夹输入框键盘输入事件
+	EventUntil.addHandler(s("#new-file-name"),"keyup",function(){
+		if (this.value.length != 0) {
+			s("#newfloder-submit").removeAttribute("disabled");
+			s("#newfloder-submit").className = "btn btn-primary";
+		}else{
+			s("#newfloder-submit").disabled = "true";
+			s("#newfloder-submit").className = "btn btn-primary disabled";
+		}
 	})
 
-	//管理文件弹出层关闭按钮点击事件
-	EventUntil.addHandler(s("#filemanage-close-btn"),"click",function(){
-		//获取所有多选框
-		var checkboxList = ss("#file-list-content tr td input:checked");
-		//将他们全部取消选中
-		for (var i = 0; i < checkboxList.length; i++) {
-			checkboxList[i].checked = false;
+
+
+
+
+	//修改文件夹输入框键盘输入事件
+	EventUntil.addHandler(s("#rename-file"),"keyup",function(){
+		if (this.value.length != 0) {
+			s("#rename-submit").removeAttribute("disabled");
+			s("#rename-submit").className = "btn btn-primary";
+		}else{
+			s("#rename-submit").disabled = "true";
+			s("#rename-submit").className = "btn btn-primary disabled";
 		}
-		console.log(checkboxList);
-		//关闭弹出层
-		s("#manage-file-floor").style.display = 'none';
-	});
+	})
+
+
 	
 
 	// ---------------- 文件夹管理模块结束 -------------------
 
 	//----------------- 可用部门管理模块开始 -----------------
-
-	//点击侧边栏管理系别标签事件
-	EventUntil.addHandler(s("#manage-department"),"click",function(){
-		//清空系别列表
-		s("#manage-department-list").innerHTML = "";
-		//再输出系别的信息
-		createManageDepDepsList();
-		//再显示
-		s("#manage-department-floor").style.display = 'block';
-	});
-
-	//点击管理系别弹出层关闭按钮事件
-	EventUntil.addHandler(s("#manage-department-close-btn"),"click",function(){
-		s("#manage-department-floor").style.display = 'none';
-	});
-
-	//新建系别按钮点击事件
-	EventUntil.addHandler(s("#add-department"),"click",function(){
-		s("#new-department-dialog").style.display = 'block';
-	});
-
-	//新建系别对话框关闭按钮点击事件
-	EventUntil.addHandler(s("#new-department-close-btn"),"click",function(){
-		s("#new-department-dialog").style.display = 'none';
-		s("#new-department-hint").innerText = "";
-	});
-
-	//新建系别对话框提交按钮点击事件
-	EventUntil.addHandler(s("#confirm-new-department"),"click",submitNewDepartment);
-
-	//新建专业按钮点击事件
-	EventUntil.addHandler(s("#add-speciality"),"click",function(){
-		
-		s("#new-specialy-dialog").style.display = 'block';
-	})
-
-	//新建专业对话框关闭按钮点击事件
-	EventUntil.addHandler(s("#new-specialy-close-btn"),"click",function(){
-		s("#new-specialy-dialog").style.display = 'none';
-		s("#new-specialy-hint").innerText = "";
-	})
-
-	//新建专业对话框提交按钮点击事件
-	EventUntil.addHandler(s("#confirm-new-specialy"),"click",submitNewSpecialy);
-	
-
-	//修改系别对话框按钮点击事件
-	EventUntil.addHandler(s("#modify-department"),"click",function(){
-		//判断当前是否有选择的系别
-		if (curManageDepDepName != "") {
-			//有就显示修改系别对话框
-			s("#modify-department-name").value = curManageDepDepName;
-			s("#modify-department-dialog").style.display = 'block';
-
-		}else{
-			alert("你当前还没有选择系别");
-		}
-	})
-
-	//修改系别对话框关闭按钮点击事件
-	EventUntil.addHandler(s("#modify-department-close-btn"),"click",function(){
-		s("#modify-department-dialog").style.display = 'none';
-		s("#modify-department-name").value = "";
-		s("#modify-department-hint").innerText = "";
-	})
-
-	//修改系别对话框提交按钮点击事件
-	EventUntil.addHandler(s("#confirm-modify-department"),"click",submitModifyDepartment);
-
-	//删除系别按钮点击事件
-	EventUntil.addHandler(s("#drop-department"),"click",function(){
-		if (curManageDepDepId != "") {
-			//如果当前选择了系别 弹出对话框
-			var depName = curManageDepDepName;
-			s("#drop-dep-name").innerText = depName;
-			s("#drop-department-dialog").style.display = 'block';
-		}else{
-			alert("你当前还没选择系别");
-		}
-	})
-
-	//删除系别对话框确认删除按钮点击事件
-	EventUntil.addHandler(s("#confirm-drop-dep"),"click",confirmDropDep);
-
-	//删除系别对话框取消按钮点击事件
-	EventUntil.addHandler(s("#cancel-drop-dep"),"click",function(){
-		s("#drop-department-dialog").style.display = 'none';
-	})
-
-	//修改专业提交按钮点击事件
-	EventUntil.addHandler(s("#confirm-modify-specialy"),"click",submitModifySpec);
-
-	//修改专业关闭按钮点击事件
-	EventUntil.addHandler(s("#modify-specialy-close-btn"),"click",function(){
-		s("#modify-specialy-dialog").style.display = 'none';
-		s("#modify-specialy-hint").innerText = "";
-	})
-
-	//删除专业对话框取消按钮点击事件
-	EventUntil.addHandler(s("#cancel-drop-spec"),"click",function(){
-		s("#drop-specialy-dialog").style.display = 'none';
-		s("#modify-specialy-hint").innerText = "";
-	})
-
-	//删除专业对话框确认按钮点击事件
-	EventUntil.addHandler(s("#confirm-drop-spec"),"click",dropSpec);
 
 
 	//专业名修改按钮点击事件
@@ -923,7 +432,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			data: "uids=" + id,
 			success: function(){
 				//修改成功之后刷新右侧专业栏
-				outputSpeciality(curManageDepDepId);
+				manageDep.outputSpeciality(manageDep.curManageDepDepId);
 				s("#drop-specialy-dialog").style.display = 'none';
 				alert("删除成功");
 			},
@@ -940,7 +449,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		//修改后的值
 		var val = s("#modify-specialy-name").value,
 			id = s("#modify-specialy-name").title
-			valIsCorrect = checkFloderName(ss("#speciality-list-content tr td"),val);
+			valIsCorrect = nameIsRepeat(ss("#speciality-list-content tr td"),val);
 
 		if (val != "" && valIsCorrect == true) {
 			//发送ajax
@@ -951,7 +460,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				data: "uid=" + id + "&content=" + val,
 				success: function(){
 					//修改成功之后刷新右侧专业栏
-					outputSpeciality(curManageDepDepId);
+					manageDep.outputSpeciality(manageDep.curManageDepDepId);
 					//清空提示信息
 					s("#modify-specialy-hint").innerText = "";
 					//关闭对话框
@@ -973,10 +482,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			url: 'http://localhost:8080/Management/admin/ajaxDeleteDep.action',
 			type: 'POST',
 			dataType: 'json',
-			data: "uids=" + curManageDepDepId,
+			data: "uids=" + manageDep.curManageDepDepId,
 			success: function(){
 				//更新系别列表
-				createManageDepDepsList();
+				manageDep.createManageDepDepsList();
 				//删除系别对话框关闭
 				s("#drop-department-dialog").style.display = 'none';
 				alert("删除成功！");
@@ -991,7 +500,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	//修改系别对话框提交按钮点击事件回调函数
 	function submitModifyDepartment(){
 		var modifyVal = s("#modify-department-name").value;
-		var modifyValIsCorrect = checkFloderName(ss("#manage-department-list li"),modifyVal);
+		var modifyValIsCorrect = nameIsRepeat(ss("#manage-department-list li"),modifyVal);
 
 		if (modifyVal != "" && modifyValIsCorrect == true) {
 			//如果修改后的部门名称不为空且正确
@@ -999,11 +508,11 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				url: 'http://localhost:8080/Management/admin/ajaxUpdateDep.action',
 				type: 'POST',
 				dataType: 'json',
-				data: "uid=" + curManageDepDepId + "&parent=0&content=" +  modifyVal,
+				data: "uid=" + manageDep.curManageDepDepId + "&parent=0&content=" +  modifyVal,
 				success: function(){
 					//请求成功后
 					//刷新左侧部门列表
-					createManageDepDepsList();
+					manageDep.createManageDepDepsList();
 					//清空输入框的值
 					s("#modify-department-name").value = "";
 					//清空提示信息
@@ -1026,7 +535,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	//新建系别对话框提交按钮点击事件回调函数
 	function submitNewDepartment(){
 		var newDepName = s("#new-department-name").value;
-		var depNameIsCorrect = checkFloderName(ss("#manage-department-list li"),newDepName);
+		var depNameIsCorrect = nameIsRepeat(ss("#manage-department-list li"),newDepName);
 		
 		//如果新系别名不为空且不重复发送数据给后台
 		if (newDepName != "" && depNameIsCorrect == true) {
@@ -1037,7 +546,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				data: "parent=0&content=" + newDepName,
 				success: function(data){
 					//输出数据
-					createManageDepDepsList();
+					manageDep.createManageDepDepsList();
 					//清空右侧专业内容
 					s("#speciality-list-content").innerHTML = "";
 					//清空输入框内容
@@ -1045,7 +554,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 					//清空提示框信息
 					s("#new-department-hint").innerText = "";
 					//清空保存的系别id
-					curManageFloderDepId = "";
+					manageDep.curManageFloderDepId = "";
 					//关闭对话框
 					s("#new-department-dialog").style.display = 'none';
 					alert("创建成功");
@@ -1060,10 +569,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	}
 
 
-	//新建系别对话框提交按钮点击事件回调函数
+	//新建专业对话框提交按钮点击事件回调函数
 	function submitNewSpecialy(){
 		var newSpecName = s("#new-specialy-name").value;
-		var specNameIsCorrect = checkFloderName(ss("#speciality-list-content tr td"),newSpecName);
+		var specNameIsCorrect = nameIsRepeat(ss("#speciality-list-content tr td"),newSpecName);
 
 		//如果新系别名不为空且不重复发送数据给后台
 		if (newSpecName != "" && specNameIsCorrect == true) {
@@ -1071,16 +580,14 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				url: 'http://localhost:8080/Management/admin/ajaxAddDep.action',
 				type: 'POST',
 				dataType: 'json',
-				data: "parent=" + curManageDepDepId + "&content=" + newSpecName,
+				data: "parent=" + manageDep.curManageDepDepId + "&content=" + newSpecName,
 				success: function(data){
 					//输出专业数据
-					outputSpeciality(curManageDepDepId);
+					manageDep.outputSpeciality(manageDep.curManageDepDepId);
 					//清空输入框
 					s("#new-specialy-name").value = "";
 					//清空提示框
 					s("#new-specialy-hint").innerText = "";
-					//清空保存的系别id
-					curManageFloderDepId = "";
 					//关闭对话框
 					s("#new-specialy-dialog").style.display = 'none';
 					alert("创建成功");
@@ -1094,172 +601,21 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		}
 	}
 
-
-	//管理系别专业模块侧边栏系别点击事件
-	function manageDepListSelect(event){
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-
-		//如果点击的目标是 a标签进行如下操作
-		if (event.target.tagName.toLowerCase() == "a") {
-			//获取点击目标的系别id
-			var depId = event.target.getAttribute("data-depId");
-			//清空li 的活动样式
-			for (var i = 0; i < depList.length; i++) {
-				if (depList[i].className.indexOf("filedep-item-active") != -1) {
-					removeClass(depList[i],"filedep-item-active");
-				}
-			}
-
-			this.className += "filedep-item-active";
-			//调整完样式之后开始输出数据
-
-			outputSpeciality(depId);
-		}
-
-		
-	}
-
-
-	//根据系别输出对应专业
-	function outputSpeciality(depId){
-		//获取部门列表
-		var specList = s("#speciality-list-content");
-		//清空部门列表
-		specList.innerHTML = "";
-
-		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindDepOrPro.action',
-			type: 'GET',
-			dataType: 'json',
-			data: "parent=" + depId,
-			success: function(data){
-				specList.appendChild(createSpecialityElem(data));
-			}
-		})
-		
-	}
-
-
-	//将数据转换为元素的函数
-	//构造专业名元素方法
-	function createSpecialityElem(data){
-		var frag = document.createDocumentFragment(),
-			list = data.extend.pros;
-
-		//创建表格内需要的元素
-		var tr = createElem("tr"),
-			td = createElem("td"),
-			btn = createElem("button"),
-			span = createElem("span");
-
-		var editBtn = btn.cloneNode(true),
-			editIcon = span.cloneNode(true),
-			dropBtn = btn.cloneNode(true),
-			dropIcon = span.cloneNode(true);
-
-
-		editIcon.className = "glyphicon glyphicon-edit";
-		editBtn.className = "btn btn-default btn-sm";
-		dropIcon.className = "glyphicon glyphicon-trash";
-		dropBtn.className = "btn btn-danger btn-sm";
-
-		editBtn.appendChild(editIcon);
-		editBtn.innerHTML += "修改专业";
-
-		dropBtn.appendChild(dropIcon);
-		dropBtn.innerHTML += "删除专业";
-
-
-
-		for (var i = 0; i < list.length; i++) {
-
-			var row = tr.cloneNode(true),
-				specNamecol = td.cloneNode(true),
-				operateCol = td.cloneNode(true),
-				dropButton = dropBtn.cloneNode(true),
-				editButton = editBtn.cloneNode(true);
-
-			//修改部门按钮点事件
-			EventUntil.addHandler(editButton,"click",editSpecBtnClick);
-
-			//删除部门按钮点击事件
-			EventUntil.addHandler(dropButton,"click",dropSpecBtnClick);
-
-			specNamecol.className = "manage-department-td";
-			specNamecol.innerText = list[i].pro;
-			specNamecol.title = list[i].uid;
-
-			operateCol.className = "manage-department-td";
-			operateCol.appendChild(editButton);
-			operateCol.appendChild(dropButton);
-
-			row.appendChild(specNamecol);
-			row.appendChild(operateCol);
-
-			frag.appendChild(row);
-
-		}
-
-		return frag;
-	}
-
-	//创建系别管理弹出层侧边栏部门列表
-	function createManageDepDepsList(){
-
-		var depListWrap = s("#manage-department-list");
-		//清空所有系别内容
-		depListWrap.innerHTML = "";
-
-		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindDepOrPro.action',
-			type: 'GET',
-			dataType: 'json',
-			data: "parent=0",
-			success: function(data){
-				//如果没有部门数据
-				if (data.extend.deps.length == 0) {
-					//部门侧边栏更换提示背景
-					depListWrap.className = "nodepartment-sidebar-bg";
-				}else{
-					//如果有部门就输出数据
-					depListWrap.appendChild(createElemForDepList(data,manageDepListSelect));
-				}
-			}
-		})
-		
-	}
-
-
-	//管理部门侧边栏系别点击执行函数
-	function manageDepListSelect(){
-		//调整样式
-		var depList = ss("#manage-department-list li");
-
-		//清空li 的活动样式
-		for (var i = 0; i < depList.length; i++) {
-			if (depList[i].className.indexOf("filedep-item-active") != -1) {
-				removeClass(depList[i],"filedep-item-active");
-			}
-		}
-
-		this.className += "filedep-item-active";
-		//侧边栏系别点击时
-		//获取这个系别的id
-		curManageDepDepId = this.getAttribute("data-depid");
-		//获取这个系别的名字
-		curManageDepDepName = this.innerText;
-		//输出数据
-		outputSpeciality(curManageDepDepId);
-
-		//上面工具栏的增加专业按钮显示
-		s("#add-speciality").style.display = 'inline-block';
-	}
-
-
 	//----------------- 可用部门管理模块结束 -----------------
 
 	//--------------  未审核模块的操作事件 ------------
+
+
+	function countCheckedBoxChecked(checkboxList){
+		var count = 0;
+		for (var i = 0; i < checkboxList.length; i++) {
+			if (checkboxList[i].checked == true) {
+				count++;
+			}
+		}
+
+		return count;
+	}
 
 	//未审核列表批量通过按钮点击事件调用函数
 	function unexamiePassAll(){
@@ -1361,47 +717,12 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		
 		
 	}
-	
-
-	//未审核用户 "选择全部多选框" 点击事件
-	EventUntil.addHandler(s("#unexamie-select-all"),"click", function(){
-		selectAllBtnHandler.call(this,ss(".unexamie-select"));
-	});
-
-	//未审核用户 "批量通过按钮" 点击事件
-	EventUntil.addHandler(s("#unexamie-pass-all"),"click",unexamiePassAll);
-
-	//未审核用户 "批量拒绝按钮" 点击事件
-	EventUntil.addHandler(s("#unexamie-refuse-all"),"click",unexamieRefuseAll);
 
 
-	//未审核用户模块弹出层事件
 
-	//拒绝用户弹出层功能
-	//1、拒绝用户注册模块关闭按钮点击事件
-	EventUntil.addHandler(s("#refuse-close-btn"),"click",function(){
+	//未审核列表模块方法
+	function sendRefuseMsg(){
 		
-		s("#floor").style.display = "none";
-	})
-
-	//2、拒绝理由信息输入框输入事件
-	EventUntil.addHandler(s("#refuse-content"),"keyup",function(){
-
-		var sendBtn = s("#send-refuse-info");
-
-		if (this.value.length == 0) {
-			sendBtn.disabled = "disabled";
-			sendBtn.style.backgroundColor = "#999999"
-		}else{
-			sendBtn.removeAttribute("disabled");
-			sendBtn.style.backgroundColor = "#05a828";
-		}
-	})
-
-	//3、拒绝用户注册模块 "提交拒绝信息" 按钮点击事件
-	EventUntil.addHandler(s("#send-refuse-info"),"click",function(){
-		//ajax 提交用户的id （即title属性）,拒绝理由 给后台处理
-		//当处理完毕后再将弹出层包裹层隐藏
 
 		//获取当前拒绝用户的后台 id 值
 		var idVal = s("#refuse-username").title;
@@ -1434,10 +755,11 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		});
 		
 		
-	})
+	}
 
-	//3、拒绝用户注册模块 "不填写拒绝信息" 按钮点击事件
-	EventUntil.addHandler(s("#no-refuse-reason"),"click",function(){
+
+	//拒绝用户申请单不发送拒绝信息按钮点击事件回调函数
+	function notsendRefuseMsg(){
 		//ajax 提交用户的id 给后台，不提交拒绝理由
 		//数据提交完成后将包裹层隐藏
 
@@ -1470,7 +792,23 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		});
 		
 		
+	}
+
+
+	//拒绝理由信息输入框输入事件
+	EventUntil.addHandler(s("#refuse-content"),"keyup",function(){
+
+		var sendBtn = s("#send-refuse-info");
+
+		if (this.value.length == 0) {
+			sendBtn.disabled = "disabled";
+			sendBtn.style.backgroundColor = "#999999"
+		}else{
+			sendBtn.removeAttribute("disabled");
+			sendBtn.style.backgroundColor = "#05a828";
+		}
 	})
+	
 
 	//------------- 未审核模块操作事件结束 -------------------------
 	
@@ -1559,40 +897,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		
 	}
 
-	//已审核列表 "选择全部" 多选框点击事件
-	EventUntil.addHandler(s("#examied-select-all"),"click",function(){
-		selectAllBtnHandler.call(this,ss(".examied-select"));
-
-	});
-
-	//批量撤回按钮点击事件
-	EventUntil.addHandler(s("#examie-recall-all"),"click",examiedModuleRecallAll);
-
-	//下拉选择框改变事件
-	EventUntil.addHandler(s("#examie-filter"),"change",filterOnChange);
-
-	//撤回用户弹出层功能
-	//1、取消撤回按钮点击事件
-	EventUntil.addHandler(s("#cancel-recall-user"),"click",function(){
-		s("#floor").style.display = "none";
-	})
-
-	//2、撤回理由输入框键盘输入事件
-	EventUntil.addHandler(s("#recall-content"),"keyup",function(){
-		//获取提交按钮
-		var sendBtn = s("#confirm-recall-user");
-
-		if (this.value.length != 0) {
-			sendBtn.removeAttribute("disabled");
-			sendBtn.style.backgroundColor = "#E61A1A";
-		}else{
-			sendBtn.disabled = "disabled";
-			sendBtn.style.backgroundColor = "#999999";
-		}
-	})
-
-	//3、确认撤回按钮点击事件但 "不发送信息" 点击事件
-	EventUntil.addHandler(s("#confirm-recall-user"),"click",function(){
+	//发送撤回信息按钮点击事件
+	function sendRecallMsg(){
 		//点击时 和上面一样 获取提示元素的 title值
 		//将title值 传给后台
 		var idVal = s("#recall-username").title;
@@ -1631,10 +937,30 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			}
 		});
 		
+	}
+
+
+
+
+	//下拉选择框改变事件
+	EventUntil.addHandler(s("#examie-filter"),"change",filterOnChange);
+
+	//2、撤回理由输入框键盘输入事件
+	EventUntil.addHandler(s("#recall-content"),"keyup",function(){
+		//获取提交按钮
+		var sendBtn = s("#confirm-recall-user");
+
+		if (this.value.length != 0) {
+			sendBtn.removeAttribute("disabled");
+			sendBtn.style.backgroundColor = "#E61A1A";
+		}else{
+			sendBtn.disabled = "disabled";
+			sendBtn.style.backgroundColor = "#999999";
+		}
 	})
 
-	//---------------- 已审核模块操作事件结束 ----------------------
 
+	//---------------- 已审核模块操作事件结束 ----------------------
 
 
 	//侧边栏除管理文件夹和管理系别专业标签意外的元素点击事件
@@ -1679,6 +1005,213 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		}
 	};
 
+
+	//事件委托函数
+	function entrustEvent(event){
+		event = EventUntil.getEvent(event);
+		var target = event.target;
+
+		if (target.id == "manage-floder") {
+			//侧边栏管理文件夹标签点击事件
+			manageDepFloder.createManageFloderDepList();
+			s("#manage-file-floor").style.display = 'block';
+
+		}else if(target.id == "show-hidden-menu") {
+			//溢出导航隐藏按钮点击事件
+			overflowNavBtnClick();
+
+		}else if(target.id == "newfloder-btn") {
+			//新建文件夹按钮点击事件
+			if (manageDepFloder.curManageFloderDepId == "") {
+				alert("请先选择系别");
+			}else{
+				s("#new-file-wrap").style.display = "block";
+			}
+
+		}else if(target.id == "new-floder-close-btn") {
+			//新建文件夹弹出层关闭按钮点击事件
+			s("#new-file-wrap").style.display = 'none';
+
+		}else if(target.id == "newfloder-submit") {
+			//新建文件夹弹出层提交按钮点击事件
+			submitNewFloder();
+
+		}else if(target.id == "modify-flodername-close-btn"){
+			//修改文件夹名弹出层关闭按钮点击事件
+			s("#modify-file-name-wrap").style.display = 'none';
+
+		}else if(target.id == "rename-submit"){
+			//修改文件名弹出层提交按钮点击事件
+			submitModifyFloderName();
+
+		}else if(target.id == "drop-floder-btn") {
+			//删除文件夹按钮点击事件
+			dropFloder();
+
+		}else if(target.id == "cancel-drop-floder"){
+			//删除文件夹弹出层取消按钮点击事件
+			s("#drop-floder-wrap").style.display = "none";
+
+		}else if(target.id == "drop-floder-close-btn") {
+			//删除文件夹弹出层关闭按钮点击事件
+			s("#drop-floder-wrap").style.display = "none";
+
+		}else if(target.id == "confirm-drop-floder") {
+			//删除文件夹确认按钮点击事件
+			doDropFloder();
+
+		}else if(target.id == "filemanage-close-btn") {
+			//管理文件弹出层关闭按钮点击事件
+			//获取所有多选框
+			var checkboxList = ss("#file-list-content tr td input:checked");
+			//将他们全部取消选中
+			for (var i = 0; i < checkboxList.length; i++) {
+				checkboxList[i].checked = false;
+			}
+			//关闭弹出层
+			s("#manage-file-floor").style.display = 'none';
+
+		}else if(target.id == "manage-department") {
+			//侧边栏管理系别标签点击事件
+			//输出系别的信息
+			manageDep.createManageDepDepsList();
+			//再显示
+			s("#manage-department-floor").style.display = 'block';
+
+		}else if(target.id == "manage-department-close-btn") {
+			//点击管理系别弹出层关闭按钮事件
+			s("#manage-department-floor").style.display = 'none';
+
+		}else if(target.id == "add-department") {
+			//新建系别按钮点击事件
+			s("#new-department-dialog").style.display = 'block';
+
+		}else if(target.id == "new-department-close-btn") {
+			//新建系别对话框关闭按钮点击事件
+			s("#new-department-dialog").style.display = 'none';
+			s("#new-department-hint").innerText = "";
+
+		}else if(target.id == "confirm-new-department") {
+			//新建系别对话框提交按钮点击事件
+			submitNewDepartment();
+
+
+		}else if(target.id == "add-speciality") {
+			//新建专业按钮点击事件
+			s("#new-specialy-dialog").style.display = 'block';
+
+		}else if(target.id == "new-specialy-close-btn") {
+			//新建专业对话框关闭按钮点击事件
+			s("#new-specialy-dialog").style.display = 'none';
+			s("#new-specialy-hint").innerText = "";
+
+		}else if(target.id == "confirm-new-specialy") {
+			//新建专业对话框提交按钮点击事件
+			submitNewSpecialy();
+
+		}else if(target.id == "modify-department") {
+			//修改系别对话框按钮点击事件
+			if (manageDep.curManageDepDepName != "") {
+				//有就显示修改系别对话框
+				s("#modify-department-name").value = manageDep.curManageDepDepName;
+				s("#modify-department-dialog").style.display = 'block';
+
+			}else{
+				alert("你当前还没有选择系别");
+			}
+
+		}else if(target.id == "modify-department-close-btn") {
+			//修改系别对话框关闭按钮点击事件
+			s("#modify-department-dialog").style.display = 'none';
+			s("#modify-department-name").value = "";
+			s("#modify-department-hint").innerText = "";
+
+		}else if(target.id == "confirm-modify-department") {
+			//修改系别对话框提交按钮点击事件
+			submitModifyDepartment();
+
+		}else if(target.id == "drop-department") {
+			//删除系别按钮点击事件
+			if (manageDep.curManageDepDepId != "") {
+				//如果当前选择了系别 弹出对话框
+				var depName = manageDep.curManageDepDepName;
+				s("#drop-dep-name").innerText = depName;
+				s("#drop-department-dialog").style.display = 'block';
+			}else{
+				alert("你当前还没选择系别");
+			}
+
+		}else if(target.id == "confirm-drop-dep") {
+			//删除系别对话框确认删除按钮点击事件
+			confirmDropDep();
+
+		}else if(target.id == "cancel-drop-dep") {
+			//删除系别对话框取消按钮点击事件
+			s("#drop-department-dialog").style.display = 'none';
+
+		}else if(target.id == "confirm-modify-specialy") {
+			//修改专业提交按钮点击事件
+			submitModifySpec();
+
+		}else if(target.id == "modify-specialy-close-btn") {
+			//修改专业关闭按钮点击事件
+			s("#modify-specialy-dialog").style.display = 'none';
+			s("#modify-specialy-hint").innerText = "";
+
+		}else if(target.id == "cancel-drop-spec") {
+			//删除专业对话框取消按钮点击事件
+			s("#drop-specialy-dialog").style.display = 'none';
+			s("#modify-specialy-hint").innerText = "";
+
+		}else if(target.id == "confirm-drop-spec") {
+			//删除专业对话框确认按钮点击事件
+			dropSpec();
+
+		}else if(target.id == "unexamie-select-all") {
+			//未审核用户 "选择全部多选框" 点击事件
+			selectAllBtnHandler.call(target,ss(".unexamie-select"));
+
+		}else if(target.id == "unexamie-pass-all") {
+			//未审核用户 "批量通过按钮" 点击事件
+			unexamiePassAll();
+
+		}else if(target.id == "unexamie-refuse-all") {
+			//未审核用户 "批量拒绝按钮" 点击事件
+			unexamieRefuseAll();
+
+		}else if(target.id == "refuse-close-btn") {
+			//拒绝用户弹出层功能
+			//拒绝用户注册模块关闭按钮点击事件
+			s("#floor").style.display = "none";
+
+		}else if(target.id == "send-refuse-info") {
+			//拒绝用户注册模块 "提交拒绝信息" 按钮点击事件
+			//ajax 提交用户的id （即title属性）,拒绝理由 给后台处理
+			//当处理完毕后再将弹出层包裹层隐藏
+			sendRefuseMsg();
+
+		}else if(target.id == "no-refuse-reason") {
+			//拒绝用户注册模块 "不填写拒绝信息" 按钮点击事件
+			notsendRefuseMsg();
+
+		}else if(target.id == "examied-select-all"){
+			//已审核列表 "选择全部" 多选框点击事件
+			selectAllBtnHandler.call(target,ss(".examied-select"));
+
+		}else if(target.id == "examie-recall-all") {
+			//批量撤回按钮点击事件
+			examiedModuleRecallAll();
+
+		}else if(target.id == "cancel-recall-user") {
+			//取消撤回按钮点击事件
+			s("#floor").style.display = "none";
+
+		}else if(target.id == "confirm-recall-user") {
+			//确认撤回按钮点击事件但 "不发送信息" 点击事件
+			sendRecallMsg();
+		}
+	}
+
  
 	
 
@@ -1698,6 +1231,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 	//初始化页面
 	init();
+
+
+	//事件委托
+	EventUntil.addHandler(document,"click",entrustEvent);
 
 
 })

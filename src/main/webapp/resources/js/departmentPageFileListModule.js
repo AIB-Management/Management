@@ -323,7 +323,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		var path = this.getAttribute("data-path");
 
-		window.location.href = "http://localhost:8080/Management/content/filecontent.action?uid=" + path;
+		window.open("http://localhost:8080/Management/content/filecontent.action?uid=" + path,"_blank");
 			
 	}
 

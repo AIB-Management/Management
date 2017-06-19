@@ -394,7 +394,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//获取当前元素的索引
 		var index = Array.prototype.indexOf.call(overflowNavItemList,this);
 		//如果点击的溢出导航不为最后一个遍历删除它后面的所有导航
-		if (index != breadCrumbList.length - 1) {
+		if (index != overflowNavItemList.length - 1) {
 			//遍历删除这个元素后面的元素
 			for (var j = index + 1; j < overflowNavItemList.length; j++) {
 				overflowNavWrap.removeChild(overflowNavItemList[j]);
