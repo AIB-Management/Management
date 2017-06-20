@@ -30,33 +30,46 @@ body{
 /*包裹所有输入框层*/
 .input-wrap{
 	margin-top: 10px;
+	word-spacing: -6px;
 }
 /*表单元素包裹层的全部元素定义以及局部元素定义*/
 .input-wrap span,.input-wrap input,.input-wrap label{
 	display: inline-block;
 	vertical-align: middle;
 	font-size: 15px;
+	word-spacing: 0;
 }
 .input-wrap span{
 	color: #FB000D;
 }
 .input-wrap label{
 	width: 70px;
-	height: 30px;
-	line-height: 30px;
+	height: 32px;
+	line-height: 32px;
+	border-radius: 5px 0 0 5px;
+	background-color: #ccc;
+	text-align: center;
 }
 .input-wrap input{
 	width: 200px;
 	height: 30px;
-	padding-left: 10px;
 	line-height: 30px;
+	padding-left: 10px;
 	border: 1px solid #999;
-	border-radius: 15px;
+	border-radius: 0 5px 5px 0;
 }
 .input-wrap select{
 	height: 30px;
 	line-height: 30px;
 	border: 1px solid #999;
+	border-radius: 5px;
+}
+.input-wrap .select-spec-tag{
+	width: 70px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 0;
+	background-color: #fff;
 }
 #vtCode{
 	width: 80px;
@@ -78,15 +91,20 @@ body{
 /*提交按钮*/
 #complete-reg{
 	display: inline-block;
+	vertical-align: text-bottom;
 	width: 100px;
 	height: 40px;
 	line-height: 40px;
-	vertical-align: text-bottom;
 	margin-left: 75px;
+	border-radius: 5px;
 	background-color: #339933;
 	color: #fff;
+	cursor: pointer;
 }
 /*跳转链接*/
 .link-login{
+	display: inline-block;
+	margin-left: 10px;
+	font-size: 14px;
 	color: #006699;
 }

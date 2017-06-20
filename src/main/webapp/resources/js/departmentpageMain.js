@@ -9,17 +9,17 @@ require.config({
 			deps:['jquery.min']
 		},
 
-		'fileinput':{
+		'fileinput.min':{
 			deps: ['jquery.min','bootstrap.min']
 
 		},
 
-		'fileinput_locale_es':{
-			deps: ['jquery.min','bootstrap.min','fileinput']
+		'es':{
+			deps: ['jquery.min','bootstrap.min','fileinput.min']
 		},
 
-		'fileinput_locale_zh':{
-			deps: ['jquery.min','bootstrap.min','fileinput','fileinput_locale_es']
+		'zh':{
+			deps: ['jquery.min','bootstrap.min','fileinput.min','es']
 		}
 
 	}
@@ -27,7 +27,7 @@ require.config({
 })
 
 //departmentpage 脚本main函数
-require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","fileinput","fileinput_locale_es","fileinput_locale_zh"],function main($,EventUntil,authorityModule){
+require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileListModule","bootstrap.min","fileinput.min","es","zh"],function main($,EventUntil,authorityModule,depFileListModule){
 
 	//封装选择器函数
 	function s(name){
@@ -78,46 +78,6 @@ require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","file
 			sec<10 ? sec = "0" + sec : sec;
 			return year + "-" + month + "-" + day + "&nbsp;&nbsp;" + h + ":" + m + ":" + sec;
 	}
-	//-------------------- 上面是自定义函数层 -------------------
-
-
-	//控制面包屑导航栏数量函数
-	function controlNavNums(navWrap,childnode,moreNavContain,icon){
-		//获取父元素的宽度
-		var parentWidth = parseInt(getCurStyle(navWrap,null,"width"));
-
-		//获取全部子元素的宽度
-		var childWidthTotal = 0;
-		for (var i = 0; i < childnode.length; i++) {
-			//获取每一个子元素的实际宽度
-			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
-			childWidthTotal += curChildWidth;
-			//获取父元素与此时子元素总宽度的差值
-			var diffWidth = parentWidth - childWidthTotal;
-			
-			//如果此时的差值不能容纳下子元素
-			if (diffWidth < curChildWidth) {
-				//复制这个节点
-				var temp = childnode[i].cloneNode(true);
-				//为每个复制的节点绑定事件函数  overflowNavItemClick
-				EventUntil.addHandler(temp,"click",overflowNavItemClick);
-				//将此时的子元素添加到溢出导航包裹层里面
-				moreNavContain.appendChild(temp);
-				//面包屑导航栏移除子元素
-				navWrap.removeChild(childnode[i]);
-				
-			}
-			
-		}
-
-		if (moreNavContain.childNodes.length != 0) {
-			icon.style.display = "block";
-
-		}else{
-			icon.style.display = "none";
-		}
-	}
-
 
 	//获取当前路径函数
 	function getCurPath(){
@@ -145,328 +105,32 @@ require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","file
 
 
 
-	//溢出导航包裹层里面的li 子元素点击事件回掉函数
-	function overflowNavItemClick(event){
-		//获取事件对象
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-		//如果点击的目标元素是 a 标签 执行如下操作
-		if (event.target.tagName.toLowerCase() == "a") {
-			
-			//获取溢出导航包裹层
-			var overflowNavWrap = s("#overflow-item-wrap");
-			//获取所有溢出导航层的li 子元素
-			var overflowNavItemList = ss("#overflow-item-wrap li");
-			//获得点击当前元素的索引
-			var index = Array.prototype.indexOf.call(overflowNavItemList,this);
-			//如果点击的这个元素不是溢出导航栏的最后一个元素
-			if (index != overflowNavItemList.length - 1) {
-				//遍历删除这个元素后面的元素
-				for (var i = index + 1; i < overflowNavItemList.length; i++) {
-					overflowNavWrap.removeChild(overflowNavItemList[i]);
-				}
+	//定义检测创建文件名或修改文件名时 文件名是否有重复
+	//提交修改文件名时会调用此函数
+	function checkFloderName(elem,val){
+		//获取相应的参照元素
+		var floderNameList = elem,
+			//定义文件夹名字状态初始值
+			filenameStatus = false;
 
-				//获取当前点击元素的 data-path
-				var path = event.target.getAttribute("data-path");
-				//获取当前页面的部门id
-				var depId = s("#departmentId").title;
-				//然后发送ajax 刷新下面的内容
-				createFileList(path,depId);
-			}
-		}
-		
-	}
-	
-
-	//面包屑导航栏每个导航标签点击事件
-	//内部调用：createFileList
-	function breadCrumbItemClick(event){
-		event = EventUntil.getEvent(event);
-		//阻止其默认事件
-		EventUntil.preventDefault(event);
-		//获取面包屑导航的外包裹层
-		var breadCrumbWrap = s("#breadcurmb-nav-wrap");
-		//获取所有面包屑导航的li
-		var breadCrumbList = ss("#breadcurmb-nav-wrap li");
-		//为每一个导航绑定点击事件
-		for (var i = 0; i < breadCrumbList.length; i++) {
-			EventUntil.addHandler(breadCrumbList[i],"click",function(event){
-				//如果点击的目标是a 标签 那么进行如下操作
-				if (event.target.tagName.toLowerCase() == "a") {
-					//重新获取一次当前的li 个数
-					breadCrumbList = ss("#breadcurmb-nav-wrap li");
-					//再获取当前元素在元素集里面的位置
-					var index = Array.prototype.indexOf.call(breadCrumbList,this);
-					//如果点击当前的元素不为最后一个
-					if (index != breadCrumbList - 1) {
-						//遍历删除这个元素后面的元素
-						for (var i = index + 1; i < breadCrumbList.length; i++) {
-							breadCrumbWrap.removeChild(breadCrumbList[i]);
-						}
-
-					}
-
-					//无论面包屑导航点击的是哪个子元素
-					//都要清空溢出导航包裹层的所有子元素
-					s("#overflow-item-wrap").innerHTML = "";
-					//隐藏显示溢出导航按钮
-					s("#show-hidden-menu").style.display = 'none';
-					s("#overflow-item-wrap").style.display = 'none';
-
-					//调整完样式之后
-					//...发送ajax 请求刷新下面的文件导航
-					//调用 createFileList(path,depId) 函数刷新下面的文件夹内容
-					//path 为这个面包屑导航的 data-path 属性
-					//depId 为页面的系别的id 实际情况由登录页面的时候获取部门id
-					var path = event.target.getAttribute("data-path");
-					var depId = s("#departmentId").title;
-					createFileList(path,depId);
-				}
-
-				
-			})
-			
-		}
-	}
-
-	
-
-	//点击文件名的时候会调用此方法
-	//创建面包屑导航栏子元素 li的方法
-	//内部调用：breadCrumbItemClick，controlNavNums
-	function createBradCurmbItem(event){
-		//获取面包屑导航栏外包裹层
-		var curmbNav = s("#breadcurmb-nav-wrap");
-
-		//阻止默认事件发生
-		event = EventUntil.getEvent(event);
-		EventUntil.preventDefault(event);
-
-
-		//创建元素碎片器 创建元素并添加到包裹层中
-		var frag = document.createDocumentFragment();
-		var li = createElem("li"),
-			a = this.cloneNode(true);
-
-		a.title = this.innerText;
-		li.appendChild(a);
-		//创建面包屑导航栏的时候为li 元素绑定点击事件
-		EventUntil.addHandler(li,"click",breadCrumbItemClick);
-
-
-		frag.appendChild(li);
-
-		curmbNav.appendChild(frag);
-
-		//每一次添加都进行一次导航数量的控制
-		controlNavNums(s("#breadcurmb-nav-wrap"),ss("#breadcurmb-nav-wrap li"),
-			s("#overflow-item-wrap"),s("#show-hidden-menu"));
-
-		//调整完样式之后就可以输出数据了
-		var path = this.getAttribute("data-path");
-		createFileList(path,s("#departmentId").title);
-	}
-
-	//文件点击事件回调函数
-	function fileNameClick(event){
-
-		var parent = this.parentNode.parentNode;
-		var fileName = parent.querySelectorAll(".file-name")[0].innerText;
-
-		//填充修改文件名输入框内容
-		s("#new-filename").value = fileName;
-		//显示修改文件名弹出层
-		s("#modify-filename-floor").style.display = 'block';
-	}
-
-	//遍历输出文件夹数据函数
-	//内部会为每一个保存文件夹名字的a 标签绑定点击事件函数floderNameClick
-	function ergFloderList(list){
-		var checkBox = createElem("input"),
-			tr = createElem("tr"),
-			td = createElem("td"),
-			a = createElem("a"),
-			frag = document.createDocumentFragment();
-
-		checkBox.type = "checkbox";
-		checkBox.className = "disabled";
-		checkBox.disabled = true;
-
-		for (var i = 0; i < list.length; i++) {
-			var row = tr.cloneNode(true);
-
-			var checkboxCol = td.cloneNode(true);
-			checkboxCol.className = "item-selectbox";
-
-			var floderNameCol = td.cloneNode(true);
-			floderNameCol.className = "file-name floder";
-
-			var authorCol = td.cloneNode(true);
-			authorCol.className = "item-author";
-
-			var timeCol = td.cloneNode(true);
-			timeCol.className = "ite-publish-time";
-
-			var operateCol = td.cloneNode(true);
-			operateCol.className = "operate-btn";
-
-			var checkbox = checkBox.cloneNode(true);
-
-			var floderName = a.cloneNode(true);
-			floderName.innerText = list[i].nav;
-			floderName.href = "#";
-			floderName.setAttribute("data-path", list[i].uid);
-			//为a 元素绑定事件 回调函数是生成面包屑导航函数
-			EventUntil.addHandler(floderName,"click",createBradCurmbItem);
-
-			checkboxCol.appendChild(checkbox);
-			floderNameCol.appendChild(floderName);
-			authorCol.innerText = "管理员";
-			timeCol.innerText = "-";
-			operateCol.innerText = "无";
-
-			row.appendChild(checkboxCol);
-			row.appendChild(floderNameCol);
-			row.appendChild(authorCol);
-			row.appendChild(timeCol);
-			row.appendChild(operateCol);
-
-			frag.appendChild(row);
-		}
-		//返回文本碎片
-		return frag;
-	}
-
-	//遍历文件函数
-	//内部会为每一个保存文件夹名字的a 标签绑定点击事件函数fileNameClick
-	function ergFileList(list){
-		var checkBox = createElem("input"),
-			button = createElem("button"),
-			tr = createElem("tr"),
-			td = createElem("td"),
-			a = createElem("a"),
-			span = createElem("span"),
-			frag = document.createDocumentFragment();
-
-		var curUsername = s("#user-name").title;
-		
-		span.className = "glyphicon glyphicon-edit";
-		checkBox.type = "checkbox";
-		button.className = "btn btn-default btn-sm";
-		button.appendChild(span);
-		button.innerHTML += "修改文件";
-		
-
-		for (var i = 0; i < list.length; i++) {
-			var row = tr.cloneNode(true);
-
-			var checkboxCol = td.cloneNode(true);
-			checkboxCol.className = "item-selectbox";
-
-			var filenameCol = td.cloneNode(true);
-			filenameCol.className = "file-name file";
-
-			var authorCol = td.cloneNode(true);
-			authorCol.className = "item-author";
-
-			var timeCol = td.cloneNode(true);
-			timeCol.className = "ite-publish-time";
-
-			var operateCol = td.cloneNode(true);
-			operateCol.className = "operate-btn";
-
-			//实际输出时应该获得登陆的用户名做匹配
-			//判断是否给checkbox 加上 disabled 类名
-			if (list[i].accuid == curUsername) {
-
-				var checkbox = checkBox.cloneNode(true);
-				checkbox.className = "disabled";
-				operateCol.innerText = "无权限";
-				checkboxCol.appendChild(checkbox);
-
-			}else{
-				var checkbox = checkBox.cloneNode(true);
-				var operateBtn = button.cloneNode(true);
-				checkboxCol.appendChild(checkbox);
-				operateCol.appendChild(operateBtn);
-			}
-
-			
-			var filename = a.cloneNode(true);
-			filename.href = "#";
-			filename.setAttribute("data-path", list[i].uid);
-			filename.innerText = list[i].title;
-			//为文件名绑定点击事件
-			EventUntil.addHandler(filename,"click",fileNameClick);
-	
-			filenameCol.appendChild(filename);
-			authorCol.innerText = list[i].author;
-
-			timeCol.innerHTML = formateDate(list[i].upTime);
-			
-
-			row.appendChild(checkboxCol);
-			row.appendChild(filenameCol);
-			row.appendChild(authorCol);
-			row.appendChild(timeCol);
-			row.appendChild(operateCol);
-
-			frag.appendChild(row);
-		}
-		//返回文本碎片
-		return frag;
-	}
-
-	//通过ajax获取导航栏 输出导航栏信息
-	function createFileList(path,depId){
-		//参数：path 导航栏的请求id 初始化页面的时候为0
-		//之后的点击在导航栏名字的 data-path 里面获取
-		//depId 当前页面的系别id
-		//此方法 将会在表格里面的文件夹名点击，面包屑导航，溢出导航点击时调用
-		//发送ajax 请求
-		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindNavAndFile.action',
-			type: 'GET',
-			dataType: 'json',
-			data: "parent=" + path + "&depuid=" + depId,
-			success:function(data){
-				//第一步 清空文件列表
-				s("#main-content-list").innerHTML = "";
-				//第二步 获取文件夹和文件数据
-				var floderList = data.extend.navs;
-				var fileList = data.extend.files;
-				//第三步 判断后台文件夹列表是否为空
-				if (floderList.length != 0) {
-					s("#main-content-list").appendChild(ergFloderList(floderList));
-				}
-				//判断后台文件列表是否为空
-				if (fileList.length != 0) {
-					s("#main-content-list").appendChild(ergFileList(fileList));
+		//如果当前文件夹数不为0
+		if (floderNameList.length != 0) {
+			//遍历表格内的所有a 元素内容，如果有同名文件夹马上报错
+			for (var i = 0; i < floderNameList.length; i++) {
+				if (floderNameList[i].innerText == val) {
+					filenameStatus = false;
+					break;
+				}else if (floderNameList[i].innerText != val && i == floderNameList.length - 1) {
+					filenameStatus = true;
 				}
 			}
-		})
-		
+		}else{
+			filenameStatus = true;
+		}
+
+		return filenameStatus;
 	}
-
-	//页面加载完成时初始化面包屑导航栏
-	//为其添加第一个导航栏
-	function initCrumbNav(){
-		var crumbNav = s("#breadcurmb-nav-wrap");
-
-		var frag = document.createDocumentFragment(),
-			li = createElem("li"),
-			a = createElem("a");
-
-		a.href = "#";
-		a.setAttribute("data-path", 0);
-		//此处还应该获取当前页面的 depId 这里先写死
-		a.innerText = "根目录";
-		li.appendChild(a);
-		EventUntil.addHandler(li,"click",breadCrumbItemClick);
-		frag.appendChild(li);
-		crumbNav.appendChild(frag);
-
-	}
+	//-------------------- 上面是自定义函数层 -------------------
 
 	//初始化上传文件身份选择下拉列表
 	function initAuthorityList(){
@@ -495,10 +159,9 @@ require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","file
 	//初始化页面函数
 	function initPage(){
 		//调试 输出导航栏数据函数由页面获得
-		//var depuid = 由页面标题获得
-		createFileList(0,s("#departmentId").title);
+		depFileListModule.initFileList(0,s("#departmentId").title);
 		//输出第一个面包屑导航
-		initCrumbNav();
+		depFileListModule.initBreadCrumbNav();
 		//权限管理模块页面初始化的时候输出数据
 		authorityModule();
 		//初始化上传文件身份选择下拉框内容
@@ -540,6 +203,60 @@ require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","file
 		this.style.visibility = "hidden";
 	});
 
+	//修改文件名对话框输入框键盘输入事件
+	EventUntil.addHandler(s("#new-filename"),"keyup",function(){
+		if (this.value != "") {
+			s("#submit-newfilename").className = "btn btn-primary btn-sm";
+			s("#submit-newfilename").removeAttribute("disabled");
+
+		}else{
+			s("#submit-newfilename").className = "btn btn-primary btn-sm disabled";
+			s("#submit-newfilename").disabled = "true";
+		}
+	});
+
+
+	//修改文件名对话框提交按钮点击事件
+	EventUntil.addHandler(s("#submit-newfilename"),"click",function(){
+		//获取输入内容是否正确
+		var newNameStatus = checkFloderName(ss("#main-content-list tr td a"),s("#new-filename").value);
+
+		if (newNameStatus == true) {
+			s("#new-filename-hint").innerText = "";
+			//获取相应的后台参数
+			var accuid = s("#user-name").title,
+			 	uid = s("#new-filename").title,
+			 	title = s("#new-filename").value;
+
+			//获取当前删除文件所在路径以及当前页面的系别id 为刷新列表时候所用
+			var curPath = getCurPath(),
+				curDepId = s("#departmentId").title;
+
+			$.ajax({
+				url: 'http://localhost:8080/Management/file/ajaxUpdateFile.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "accuid=" + accuid + "&uid=" + uid + "&title=" + title,
+				success: function(data){
+					if (data.code == 100) {
+						//请求成功后刷新文件列表
+						depFileListModule.initFileList(curPath,curDepId);
+						//清空错误提示信息
+						s("#new-filename-hint").innerText = "";
+						//关闭对话框
+						s("#modify-filename-floor").style.display = 'none';
+						alert("修改成功！");
+					}
+				}
+			})
+			
+
+		}else{
+			s("#new-filename-hint").style.color = "red";
+			s("#new-filename-hint").innerText = "已有相同的文件名";
+		}
+	})
+
 
 	
 	//溢出导航栏按钮点击事件回调函数
@@ -564,6 +281,33 @@ require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","file
 		}
 	}
 
+
+	//删除文件对话框删除按钮点击事件执行函数
+	function doDropFile(){
+		var uid = s("#drop-files-name").title;
+		var accuid = s("#user-name").title;
+
+		//获取当前删除文件所在路径以及当前页面的系别id 为刷新列表时候所用
+		var curPath = getCurPath();
+		var curDepId = s("#departmentId").title;
+
+		//发送ajax
+		$.ajax({
+			url: 'http://localhost:8080/Management/file/ajaxDeleteFile.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "accuid=" + accuid + "&uid=" + uid,
+			success: function(data){
+				if (data.code == 100) {
+					//请求成功后刷新文件列表
+					depFileListModule.initFileList(curPath,curDepId);
+					//关闭对话框
+					s("#drop-file-floor").style.display = 'none';
+				}
+			}
+		})
+		
+	}
 
 
 
@@ -607,6 +351,17 @@ require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","file
 		}else if (target.id == "modify-filename-close-btn") {
 			//修改文件标题弹出层关闭按钮点击事件
 			s("#modify-filename-floor").style.display = 'none';
+
+		}else if(target.id == "drop-file-close-btn"){
+			//删除文件对话框关闭按钮点击事件
+			s("#drop-file-floor").style.display = 'none';
+
+		}else if(target.id == "cancel-drop-file") {
+			//删除文件对话框取消按钮点击事件
+			s("#drop-file-floor").style.display = 'none';
+
+		}else if(target.id == "confirm-drop-file") {
+			doDropFile();
 		}
 	}
 
@@ -617,29 +372,37 @@ require(["jquery.min","overborwserEvent","authorityManage","bootstrap.min","file
 	//初始化拖拽上传插件
 	$("#fileupload").fileinput({
         language: 'zh', //设置语言
-    	uploadUrl: "http://localhost:8080/Management/file/uploadFile.action", //上传的地址
+    	uploadUrl: "http://localhost:8080/Management/file/doUploadFile.action", //上传的地址
 	    allowedFileExtensions : ['docx','doc','jpg','png','flash','swf'],//接收的文件后缀,
 	    maxFileCount: 3,
 	   	dropZoneEnabled: true,
 	    enctype: 'multipart/form-data',
 	    showCaption: true,//是否显示标题
 	    showUpload: true, //取消上传按钮
-	    uploadAsync: false,//同步上传
+	    uploadAsync: false,
 	    uploadIcon: '', //取消文件下面的上传按钮
-	    uploadExtraData: {
-	    	title: s("#fileTitle").value,
-	    	navuid: getCurPath(),
-	    	accuid: s("#all-identifies-list").value
+	    uploadExtraData: function (){
+	    	return {
+	    		title: s("#fileTitle").value,
+		    	navuid: getCurPath(),
+		    	accuid: s("#all-identifies-list").value
+	    	}
         }, 
 	    browseClass: "btn btn-primary", //按钮样式             
 	    previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
 	    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
 
-    }).on("fileuploaded", function(event, data) {
+    }).on("fileuploaded", function(event, data, previewId, index) {
 
-       console.log(data);
+       alert("上传成功！");
+       //上传成功后刷新文件列表
+       //获取当前路径 系别id
+       //调用下面函数
+       //depFileListModule.initFileList(curPath,curDepId);
 
     })
+
+
 
 
 	

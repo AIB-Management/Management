@@ -93,6 +93,7 @@ public class LoginController {
         }
 
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
+
 //        subject.getSession().setAttribute("AccountInfo",accountInfo);
         if (accountInfo.getRole().equals("admin")){
             modelAndView.setViewName("redirect:/admin/rootPage.action");

@@ -16,7 +16,7 @@
 	<div id="manage-department-floor">
 		<div id="new-department-dialog">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="new-department-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="new-department-close-btn">&times;</span></button>
 			</div>
 			<h3>新建系别</h3>
 			<div class="department-content">
@@ -33,7 +33,7 @@
 		</div>
 		<div id="new-specialy-dialog">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="new-specialy-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="new-specialy-close-btn">&times;</span></button>
 			</div>
 			<h3>新建专业</h3>
 			<div class="department-content">
@@ -50,7 +50,7 @@
 		</div>
 		<div id="modify-specialy-dialog">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="modify-specialy-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-specialy-close-btn">&times;</span></button>
 			</div>
 			<h3>修改专业</h3>
 			<div class="department-content">
@@ -67,7 +67,7 @@
 		</div>
 		<div id="modify-department-dialog">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="modify-department-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-department-close-btn">&times;</span></button>
 			</div>
 			<h3>修改系别</h3>
 			<div class="department-content">
@@ -112,7 +112,7 @@
 		</div>
 		<div class="manage-department-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="manage-department-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="manage-department-close-btn">&times;</span></button>
 			</div>
 			<h3>管理系别及专业</h3>
 			<div class="manage-department-toolbar">
@@ -147,7 +147,7 @@
 		<!-- 修改文件夹名模态框 -->
 		<div id="modify-file-name-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="modify-flodername-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-flodername-close-btn">&times;</span></button>
 			</div>
 			<h3>修改文件夹名</h3>
 			<div class="input-wrap">
@@ -183,7 +183,7 @@
 		</div>
 		<div id="drop-floder-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="drop-floder-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="drop-floder-close-btn">&times;</span></button>
 			</div>
 			<h3>删除文件夹</h3>
 			<p class="drop-floder-msg">你确认要删除<b id="target-floder-name"></b>这（几个/个）文件夹吗？若当前文件夹下有子目录此操作会造成异常！</p>
@@ -202,7 +202,7 @@
 		<!-- 修改导航弹出层内容 -->
 		<div class="filemanage-info">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="filemanage-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="filemanage-close-btn">&times;</span></button>
 			</div>
 			<div class="manage-tool-bar">
 				<button class="btn btn-primary btn-sm" id="newfloder-btn">
@@ -249,7 +249,7 @@
 		<!-- 拒绝用户注册回馈信息弹出层 -->
 		<div id="refuse-info">
 			<div class="close-btn-wrap clearfix">
-				<button type="button" class="close" aria-label="Close" id="refuse-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="refuse-close-btn">&times;</span></button>
 			</div>
 			<h3>拒绝信息填写</h3>
 			<p class="refuse-info-wrap refuse-hint">

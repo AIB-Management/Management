@@ -86,24 +86,12 @@
 .upload-file-dropzone{
 	height: 250px;
 }
-/*修改上传文件插件默认样式*/
-.file-preview{
-	height: 100%;
-}
+/*上传文件插件样式*/
 .file-drop-zone{
 	width: 95%;
 	height: 230px;
 	margin: 5px auto 0 auto;
-}
-.file-drop-zone-title{
-	height: 100%;
-	padding: 60px 10px;
-}
-.file-preview-frame{
-	margin: 0;
-}
-.kv-file-upload{
-	display: none;
+	overflow-y: scroll;
 }
 /*权限管理弹出层样式*/
 #authority-manage-floor{
@@ -190,6 +178,7 @@
 	top: 0;
 	left: 0;
 	background-color: rgba(255,255,255,0.5);
+	z-index: 20;
 }
 .modify-filename-wrap{
 	position: absolute;
@@ -198,7 +187,7 @@
 	width: 450px;
 	height: 250px;
 	margin-top: -125px;
-	margin-left: -175px;
+	margin-left: -225px;
 	background-color: #fff;
 	border-radius: 5px;
 	box-shadow: 0 5px 10px rgba(160,162,122,0.5);
@@ -272,7 +261,50 @@
 	width: 120px;
 	height: 50px;
 	line-height: 50px;
+	margin-right: 50px;
 	text-align: center;
+}
+/*删除文件弹出层样式*/
+#drop-file-floor{
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.5);
+	z-index: 20;
+}
+.drop-file-dialog-wrap{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 450px;
+	height: 250px;
+	margin-top: -125px;
+	margin-left: -225px;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 5px 10px rgba(160,162,122,0.5);
+}
+.drop-file-dialog-wrap h3{
+	padding-left: 10px;
+	border-bottom: 1px solid #ccc;
+}
+.drop-file-content{
+	width: 95%;
+	margin: 40px auto 0 auto;
+	border: 2px solid #eb3f2f;
+	border-radius: 2px;
+	background-color: rgba(235,63,47,0.6);
+	font-size: 15px;
+}
+#drop-files-name{
+	font-size: 16px;
+}
+.drop-file-btn-wrap{
+	width: 95%;
+	margin: 40px auto 0 auto;
 }
 /*顶部信息分隔线样式*/
 .overide{
@@ -485,6 +517,9 @@
 .item-selectbox,.item-author,.item-publish-time,.operate-btn{
 	width: 15%;
 	word-spacing: 0;
+}
+.operate-btn button:nth-child(2){
+	margin-left: 5px;
 }
 /*定义文件夹背景类*/
 .floder:before{

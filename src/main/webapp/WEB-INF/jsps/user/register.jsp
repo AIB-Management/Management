@@ -36,7 +36,7 @@
 				<span class="hint"></span>
 			</p>
 			<p class="input-wrap">
-				<label>选择专业</label>
+				<label class="select-spec-tag">选择专业</label>
 				<select id="department" name="departmentId">
 					<option value="">请选择系别</option>
 					<c:forEach items="${department}" var="dp">

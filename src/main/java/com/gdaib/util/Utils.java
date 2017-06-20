@@ -68,7 +68,7 @@ public class Utils {
     //获取登录后账号的uid
     public static String getAccountUid() throws Exception {
         Subject subject = SecurityUtils.getSubject();
-        AccountInfo accountInfo = (AccountInfo) subject.getPrincipals();
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
         return accountInfo.getUid();
     }
 }

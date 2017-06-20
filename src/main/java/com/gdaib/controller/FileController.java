@@ -49,6 +49,7 @@ public class FileController {
             HttpServletRequest request
 
     ) throws Exception {
+        //校验是否正确
         if (fileSelectVo.getTitle() == null || fileSelectVo.getTitle().trim().equals("")) {
             throw new GlobalException("标题不能为空");
         }
@@ -56,6 +57,7 @@ public class FileController {
             throw new GlobalException("上级目录不能为空");
         }
 
+        //赋值用户uid
         if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
             fileSelectVo.setAccuid(Utils.getAccountUid());
         }
@@ -75,6 +77,7 @@ public class FileController {
             }
         }
 
+        //设置时间
         Timestamp timestamp = new Timestamp(System.currentTimeMillis() / 1000 * 1000);
         fileSelectVo.setUptime(timestamp);
 
@@ -86,7 +89,8 @@ public class FileController {
         ServletContext sc = request.getSession().getServletContext();
         // 设定文件保存的目录
         String path = sc.getRealPath(sqlPath) + "/";
-
+        System.out.println(path);
+        //把文件写到目录中
         fileService.writeFileToLocal(path, files);
 
         fileSelectVo.setUid(UUID.randomUUID().toString());
