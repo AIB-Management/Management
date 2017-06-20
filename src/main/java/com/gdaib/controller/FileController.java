@@ -69,7 +69,7 @@ public class FileController {
             }
 
             String contentType = files[i].getContentType();
-            if (!fileService.judgeContentType(contentType)) {
+            if (fileService.judgeContentType(contentType)) {
                 throw new GlobalException("上传文件中有不允许的文件种类");
 
             }
@@ -87,14 +87,23 @@ public class FileController {
         // 设定文件保存的目录
         String path = sc.getRealPath(sqlPath) + "/";
 
-        fileService.writeFileToLocal(path, files);
+        List<FileItemSelectVo> fileItems = fileService.writeFileToLocal(path, files);
 
-        fileSelectVo.setUid(UUID.randomUUID().toString());
+        String fileUid = UUID.randomUUID().toString();
+        fileSelectVo.setUid(fileUid);
         fileSelectVo.setUrl("this is url");
         int result = fileService.insertFile(fileSelectVo);
+        System.out.println(fileItems.toString());
+
+        for (FileItemSelectVo fileItemSelectVo : fileItems) {
+            fileItemSelectVo.setFileuid(fileUid);
+            fileService.insertFileItem(fileItemSelectVo);
+        }
         if (result > 0) {
             return Msg.success();
         }
+
+
         return Msg.fail();
     }
 
@@ -104,12 +113,12 @@ public class FileController {
     @ResponseBody
     public Msg ajaxGetServerFileItem(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
-             throw new GlobalException("uid不能为空");
+            throw new GlobalException("uid不能为空");
         }
 
         List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
         if (fileCustoms.size() == 0) {
-             throw new GlobalException("文件不存在");
+            throw new GlobalException("文件不存在");
         }
 
         ServletContext sc = request.getSession().getServletContext();
@@ -129,25 +138,23 @@ public class FileController {
     @ResponseBody
     public Msg ajaxDeleteFile(FileSelectVo fileSelectVo, HttpServletRequest request) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
-             throw new GlobalException("主键不能为空");
+            throw new GlobalException("主键不能为空");
         }
 
         if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
-             throw new GlobalException("上传作者uid不能为空");
+            throw new GlobalException("上传作者uid不能为空");
         }
 
-        if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
-             throw new GlobalException("登录账号不是作者账号");
-        }
+
 
         //添加判断上传账号与登陆账号是否相等
         if (!fileSelectVo.getAccuid().trim().equals(Utils.getAccountUid())) {
-             throw new GlobalException("登录的账号不是作者账号");
+            throw new GlobalException("登录的账号不是作者账号");
         }
 
         List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
         if (fileCustoms.size() == 0) {
-             throw new GlobalException("文件不存在");
+            throw new GlobalException("文件不存在");
         }
 
         ServletContext sc = request.getSession().getServletContext();
@@ -168,16 +175,16 @@ public class FileController {
     @ResponseBody
     public Msg ajaxUpdateFile(FileSelectVo fileSelectVo) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
-             throw new GlobalException("UID不能为空");
+            throw new GlobalException("UID不能为空");
         }
 
         if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
-             throw new GlobalException("账号ID不能为空");
+            throw new GlobalException("账号ID不能为空");
         }
         //添加判断上传账号与登陆账号是否相等
 
         if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
-             throw new GlobalException("登录账号不是作者账号");
+            throw new GlobalException("登录账号不是作者账号");
         }
         int result = fileService.updateFile(fileSelectVo);
 

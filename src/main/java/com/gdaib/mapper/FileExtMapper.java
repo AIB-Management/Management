@@ -16,4 +16,7 @@ public interface FileExtMapper extends FileMapper {
     public List<FileCustom> selectFile(FileSelectVo file) throws Exception;
 
     public int updateFile(FileSelectVo file) throws Exception;
+
+
+    public List<FileCustom> selectFileAndFileItem(FileSelectVo file) throws Exception;
 }

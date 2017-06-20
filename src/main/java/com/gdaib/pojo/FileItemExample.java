@@ -503,6 +503,136 @@ public class FileItemExample {
             addCriterion("showing not between", value1, value2, "showing");
             return (Criteria) this;
         }
+
+        public Criteria andPositionIsNull() {
+            addCriterion("position is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionIsNotNull() {
+            addCriterion("position is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionEqualTo(Integer value) {
+            addCriterion("position =", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotEqualTo(Integer value) {
+            addCriterion("position <>", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionGreaterThan(Integer value) {
+            addCriterion("position >", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionGreaterThanOrEqualTo(Integer value) {
+            addCriterion("position >=", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionLessThan(Integer value) {
+            addCriterion("position <", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionLessThanOrEqualTo(Integer value) {
+            addCriterion("position <=", value, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionIn(List<Integer> values) {
+            addCriterion("position in", values, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotIn(List<Integer> values) {
+            addCriterion("position not in", values, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionBetween(Integer value1, Integer value2) {
+            addCriterion("position between", value1, value2, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPositionNotBetween(Integer value1, Integer value2) {
+            addCriterion("position not between", value1, value2, "position");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixIsNull() {
+            addCriterion("prefix is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixIsNotNull() {
+            addCriterion("prefix is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixEqualTo(String value) {
+            addCriterion("prefix =", value, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixNotEqualTo(String value) {
+            addCriterion("prefix <>", value, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixGreaterThan(String value) {
+            addCriterion("prefix >", value, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixGreaterThanOrEqualTo(String value) {
+            addCriterion("prefix >=", value, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixLessThan(String value) {
+            addCriterion("prefix <", value, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixLessThanOrEqualTo(String value) {
+            addCriterion("prefix <=", value, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixLike(String value) {
+            addCriterion("prefix like", value, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixNotLike(String value) {
+            addCriterion("prefix not like", value, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixIn(List<String> values) {
+            addCriterion("prefix in", values, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixNotIn(List<String> values) {
+            addCriterion("prefix not in", values, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixBetween(String value1, String value2) {
+            addCriterion("prefix between", value1, value2, "prefix");
+            return (Criteria) this;
+        }
+
+        public Criteria andPrefixNotBetween(String value1, String value2) {
+            addCriterion("prefix not between", value1, value2, "prefix");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

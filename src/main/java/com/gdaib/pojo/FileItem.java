@@ -9,6 +9,10 @@ public class FileItem extends FileItemKey {
 
     private Integer showing;
 
+    private Integer position;
+
+    private String prefix;
+
     public String getFilename() {
         return filename;
     }
@@ -39,5 +43,21 @@ public class FileItem extends FileItemKey {
 
     public void setShowing(Integer showing) {
         this.showing = showing;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix == null ? null : prefix.trim();
     }
 }
