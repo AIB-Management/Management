@@ -132,6 +132,7 @@ public class FileServiceImpl implements FileService {
             for (String type : SHOW_TYPE) {
                 if (prefix.equals(type)) {
                     fileItemSelectVo.setShowing(1);
+                    break;
                 } else {
                     fileItemSelectVo.setShowing(0);
                 }
