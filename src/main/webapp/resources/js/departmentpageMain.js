@@ -258,6 +258,20 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 	})
 
 
+	//文件标题输入框输入事件
+	EventUntil.addHandler(s("#fileTitle"),"keyup",function(){
+		if (this.value.length != 0) {
+			s("#upload-batchfile").className = "btn btn-success";
+			s("#upload-batchfile").removeAttribute("disabled");
+
+		}else{
+			s("#upload-batchfile").className = "btn btn-success disabled";
+			s("#upload-batchfile").disabled = "true";
+
+		}
+	})
+
+
 	
 	//溢出导航栏按钮点击事件回调函数
 	function overFlowNavBtnClick(){
@@ -361,7 +375,12 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 			s("#drop-file-floor").style.display = 'none';
 
 		}else if(target.id == "confirm-drop-file") {
+			//删除文件弹出层确认删除按钮点击事件
 			doDropFile();
+
+		}else if(target.id == "upload-batchfile") {
+			//上传按钮点击事件
+			uploadFile();
 		}
 	}
 
@@ -373,12 +392,12 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 	$("#fileupload").fileinput({
         language: 'zh', //设置语言
     	uploadUrl: "http://localhost:8080/Management/file/doUploadFile.action", //上传的地址
-	    allowedFileExtensions : ['docx','doc','jpg','png','flash','swf'],//接收的文件后缀,
+	    allowedFileExtensions: null,//接收的文件后缀,
 	    maxFileCount: 3,
 	   	dropZoneEnabled: true,
 	    enctype: 'multipart/form-data',
 	    showCaption: true,//是否显示标题
-	    showUpload: true, //取消上传按钮
+	    showUpload: false, //取消上传按钮
 	    uploadAsync: false,
 	    uploadIcon: '', //取消文件下面的上传按钮
 	    uploadExtraData: function (){
@@ -392,17 +411,45 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 	    previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
 	    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
 
-    }).on("fileuploaded", function(event, data, previewId, index) {
+    }).on('filebatchuploadcomplete', function(event, files, extra) {
+    	var curPath = getCurPath();
+    	var curDepId = s("#departmentId").title;
+       
+       	alert("上传成功！");
 
-       alert("上传成功！");
-       //上传成功后刷新文件列表
-       //获取当前路径 系别id
-       //调用下面函数
-       //depFileListModule.initFileList(curPath,curDepId);
+    	//更新下面的文件列表
+        depFileListModule.initFileList(curPath,curDepId);
+        //清空文件上传插件内的文件缓存
+        $("#fileupload").fileinput("clear");
+        //清空文件标题
+        s("#fileTitle").value = "";
+        //关闭弹出层
+        s("#upload-file-floor").style.display = 'none';
 
-    })
+    });
 
+    function uploadFile(){
+    	var isNoRepeat = checkFloderName(ss("#main-content-list tr td a"),s("#fileTitle").value);
+    	if (isNoRepeat == true) {
+    		//如果文件名没有重复
+    		//清空错误提示字段文字
+    		s("#filetitle-hint").innerText = "";
+    		//再判断文件插件是否有文件存在
+    		
+    		if ($("#fileupload").fileinput("getFileStack").length != 0) {
+    			//如果有文件
+				//触发文件上传插件上传事件
+    			$("#fileupload").fileinput("upload");
+    		}else{
+    			alert("请选择文件");
+    		}
+    		
 
+    	}else{
+    		s("#filetitle-hint").style.color = "red";
+    		s("#filetitle-hint").innerText = "已存在此文件名";
+    	}
+    }
 
 
 	

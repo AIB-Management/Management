@@ -86,6 +86,10 @@
 .upload-file-dropzone{
 	height: 250px;
 }
+.upload-file-btn{
+	width: 90%;
+	margin: 78px auto 0 auto;
+}
 /*上传文件插件样式*/
 .file-drop-zone{
 	width: 95%;
@@ -261,7 +265,6 @@
 	width: 120px;
 	height: 50px;
 	line-height: 50px;
-	margin-right: 50px;
 	text-align: center;
 }
 /*删除文件弹出层样式*/
@@ -307,15 +310,39 @@
 	margin: 40px auto 0 auto;
 }
 /*顶部信息分隔线样式*/
-.overide{
+.over-ride{
+	float: right;
+	display: block;
 	width: 5px;
 	height: 30px;
-	line-height: 50px;
+	line-height: 30px;
+	margin: 10px 10px 0 10px;
 	color: #fff;
 }
-#release-msg,#manage-msg{
+#logout-btn{
+	float: right;
+	display: block;
+	width: 70px;
+	height: 38px;
+	line-height: 38px;
+	margin-top: 6px;
+	margin-right: 20px;
 	color: #fff;
+	text-align: center;
+	cursor: default;
+	text-decoration: none;
+	border-radius: 5px;
+	border: 1px solid #fff;
 	cursor: pointer;
+	transition: all linear .3s;
+	-webkit-transition: all linear .3s;
+	-moz-transition: all linear .3s;
+	-o-transition: all linear .3s;
+	-ms-transition: all linear .3s;
+}
+#logout-btn:hover{
+	background-color: #fff;
+	color: #000;
 }
 #user-name{
 	display: inline-block;
@@ -326,7 +353,7 @@
 	color: #fff;
 	cursor: default;
 }
-#user-name:hover,#release-msg:hover,#manage-msg:hover{
+#user-name:hover,#manage-msg:hover{
 	color: #FF6600;
 }
 /*用户操作弹出层样式*/
@@ -348,18 +375,6 @@
 	color: #fff;
 }
 #user-operate ul li a:hover{
-	color: #FF6600;
-}
-#logout-btn{
-	display: block;
-	width: 100%;
-	height: 100%;
-	line-height: 40px;
-	color: #fff;
-	text-align: center;
-	cursor: default;
-}
-#logout-btn:hover{
 	color: #FF6600;
 }
 /*面包屑导航栏样式*/
