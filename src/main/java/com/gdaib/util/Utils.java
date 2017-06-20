@@ -2,6 +2,7 @@ package com.gdaib.util;
 
 import com.gdaib.pojo.AccountInfo;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -66,7 +67,7 @@ public class Utils {
 
     //获取登录后账号的uid
     public static String getAccountUid() throws Exception {
-        org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
+        Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipals();
         return accountInfo.getUid();
     }
