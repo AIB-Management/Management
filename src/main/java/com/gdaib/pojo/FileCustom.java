@@ -3,7 +3,7 @@ package com.gdaib.pojo;
 /**
  * Created by mahanzhen on 17-6-6.
  */
-public class FileCustom {
+public class FileCustom extends File {
     private File file;
 
     private String  author;
