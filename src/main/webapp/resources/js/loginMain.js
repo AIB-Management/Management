@@ -35,7 +35,6 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 
 		if (rm.checked == true) {
 		  cookies.setCookie("account",account.value,3);
-		  cookies.setCookie("pwd",pwd.value,3);
 		}
 	}
 
@@ -95,11 +94,10 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		if (account.isCorrect == false || pwd.isCorrect == false || vtCode.isCorrect == false) {
 			EventUntil.preventDefault(event);
 
-		}else if (account.isCorrect == true && pwd == true && vtCode == true) {
+		}else if (account.isCorrect == true && pwd.isCorrect == true && vtCode.isCorrect == true) {
 			saveCookie();
 		}
 	}
-
 
 	//------调用层------
 
@@ -114,6 +112,8 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 			account.value = cookies.getCookie("account");
 			pwd.value = cookies.getCookie("pwd");
 		}
+		console.log(account.value);
+		console.log(cookies.getCookie("account") + "//" + cookies.getCookie("pwd"));
 	});
 	s("#account").focus();
 

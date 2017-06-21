@@ -31,17 +31,22 @@ body{
 /*包裹表单元素层*/
 .input-wrap{
 	margin-top: 10px;
+	word-spacing: -6px;
 }
 /*表单元素的全部定义以及局部定义*/
 .input-wrap span,.input-wrap input,.input-wrap label{
 	display: inline-block;
 	vertical-align: middle;
 	font-size: 15px;
+	word-spacing: 0;
 }
 .input-wrap label{
 	width: 70px;
-	height: 30px;
-	line-height: 30px;
+	height: 32px;
+	line-height: 32px;
+	border-radius: 5px 0 0 5px;
+	background-color: #ccc;
+	text-align: center;
 }
 .input-wrap input{
 	width: 200px;
@@ -49,7 +54,7 @@ body{
 	padding-left: 10px;
 	line-height: 30px;
 	border: 1px solid #999;
-	border-radius: 15px;
+	border-radius: 0 5px 5px 0;
 }
 /*修改提交按钮*/
 #modify{
@@ -58,11 +63,16 @@ body{
 	height: 40px;
 	line-height: 40px;
 	vertical-align: text-bottom;
-	margin-left: 75px;
+	margin-right: 5px;
 	background-color: #009966;
+	border-radius: 5px;
 	color: #fff;
+}
+.input-wrap-btn{
+	text-align: left;
 }
 /*跳转链接*/
 .link-homepage{
+
 	color: #FF9900;
 }

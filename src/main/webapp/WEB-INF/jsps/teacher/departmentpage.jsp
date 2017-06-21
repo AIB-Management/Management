@@ -24,9 +24,17 @@
 			<div class="upload-file-input">
 				<label>文件标题</label>
 				<input type="text" id="fileTitle">
+
 			</div>
 			<div class="upload-file-dropzone">
 				<input type="file" name="file" id="fileupload" multiple="true">
+			</div>
+			<div class="upload-file-btn">
+				<p id="filetitle-hint"></p>
+				<button class="btn btn-success disabled" disabled="true" id="upload-batchfile">
+					<span class="glyphicon glyphicon-cloud-upload"></span> 
+					上传
+				</button>
 			</div>
 		</div>
 	</div>
@@ -145,6 +153,9 @@
 			<div class="title-wrap">
 				<h3 id="departmentId" title='<shiro:principal property="departmentId"/>'><shiro:principal property="depContent"/>主页</h3>
 			</div>
+			
+			<a href="${pageContext.request.contextPath}/shiro/logout" id="logout-btn">退出</a>
+			<span class="over-ride">|</span>
 			<div class="header-tag" id="user-name-wrap">
 				<span id="user-name" title='<shiro:principal property="uid"/>'><shiro:principal property="name"/></span>
 			</div>
@@ -153,7 +164,6 @@
 					<li><a href="${pageContext.request.contextPath}/content/personalpage.action">个人信息</a></li>
 					<li><a href="${pageContext.request.contextPath}/public/modifyPassword.action">修改密码</a></li>
 					<li><a href="#" id="authority-manage-enter">权限管理</a></li>
-					<li id="logout-btn"><a href="${pageContext.request.contextPath}/shiro/logout">退出</a></li>
 				</ul>
 			</div>
 		</div>
