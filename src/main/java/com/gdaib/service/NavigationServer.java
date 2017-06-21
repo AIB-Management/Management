@@ -9,19 +9,19 @@ import java.util.List;
  * Created by mahanzhen on 17-5-18.
  */
 public interface NavigationServer {
-    //插入系别专业信息
+    //添加文件夹
     public int insertNavigation(NavigationSelectVo navigation) throws Exception;
 
-    //删除系别专业信息
+    //删除文件夹
     public int deleteNavigation(List<String> uids) throws Exception;
 
-    //更新系别专业信息
+    //更新文件夹名
     public int updateNavigation(NavigationSelectVo navigation) throws Exception;
 
-    //查询部门信息
+    //查询文件夹信息
     public List<NavigationCustom> selectNavigation(NavigationSelectVo navigation) throws Exception;
 
- 
+
     
 
     //插入一条导航

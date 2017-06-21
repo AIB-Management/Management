@@ -135,4 +135,9 @@
             t_file_item.position ASC
 
     </select>
+
+    <select id="getCountFile" parameterType="com.gdaib.pojo.FileSelectVo" resultType="com.gdaib.pojo.FileCustom">
+        SELECT COUNT(id) count FROM `t_file` WHERE navUid=#{navuid} LIMIT 0, 1000
+    </select>
+
 </mapper>

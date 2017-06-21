@@ -1,10 +1,13 @@
 package com.gdaib.service.impl;
 
+import com.gdaib.Exception.GlobalException;
+import com.gdaib.mapper.FileExtMapper;
 import com.gdaib.mapper.NavigationExtMapper;
 import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.NavigationServer;
+import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
@@ -30,7 +33,7 @@ public class NavigationServerImpl implements NavigationServer {
     NavigationExtMapper navigationExtMapper;
 
     @Autowired
-    FileService fileService;
+    FileExtMapper fileExtMapper;
 
 
 //    @Override
@@ -276,19 +279,20 @@ public class NavigationServerImpl implements NavigationServer {
     @Override
     public int insertNavigation(NavigationSelectVo navigation) throws Exception {
         if (navigation == null) {
-            throw new Exception("参数为空");
+            throw new GlobalException("参数为空");
         }
+
         if (navigation.getTitle() == null || navigation.getTitle().equals("")) {
-            throw new Exception("标题为空");
+            throw new GlobalException("标题为空");
         }
         if (navigation.getUid() == null || navigation.getUid().equals("")) {
-            throw new Exception("uid为空");
+            throw new GlobalException("uid为空");
         }
         if (navigation.getDepuid() == null || navigation.getDepuid().equals("")) {
-            throw new Exception("系别id为空");
+            throw new GlobalException("系别id为空");
         }
         if (navigation.getParent() == null || navigation.getParent().equals("")) {
-            throw new Exception("上级目录为空");
+            throw new GlobalException("上级目录为空");
         }
         return navigationExtMapper.insert(navigation);
     }
@@ -296,25 +300,25 @@ public class NavigationServerImpl implements NavigationServer {
     @Override
     public int deleteNavigation(List<String> uids) throws Exception {
         if (uids == null || uids.toString().equals("") || uids.size() == 0) {
-            throw new Exception("参数为空");
+            throw new GlobalException("参数为空");
         }
         NavigationSelectVo navigationSelectVo;
         for (String uid : uids) {
             navigationSelectVo = new NavigationSelectVo();
             navigationSelectVo.setParent(uid);
-            List<NavigationCustom> navigationCustoms = selectNavigation(navigationSelectVo);
-            if (navigationCustoms.size() > 0) {
-                throw new Exception("一个或者多个目录下存在文件目录");
+            NavigationCustom navigationCustom = navigationExtMapper.getCountByparent(navigationSelectVo);
+            if (navigationCustom.getCount() > 0) {
+                throw new GlobalException("一个或者多个目录下存在文件目录");
             }
         }
         FileSelectVo fileSelectVo;
         for (String navUid : uids) {
             fileSelectVo = new FileSelectVo();
             fileSelectVo.setNavuid(navUid);
-            List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
-            System.out.println("size:"+fileCustoms.size());
-            if (fileCustoms.size() > 0) {
-                throw new Exception("一个或者多个目录下存在文件");
+            FileCustom fileCustom = fileExtMapper.getCountFile(fileSelectVo);
+            System.out.println("size:" + fileCustom.getCount());
+            if (fileCustom.getCount() > 0) {
+                throw new GlobalException("一个或者多个目录下存在文件");
             }
         }
 
@@ -324,16 +328,16 @@ public class NavigationServerImpl implements NavigationServer {
     @Override
     public int updateNavigation(NavigationSelectVo navigation) throws Exception {
         if (navigation == null) {
-            throw new Exception("参数为空");
+            throw new GlobalException("参数为空");
         }
 
         if (navigation.getUid().equals("") || navigation.getUid() == null) {
-            throw new Exception("uid为空");
+            throw new GlobalException("uid为空");
         }
 
-//        if (navigation.getTitle().equals("") || navigation.getTitle() == null) {
-//            throw new Exception("标题为空");
-//        }
+        if (navigation.getTitle().equals("") || navigation.getTitle() == null) {
+            throw new GlobalException("标题为空");
+        }
 
         return navigationExtMapper.updateNavigation(navigation);
     }
@@ -341,13 +345,13 @@ public class NavigationServerImpl implements NavigationServer {
     @Override
     public List<NavigationCustom> selectNavigation(NavigationSelectVo navigation) throws Exception {
         if (navigation == null) {
-            throw new Exception("参数为空");
+            throw new GlobalException("参数为空");
         }
 //        if (navigation.getDepuid() == null || navigation.getDepuid().equals("")) {
-//            throw new Exception("部门UID为空");
+//            throw new GlobalException("部门UID为空");
 //        }
 //        if (navigation.getParent() == null || navigation.getParent().equals("")) {
-//            throw new Exception("上级目录为空");
+//            throw new GlobalException("上级目录为空");
 //        }
         return navigationExtMapper.selectNavigation(navigation);
     }

@@ -6,6 +6,7 @@ import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
+import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -53,8 +54,12 @@ public class FileController {
             HttpServletRequest request
 
     ) throws Exception {
+
         //校验是否正确
-        if (fileSelectVo.getTitle() == null || fileSelectVo.getTitle().trim().equals("")) {
+        if (
+                fileSelectVo.getTitle() == null || fileSelectVo.getTitle().trim().equals("")
+                ) {
+
             throw new GlobalException("标题不能为空");
         }
         if (fileSelectVo.getNavuid() == null || fileSelectVo.getNavuid().trim().equals("")) {
@@ -64,16 +69,16 @@ public class FileController {
         //赋值用户uid
         if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
             fileSelectVo.setAccuid(Utils.getAccountUid());
-        }else if(!fileSelectVo.getAccuid().equals(Utils.getAccountUid())){
+        } else if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
             List<AccountInfo> beAccount = runasService.getBeAccount(Utils.getAccountUid());
             int i = 0;
-            for(AccountInfo accountInfo:beAccount){
-                if(accountInfo.getUid().equals(fileSelectVo.getAccuid())){
+            for (AccountInfo accountInfo : beAccount) {
+                if (accountInfo.getUid().equals(fileSelectVo.getAccuid())) {
                     i = 1;
                     break;
                 }
             }
-            if(i==0){
+            if (i == 0) {
                 throw new GlobalException("当前用户无权限操作此用户");
             }
 
@@ -168,7 +173,6 @@ public class FileController {
         if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
             throw new GlobalException("上传作者uid不能为空");
         }
-
 
 
         //添加判断上传账号与登陆账号是否相等

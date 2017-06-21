@@ -20,5 +20,9 @@ public interface DepartmentExtMapper extends DepartmentMapper {
 
     public List<DepartmentCustom> selectDepartment(DepartmentSelectVo department) throws Exception;
 
-    public List<HashMap<String,Object>> selectProfessional(DepartmentSelectVo department) throws Exception;
+    public List<HashMap<String, Object>> selectProfessional(DepartmentSelectVo department) throws Exception;
+
+
+    //获取某个系别的专业总数
+    public DepartmentCustom getCountProfessional(DepartmentSelectVo department) throws Exception;
 }

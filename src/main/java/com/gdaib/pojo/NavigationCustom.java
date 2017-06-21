@@ -2,7 +2,11 @@ package com.gdaib.pojo;
 
 import java.util.List;
 
-public class NavigationCustom {
+public class NavigationCustom extends Navigation{
+
+    private Integer count;
+
+    private List<NavigationCustom> chiren;
 
     private Navigation navigation;
 
@@ -14,9 +18,14 @@ public class NavigationCustom {
         this.navigation = navigation;
     }
 
-    private List<NavigationCustom> chiren;
 
+    public Integer getCount() {
+        return count;
+    }
 
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public void setChiren(List<NavigationCustom> chiren) {
         this.chiren = chiren;

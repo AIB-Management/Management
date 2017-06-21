@@ -1,8 +1,10 @@
 package com.gdaib.service.impl;
 
 
+import com.gdaib.Exception.GlobalException;
 import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.DepartmentExtMapper;
+import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 
 import com.gdaib.service.DepartmentService;
@@ -21,6 +23,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private AccountMapper accountMapper;
+    
+    @Autowired
+    private UsersMapper usersMapper;
 
 
     @Override
@@ -34,26 +39,27 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public int deleteDepartment(List<String> uids) throws Exception {
         if (uids == null) {
-            throw new Exception("参数不能为空");
+            throw new GlobalException("参数不能为空");
         }
 
-        List<DepartmentCustom> departmentCustoms;
+        DepartmentCustom departmentCustom;
         for (String uid : uids) {
             DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
             departmentSelectVo.setParent(uid);
-            departmentCustoms = departmentExtMapper.selectDepartment(departmentSelectVo);
+            departmentCustom = departmentExtMapper.getCountProfessional(departmentSelectVo);
 
-            System.out.println("size" + departmentCustoms.size());
-            if (departmentCustoms.size() > 0) {
-                throw new Exception("该系存在一个多或多个专业");
+            System.out.println("size" + departmentCustom.getCount());
+            if (departmentCustom.getCount() > 0) {
+                throw new GlobalException("该系存在一个多或多个专业");
             }
 
-            AccountExample example = new AccountExample();
-            AccountExample.Criteria criteria = example.createCriteria();
-            criteria.andDepuidEqualTo(uid);
-            List<Account> accounts = accountMapper.selectByExample(example);
-            if (accounts.size() > 0) {
-                throw new Exception("该专业存在一个或多个用户");
+//            AccountExample example = new AccountExample();
+//            AccountExample.Criteria criteria = example.createCriteria();
+//            criteria.andDepuidEqualTo(uid);
+//            List<Account> accounts = accountMapper.selectByExample(example);
+            int accountCount = usersMapper.getCountByDepUid(uid);
+            if (accountCount> 0) {
+                throw new GlobalException("该专业存在一个或多个用户");
             }
 
         }
@@ -68,7 +74,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public int updateDepartment(DepartmentSelectVo department) throws Exception {
         if (department == null || department.getUid() == null || department.getUid().equals("")) {
-            throw new Exception("参数无效");
+            throw new GlobalException("参数无效");
         }
 
         int result;
@@ -86,7 +92,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<HashMap<String, Object>> selectProfession(DepartmentSelectVo department) throws Exception {
         if (department == null) {
-            throw new Exception("请确保该参数中至少有一个或多个有值");
+            throw new GlobalException("请确保该参数中至少有一个或多个有值");
         }
 
         return departmentExtMapper.selectProfessional(department);
@@ -94,19 +100,19 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private void judgeDepartmentSelectVo(DepartmentSelectVo department) throws Exception {
         if (department == null) {
-            throw new Exception("参数不能为空");
+            throw new GlobalException("参数不能为空");
         }
 
         if (department.getUid() == null || department.getUid().equals("")) {
-            throw new Exception("uid不能为空");
+            throw new GlobalException("uid不能为空");
         }
 
         if (department.getContent() == null || department.getContent().equals("")) {
-            throw new Exception("内容不能为空");
+            throw new GlobalException("内容不能为空");
         }
 
         if (department.getParent() == null || department.getParent().equals("")) {
-            throw new Exception("上级目录不能为空");
+            throw new GlobalException("上级目录不能为空");
         }
     }
 

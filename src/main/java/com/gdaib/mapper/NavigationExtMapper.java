@@ -17,4 +17,6 @@ public interface NavigationExtMapper extends NavigationMapper {
     public int updateNavigation(NavigationSelectVo navigation) throws Exception;
 
     public List<NavigationCustom> selectNavigation(NavigationSelectVo navigation) throws Exception;
+
+    public NavigationCustom getCountByparent(NavigationSelectVo navigation) throws Exception;
 }

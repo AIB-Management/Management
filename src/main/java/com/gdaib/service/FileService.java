@@ -35,4 +35,6 @@ public interface FileService {
 
     //获取内容细节
     public FileCustom getFileContent(FileSelectVo file) throws Exception;
+
+
 }

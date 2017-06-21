@@ -74,5 +74,7 @@
         </if>
     </delete>
 
-
+<select id="getCountByparent" parameterType="com.gdaib.pojo.NavigationSelectVo" resultType="com.gdaib.pojo.NavigationCustom">
+    SELECT COUNT(id) count FROM `t_navigation` WHERE parent=#{parent} LIMIT 0, 1000
+</select>
 </mapper>
