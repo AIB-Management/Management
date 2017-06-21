@@ -721,6 +721,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 
 	//未审核列表模块方法
+	//拒绝用户发送拒绝理由
 	function sendRefuseMsg(){
 		
 
@@ -737,6 +738,9 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			dataType: 'json',
 			data: "uid=" + idVal + "&content=" + refuseVal,
 			beforeSend: function(){
+				s("#send-refuse-info").disabled = "true";
+				s("#no-refuse-reason").disabled = "true";
+				s("#refuse-content").disabled = "true";
 				icon.style.visibility = 'visible';
 			},
 
@@ -749,6 +753,9 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
 				//所以每次点击完之后都要把多选框的 checked 取消掉
 				s("#unexamie-select-all").checked = false;
+				//取消拒绝发送信息按钮disabled 属性
+				s("#no-refuse-reason").removeAttribute("disabled");
+				s("#refuse-content").removeAttribute("disabled");
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 			}
@@ -758,7 +765,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	}
 
 
-	//拒绝用户申请单不发送拒绝信息按钮点击事件回调函数
+	//拒绝用户申请但不发送拒绝信息按钮点击事件回调函数
 	function notsendRefuseMsg(){
 		//ajax 提交用户的id 给后台，不提交拒绝理由
 		//数据提交完成后将包裹层隐藏
@@ -774,6 +781,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			dataType: 'json',
 			data: "uid=" + idVal,
 			beforeSend: function(){
+				s("#no-refuse-reason").disabled = "true";
 				icon.style.visibility = 'visible';
 			},
 
@@ -786,6 +794,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
 				//所以每次点击完之后都要把多选框的 checked 取消掉
 				s("#unexamie-select-all").checked = false;
+				//消除发送按钮的disabled 属性
+				s("#no-refuse-reason").removeAttribute("disabled");
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 			}
@@ -805,6 +815,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			sendBtn.style.backgroundColor = "#999999"
 		}else{
 			sendBtn.removeAttribute("disabled");
+			sendBtn.className = "btn btn-success";
 			sendBtn.style.backgroundColor = "#05a828";
 		}
 	})

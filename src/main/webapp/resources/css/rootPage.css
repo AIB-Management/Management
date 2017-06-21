@@ -513,46 +513,6 @@ thead,tbody,tbody tr,tbody tr td{
 	padding-left: 5px;
 	border: 1px solid #000;
 }
-/*发送拒绝理由按钮 和 没有理由直接拒绝按钮综合样式*/
-#send-refuse-info,#no-refuse-reason{
-	display: inline-block;
-	width: 120px;
-	height: 40px;
-	line-height: 40px;
-	text-align: center;
-	color: #fff;
-	border-radius: 5px;
-}
-/*发送拒绝理由按钮样式*/
-#send-refuse-info{
-	background-color: #999;
-}
-/*没有理由直接拒绝按钮样式*/
-#no-refuse-reason{
-	background-color: #d20003;
-}
-/*撤回用户使用权弹出层提示内容包裹层 和 删除导航弹出层内容包裹层样式*/
-.recall-user-wrap{
-	width: 90%;
-	margin: 15px auto 0 auto;
-}
-/*取消撤回按钮、确认撤回按钮、取消删除导航按钮、确认删除导航按钮综合样式*/
-#cancel-recall-user,#confirm-recall-user{
-	width: 80px;
-	height: 40px;
-	line-height: 40px;
-	color: #fff;
-	border-radius: 5px;
-}
-/*取消撤回按钮和取消删除导航按钮 单独样式*/
-#cancel-recall-user{
-	background-color: #44BB44;
-}
-/*删除主体名称提示字段样式*/
-#refuse-username,#recall-username{
-	font-size: 17px;
-	color: #000;
-}
 /*撤回用户弹出层独立样式*/
 #recall-user{
 	width: 600px;
@@ -561,10 +521,6 @@ thead,tbody,tbody tr,tbody tr td{
 	padding-top: 1px;
 	background-color: #ffffff; 
 	border-radius: 10px;
-}
-/*确认撤回按钮独立样式*/
-#confirm-recall-user{
-	background-color: #999;
 }
 /*弹出层提示内容包裹层样式*/
 .operate-hint{

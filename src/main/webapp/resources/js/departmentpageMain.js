@@ -411,6 +411,12 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 	    previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
 	    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
 
+    }).on('filebatchpreupload', function(event, data, previewId, index) {
+    	//文件上传前禁用上传按钮
+    	s("#upload-batchfile").className = "btn btn-success disabled";
+		s("#upload-batchfile").disabled = "true";
+
+
     }).on('filebatchuploadcomplete', function(event, files, extra) {
     	var curPath = getCurPath();
     	var curDepId = s("#departmentId").title;

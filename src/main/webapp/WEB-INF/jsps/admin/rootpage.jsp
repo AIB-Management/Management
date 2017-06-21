@@ -260,8 +260,14 @@
 				<textarea id="refuse-content"></textarea>
 			</p>
 			<p class="refuse-info-wrap">
-				<button type="button" id="send-refuse-info" disabled="disabled">发送</button>
-				<button type="button" id="no-refuse-reason">不发送拒绝消息</button>
+				<button type="button" class="btn btn-success disabled" id="send-refuse-info" disabled="disabled">
+					<span class="glyphicon glyphicon-send"></span> 
+					发送
+				</button>
+				<button type="button" class="btn btn-danger" id="no-refuse-reason">
+					<span class="glyphicon glyphicon-alert"></span>
+					不发送拒绝消息
+				</button>
 				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" id="refuse-user-loading-icon" class="loading-icon">
 			</p>
 		</div>
@@ -276,8 +282,14 @@
 				<textarea id="recall-content"></textarea>
 			</p>
 			<p class="recall-user-wrap">
-				<button type="button" id="cancel-recall-user">取消</button>
-				<button type="button" id="confirm-recall-user" disabled="disabled">确认</button>
+				<button type="button" class="btn btn-success" id="cancel-recall-user">
+					<span class="glyphicon glyphicon-remove"></span> 
+					取消
+				</button>
+				<button type="button" class="btn btn-danger disabled" id="confirm-recall-user" disabled="disabled">
+					<span class="glyphicon glyphicon-erase"></span> 
+					确认
+				</button>
 				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" id="recall-user-loading-icon" class="loading-icon">
 			</p>
 		</div>

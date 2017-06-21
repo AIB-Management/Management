@@ -5,23 +5,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <title>修改密码</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/modifyPwdMain.js"></script>
 </head>
 <body>
 <div class="form-wrap">
     <div>${error}</div>
-    <form action="${pageContext.request.contextPath}/public/domodifyPassword.action" method="post">
+    <form action="${pageContext.request.contextPath}/public/domodifyPassword.action" method="post" id="modifyPwdForm">
 
         <div class="form-content">
             <h3 class="form-title">修改密码</h3>
             <p class="input-wrap">
                 <label>旧密码</label>
-                <input type="password" class="reg-input-style" id="old-pwd" name="oldpwd">
-                <span class="hint">输入正确</span>
+                <input type="password" class="reg-input-style" id="oldPwd" name="oldpwd">
+                <span class="hint"></span>
             </p>
             <p class="input-wrap">
-                <label>密码</label>
-                <input type="password" class="reg-input-style" id="new-pwd" name="pwd">
+                <label>新密码</label>
+                <input type="password" class="reg-input-style" id="newPwd" name="pwd">
                 <span class="hint"></span>
             </p>
             <p class="input-wrap">
@@ -29,9 +29,9 @@
                 <input type="password" class="reg-input-style" id="confirmpwd" name="confirmpwd">
                 <span class="hint"></span>
             </p>
-            <p class="input-wrap">
+            <p class="input-wrap input-wrap-btn">
                 <button id="modify">确认修改</button>
-                <a href="#" class="link-homepage">返回主页</a>
+                <a href="${pageContext.request.contextPath}/WEB-INF/teacher/departmentpage.jsp" class="link-homepage">返回主页</a>
             </p>
         </div>
 
