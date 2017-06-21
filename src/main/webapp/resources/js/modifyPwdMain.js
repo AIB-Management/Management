@@ -89,6 +89,7 @@ require(["jquery.min","overborwserEvent","checkInput"],function main($,EventUnti
 		var inputs = ss(".form-content input");
 		for (var i = 0; i < inputs.length; i++) {
 			//没循环一次 触发一次失焦事件
+			inputs[i].focus();
 			inputs[i].blur();
 			if (inputs[i].isCorrect == true) {
 				count++;
