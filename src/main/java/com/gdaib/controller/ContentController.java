@@ -14,6 +14,7 @@ import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -106,9 +107,11 @@ public class ContentController {
     @ResponseBody
     public Msg ajaxFindNavAndFile(NavigationSelectVo navigationSelectVo) throws Exception {
         HashMap<String, List<HashMap<String, Object>>> navAndFile = new HashMap<String, List<HashMap<String, Object>>>();
+        //查找父类uid为xx的子导航
         List<NavigationCustom> navigationCustoms = navigationServer.selectNavigation(navigationSelectVo);
         List<HashMap<String, Object>> navs = new ArrayList<HashMap<String, Object>>();
         Navigation navigation;
+        //如果找到的子导航不为空
         if (navigationCustoms != null || navigationCustoms.size() > 0) {
             for (NavigationCustom custom : navigationCustoms) {
                 navigation = custom.getNavigation();
@@ -116,12 +119,13 @@ public class ContentController {
                 hashMap.put("uid", navigation.getUid());
                 hashMap.put("nav", navigation.getTitle());
                 navs.add(hashMap);
+
             }
         } else {
             navs = null;
         }
 
-
+        //查找当前目录下有没有文件
         FileSelectVo fileSelectVo = new FileSelectVo();
         fileSelectVo.setNavuid(navigationSelectVo.getParent());
 

@@ -3,6 +3,7 @@ package com.gdaib.controller;
 import com.gdaib.Exception.GlobalException;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
+import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class FileController {
     @Autowired
     UsersService usersService;
 
+    @Autowired
+    RunasService runasService;
+
     //获取上传文件页面
     @RequestMapping(value = "/file/uploadFile")
     public String UploadFile() {
@@ -60,6 +64,19 @@ public class FileController {
         //赋值用户uid
         if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
             fileSelectVo.setAccuid(Utils.getAccountUid());
+        }else if(!fileSelectVo.getAccuid().equals(Utils.getAccountUid())){
+            List<AccountInfo> beAccount = runasService.getBeAccount(Utils.getAccountUid());
+            int i = 0;
+            for(AccountInfo accountInfo:beAccount){
+                if(accountInfo.getUid().equals(fileSelectVo.getAccuid())){
+                    i = 1;
+                    break;
+                }
+            }
+            if(i==0){
+                throw new GlobalException("当前用户无权限操作此用户");
+            }
+
         }
 
         for (int i = 0; i < files.length; i++) {
