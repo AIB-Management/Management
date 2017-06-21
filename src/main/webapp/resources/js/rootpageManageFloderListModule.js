@@ -142,6 +142,8 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					depListWrap.className = "nodepartment-sidebar-bg";
 				}else{
 					//如果有部门就输出数据
+					//先清空部门列表数据
+					depListWrap.innerHTML = "";
 					depListWrap.appendChild(createElemForDepList(data,selectDepClick));
 				}
 			}
