@@ -31,7 +31,10 @@
 			</div>
 			<div class="upload-file-btn">
 				<p id="filetitle-hint"></p>
-				<button class="btn btn-success disabled" disabled="true" id="upload-batchfile">上传</button>
+				<button class="btn btn-success disabled" disabled="true" id="upload-batchfile">
+					<span class="glyphicon glyphicon-cloud-upload"></span> 
+					上传
+				</button>
 			</div>
 		</div>
 	</div>
