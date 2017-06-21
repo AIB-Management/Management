@@ -1,7 +1,11 @@
 package com.gdaib.service.impl;
 
+import com.gdaib.Exception.GlobalException;
 import com.gdaib.mapper.FileExtMapper;
+import com.gdaib.mapper.FileItemExtMapper;
 import com.gdaib.pojo.FileCustom;
+import com.gdaib.pojo.FileItem;
+import com.gdaib.pojo.FileItemSelectVo;
 import com.gdaib.pojo.FileSelectVo;
 import com.gdaib.service.FileService;
 import com.gdaib.util.Utils;
@@ -14,23 +18,26 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by mahanzhen on 17-6-6.
  */
 public class FileServiceImpl implements FileService {
+    //直接显示的文件类型
+    public static final String[] SHOW_TYPE = {
+            ".swf", ".pdf", ".jpg", ".png", ".gif"
+    };
+
+    //不允许上传的文件后缀
+    public static final String[] NOT_UP_TYPE = {
+            ".html", ".htm", ".php", ".jsp", ".asp", ".java", ".class", ".py"
+    };
     @Autowired
     private FileExtMapper fileExtMapper;
 
-    //允许上传的文件类型 doc docx pdf swf png jpg gif
-    public static final String[] UP_FILE_Kind = {"application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "application/x-shockwave-flash",
-            "application/pdf",
-            "image/png",
-            "image/jpeg",
-            "image/gif"
-    };
+    @Autowired
+    private FileItemExtMapper fileItemExtMapper;
 
 
     @Override
@@ -105,25 +112,58 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+
+    private FileItemSelectVo getFileItemInfoByCommonsMultipartFile(int index, CommonsMultipartFile file) throws Exception {
+        FileItemSelectVo fileItemSelectVo;
+        if (file != null) {
+            fileItemSelectVo = new FileItemSelectVo();
+            fileItemSelectVo.setUid(UUID.randomUUID().toString());
+
+            String filename = file.getOriginalFilename();
+            fileItemSelectVo.setFilename(filename);
+            fileItemSelectVo.setPosition(index + 1);
+            String dataType = file.getContentType();
+            fileItemSelectVo.setDatatype(dataType);
+
+            String prefix = filename.substring(filename.lastIndexOf("."));
+            if (prefix == null || prefix.trim().equals("")) {
+                throw new GlobalException("不允许的文件类型");
+            }
+            for (String type : SHOW_TYPE) {
+                if (prefix.equals(type)) {
+                    fileItemSelectVo.setShowing(1);
+                    break;
+                } else {
+                    fileItemSelectVo.setShowing(0);
+                }
+            }
+            fileItemSelectVo.setPrefix(prefix);
+
+            return fileItemSelectVo;
+        }
+
+        return null;
+    }
+
     @Override
-    public void writeFileToLocal(String path, CommonsMultipartFile[] files) throws Exception {
+    public List<FileItemSelectVo> writeFileToLocal(String path, CommonsMultipartFile[] files) throws Exception {
         File f = new File(path);
         if (!f.exists())
             f.mkdirs();
 
+
+        List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
         for (int i = 0; i < files.length; i++) {
             // 获得原始文件名
             String fileName = files[i].getOriginalFilename();
 
             System.out.println("原始文件名:" + fileName);
 
-            //新文件名
-            String newFileName = (i + 1) + "" + fileName;
 
             if (!files[i].isEmpty()) {
                 try {
                     fos = new FileOutputStream(path
-                            + newFileName);
+                            + fileName);
                     in = files[i].getInputStream();
                     int b = 0;
                     while ((b = in.read()) != -1) {
@@ -134,14 +174,16 @@ public class FileServiceImpl implements FileService {
                 } finally {
                     closeStream();
                 }
+                fileItems.add(getFileItemInfoByCommonsMultipartFile(i, files[i]));
             }
 
-            System.out.println("上传文件到:" + path + newFileName);
-
+            System.out.println("上传文件到:" + path + fileName);
 
         }
 
+        return fileItems;
     }
+
 
     @Override
     public void deleteLocalFile(String workspaceRootPath) throws Exception {
@@ -172,7 +214,7 @@ public class FileServiceImpl implements FileService {
         for (int i = 0; i < fileNames.length; i++) {
             HashMap<String, Object> hashMap = new HashMap<String, Object>();
             hashMap.put("filename", fileNames[i]);
-            hashMap.put("url", Utils.getLocalADDress() + "/" + sqlPath + "/" + fileNames[i]);
+            hashMap.put("url", Utils.getLocalADDress() + sqlPath + "/" + fileNames[i]);
             items.add(hashMap);
         }
         return items;
@@ -180,16 +222,43 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public boolean judgeContentType(String contentType) throws Exception {
-        if (contentType == null || contentType.trim().equals("")) {
+    public boolean judgeContentType(String filename) throws Exception {
+        if (filename == null || filename.trim().equals("")) {
             throw new Exception("参数不能为空");
         }
 
-        for (String str : UP_FILE_Kind) {
-            if (contentType.equals(str)) {
+        for (String str : NOT_UP_TYPE) {
+            if (filename.endsWith(str)) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public void insertFileItem(FileItemSelectVo fileItemSelectVo) throws Exception {
+        fileItemExtMapper.insert(fileItemSelectVo);
+    }
+
+
+    @Override
+    public FileCustom getFileContent(FileSelectVo file) throws Exception {
+//        HashMap<String,Object> content = new HashMap<String, Object>();
+
+        List<FileCustom> fileCustoms = fileExtMapper.selectFileAndFileItem(file);
+        if (fileCustoms == null || fileCustoms.size() == 0) {
+            throw new GlobalException("文件读取异常");
+        }
+
+        FileCustom fileCustom = fileCustoms.get(0);
+        String sqlFilePath = fileCustom.getFilepath();
+        String link = Utils.getLocalADDress() + sqlFilePath;
+        fileCustom.setFilepath(link);
+//        content.put("author",fileCustom.getAuthor());
+//        content.put("uptime",fileCustom.getUptime());
+//        content.put("title",fileCustom.getTitle());
+//        content.put("items",fileCustom.getFileItems());
+
+        return fileCustom;
     }
 }

@@ -94,4 +94,45 @@
             WHERE uid=#{uid}
         </if>
     </update>
+
+    <resultMap id="fileAndFileItem" type="com.gdaib.pojo.FileCustom">
+        <id column="uid" property="uid"></id>
+        <result column="title" property="title"></result>
+        <result column="upTime" property="uptime"></result>
+        <result column="filePath" property="filepath"></result>
+        <result column="author" property="author"></result>
+
+        <collection property="fileItems" ofType="com.gdaib.pojo.FileItemCustom">
+            <id column="itemUid" property="uid"></id>
+            <result column="filename" property="filename"></result>
+            <result column="showing" property="showing"></result>
+            <result column="prefix" property="prefix"></result>
+            <result column="position" property="position"></result>
+        </collection>
+
+    </resultMap>
+
+    <select id="selectFileAndFileItem" parameterType="com.gdaib.pojo.FileSelectVo" resultMap="fileAndFileItem">
+
+        SELECT
+            t_file.title,
+            t_file.upTime,
+            t_file.filePath,
+            t_file.uid,
+            t_file_item.filename,
+            t_file_item.showing,
+            t_file_item.prefix,
+            t_file_item.uid AS itemUid,
+            t_account.`name` AS author,
+            t_file_item.position
+            FROM
+            t_file
+            INNER JOIN t_file_item ON t_file_item.fileUid = t_file.uid
+            INNER JOIN t_account ON t_file.accUid = t_account.uid
+            WHERE
+            t_file.uid = #{uid}
+            ORDER BY
+            t_file_item.position ASC
+
+    </select>
 </mapper>

@@ -3,27 +3,19 @@ package com.gdaib.controller;
 import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.EmailUrlPojo;
 import com.gdaib.pojo.MailPojo;
-
 import com.gdaib.pojo.RegisterPojo;
 import com.gdaib.service.MailService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.util.HashMap;
 
 /**

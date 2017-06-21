@@ -116,6 +116,8 @@
 	line-height: 40px;
 	padding-left: 5px;
 	border-radius: 5px 0 0 5px;
+	background-color: rgba(255,255,255,0.5);
+	color: #fff;
 }
 .vt-code-wrap img{
 	display: inline-block;

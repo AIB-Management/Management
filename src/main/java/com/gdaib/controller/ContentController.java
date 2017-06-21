@@ -67,21 +67,24 @@ public class ContentController {
         }
         ModelAndView modelAndView = new ModelAndView();
 
-        List<FileCustom> customs = fileService.selectFile(fileSelectVo);
-        if (customs.size() == 0) {
-             throw new GlobalException("无效文件");
-        }
+//        List<FileCustom> customs = fileService.selectFile(fileSelectVo);
+//        if (customs.size() == 0) {
+//             throw new GlobalException("无效文件");
+//        }
+//
+//        FileCustom fileCustom = customs.get(0);
+//        modelAndView.addObject("fileCustom", fileCustom);
+//
+//        String sqlPath = fileCustom.getFile().getFilepath();
+//        // 上传位置
+//        ServletContext sc = request.getSession().getServletContext();
+//        String path = sc.getRealPath(sqlPath) + "/";  // 设定文件保存的目录
+//
+//        List<HashMap<String, Object>> fileItems = fileService.selectLocalFileItem(path, sqlPath);
+//        modelAndView.addObject("fileItems", fileItems);
 
-        FileCustom fileCustom = customs.get(0);
-        modelAndView.addObject("fileCustom", fileCustom);
-
-        String sqlPath = fileCustom.getFile().getFilepath();
-        // 上传位置
-        ServletContext sc = request.getSession().getServletContext();
-        String path = sc.getRealPath(sqlPath) + "/";  // 设定文件保存的目录
-
-        List<HashMap<String, Object>> fileItems = fileService.selectLocalFileItem(path, sqlPath);
-        modelAndView.addObject("fileItems", fileItems);
+        FileCustom fileCustom =fileService.getFileContent(fileSelectVo);
+        modelAndView.addObject("filecontent",fileCustom);
 
         modelAndView.setViewName(FILECONTENTPAGE);
         return modelAndView;
