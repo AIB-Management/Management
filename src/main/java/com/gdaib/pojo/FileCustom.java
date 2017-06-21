@@ -6,11 +6,21 @@ import java.util.List;
  * Created by mahanzhen on 17-6-6.
  */
 public class FileCustom extends File {
+    private Integer count;
+
     private File file;
 
     private String  author;
 
     private List<FileItemCustom> fileItems;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public List<FileItemCustom> getFileItems() {
         return fileItems;

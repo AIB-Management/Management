@@ -64,4 +64,7 @@ public interface UsersMapper {
     public List<AccountInfo> findBatchAccountInfo(Map<String,Object> Uids) throws Exception;
 
 
+    //获取某个专业的教师总数
+    public Integer getCountByDepUid(String depUid) throws Exception;
+
 }

@@ -5,6 +5,7 @@ import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
+import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,10 @@ public class FileController {
             HttpServletRequest request
 
     ) throws Exception {
-        if (fileSelectVo.getTitle() == null || fileSelectVo.getTitle().trim().equals("")) {
+
+        if (
+                fileSelectVo.getTitle() == null || fileSelectVo.getTitle().trim().equals("")
+                ) {
             throw new GlobalException("标题不能为空");
         }
         if (fileSelectVo.getNavuid() == null || fileSelectVo.getNavuid().trim().equals("")) {

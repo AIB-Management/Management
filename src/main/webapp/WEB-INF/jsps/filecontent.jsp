@@ -23,8 +23,8 @@
             <%--<li>是否显示:1显示,0不显示:${ff.showing}</li>--%>
             <li>文件类型:${ff.prefix}</li>
             <li>文档位置:${ff.position}</li>
+            <a href="${filecontent.filepath}/${ff.filename}">文件链接</a>
         </c:if>
-        <a href="${filecontent.filepath}/${ff.filename}">链接</a>
     </c:forEach>
 </ul>
 

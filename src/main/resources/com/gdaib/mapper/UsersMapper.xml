@@ -117,7 +117,8 @@
 
     <!--找到该系的所有教师-->
     <select id="findUsernameByDeparentId" parameterType="Map" resultType="com.gdaib.pojo.AccountInfo">
-        SELECT a.uid,a.name FROM `t_account` a WHERE a.`depUid` IN(SELECT uid FROM `t_department` WHERE parent = #{department_id}) AND a.role = 'teacher'
+        SELECT a.uid,a.name FROM `t_account` a WHERE a.`depUid` IN(SELECT uid FROM `t_department` WHERE parent =
+        #{department_id}) AND a.role = 'teacher'
         <if test="accounts != null and accounts.size() != 0">
             <foreach collection="accounts" item="account" open="and uid not in(" close=")" separator=",">
                 #{account.uid}
@@ -136,22 +137,21 @@
     </select>
 
 
-
     <!--AccountInfo-->
     <select id="findAccountInfo" parameterType="com.gdaib.pojo.AccountInfo" resultType="com.gdaib.pojo.AccountInfo">
         SELECT
-        `t_account`.`id`         AS `id`,
-        `t_account`.`uid`         AS `uid`,
-        `t_account`.`username`   AS `username`,
-        `t_account`.`name`       AS `name`,
-        `t_account`.`mail`       AS `mail`,
-        `t_account`.`role`       AS `role`,
-        `t_department`.`parent`  AS `departmentId`,
+        `t_account`.`id` AS `id`,
+        `t_account`.`uid` AS `uid`,
+        `t_account`.`username` AS `username`,
+        `t_account`.`name` AS `name`,
+        `t_account`.`mail` AS `mail`,
+        `t_account`.`role` AS `role`,
+        `t_department`.`parent` AS `departmentId`,
         (SELECT
         department.`content`
         FROM `t_department` department
         WHERE (department.`uid` = `t_department`.`parent`)) AS `depContent`,
-        `t_department`.`uid`     AS `professionId`,
+        `t_department`.`uid` AS `professionId`,
         `t_department`.`content` AS `content`
         FROM (`t_account`
         JOIN `t_department`
@@ -165,18 +165,18 @@
     <!--批量查找 AccountInfo-->
     <select id="findBatchAccountInfo" parameterType="Map" resultType="com.gdaib.pojo.AccountInfo">
         SELECT
-        `t_account`.`id`         AS `id`,
-        `t_account`.`uid`         AS `uid`,
-        `t_account`.`username`   AS `username`,
-        `t_account`.`name`       AS `name`,
-        `t_account`.`mail`       AS `mail`,
-        `t_account`.`role`       AS `role`,
-        `t_department`.`parent`  AS `departmentId`,
+        `t_account`.`id` AS `id`,
+        `t_account`.`uid` AS `uid`,
+        `t_account`.`username` AS `username`,
+        `t_account`.`name` AS `name`,
+        `t_account`.`mail` AS `mail`,
+        `t_account`.`role` AS `role`,
+        `t_department`.`parent` AS `departmentId`,
         (SELECT
         department.`content`
         FROM `t_department` department
         WHERE (department.`uid` = `t_department`.`parent`)) AS `depContent`,
-        `t_department`.`uid`     AS `professionId`,
+        `t_department`.`uid` AS `professionId`,
         `t_department`.`content` AS `content`
         FROM (`t_account`
         JOIN `t_department`
@@ -184,10 +184,12 @@
         <foreach collection="accounts" item="account" open="where `t_account`.`uid` in(" close=")" separator=",">
             #{account}
         </foreach>
-        ORDER BY `t_account`.id DESC
+        ORDER BY `t_account`.id DESC LIMIT 0, 500
 
     </select>
 
 
-
+    <select id="getCountByDepUid" parameterType="String" resultType="int">
+        SELECT count(id) FROM `t_account` WHERE depUid=#{depUid} LIMIT 0, 1000
+    </select>
 </mapper>

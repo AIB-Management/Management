@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface FileExtMapper extends FileMapper {
 
-    public int deleteFile( FileSelectVo fileSelectVo) throws Exception;
+    public int deleteFile(FileSelectVo fileSelectVo) throws Exception;
 
     public List<FileCustom> selectFile(FileSelectVo file) throws Exception;
 
@@ -19,4 +19,7 @@ public interface FileExtMapper extends FileMapper {
 
 
     public List<FileCustom> selectFileAndFileItem(FileSelectVo file) throws Exception;
+
+    //获取某个文件夹下文件总数
+    public FileCustom getCountFile(FileSelectVo file) throws Exception;
 }

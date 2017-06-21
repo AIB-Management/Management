@@ -69,4 +69,7 @@
         </where>
     </select>
 
+    <select id="getCountProfessional" parameterType="com.gdaib.pojo.DepartmentSelectVo" resultType="com.gdaib.pojo.DepartmentCustom">
+        SELECT count(id) `count` FROM `t_department` WHERE parent=#{parent} LIMIT 0, 1000
+    </select>
 </mapper>
