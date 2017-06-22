@@ -11,13 +11,16 @@ import java.util.List;
  */
 public interface FileExtMapper extends FileMapper {
 
+    //删除文章
     public int deleteFile(FileSelectVo fileSelectVo) throws Exception;
 
+    //查找文章
     public List<FileCustom> selectFile(FileSelectVo file) throws Exception;
 
+    //更新文章标题
     public int updateFile(FileSelectVo file) throws Exception;
 
-
+    //查找文章信息
     public List<FileCustom> selectFileAndFileItem(FileSelectVo file) throws Exception;
 
     //获取某个文件夹下文件总数

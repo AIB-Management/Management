@@ -437,7 +437,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				alert("删除成功");
 			},
 			error: function(){
-				alert("删除失败！此专业下存在文件！");
+				alert("删除失败！此专业下存在教师！");
 			}
 		})
 		
@@ -488,6 +488,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				manageDep.createManageDepDepsList();
 				//删除系别对话框关闭
 				s("#drop-department-dialog").style.display = 'none';
+				s("#add-speciality").style.display = 'none';
 				alert("删除成功！");
 			},
 			error: function(){
@@ -1023,8 +1024,12 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		var target = event.target;
 
 		if (target.id == "manage-floder") {
-			//侧边栏管理文件夹标签点击事件
-			manageDepFloder.createManageFloderDepList();
+			//如果部门列表没有元素才发送请求刷新数据
+			if (s("#manage-side-item").childNodes.length == 0) {
+				//侧边栏管理文件夹标签点击事件
+				manageDepFloder.createManageFloderDepList();
+			}
+			
 			s("#manage-file-floor").style.display = 'block';
 
 		}else if(target.id == "show-hidden-menu") {
@@ -1083,9 +1088,13 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			s("#manage-file-floor").style.display = 'none';
 
 		}else if(target.id == "manage-department") {
-			//侧边栏管理系别标签点击事件
-			//输出系别的信息
-			manageDep.createManageDepDepsList();
+			if (s("#manage-department-list").childNodes.length == 0) {
+				//如果部门列表为空则发送ajax 请求数据
+				//侧边栏管理系别标签点击事件
+				//输出系别的信息
+				manageDep.createManageDepDepsList();
+			}
+			
 			//再显示
 			s("#manage-department-floor").style.display = 'block';
 

@@ -98,7 +98,7 @@
 		</div>
 		<div id="drop-specialy-dialog">
 			<h3 class="department-operate-title">删除专业</h3>
-			<p class="department-operate-wraming">确定要删除<b id="drop-spec-name"></b>吗？如果此专业下有文件存在会出现异常</p>
+			<p class="department-operate-wraming">确定要删除<b id="drop-spec-name"></b>吗？如果此专业下有教师存在会出现异常</p>
 			<div class="department-operate-btn">
 				<button class="btn btn-success btn-sm" id="cancel-drop-spec">
 					<span class="glyphicon glyphicon-remove"></span> 

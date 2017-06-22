@@ -12,11 +12,16 @@ import java.util.List;
  */
 public interface NavigationExtMapper extends NavigationMapper {
 
+    //删除文件夹
     public int deleteNavigation(@Param("uids") List<String> uids) throws Exception;
 
+    //更新文件夹名
     public int updateNavigation(NavigationSelectVo navigation) throws Exception;
 
+    //查找文件夹
     public List<NavigationCustom> selectNavigation(NavigationSelectVo navigation) throws Exception;
 
-    public NavigationCustom getCountByparent(NavigationSelectVo navigation) throws Exception;
+    //获取某个文件夹下字文件夹总数
+    public NavigationCustom getCountByParent(NavigationSelectVo navigation) throws Exception;
 }
+

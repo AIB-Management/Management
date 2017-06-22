@@ -84,7 +84,7 @@ private NavigationExtMapper navigationExtMapper;
 
 
 
-        NavigationCustom navigationCustom =  navigationExtMapper.getCountByparent(navigationSelectVo);
+        NavigationCustom navigationCustom =  navigationExtMapper.getCountByParent(navigationSelectVo);
 
         System.out.println(navigationCustom);
 

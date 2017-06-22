@@ -306,7 +306,7 @@ public class NavigationServerImpl implements NavigationServer {
         for (String uid : uids) {
             navigationSelectVo = new NavigationSelectVo();
             navigationSelectVo.setParent(uid);
-            NavigationCustom navigationCustom = navigationExtMapper.getCountByparent(navigationSelectVo);
+            NavigationCustom navigationCustom = navigationExtMapper.getCountByParent(navigationSelectVo);
             if (navigationCustom.getCount() > 0) {
                 throw new GlobalException("一个或者多个目录下存在文件目录");
             }
