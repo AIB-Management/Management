@@ -127,6 +127,26 @@ public class ManageController {
         return Msg.success().add("page", page);
     }
 
+    /**
+     * 得到管理员用户列表
+     */
+    @RequestMapping("/admin/ajaxGetAccountInfoIsAdmin")
+    @ResponseBody
+    public Msg ajaxGetAccountInfoIsAdmin() throws Exception {
+        List<AccountInfo> accountInfo = usersService.findAccountInfoByCharacter("admin", null);
+        return Msg.success().add("accountInfo", accountInfo);
+    }
+
+    /**
+     * 得到领导用户列表
+     */
+    @RequestMapping("/admin/ajaxGetAccountInfoIsLeader")
+    @ResponseBody
+    public Msg ajaxGetAccountInfoIsLeader() throws Exception {
+        List<AccountInfo> accountInfo = usersService.findAccountInfoByCharacter("leader", null);
+        return Msg.success().add("accountInfo", accountInfo);
+    }
+
 
     /**
      * 通过验证,单个多个二合一
@@ -361,6 +381,65 @@ public class ManageController {
     }
 
 
+    /**
+     * 变为管理员
+     */
+    @RequestMapping("/admin/ajaxPassAdmin")
+    @ResponseBody
+    public Msg ajaxPassAdmin(String uid) throws Exception {
+        if (uid == null || uid.equals("")) {
+            return Msg.fail();
+
+        } else {
+            List<String> ids = new ArrayList<String>();
+            ids.add(uid);
+            usersService.updateBatchAccountByCharacter(ids, "admin");
+        }
+
+        return Msg.success();
+    }
+
+    /**
+     * 变为领导
+     */
+    @RequestMapping("/admin/ajaxPassLeader")
+    @ResponseBody
+    public Msg ajaxPassLeader(String uid) throws Exception {
+        if (uid == null || uid.equals("")) {
+            return Msg.fail();
+        } else {
+            List<String> ids = new ArrayList<String>();
+            ids.add(uid);
+            usersService.updateBatchAccountByCharacter(ids, "leader");
+        }
+
+        return Msg.success();
+    }
+
+    /**
+     * 取消管理员或领导身份
+     */
+    @RequestMapping("/admin/ajaxWithdrawAdmin")
+    @ResponseBody
+    public Msg ajaxWithdrawAdmin(String uid) throws Exception {
+        if (uid == null || uid.equals("")) {
+            return Msg.fail();
+
+        } else {
+            List<String> ids = new ArrayList<String>();
+            ids.add(uid);
+            usersService.updateBatchAccountByCharacter(ids, "teacher");
+        }
+
+        return Msg.success();
+    }
+
+
+
+
+
+
+
     private String toUtf(String param) throws Exception {
         String utfStr = new String(param.getBytes("iso-8859-1"), "utf-8");
         return utfStr;
@@ -476,5 +555,8 @@ public class ManageController {
         }
         return Msg.fail();
     }
+
+
+
 
 }

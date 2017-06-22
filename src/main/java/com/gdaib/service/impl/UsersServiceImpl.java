@@ -351,21 +351,14 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public List<AccountInfo> findAccountInfoByCharacter(String character,String departmentId) throws Exception {
 
-//        AccountInfoExample accountInfoExample = new AccountInfoExample();
-//        AccountInfoExample.Criteria criteria = accountInfoExample.createCriteria();
-//        criteria.andRoleEqualTo(character);
-//        if(departmentId!=null){
-//            criteria.andDepartmentIdEqualTo(Integer.parseInt(departmentId));
-//        }
-//        accountInfoExample.setOrderByClause("id desc");
-//
-//        List<AccountInfo> accountInfos = accountInfoMapper.selectByExample(accountInfoExample);
+
         AccountInfo accountInfo = new AccountInfo();
-        accountInfo.setDepartmentId(departmentId);
+        if(departmentId != null){
+            accountInfo.setDepartmentId(departmentId);
+        }
+
         accountInfo.setRole(character);
         List<AccountInfo> accountInfos = usersMapper.findAccountInfo(accountInfo);
-
-
         return accountInfos;
     }
 
