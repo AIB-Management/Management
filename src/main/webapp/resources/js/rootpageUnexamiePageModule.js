@@ -77,7 +77,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//然后刷新更新后的表格
 		//...ajaxCode
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxPassAccount.action',
+			url: '/Management/admin/ajaxPassAccount.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "uid=" + uid,
@@ -356,7 +356,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			var self = this;
 
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsNotPass.action',
+				url: '/Management/admin/ajaxGetAccountInfoIsNotPass.action',
 				type: 'GET',
 				dataType: 'json',
 				data: "pn=" + pn,
@@ -627,7 +627,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	//分页按钮点击调用方法
 	function toUnexamiePage(pn){
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsNotPass.action',
+			url: '/Management/admin/ajaxGetAccountInfoIsNotPass.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "pn=" + pn,

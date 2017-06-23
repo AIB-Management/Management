@@ -10,14 +10,6 @@ require.config({
 
 //管理页主函数
 require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModule","rootpagExamiePageModule","rootpageManageFloderListModule","rootpageManageDepartmentModule"],function main($,checkBy,EventUntil,unexamiePage,examiePage,manageDepFloder,manageDep){
-	//--------- 全局变量 --------
-	//文件夹管理弹出层左侧系别点击时保存的部门id
-	//var curManageFloderDepId = "";
-	//部门管理弹出层左侧系别点击时保存的部门id
-	//var curManageDepDepId = "";
-	//保存当前选择的部门名字
-	//var curManageDepDepName = "";
-	//---------------------------
 
 	//封装选择器函数
 	function s(name){
@@ -103,10 +95,18 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	}
 
 
+	//清空多选框选择状态函数
+	function clearCheckBoxChecked(checkboxList){
+		for (var i = 0; i < checkboxList.length; i++) {
+			checkboxList[i].checked = false;
+		}
+	}
+
+
 	//页面加载完成时 显示新增未注册用户数量
 	function showUnexamieUserNums(){
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxGetCountIsNotPass.action',
+			url: '/Management/admin/ajaxGetCountIsNotPass.action',
 			type: 'GET',
 			dataType: 'json',
 			success: function(data){
@@ -234,7 +234,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 			//赋值完毕后发送ajax 到后台
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxAddNav.action',
+				url: '/Management/admin/ajaxAddNav.action',
 				type: 'POST',
 				dataType: 'json',
 				data: "parent=" + curPath + "&title=" + val + "&depuid=" + manageDepFloder.curManageFloderDepId,
@@ -294,7 +294,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 			//赋值完毕后发送ajax 到后台
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxUpdateNav.action?',
+				url: '/Management/admin/ajaxUpdateNav.action?',
 				type: 'POST',
 				dataType: 'json',
 				data: "uid=" + uid + "&title=" + val,
@@ -327,7 +327,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		//获取要删除文件夹的uid
 		var uids = s("#target-floder-name").title;
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxDeleteNav.action',
+			url: '/Management/admin/ajaxDeleteNav.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "uids=" + uids,
@@ -426,7 +426,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	function dropSpec(){
 		var id = s("#drop-spec-name").title;
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxDeleteDep.action',
+			url: '/Management/admin/ajaxDeleteDep.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "uids=" + id,
@@ -454,7 +454,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		if (val != "" && valIsCorrect == true) {
 			//发送ajax
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxUpdateDep.action',
+				url: '/Management/admin/ajaxUpdateDep.action',
 				type: 'POST',
 				dataType: 'json',
 				data: "uid=" + id + "&content=" + val,
@@ -479,7 +479,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 	function confirmDropDep(){
 		//发送ajax
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxDeleteDep.action',
+			url: '/Management/admin/ajaxDeleteDep.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "uids=" + manageDep.curManageDepDepId,
@@ -506,7 +506,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		if (modifyVal != "" && modifyValIsCorrect == true) {
 			//如果修改后的部门名称不为空且正确
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxUpdateDep.action',
+				url: '/Management/admin/ajaxUpdateDep.action',
 				type: 'POST',
 				dataType: 'json',
 				data: "uid=" + manageDep.curManageDepDepId + "&parent=0&content=" +  modifyVal,
@@ -541,7 +541,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		//如果新系别名不为空且不重复发送数据给后台
 		if (newDepName != "" && depNameIsCorrect == true) {
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxAddDep.action',
+				url: '/Management/admin/ajaxAddDep.action',
 				type: 'POST',
 				dataType: 'json',
 				data: "parent=0&content=" + newDepName,
@@ -578,7 +578,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		//如果新系别名不为空且不重复发送数据给后台
 		if (newSpecName != "" && specNameIsCorrect == true) {
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxAddDep.action',
+				url: '/Management/admin/ajaxAddDep.action',
 				type: 'POST',
 				dataType: 'json',
 				data: "parent=" + manageDep.curManageDepDepId + "&content=" + newSpecName,
@@ -643,7 +643,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 			//发送ajax
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxPassAccount.action',
+				url: '/Management/admin/ajaxPassAccount.action',
 				type: 'POST',
 				dataType: 'json',
 				data: "uid=" + list,
@@ -734,7 +734,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		var icon = s("#refuse-user-loading-icon");
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
+			url: '/Management/admin/ajaxRejectAccount.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "uid=" + idVal + "&content=" + refuseVal,
@@ -777,12 +777,13 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		var icon = s("#refuse-user-loading-icon");
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxRejectAccount.action',
+			url: '/Management/admin/ajaxRejectAccount.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "uid=" + idVal,
 			beforeSend: function(){
 				s("#no-refuse-reason").disabled = "true";
+				s("#refuse-content").disabled = "true";
 				icon.style.visibility = 'visible';
 			},
 
@@ -797,6 +798,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				s("#unexamie-select-all").checked = false;
 				//消除发送按钮的disabled 属性
 				s("#no-refuse-reason").removeAttribute("disabled");
+				//消除输入框的disabled 属性
+				s("#refuse-content").removeAttribute("disabled");
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 			}
@@ -831,7 +834,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		var select = s("#examie-filter");
 		var frag = document.createDocumentFragment();
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxGetAllDepartment.action',
+			url: '/Management/admin/ajaxGetAllDepartment.action',
 			type: 'GET',
 			dataType: 'json',
 			success: function(data){
@@ -922,11 +925,17 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		var icon = s("#recall-user-loading-icon");
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/admin/ajaxWithdrawAccount.action',
+			url: '/Management/admin/ajaxWithdrawAccount.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "uid=" + idVal + "&content=" + reason,
 			beforeSend: function(){
+				//发送按钮变成disabled
+				s("#confirm-recall-user").disabled = "true";
+				//取消撤回按钮设置disabled
+				s("#cancel-recall-user").disabled = "true";
+				//撤回理由输入框设置disabled
+				s("#recall-content").disabled = "true";
 				icon.style.visibility = 'visible';
 			},
 
@@ -940,10 +949,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				s("#floor").style.display = 'none';
 				//清空撤回理由输入框内容
 				s("#recall-content").value = "";
-				//把确认按钮重设为disabled
-				s("#confirm-recall-user").disabled = true;
-				//重设确认按钮样式
-				s("#confirm-recall-user").style.backgroundColor = '#999999';
+				//撤回内容输入框消除disabled 属性
+				s("#recall-content").removeAttribute("disabled");
+				//取消撤回按钮消除disabled 属性
+				s("#cancel-recall-user").removeAttribute("disabled");
 				//取消全选多选按钮选中样式
 				s("#examied-select-all").checked = false;
 			}
@@ -964,10 +973,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 		if (this.value.length != 0) {
 			sendBtn.removeAttribute("disabled");
-			sendBtn.style.backgroundColor = "#E61A1A";
 		}else{
-			sendBtn.disabled = "disabled";
-			sendBtn.style.backgroundColor = "#999999";
+			sendBtn.disabled = "true";
 		}
 	})
 
@@ -995,6 +1002,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 					contents[i].style.display = "none";
 				}
 
+				ss(".welcome-hint")[0].style.display = 'none';
 				contents[index].style.display = 'block';
 
 				//为当前点击的 tag增加激活状态样式
@@ -1081,9 +1089,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			//获取所有多选框
 			var checkboxList = ss("#file-list-content tr td input:checked");
 			//将他们全部取消选中
-			for (var i = 0; i < checkboxList.length; i++) {
-				checkboxList[i].checked = false;
-			}
+			clearCheckBoxChecked(checkboxList);
 			//关闭弹出层
 			s("#manage-file-floor").style.display = 'none';
 
@@ -1202,6 +1208,12 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		}else if(target.id == "refuse-close-btn") {
 			//拒绝用户弹出层功能
 			//拒绝用户注册模块关闭按钮点击事件
+			//清空拒绝内容输入框内容
+			s("#refuse-content").value = "";
+			//设置发送拒绝信息按钮为disabled
+			s("#send-refuse-info").disabled = "true";
+			//清空多选框选择状态
+			clearCheckBoxChecked(ss("#unexamie-main-content tr td input:checked"));
 			s("#floor").style.display = "none";
 
 		}else if(target.id == "send-refuse-info") {
@@ -1224,6 +1236,12 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 		}else if(target.id == "cancel-recall-user") {
 			//取消撤回按钮点击事件
+			//取消多选框选中状态
+			clearCheckBoxChecked(ss("#examied-main-content tr td input:checked"));
+			//撤回信息输入框内容清空
+			s("#recall-content").value = "";
+			//确认撤回按钮变成disabled
+			s("#confirm-recall-user").disabled = "true";
 			s("#floor").style.display = "none";
 
 		}else if(target.id == "confirm-recall-user") {

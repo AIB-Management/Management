@@ -322,7 +322,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			}
 			//页面跳转时发送ajax 请求获取后台的数据
 			$.ajax({
-				url: 'http://localhost:8080/Management/admin/ajaxGetAccountInfoIsPass.action',
+				url: '/Management/admin/ajaxGetAccountInfoIsPass.action',
 				type: 'GET',
 				dataType: 'json',
 				data: result,

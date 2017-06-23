@@ -131,7 +131,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		var depListWrap = s("#manage-side-item");
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindDepOrPro.action',
+			url: '/Management/content/ajaxFindDepOrPro.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=0",
@@ -223,7 +223,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		floderList.innerHTML = "";
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindNavAndFile.action',
+			url: '/Management/content/ajaxFindNavAndFile.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=" + path + "&depuid=" + depId,
