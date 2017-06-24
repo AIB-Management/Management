@@ -20,6 +20,14 @@ require.config({
 
 		'zh':{
 			deps: ['jquery.min','bootstrap.min','fileinput.min','es']
+		},
+
+		'jquery.mousewheel.min': {
+			deps: ['jquery.min']
+		},
+
+		'mCustomScrollbar.min': {
+			deps: ['jquery.min','jquery.mousewheel.min']
 		}
 
 	}
@@ -27,7 +35,9 @@ require.config({
 })
 
 //departmentpage 脚本main函数
-require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileListModule","bootstrap.min","fileinput.min","es","zh"],function main($,EventUntil,authorityModule,depFileListModule){
+require(["jquery.min","overborwserEvent",
+	"departmentpageauthorityManage","departmentPageFileListModule",
+	"bootstrap.min","fileinput.min","es","zh","jquery.mousewheel.min","mCustomScrollbar.min"],function main($,EventUntil,authorityModule,depFileListModule){
 
 	//封装选择器函数
 	function s(name){
@@ -246,6 +256,8 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 						//关闭对话框
 						s("#modify-filename-floor").style.display = 'none';
 						alert("修改成功！");
+					}else{
+						alert("修改失败i，遇到未知错误，请重试");
 					}
 				}
 			})
@@ -274,12 +286,12 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 
 	
 	//溢出导航栏按钮点击事件回调函数
-	function overFlowNavBtnClick(){
+	function overFlowNavBtnClick(target){
 		//获取按钮的宽度
-		var curWidth = parseInt(getCurStyle(this,null,"width"));
+		var curWidth = parseInt(getCurStyle(target,null,"width"));
 		
 		//获取按钮高度
-		var curHeight = parseInt(getCurStyle(this,null,"height"));
+		var curHeight = parseInt(getCurStyle(target,null,"height"));
 
 		if (s("#overflow-item-wrap").style.display == "" || s("#overflow-item-wrap").style.display == "none") {
 
@@ -317,6 +329,9 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 					depFileListModule.initFileList(curPath,curDepId);
 					//关闭对话框
 					s("#drop-file-floor").style.display = 'none';
+					alert("删除成功");
+				}else{
+					alert("删除失败，遇到未知错误请重试");
 				}
 			}
 		})
@@ -336,7 +351,7 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 		//隐藏溢出导航栏按钮事件
 		if (target.id == "show-hidden-menu") {
 			//执行溢出导航栏按钮点击事件回调函数
-			overFlowNavBtnClick();
+			overFlowNavBtnClick(target);
 
 		}else if (target.id == "upload-file-btn") {
 			//上传文件按钮点击事件
@@ -386,6 +401,17 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 
 
 	EventUntil.addHandler(document,"click",entrustEvent);
+
+
+	//初始化授权管理模块列表滚动条
+	$(".authoritied-tabel-wrap").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	});
 
 
 	//初始化拖拽上传插件

@@ -115,13 +115,17 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			dataType: 'json',
 			data: "parent=0",
 			success: function(data){
-				//如果没有部门数据
-				if (data.extend.deps.length == 0) {
-					//部门侧边栏更换提示背景
-					depListWrap.className = "nodepartment-sidebar-bg";
+				if (data.code == 100) {
+					//如果没有部门数据
+					if (data.extend.deps.length == 0) {
+						//部门侧边栏更换提示背景
+						depListWrap.className = "nodepartment-sidebar-bg";
+					}else{
+						//如果有部门就输出数据
+						depListWrap.appendChild(createElemForDepList(data,manageDepListSelect));
+					}
 				}else{
-					//如果有部门就输出数据
-					depListWrap.appendChild(createElemForDepList(data,manageDepListSelect));
+					alert("未知错误，请稍后重试");
 				}
 			}
 		})
@@ -144,7 +148,11 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			dataType: 'json',
 			data: "parent=" + depId,
 			success: function(data){
-				specList.appendChild(createSpecialityElem(data));
+				if (data.code == 100) {
+					specList.appendChild(createSpecialityElem(data));
+				}else{
+					alert("位置错误，请稍后重试");
+				}
 			}
 		})
 		

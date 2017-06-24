@@ -13,13 +13,13 @@
 }
 #warning{
 	display: none;
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	z-index: 30;
 	width: 100%;
 	height: 100%;
-	background-color: #999;
+	background-color: #81c2d6;
 	text-align: center;
 }
 #warning p{
@@ -27,30 +27,52 @@
 	font-size: 30px;
 	color: #fff;
 }
-.header{
-	width: 100%;
-	height: 80px;
-	line-height: 80px;
-	background-color: #fff;
+#warning .link-chrome{
+	display: inline-block;
+	width: 120px;
+	height: 120px;
+	margin-right: 20px;
 }
-.header h1{
-	margin-left: 50px;
+#warning .link-firefox{
+	display: inline-block;
+	width: 139px;
+	height: 120px;
+	margin-left: 20px;
+}
+.link-chrome img,.link-firefox img{
+	width: 100%;
+	height: 100%;
 }
 .bg{
 	position: relative;
 	width: 100%;
-	height: 600px;
+	height: 100%;
 	background-image: url(../images/bg.jpg);
 	background-size: cover;
 	background-position: center;
+}
+.welcome-txt{
+	position: absolute;
+	height: 300px;
+	left: 20%;
+	top: 50%;
+	margin-top: -150px;
+	color: #fff;
+}
+.welcome-txt h1{
+	font-size: 50px;
+}
+.welcome-txt p{
+	font-size: 30px;
 }
 /*登陆框透明黑色背景样式*/
 .login-wrap{
 	position: absolute;
 	width: 380px;
-	height: 80%;
+	height: 500px;
 	right: 10%;
-	top: 25px;
+	top: 50%;
+	margin-top: -250px;
 	background-color: rgba(0,0,0,0.6);
 }
 /*登陆框里面的表单样式*/

@@ -37,7 +37,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	//输出授权模块所有列表
 	function outputauthorityModuleList(){
 		$.ajax({
-			url: 'http://localhost:8080/Management/runas/getRunasUser.action',
+			url: '/Management/runas/getRunasUser.action',
 			type: 'GET',
 			dataType: 'json',
 			success: function(data){
@@ -67,7 +67,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		var uid = parent.querySelectorAll("td")[0].title;
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/runas/grant.action',
+			url: '/Management/runas/grant.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "uid=" + uid,
@@ -133,7 +133,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		var uid = parent.querySelectorAll("td")[0].title;
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/runas/retract.action',
+			url: '/Management/runas/retract.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "uid=" + uid,

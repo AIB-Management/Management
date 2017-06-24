@@ -116,6 +116,61 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		floor.style.display = "block";
 	}
 
+	//待审核用户列表升级成为管理员按钮点击事件
+	function unexamieModuleBeAdmin(){
+		//获取注册用户姓名的单元格
+		//用作向后台传值及向弹出层传值
+		var parent = this.parentNode.parentNode;
+		var nameTd = parent.querySelectorAll("td")[1];
+		var userId = nameTd.title;
+
+		//发送ajax 把用户id 传给后台
+		$.ajax({
+			url: '/Management//admin/ajaxPassAdmin.action',
+			type: 'POST',
+			dataType: 'json',
+			data: 'uid=' + userId,
+			success: function(data){
+				if (data.code == 100) {
+					alert("操作成功!");
+					//刷新当前页未审核用户列表
+					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+				}else{
+					alert("未知错误,操作失败");
+				}
+			}
+		})
+		
+		
+	}
+
+
+	//待审核用户列表升级成为领导按钮点击事件执行函数
+	function unexamieModuleBeLeader(){
+		//获取注册用户姓名的单元格
+		//用作向后台传值及向弹出层传值
+		var parent = this.parentNode.parentNode;
+		var nameTd = parent.querySelectorAll("td")[1];
+		var userId = nameTd.title;
+
+		//发送ajax 把用户id 传给后台
+		$.ajax({
+			url: '/Management//admin/ajaxPassLeader.action',
+			type: 'POST',
+			dataType: 'json',
+			data: 'uid=' + userId,
+			success: function(data){
+				if (data.code == 100) {
+					alert("操作成功!");
+					//刷新当前页未审核用户列表
+					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+				}else{
+					alert("未知错误,操作失败");
+				}
+			}
+		})
+	}
+
 
 
 	//作为返回的对象
@@ -154,15 +209,34 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			refuseBtnIcon.className = "glyphicon glyphicon-minus-sign";
 			//为按钮添加图标
 			refuseBtn.appendChild(refuseBtnIcon);
-			
+
+			//生成成为管理员按钮
+			var beAdminBtn = createElem("button");
+			var beAdminBtnIcon = createElem("span");
+			beAdminBtnIcon.innerText = " ";
+			beAdminBtnIcon.className = "glyphicon glyphicon-user";
+			//为成为管理员按钮添加图标
+			beAdminBtn.appendChild(beAdminBtnIcon);
+
+
+			//生成成为领导按钮
+			var beLeaderBtn = createElem("button");
+			var beLeaderBtnIcon = createElem("span");
+			beLeaderBtnIcon.innerText = " ";
+			beLeaderBtnIcon.className = "glyphicon glyphicon-king";
+			beLeaderBtn.appendChild(beLeaderBtnIcon);
 
 			//为按钮添加class
 			passBtn.className = "pass btn btn-success btn-sm";
 			refuseBtn.className = "refuse btn btn-danger btn-sm";
+			beAdminBtn.className = "admin btn btn-info btn-sm";
+			beLeaderBtn.className = "leader btn btn-warning btn-sm";
 
 			//为按钮添加文字
 			passBtn.innerHTML += " 通过";
 			refuseBtn.innerHTML += " 拒绝申请";
+			beAdminBtn.innerHTML += "成为管理员";
+			beLeaderBtn.innerHTML += "成为领导";
 
 
 			
@@ -201,14 +275,25 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 				//创建一个按钮包裹 td
 				var btnTd = createElem("td");
-				var passBtnClone = passBtn.cloneNode(true);
-				var refuseBtnClone = refuseBtn.cloneNode(true);
+				var passBtnClone = passBtn.cloneNode(true),
+					refuseBtnClone = refuseBtn.cloneNode(true),
+					beAdminBtnClone = beAdminBtn.cloneNode(true),
+					beLeaderBtnClone = beLeaderBtn.cloneNode(true);
+				 
 
 				btnTd.appendChild(passBtnClone);
 				btnTd.appendChild(refuseBtnClone);
+				btnTd.appendChild(beAdminBtnClone);
+				btnTd.appendChild(beLeaderBtnClone);
 				//为按钮绑定事件
+				//通过按钮点击事件
 				EventUntil.addHandler(passBtnClone,"click",unexamieModulePass);
+				//拒绝按钮点击事件
 				EventUntil.addHandler(refuseBtnClone,"click",unexamieModuleRefuse);
+				//成为管理员按钮点击事件
+				EventUntil.addHandler(beAdminBtnClone,"click",unexamieModuleBeAdmin);
+				//成为领导按钮点击事件
+				EventUntil.addHandler(beLeaderBtnClone,"click",unexamieModuleBeLeader);
 
 				tr.appendChild(btnTd);
 
@@ -380,277 +465,6 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-	/*
-	//创建未审核用户表
-	//将后台 json 字符串转换为 dom 元素
-	function createUnexamieTable(data){
-		s("#unexamie-main-content").innerHTML = "";
-		//创建元素碎片收集器
-		var frag = document.createDocumentFragment();
-
-		var dataList = data.extend.page.list;
-
-		var checkBox = createElem("input");
-		checkBox.type = "checkbox";
-		checkBox.className = "unexamie-select";
-
-
-		var passBtn = createElem("button");
-		var passBtnIcon = createElem("span");
-		passBtnIcon.innerText = " ";
-		passBtnIcon.className = "glyphicon glyphicon-ok";
-		//为按钮添加图标
-		passBtn.appendChild(passBtnIcon);
-		
-
-		var refuseBtn = createElem("button");
-		var refuseBtnIcon = createElem("span");
-		refuseBtnIcon.innerText = " ";
-		refuseBtnIcon.className = "glyphicon glyphicon-minus-sign";
-		//为按钮添加图标
-		refuseBtn.appendChild(refuseBtnIcon);
-		
-
-		//为按钮添加class
-		passBtn.className = "pass btn btn-success btn-sm";
-		refuseBtn.className = "refuse btn btn-danger btn-sm";
-
-		//为按钮添加文字
-		passBtn.innerHTML += " 通过";
-		refuseBtn.innerHTML += " 拒绝申请";
-
-
-		
-
-		for (var i = 0; i < dataList.length; i++) {
-			//每次遍历创建一个 tr
-			var tr = createElem("tr");
-			//创建一个多选框包裹元素 td
-			var checkBoxTd = createElem("td");
-			var btnClone = checkBox.cloneNode(true);
-			checkBoxTd.appendChild(btnClone);
-
-			//为每一个多选框绑定点击事件
-			EventUntil.addHandler(btnClone,"click",function(){
-				selectAllCheckboxEvent(ss(".unexamie-select"),s("#unexamie-select-all"));
-			});
-
-			//tr 添加checkBoxTd
-			tr.appendChild(checkBoxTd);
-
-			//创建一个教师姓名包裹 td
-			var userTd = createElem("td");
-			userTd.innerText = dataList[i].name;
-			userTd.title = dataList[i].uid;
-			tr.appendChild(userTd);
-
-			//创建一个系别包裹 td
-			var departmentTd = createElem("td");
-			departmentTd.innerText = dataList[i].depContent;
-			tr.appendChild(departmentTd);
-
-			//创建一个专业包裹 td
-			var professionTd = createElem("td");
-			professionTd.innerText = dataList[i].content;
-			tr.appendChild(professionTd);
-
-			//创建一个按钮包裹 td
-			var btnTd = createElem("td");
-			var passBtnClone = passBtn.cloneNode(true);
-			var refuseBtnClone = refuseBtn.cloneNode(true);
-
-			btnTd.appendChild(passBtnClone);
-			btnTd.appendChild(refuseBtnClone);
-			//为按钮绑定事件
-			EventUntil.addHandler(passBtnClone,"click",unexamieModulePass);
-			EventUntil.addHandler(refuseBtnClone,"click",unexamieModuleRefuse);
-
-			tr.appendChild(btnTd);
-
-
-			frag.appendChild(tr);
-		}
-
-		//表格元素添加数据
-		s("#unexamie-main-content").appendChild(frag);
-	}
-
-	
-	// 创建分页导航方法
-	// 传入原始数据，分页导航的载体
-	function createUnexamiePageNav(data){
-		s("#unexamie-pagination-content").innerHTML = "";
-		//获取分页导航输出分页数的数据
-		var pageList = data.extend.page.navigatepageNums;
-		//创建元素碎片收集器
-		var frag = document.createDocumentFragment();
-
-		//先创建首页，向前翻页，向后翻页，到末页按钮
-		//1、创建回首页按钮
-		var homePageBtn = createElem("li");
-		var homePageBtnContent = createElem("a");
-		homePageBtnContent.href = "#";
-		homePageBtnContent.setAttribute("aria-label", "homepage");
-		homePageBtnContent.innerText = "首页";
-		homePageBtn.appendChild(homePageBtnContent);
-
-		//2、创建向前翻页按钮
-		var prevPageBtn = createElem("li");
-		var prevPageBtnContent = createElem("a");
-		
-
-		prevPageBtnContent.href = "#";
-		prevPageBtnContent.setAttribute("aria-label", "homepage");
-		prevPageBtnContent.innerHTML = "&laquo;";
-
-		prevPageBtn.appendChild(prevPageBtnContent);
-
-		//如果当前后台返回的信息表示没有首页
-		//则禁用首页按钮和向前翻页按钮 并且不为他们绑定点击事件
-		if (data.extend.page.hasPreviousPage == false) {
-			homePageBtn.className = "disabled";
-			prevPageBtn.className = "disabled";
-		}else{
-
-			//如果有前一页
-			//点击上一页按钮的时候调用 this.toUnexamiePage 就是当前页 -1
-			//data.extend.page.pageNum 表示当前页
-			EventUntil.addHandler(prevPageBtn,"click",function(){
-				this.toUnexamiePage(data.extend.page.pageNum - 1);
-			});
-
-			//点击返回首页的时候调用 this.toUnexamiePage 就是跳到总页数的第一页
-			//即传 1进去就可以了
-			EventUntil.addHandler(homePageBtn,"click",function(){
-				this.toUnexamiePage(1);
-			});
-		}
-
-		frag.appendChild(homePageBtn);
-		frag.appendChild(prevPageBtn);
-
-
-
-		//3、创建向后翻页按钮
-		var nextPageBtn = createElem("li");
-		var nextPageBtnContent = createElem("a");
-
-		nextPageBtnContent.href = "#";
-		nextPageBtnContent.setAttribute("aria-label", "homepage");
-		nextPageBtnContent.innerHTML = "&raquo;";
-
-		nextPageBtn.appendChild(nextPageBtnContent);
-
-
-		//4、创建回到末页按钮
-		var lastPageBtn = createElem("li");
-		var lastPageBtnContent = createElem("a");
-
-		lastPageBtnContent.href = "#";
-		lastPageBtnContent.setAttribute("aria-label", "homepage");
-		lastPageBtnContent.innerText = "末页";
-
-		lastPageBtn.appendChild(lastPageBtnContent);
-
-		//如果当前后台返回的信息表示没有末页
-		//则禁用末页按钮和向后翻页按钮 并且不为他们绑定点击事件
-		if (data.extend.page.hasNextPage == false) {
-			nextPageBtn.className = "disabled";
-			lastPageBtn.className = "disabled";
-		}else{
-			//否则给他们都绑定点击事件
-			//下一页按钮就是当前页+1
-			//调用 this.toUnexamiePage 传入data.extend.page.pageNum + 1
-			//data.extend.page.pageNum 表示当前页
-			EventUntil.addHandler(nextPageBtn,"click",function(){
-				this.toUnexamiePage(data.extend.page.pageNum + 1);
-			})
-
-			//末页按钮就直接跳到页数的总数位置
-			//调用 this.toUnexamiePage 传入 data.extend.page.pages
-			//data.extend.page.pageNum 表示当前页
-			//data.extend.page.pages 表示页的总数 即最后一页
-			EventUntil.addHandler(lastPageBtn,"click",function(){
-				this.toUnexamiePage(data.extend.page.pages);
-			})
-		}
-
-
-		//5、遍历创建数字分页按钮
-		for (var i = 0; i < pageList.length; i++) {
-			var numLi = createElem("li");
-			var numLiIcon = createElem("a");
-			numLiIcon.href = "#";
-			numLiIcon.innerText = pageList[i];
-			numLi.appendChild(numLiIcon);
-
-			if (pageList[i] == data.extend.page.pageNum) {
-
-				numLi.className = "active";
-			}
-			//为每个分页数字按钮添加事件
-			//调用 this.toUnexamiePage 传入当前分页按钮数字 ‘num’ 作为跳转页面的参数
-			(function(num){
-				EventUntil.addHandler(numLi,"click",function(){
-					this.toUnexamiePage(num);
-				})
-			})(pageList[i]);
-
-			frag.appendChild(numLi);
-		}
-
-		frag.appendChild(nextPageBtn);
-		frag.appendChild(lastPageBtn);
-		
-		//分页导航添加全部分页按钮元素
-		s("#unexamie-pagination-content").appendChild(frag);
-	}
-
-
-	//分页按钮点击调用方法
-	function toUnexamiePage(pn){
-		$.ajax({
-			url: '/Management/admin/ajaxGetAccountInfoIsNotPass.action',
-			type: 'GET',
-			dataType: 'json',
-			data: "pn=" + pn,
-
-			success: function(data){
-				if (data.code == 100) {
-
-					this.createUnexamieTable(data);
-					this.createUnexamiePageNav(data);
-					this.curUnexamieModulePage = data.extend.page.pageNum;
-
-
-				}else{
-					alert(data.msg);
-				}
-			}
-		})
-		
-		
-	}
-	*/
-
 	return unexamiePage;
-
 
 })

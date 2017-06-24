@@ -8,7 +8,7 @@
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/>
 	<meta charset="UTF-8">
 	<title>选择系别</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/selectdepMain.js"></script>
 </head>
 <body>
 	<div class="form-wrap">
@@ -16,9 +16,6 @@
 			<h3>请选择系别</h3>
 			<select id="department" name="">
 				<option value="">请选择系别</option>
-				<c:forEach items="${department}" var="dp">
-					<option value="${dp.id}">${dp.department}</option>
-				</c:forEach>
 			</select>
 			<p class="input-wrap">
 				<button id="enter">进入</button>

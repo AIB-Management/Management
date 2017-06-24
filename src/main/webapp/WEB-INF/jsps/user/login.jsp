@@ -11,12 +11,20 @@
 	<div id="warning">
 		<p>促进互联网水平发展，你我共同有责 :)</p>
 		<p>请使用ie9以上 或 谷歌，360或火狐浏览器登陆此网页</p>
+		<p>
+			<a href="http://rj.baidu.com/soft/detail/14744.html?ald" class="link-chrome" title="下载谷歌浏览器" target="_blank">
+				<img src="${pageContext.request.contextPath}/resources/images/chrome.png" alt="">
+			</a>
+			<a href="http://rj.baidu.com/soft/detail/11843.html?ald" class="link-firefox" title="下载火狐浏览器" target="_blank">
+				<img src="${pageContext.request.contextPath}/resources/images/firefox.png" alt="">
+			</a>
+		</p>
 	</div>
-	<div class="header">
-		<h1>欢迎登陆专业管理系统</h1>
-	</div>
-
 	<div class="bg">
+		<div class="welcome-txt">
+			<h1>欢迎登陆</h1>
+			<p>AIB专业信息管理系统</p>
+		</div>
 		<form action="${pageContext.request.contextPath}/public/doLogin.action" method="post" class="login-wrap">
 			<div class="form-content">
 				<div class="input-wrap">
@@ -47,6 +55,7 @@
 	
 
 	<script type="text/javascript">
+		
 		(function checkBrownser(){
 			var agent=navigator.appName //获取浏览器名字
 			var version=navigator.appVersion.split(";"); //获取浏览器详细信息
@@ -59,6 +68,7 @@
 				floor.style.display = "none";
 			}
 		}());
+		
 	</script>
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/login.css">

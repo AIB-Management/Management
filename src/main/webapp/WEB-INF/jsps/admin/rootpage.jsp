@@ -12,6 +12,48 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-8"></script>
 </head>
 <body>
+	<!-- 撤回管理员对话框开始 -->
+	<div id="recall-admin-dialog-floor">
+		<div class="manage-admin-dialog-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="recall-admin-close-btn">&times;</span></button>
+			</div>
+			<h3>撤回管理员</h3>
+			<p class="recall-admin-hint">你确定要撤回<b id="recall-admin-name"></b>的管理员身份吗？</p>
+			<div class="recall-admin-btn">
+				<button class="btn btn-success btn-sm" id="cancel-recall-admin">
+				<span class="glyphicon glyphicon-remove"></span> 
+				取消
+			</button>
+			<button class="btn btn-danger btn-sm" id="confirm-recall-admin">
+				<span class="glyphicon glyphicon-erase"></span> 
+				确认
+			</button>
+			</div>
+		</div>
+	</div>
+	<!-- 撤回管理员对话框结束 -->
+	<!-- 撤回领导对话框开始 -->
+	<div id="recall-leader-dialog-floor">
+		<div class="manage-leader-dialog-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="recall-leader-close-btn">&times;</span></button>
+			</div>
+			<h3>撤回领导</h3>
+			<p class="recall-leader-hint">你确定要撤回<b id="recall-leader-name"></b>的领导身份吗？</p>
+			<div class="recall-leader-btn">
+				<button class="btn btn-success btn-sm" id="cancel-recall-leader">
+				<span class="glyphicon glyphicon-remove"></span> 
+				取消
+			</button>
+			<button class="btn btn-danger btn-sm" id="confirm-recall-leader">
+				<span class="glyphicon glyphicon-erase"></span> 
+				确认
+			</button>
+			</div>
+		</div>
+	</div>
+	<!-- 撤回领导员对话框结束 -->
 	<!-- 管理部门模块模态框开始 -->
 	<div id="manage-department-floor">
 		<div id="new-department-dialog">
@@ -165,7 +207,7 @@
 		</div>
 		<div id="new-file-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="new-floder-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="new-floder-close-btn">&times;</span></button>
 			</div>
 			<h3>新建文件夹</h3>
 			<div class="input-wrap">
@@ -221,7 +263,10 @@
 				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
 					<span class="caret"></span>
 				</button>
-				<ul id="overflow-item-wrap"></ul>
+				<ul id="overflow-item-wrap">
+					<li>fasfasdfs</li>
+					<li>fasfsadfsad</li>
+				</ul>
 			</div>
 			</div>
 			<div class="manage-nav-main clearfix">
@@ -313,20 +358,36 @@
 				<div class="item-wrap-1">
 					<div id="tag-manage" class="sidebar-tag-header">各系信息管理</div>
 					<ul class="child-tag-wrap">
-						<li id="manage-floder">信息文档管理</li>
+						<li id="manage-floder">
+							<span class="glyphicon glyphicon-folder-close"></span> 
+							信息文档管理
+						</li>
 					</ul>
 				</div>
 				<div class="item-wrap-2">
 					<div id="user-manage" class="sidebar-tag-header">系别及专业使用权限管理</div>
 					<ul class="child-tag-wrap">
-						<li id="manage-department">管理系别及专业</li>
+						<li id="manage-department">
+							<span class="glyphicon glyphicon-home"></span> 
+							管理系别及专业
+						</li>
 					</ul>
 				</div>
 				<div class="item-wrap-3">
 					<div id="user-manage" class="sidebar-tag-header">用户审核</div>
 					<ul class="child-tag-wrap">
-						<li class="child-tag" id="unexamie-tag">待审核<span id="number-hints">15</span></li>
-						<li class="child-tag" id="examied-tag">已审核</li>
+						<li class="child-tag" id="unexamie-tag">
+							<span class="glyphicon glyphicon-question-sign"></span> 
+							待审核
+							<span id="number-hints">15</span></li>
+						<li class="child-tag" id="examied-tag">
+							<span class="glyphicon glyphicon-ok-sign"></span> 
+							已审核
+						</li>
+						<li class="child-tag" id="manage-leader-admin">
+							<span class="glyphicon glyphicon-user"></span> 
+							领导及管理员管理
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -350,24 +411,7 @@
 									<th>操作</th>
 								</tr>
 							</thead>
-							<tbody id="unexamie-main-content">
-								<tr>
-									<td><input type="checkbox" class="unexamie-select"></td>
-									<td title="1">老师1</td>
-									<td>计算机系</td>
-									<td>移动互联应用技术</td>
-									<td>
-										<button class="pass btn btn-success btn-sm">
-											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 	
-											通过
-										</button>
-										<button class="refuse btn btn-danger btn-sm">
-											<span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 
-											拒绝申请
-										</button>
-									</td>
-								</tr>
-							</tbody>
+							<tbody id="unexamie-main-content"></tbody>
 						</table>
 
 						<!-- 批量通过，批量拒绝按钮包裹层 -->
@@ -421,7 +465,7 @@
 					<select id="examie-filter" class="filter-style">
 						<option value="">全部</option>
 					</select>
-					<table id="examied" class="message-list table table-striped table-hover" cellspacing="0">
+					<table id="examied" class="message-list table table-striped table-hover">
 						<thead>
 							<tr>
 								<th>
@@ -433,22 +477,7 @@
 								<th>操作</th>
 							</tr>
 						</thead>
-						<tbody id="examied-main-content">
-							<tr>
-								<td>
-									<input type="checkbox" class="examied-select">
-								</td>
-								<td title="1">老师1</td>
-								<td>计算机系</td>
-								<td>移动互联应用技术</td>
-								<td>
-									<button class="recall btn btn-danger btn-sm" type="button">
-										<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-										撤回
-									</button>
-								</td>
-							</tr>
-						</tbody>
+						<tbody id="examied-main-content"></tbody>
 					</table>
 					<!-- 批量撤回按钮包裹层 -->
 					<div class="batcn-opetate-btn-wrap">
@@ -488,11 +517,44 @@
 				</div>
 			</div>
 			<!-- 右侧已审核用户列表模块 -->
+			<!-- 右侧领导及管理员管理模块 -->
+			<div class="content-wrap manage-leader-admin-content">
+				<div class="admin-list-wrap">
+					<h3>当前注册的管理员列表</h3>
+					<div class="admin-list-title">
+						<div>教师姓名</div>
+						<div>所属系别</div>
+						<div>所属专业</div>
+						<div>操作</div>
+					</div>
+					<div class="admin-list-table-wrap">
+						<table class="table table-striped table-hover">
+							<tbody id="admin-list"></tbody>
+						</table>
+					</div>
+				</div>
+				<div class="leader-list-wrap">
+					<h3>当前注册的领导列表</h3>
+					<div class="leader-list-title">
+						<div>教师姓名</div>
+						<div>所属系别</div>
+						<div>所属专业</div>
+						<div>操作</div>
+					</div>
+					<div class="leader-list-table-wrap">
+						<table class="table table-striped table-hover">
+							<tbody id="leader-list"></tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-		</div>
+			<!-- 右侧领导及管理员管理模块 -->
+		 </div>
+	  </div>
 	</div>
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mCustomScrollbar.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/rootPage.css?20170510-38">
 </body>

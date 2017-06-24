@@ -2,6 +2,14 @@ require.config({
 	shim:{
 		'jquery.min':{
 			exports: '$'
+		},
+
+		'jquery.mousewheel.min': {
+			deps: ['jquery.min']
+		},
+
+		'mCustomScrollbar.min': {
+			deps: ['jquery.min','jquery.mousewheel.min']
 		}
 
 	}
@@ -9,7 +17,10 @@ require.config({
 })
 
 //管理页主函数
-require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModule","rootpagExamiePageModule","rootpageManageFloderListModule","rootpageManageDepartmentModule"],function main($,checkBy,EventUntil,unexamiePage,examiePage,manageDepFloder,manageDep){
+require(["jquery.min","checkInput","overborwserEvent",
+	"rootpageUnexamiePageModule","rootpagExamiePageModule",
+	"rootpageManageFloderListModule","rootpageManageDepartmentModule",
+	"rootpageManageLeaderAdmin","jquery.mousewheel.min","mCustomScrollbar.min"],function main($,checkBy,EventUntil,unexamiePage,examiePage,manageDepFloder,manageDep,manageAdminLeader){
 
 	//封装选择器函数
 	function s(name){
@@ -186,13 +197,13 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 
 	//溢出导航隐藏按钮点击事件
-	function overflowNavBtnClick(){
+	function overflowNavBtnClick(target){
 		
 		//获取按钮的宽度
-		var curWidth = parseInt(getCurStyle(this,null,"width"));
+		var curWidth = parseInt(getCurStyle(target,null,"width"));
 		
 		//获取按钮高度
-		var curHeight = parseInt(getCurStyle(this,null,"height"));
+		var curHeight = parseInt(getCurStyle(target,null,"height"));
 
 		if (s("#overflow-item-wrap").style.display == "" || s("#overflow-item-wrap").style.display == "none") {
 
@@ -253,6 +264,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 						s("#newfloder-submit").className = "btn btn-primary disabled";
 						//关闭创建文件夹弹出层
 						s("#new-file-wrap").style.display = "none";
+					}else{
+						alert("未知错误，请稍后重试！");
 					}
 				}
 			})
@@ -313,6 +326,9 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 						s("#rename-submit").className = "btn btn-primary disabled";
 						//关闭创建文件夹弹出层
 						s("#modify-file-name-wrap").style.display = "none";
+
+					}else{
+						alert("未知错误，请稍后重试");
 					}
 				}
 			})
@@ -341,7 +357,6 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				//隐藏加载图标
 				//关闭弹窗
 				//输出操作后的文件夹列表
-
 				//定义两个变量保存最后一个子元素和当前路径
 				var	curPath = getCurPath();
 
@@ -351,7 +366,13 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				s("#drop-floder-loading-icon").style.visibility = 'hidden';
 				s("#drop-floder-wrap").style.display = 'none';
 				alert("删除成功");
+
+			},
+
+			error: function(){
+				alert("此文件夹下存在目录不能删除！");
 			}
+			
 		})
 		
 	}
@@ -458,7 +479,8 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				type: 'POST',
 				dataType: 'json',
 				data: "uid=" + id + "&content=" + val,
-				success: function(){
+				success: function(data){
+					
 					//修改成功之后刷新右侧专业栏
 					manageDep.outputSpeciality(manageDep.curManageDepDepId);
 					//清空提示信息
@@ -466,6 +488,10 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 					//关闭对话框
 					s("#modify-specialy-dialog").style.display = 'none';
 					alert("修改成功！");
+				},
+
+				error: function(){
+					alert("未知错误，请稍后重试!");
 				}
 			})
 			
@@ -510,19 +536,25 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				type: 'POST',
 				dataType: 'json',
 				data: "uid=" + manageDep.curManageDepDepId + "&parent=0&content=" +  modifyVal,
-				success: function(){
-					//请求成功后
-					//刷新左侧部门列表
-					manageDep.createManageDepDepsList();
-					//清空输入框的值
-					s("#modify-department-name").value = "";
-					//清空提示信息
-					s("#modify-department-hint").innerText;
-					//清空右侧专业内容
-					s("#speciality-list-content").innerHTML = "";
-					//关闭对话框
-					s("#modify-department-dialog").style.display = 'none';
-					alert("修改成功")
+				success: function(data){
+					if (data.code == 100) {
+						//请求成功后
+						//刷新左侧部门列表
+						manageDep.createManageDepDepsList();
+						//清空输入框的值
+						s("#modify-department-name").value = "";
+						//清空提示信息
+						s("#modify-department-hint").innerText;
+						//清空右侧专业内容
+						s("#speciality-list-content").innerHTML = "";
+						//关闭对话框
+						s("#modify-department-dialog").style.display = 'none';
+						alert("修改成功");
+
+					}else{
+						alert("未知错误，请稍后重试！");
+					}
+
 				}
 			})
 			
@@ -546,19 +578,25 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				dataType: 'json',
 				data: "parent=0&content=" + newDepName,
 				success: function(data){
-					//输出数据
-					manageDep.createManageDepDepsList();
-					//清空右侧专业内容
-					s("#speciality-list-content").innerHTML = "";
-					//清空输入框内容
-					s("#new-department-name").value = "";
-					//清空提示框信息
-					s("#new-department-hint").innerText = "";
-					//清空保存的系别id
-					manageDep.curManageFloderDepId = "";
-					//关闭对话框
-					s("#new-department-dialog").style.display = 'none';
-					alert("创建成功");
+					if (data.code == 100) {
+						//输出数据
+						manageDep.createManageDepDepsList();
+						//清空右侧专业内容
+						s("#speciality-list-content").innerHTML = "";
+						//清空输入框内容
+						s("#new-department-name").value = "";
+						//清空提示框信息
+						s("#new-department-hint").innerText = "";
+						//清空保存的系别id
+						manageDep.curManageFloderDepId = "";
+						//关闭对话框
+						s("#new-department-dialog").style.display = 'none';
+						alert("创建成功");
+					}
+				},
+
+				error: function(){
+					alert("未知错误，请稍后重试！");
 				}
 			});
 
@@ -583,15 +621,20 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 				dataType: 'json',
 				data: "parent=" + manageDep.curManageDepDepId + "&content=" + newSpecName,
 				success: function(data){
-					//输出专业数据
-					manageDep.outputSpeciality(manageDep.curManageDepDepId);
-					//清空输入框
-					s("#new-specialy-name").value = "";
-					//清空提示框
-					s("#new-specialy-hint").innerText = "";
-					//关闭对话框
-					s("#new-specialy-dialog").style.display = 'none';
-					alert("创建成功");
+					if (data.code == 100) {
+						//输出专业数据
+						manageDep.outputSpeciality(manageDep.curManageDepDepId);
+						//清空输入框
+						s("#new-specialy-name").value = "";
+						//清空提示框
+						s("#new-specialy-hint").innerText = "";
+						//关闭对话框
+						s("#new-specialy-dialog").style.display = 'none';
+						alert("创建成功");
+
+					}else{
+						alert("未知错误，请稍后重试！");
+					}
 				}
 			});
 
@@ -746,19 +789,26 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			},
 
 			success: function(data){
-				//输出操作前停留页码处的未审核用户数据
-				unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
-				//隐藏加载图标
-				icon.style.visibility = 'hidden';
-				//如果当前操作是拒绝此页的全部用户申请
-				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
-				//所以每次点击完之后都要把多选框的 checked 取消掉
-				s("#unexamie-select-all").checked = false;
-				//取消拒绝发送信息按钮disabled 属性
-				s("#no-refuse-reason").removeAttribute("disabled");
-				s("#refuse-content").removeAttribute("disabled");
-				//隐藏弹出层
-				s("#floor").style.display = "none";
+				if (data.code == 100) {
+					//输出操作前停留页码处的未审核用户数据
+					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+					//隐藏加载图标
+					icon.style.visibility = 'hidden';
+					//如果当前操作是拒绝此页的全部用户申请
+					//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
+					//所以每次点击完之后都要把多选框的 checked 取消掉
+					s("#unexamie-select-all").checked = false;
+					//取消拒绝发送信息按钮disabled 属性
+					s("#no-refuse-reason").removeAttribute("disabled");
+					s("#refuse-content").removeAttribute("disabled");
+					//清空拒绝信息内容
+					s("#refuse-content").value = "";
+					//隐藏弹出层
+					s("#floor").style.display = "none";
+
+				}else{
+					alert("未知错误，请稍后重试！");
+				}
 			}
 		});
 		
@@ -788,20 +838,27 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			},
 
 			success: function(data){
+				if (data.code == 100) {
+					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+					//隐藏加载图标
+					icon.style.visibility = 'hidden';
+					//如果当前操作是拒绝此页的全部用户申请
+					//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
+					//所以每次点击完之后都要把多选框的 checked 取消掉
+					s("#unexamie-select-all").checked = false;
+					//消除发送按钮的disabled 属性
+					s("#no-refuse-reason").removeAttribute("disabled");
+					//消除输入框的disabled 属性
+					s("#refuse-content").removeAttribute("disabled");
+					//隐藏弹出层
+					s("#floor").style.display = "none";
+				}
+			},
 
-				unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
-				//隐藏加载图标
-				icon.style.visibility = 'hidden';
-				//如果当前操作是拒绝此页的全部用户申请
-				//点击完弹出层拒绝按钮之后 全选多选框还是会 checked
-				//所以每次点击完之后都要把多选框的 checked 取消掉
-				s("#unexamie-select-all").checked = false;
-				//消除发送按钮的disabled 属性
-				s("#no-refuse-reason").removeAttribute("disabled");
-				//消除输入框的disabled 属性
-				s("#refuse-content").removeAttribute("disabled");
+			error: function(){
 				//隐藏弹出层
 				s("#floor").style.display = "none";
+				alert("未知错误，请稍后重试！");
 			}
 		});
 		
@@ -940,21 +997,29 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 			},
 
 			success: function(data){
-				//数据返回成功后
-				//根据当前筛选下拉框的部门id 输出操作前页码处的内容
-				examiePage.toexamiedPage(examiePage.curExamieModulePage,examiePage.curDepartmentId);
-				//loading 图标隐藏
-				icon.style.visibility = 'hidden';
-				//弹出层隐藏
-				s("#floor").style.display = 'none';
-				//清空撤回理由输入框内容
-				s("#recall-content").value = "";
-				//撤回内容输入框消除disabled 属性
-				s("#recall-content").removeAttribute("disabled");
-				//取消撤回按钮消除disabled 属性
-				s("#cancel-recall-user").removeAttribute("disabled");
-				//取消全选多选按钮选中样式
-				s("#examied-select-all").checked = false;
+				if (data.code == 100) {
+					//数据返回成功后
+					//根据当前筛选下拉框的部门id 输出操作前页码处的内容
+					examiePage.toexamiedPage(examiePage.curExamieModulePage,examiePage.curDepartmentId);
+					//loading 图标隐藏
+					icon.style.visibility = 'hidden';
+					//弹出层隐藏
+					s("#floor").style.display = 'none';
+					//清空撤回理由输入框内容
+					s("#recall-content").value = "";
+					//撤回内容输入框消除disabled 属性
+					s("#recall-content").removeAttribute("disabled");
+					//取消撤回按钮消除disabled 属性
+					s("#cancel-recall-user").removeAttribute("disabled");
+					//取消全选多选按钮选中样式
+					s("#examied-select-all").checked = false;
+				}
+			},
+
+			error: function(){
+				//隐藏弹出层
+				s("#floor").style.display = "none";
+				alert("未知错误，请稍后重试！");
 			}
 		});
 		
@@ -1020,10 +1085,64 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 					//读取已审核用户数据的第一页，且部门筛选为 "全部" 的内容
 					examiePage.toexamiedPage(1,examiePage.curDepartmentId);
 
+				}else if(this.id == "manage-leader-admin") {
+					//点击管理员领导管理标签时更新两个列表的内容
+					manageAdminLeader.outputAdminList();
+					manageAdminLeader.outputLeaderList();
 				}
 			});
 		}
 	};
+
+	//撤回管理员事件函数
+	function doRecallAdmin(){
+		var uid = s("#recall-admin-name").title;
+		$.ajax({
+			url: '/Management/admin/ajaxWithdrawAdmin.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "uid=" + uid,
+			success: function(data){
+				if (data.code == 100) {
+					alert("撤回管理员成功！");
+					//输出更新后的管理员表
+					manageAdminLeader.outputAdminList();
+				}else{
+					alert("撤回失败，遇到未知错误，请重试！");
+				}
+			},
+
+			error: function(){
+				alert("撤回失败，遇到未知错误，请重试！");
+			}
+		})
+		
+	}
+
+
+	//撤回领导事件函数
+	function doRecallLeader(){
+		var uid = s("#recall-leader-name").title;
+		$.ajax({
+			url: '/Management/admin/ajaxWithdrawAdmin.action',
+			type: 'POST',
+			dataType: 'json',
+			data: "uid=" + uid,
+			success: function(data){
+				if (data.code == 100) {
+					alert("撤回领导成功！");
+					//输出更新后的管理员表
+					manageAdminLeader.outputLeaderList();
+				}else{
+					alert("撤回失败，遇到未知错误，请重试！");
+				}
+			},
+
+			error: function(){
+				alert("撤回失败，遇到未知错误，请重试！");
+			}
+		})
+	}
 
 
 	//事件委托函数
@@ -1042,7 +1161,7 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 		}else if(target.id == "show-hidden-menu") {
 			//溢出导航隐藏按钮点击事件
-			overflowNavBtnClick();
+			overflowNavBtnClick(target);
 
 		}else if(target.id == "newfloder-btn") {
 			//新建文件夹按钮点击事件
@@ -1247,6 +1366,34 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 		}else if(target.id == "confirm-recall-user") {
 			//确认撤回按钮点击事件但 "不发送信息" 点击事件
 			sendRecallMsg();
+
+		}else if(target.id == "cancel-recall-admin") {
+			//撤回管理员对话框取消按钮点击事件
+			s("#recall-admin-dialog-floor").style.display = 'none';
+
+		}else if(target.id == "recall-admin-close-btn") {
+			//撤回管理员对话框关闭按钮点击事件
+			s("#recall-admin-dialog-floor").style.display = 'none';
+
+		}else if(target.id == "confirm-recall-admin") {
+			//撤回管理员对话框确认撤回管理员按钮点击事件
+			doRecallAdmin();
+			s("#recall-admin-dialog-floor").style.display = 'none';
+			
+		}else if(target.id == "cancel-recall-leader") {
+			//撤回领导对话框取消按钮点击事件
+			s("#recall-leader-dialog-floor").style.display = 'none';
+
+		}else if(target.id == "recall-leader-close-btn") {
+			//撤回领导对话框关闭按钮点击事件
+			s("#recall-leader-dialog-floor").style.display = 'none';
+
+		}else if(target.id == "confirm-recall-leader") {
+			//撤回领导对话框确认撤回按钮点击事件
+			doRecallLeader();
+			s("#recall-leader-dialog-floor").style.display = 'none';
+
+
 		}
 	}
 
@@ -1273,6 +1420,25 @@ require(["jquery.min","checkInput","overborwserEvent","rootpageUnexamiePageModul
 
 	//事件委托
 	EventUntil.addHandler(document,"click",entrustEvent);
+
+	//初始化管理员和领导管理模块滚动条
+	$(".admin-list-table-wrap").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	});
+	
+	$(".leader-list-table-wrap").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	})
 
 
 })

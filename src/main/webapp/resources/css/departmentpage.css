@@ -117,7 +117,7 @@
 	margin-top: -300px;
 	margin-left: -500px;
 	background-color: #fff;
-	border-radius: 5px;
+	border-radius: 10px;
 	box-shadow: 0 5px 10px rgba(160,162,122,0.5);
 }
 .authority-wrap h3{
@@ -138,7 +138,7 @@
 	display: inline-block;
 	width: 45%;
 	height: 450px;
-	border: 3px solid #ccc;
+	box-shadow: 0 5px 10px rgba(160,162,122,0.5);
 }
 .has-authoritied-list-wrap{
 	margin-right: 10px;
@@ -169,9 +169,6 @@
 	display: inline-block;
 	width: 50%;
 	word-spacing: 0;
-}
-.operate-col button{
-	margin-left: 20px;
 }
 /*修改文件名弹出层*/
 #modify-filename-floor{

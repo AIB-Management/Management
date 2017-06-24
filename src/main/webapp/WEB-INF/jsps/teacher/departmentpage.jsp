@@ -54,26 +54,7 @@
 					</div>
 					<div class="authoritied-tabel-wrap">
 						<table class="table table-striped table-hover">
-							<tbody id="can-authoritied-list">
-								<tr>
-									<td>教师1</td>
-									<td class="operate-col">
-										<button class="btn btn-success btn-sm">授权</button>
-									</td>
-								</tr>
-								<tr>
-									<td>教师1</td>
-									<td class="operate-col">
-										<button class="btn btn-success btn-sm">授权</button>
-									</td>
-								</tr>
-								<tr>
-									<td>教师1</td>
-									<td class="operate-col">
-										<button class="btn btn-success btn-sm">授权</button>
-									</td>
-								</tr>
-							</tbody>
+							<tbody id="can-authoritied-list"></tbody>
 						</table>
 					</div>
 				</div>
@@ -85,26 +66,7 @@
 					</div>
 					<div class="authoritied-tabel-wrap">
 						<table class="table table-striped table-hover">
-							<tbody id="has-authoritied-list">
-								<tr>
-									<td>教师1</td>
-									<td class="operate-col">
-										<button class="btn btn-danger btn-sm">撤回</button>
-									</td>
-								</tr>
-								<tr>
-									<td>教师1</td>
-									<td class="operate-col">
-										<button class="btn btn-danger btn-sm">撤回</button>
-									</td>
-								</tr>
-								<tr>
-									<td>教师1</td>
-									<td class="operate-col">
-										<button class="btn btn-danger btn-sm">撤回</button>
-									</td>
-								</tr>
-							</tbody>
+							<tbody id="has-authoritied-list"></tbody>
 						</table>
 					</div>
 				</div>
@@ -205,6 +167,7 @@
 	</div>
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mCustomScrollbar.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/fileinput.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css?20170607-10">
