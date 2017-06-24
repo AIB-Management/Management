@@ -12,15 +12,15 @@
 </head>
 <body>
 	<div class="form-wrap">
-		<div class="form-content">
+		<form class="form-content" action="/Management/content/toLeaderFromDep.action" method="post" id="select-dep-form">
 			<h3>请选择系别</h3>
-			<select id="department" name="">
+			<select id="department" name="departmentId">
 				<option value="">请选择系别</option>
 			</select>
 			<p class="input-wrap">
 				<button id="enter">进入</button>
 			</p>
-		</div>
+		</form>
 	</div>
 
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
