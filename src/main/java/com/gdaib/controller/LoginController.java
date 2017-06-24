@@ -120,7 +120,7 @@ public class LoginController {
         DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
         departmentSelectVo.setUid(account.getDepartmentId());
         List<DepartmentCustom> departmentCustoms = departmentService.selectDepartment(departmentSelectVo);
-        System.out.println(departmentCustoms);
+
         if(departmentCustoms == null || departmentCustoms.size() == 0){
             return "redirect:/admin/leader.action";
         }
