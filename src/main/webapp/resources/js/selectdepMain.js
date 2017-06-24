@@ -65,25 +65,12 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 	//跳转按钮点击事件执行函数
 	function changeLocation(){
 		if (s("#department").value == "") {
-
+			//没有选择到系别提示错误
 			alert("请先选择系别！");
 		}else{
-			var uid = s("#department").value;
-			//发送ajax 到后台进行页面跳转
-			$.ajax({
-				url: '/Management/content/toLeaderFromDep.action',
-				type: 'POST',
-				dataType: 'json',
-				data: "departmentId=" + uid,
-				success: function(data){
-					if (data.code == 200) {
-						alert("未知错误请稍后重试！");
-					}
-				}
-			})
-
-			console.log(uid);
-			console.log(depName);
+			//选择了系别
+			//提交表单
+			s("#select-dep-form").submit();
 			
 		}
 	}
