@@ -12,9 +12,13 @@ import java.util.HashMap;
  */
 public class UtilTest {
 
+
+
     @Test
     public  void testGetIpAddress() throws Exception{
         HashMap<String,Object> hashMap = Utils.getMailInfo();
         System.out.println(hashMap);
     }
+
+
 }

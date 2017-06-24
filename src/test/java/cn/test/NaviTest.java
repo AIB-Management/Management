@@ -55,9 +55,11 @@ public class NaviTest {
 
     @Test
     public void testGetCountByDepUid() throws Exception{
-        int count = usersMapper.getCountByDepUid("7020304c-cc1d-41ea-bf17-d4b154378ae4");
+        DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
+        departmentSelectVo.setParent("0");
+        List<DepartmentCustom> departmentCustoms = departmentExtMapper.selectDepartment(departmentSelectVo);
 
-        System.out.println(count);
+        System.out.println(departmentCustoms);
     }
 
 

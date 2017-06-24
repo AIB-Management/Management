@@ -162,6 +162,7 @@ public class ContentController {
         List<HashMap<String, Object>> depAndpro = new ArrayList<HashMap<String, Object>>();
         if (departmentSelectVo.getParent().equals("0")) {
             List<DepartmentCustom> departmentCustoms = departmentService.selectDepartment(departmentSelectVo);
+
             if (departmentCustoms.size() > 0) {
                 for (DepartmentCustom departmentCustom : departmentCustoms) {
                     Department department = departmentCustom.getDepartment();
