@@ -31,7 +31,7 @@ import java.util.UUID;
 @Controller
 public class ManageController {
     private static final String ROOTPAGE = "/admin/rootpage.jsp";
-
+    private static final String LEADER = "/teacher/selectdepartment.jsp";
 
     @Autowired
     private UsersService usersService;
@@ -56,6 +56,18 @@ public class ManageController {
     public ModelAndView rootPage() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(ROOTPAGE);
+
+        return modelAndView;
+
+    }
+
+    /**
+     * 转发到领导选择系页面
+     */
+    @RequestMapping("/admin/leader")
+    public ModelAndView leader() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName(LEADER);
 
         return modelAndView;
 

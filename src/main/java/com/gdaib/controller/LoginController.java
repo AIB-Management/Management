@@ -1,9 +1,8 @@
 package com.gdaib.controller;
 
 
-import com.gdaib.pojo.Account;
-import com.gdaib.pojo.AccountInfo;
-import com.gdaib.pojo.RegisterPojo;
+import com.gdaib.pojo.*;
+import com.gdaib.service.DepartmentService;
 import com.gdaib.service.UsersService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,11 +15,13 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @Author:马汉真
@@ -31,6 +32,8 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
     private static final String LOGIN = "/user/login.jsp";
 
+    @Autowired
+    private DepartmentService departmentService;
 
     @Autowired
     private UsersService usersService;
@@ -99,6 +102,10 @@ public class LoginController {
             modelAndView.setViewName("redirect:/admin/rootPage.action");
             return modelAndView;
         }
+        if (accountInfo.getRole().equals("leader")){
+            modelAndView.setViewName("redirect:/admin/leader.action");
+            return modelAndView;
+        }
 
 
         modelAndView.setViewName("redirect:/content/departmentpage.action");
@@ -107,12 +114,24 @@ public class LoginController {
     }
 
     //传入系id和系名称，改变系
-    @RequestMapping(value = "/content/toLeaderFromDep",params = {"departmentId","depContent"})
+    @RequestMapping(value = "/content/toLeaderFromDep",params = {"departmentId"})
     public String toLeaderFromDep(AccountInfo account) throws Exception {
+
+        DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
+        departmentSelectVo.setUid(account.getDepartmentId());
+        List<DepartmentCustom> departmentCustoms = departmentService.selectDepartment(departmentSelectVo);
+        System.out.println(departmentCustoms);
+        if(departmentCustoms == null || departmentCustoms.size() == 0){
+            return "redirect:/admin/leader.action";
+        }
+        DepartmentCustom departmentCustom = departmentCustoms.get(0);
+        Department department = departmentCustom.getDepartment();
+
+
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
         accountInfo.setDepartmentId(account.getDepartmentId());
-        accountInfo.setDepContent(account.getDepContent());
+        accountInfo.setDepContent(department.getContent());
         accountInfo.setContent("无");
         return "redirect:/content/departmentpage.action";
     }
@@ -127,6 +146,7 @@ public class LoginController {
     }
 
     @RequestMapping("/content/toFromId")
+
     public String toFromId() throws Exception {
         Subject subject = SecurityUtils.getSubject();
         System.out.println(subject.isRunAs());
