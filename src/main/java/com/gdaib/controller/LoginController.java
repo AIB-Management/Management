@@ -106,6 +106,18 @@ public class LoginController {
 
     }
 
+    //传入系id和系名称，改变系
+    @RequestMapping(value = "/content/toLeaderFromDep",params = {"departmentId","depContent"})
+    public String toLeaderFromDep(AccountInfo account) throws Exception {
+        Subject subject = SecurityUtils.getSubject();
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
+        accountInfo.setDepartmentId(account.getDepartmentId());
+        accountInfo.setDepContent(account.getDepContent());
+        accountInfo.setContent("无");
+        return "redirect:/content/departmentpage.action";
+    }
+
+
     @RequestMapping("/content/toId")
     public String toId() throws Exception {
         Subject subject = SecurityUtils.getSubject();

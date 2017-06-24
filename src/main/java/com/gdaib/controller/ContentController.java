@@ -95,7 +95,7 @@ public class ContentController {
     //获取个人信息的接口
 
     @RequestMapping("/content/personalpage")
-    @RequiresPermissions("content:query")//执行personalpage需要content:query权限
+//    @RequiresPermissions("content:query")//执行personalpage需要content:query权限
     public ModelAndView personalpage() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(PERSONALPAGE);
