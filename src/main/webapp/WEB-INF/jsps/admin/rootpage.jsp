@@ -286,7 +286,7 @@
 					<span class="glyphicon glyphicon-remove"></span> 
 					取消
 				</button>
-				<button type="button" class="btn btn-danger disabled" id="confirm-recall-user" disabled="disabled">
+				<button type="button" class="btn btn-danger" id="confirm-recall-user" disabled="disabled">
 					<span class="glyphicon glyphicon-erase"></span> 
 					确认
 				</button>
@@ -302,7 +302,10 @@
 				<h3>后台管理页</h3>
 			</div>
 			<div class="logout-btn-wrap">
-				<a id="logout-btn" href="${pageContext.request.contextPath}/shiro/logout">退出</a>
+				<a id="logout-btn" href="${pageContext.request.contextPath}/shiro/logout">
+					<span class="glyphicon glyphicon-off"></span>
+					退出
+				</a>
 			</div>
 		</div>
 		<div class="mainbody">
@@ -328,6 +331,12 @@
 				</div>
 			</div>
 			<div class="content">
+				<div class="welcome-hint">
+					<p class="icon">
+						<span class="glyphicon glyphicon-tasks"></span>
+					</p>
+					<p class="icon-text">你当前还没有选择操作项</p>
+				</div>
 				<!-- 右侧待审核用户列表模块 -->
 				<div class="content-wrap">
 					<div class="unexamie-wrap" id="unexamie-main-content-wrap">

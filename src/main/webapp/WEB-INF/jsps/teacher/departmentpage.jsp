@@ -154,7 +154,10 @@
 				<h3 id="departmentId" title='<shiro:principal property="departmentId"/>'><shiro:principal property="depContent"/>主页</h3>
 			</div>
 			
-			<a href="${pageContext.request.contextPath}/shiro/logout" id="logout-btn">退出</a>
+			<a href="${pageContext.request.contextPath}/shiro/logout" id="logout-btn">
+				<span class="glyphicon glyphicon-off"></span> 
+				退出
+			</a>
 			<span class="over-ride">|</span>
 			<div class="header-tag" id="user-name-wrap">
 				<span id="user-name" title='<shiro:principal property="uid"/>'><shiro:principal property="name"/></span>

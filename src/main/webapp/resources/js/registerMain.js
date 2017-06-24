@@ -48,7 +48,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					hintsContent: "span",
 					errorColor: "#FB000D",
 					//后台页面地址
-					url:"http://localhost:8080/Management/public/ajaxFindUsernameIsExists.action",
+					url:"/Management/public/ajaxFindUsernameIsExists.action",
 					reqData: "accountVal="+myTrim(args.value),
 					correctBool: "100",
 					errorBool: "200",
@@ -70,7 +70,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 					hintsContent: "span",
 					errorColor: "#FB000D",
 					//后台页面地址
-					url:"http://localhost:8080/Management/public/ajaxFindEmailIsExists.action",
+					url:"/Management/public/ajaxFindEmailIsExists.action",
 					reqData: "mailVal="+myTrim(args.value),
 					correctBool: "100",
 					errorBool: "200",
@@ -93,6 +93,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 				contain.innerText = "输入错误";
 				contain.style.color = "#FB000D";
 				contain.style.visibility = 'visible';
+				args.style.borderColor = '#FB000D';
+				args.style.boxShadow = '0 0 3px #FB000D';
 				args.isCorrect = false;
 
 			}else{
@@ -177,7 +179,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			//发送一个ajax 请求道后台获取数据
 			if (selector1.value != "") {
 				$.ajax({
-					url: 'http://localhost:8080/Management/public/getProfessionJson.action',
+					url: '/Management/public/getProfessionJson.action',
 					type: 'GET',
 					async: true,
 					dataType: 'json',

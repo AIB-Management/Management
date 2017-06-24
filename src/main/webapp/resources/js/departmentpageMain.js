@@ -135,7 +135,7 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 	//初始化上传文件身份选择下拉列表
 	function initAuthorityList(){
 		$.ajax({
-			url: 'http://localhost:8080/Management/runas/getbeAccount.action',
+			url: '/Management/runas/getbeAccount.action',
 			type: 'GET',
 			dataType: 'json',
 			success: function(data){
@@ -233,7 +233,7 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 				curDepId = s("#departmentId").title;
 
 			$.ajax({
-				url: 'http://localhost:8080/Management/file/ajaxUpdateFile.action',
+				url: '/Management/file/ajaxUpdateFile.action',
 				type: 'POST',
 				dataType: 'json',
 				data: "accuid=" + accuid + "&uid=" + uid + "&title=" + title,
@@ -307,7 +307,7 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 
 		//发送ajax
 		$.ajax({
-			url: 'http://localhost:8080/Management/file/ajaxDeleteFile.action',
+			url: '/Management/file/ajaxDeleteFile.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "accuid=" + accuid + "&uid=" + uid,
@@ -391,7 +391,7 @@ require(["jquery.min","overborwserEvent","authorityManage","departmentPageFileLi
 	//初始化拖拽上传插件
 	$("#fileupload").fileinput({
         language: 'zh', //设置语言
-    	uploadUrl: "http://localhost:8080/Management/file/doUploadFile.action", //上传的地址
+    	uploadUrl: "/Management/file/doUploadFile.action", //上传的地址
 	    allowedFileExtensions: null,//接收的文件后缀,
 	    maxFileCount: 3,
 	   	dropZoneEnabled: true,

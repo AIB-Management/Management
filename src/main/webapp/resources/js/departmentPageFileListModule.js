@@ -323,7 +323,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		var path = this.getAttribute("data-path");
 
-		window.open("http://localhost:8080/Management/content/filecontent.action?uid=" + path,"_blank");
+		window.open("/Management/content/filecontent.action?uid=" + path,"_blank");
 			
 	}
 
@@ -473,7 +473,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//此方法 将会在表格里面的文件夹名点击，面包屑导航，溢出导航点击时调用
 		//发送ajax 请求
 		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindNavAndFile.action',
+			url: '/Management/content/ajaxFindNavAndFile.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=" + path + "&depuid=" + depId,

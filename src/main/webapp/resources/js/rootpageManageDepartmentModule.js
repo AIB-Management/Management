@@ -110,7 +110,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		depListWrap.innerHTML = "";
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindDepOrPro.action',
+			url: '/Management/content/ajaxFindDepOrPro.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=0",
@@ -139,7 +139,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		specList.innerHTML = "";
 
 		$.ajax({
-			url: 'http://localhost:8080/Management/content/ajaxFindDepOrPro.action',
+			url: '/Management/content/ajaxFindDepOrPro.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=" + depId,
