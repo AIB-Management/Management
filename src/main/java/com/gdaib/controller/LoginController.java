@@ -9,6 +9,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -38,6 +40,7 @@ public class LoginController {
     @Autowired
     private UsersService usersService;
 
+    //登录页面
     @RequestMapping("/public/login")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response,String id) {
         System.out.println(id);
@@ -71,8 +74,7 @@ public class LoginController {
         //1.得到Subject
         Subject subject = SecurityUtils.getSubject();
 
-        //2. 测试用户有没有被认证
-        if (!subject.isAuthenticated()) {
+
             //把用户名密码都封装到UsernamePasswordToken中
             UsernamePasswordToken token = new UsernamePasswordToken(registerPojo.getUsername(), registerPojo.getPwd());
 
@@ -93,9 +95,17 @@ public class LoginController {
                 modelAndView.setViewName(LOGIN);
                 return modelAndView;
             }
-        }
+
+
+
 
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
+
+        //添加cookie
+        Cookie cookie = new Cookie("username",accountInfo.getUsername());
+        cookie.setMaxAge(1 * 60 * 60 * 24 * 10);
+        response.addCookie(cookie);
+
 
 //        subject.getSession().setAttribute("AccountInfo",accountInfo);
         if (accountInfo.getRole().equals("admin")){
@@ -113,8 +123,9 @@ public class LoginController {
 
     }
 
-    //传入系id和系名称，改变系
+    //领导登录，传入系id和系名称，改变系
     @RequestMapping(value = "/content/toLeaderFromDep",params = {"departmentId"})
+    @RequiresPermissions("leaderDep:update")
     public String toLeaderFromDep(AccountInfo account) throws Exception {
 
         DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
@@ -137,23 +148,5 @@ public class LoginController {
     }
 
 
-    @RequestMapping("/content/toId")
-    public String toId() throws Exception {
-        Subject subject = SecurityUtils.getSubject();
-        AccountInfo hahahaha = usersService.findAccountInfoByUsername("hahahaha");
-        subject.runAs(new SimplePrincipalCollection(hahahaha,""));
-        return "redirect:/content/departmentpage.action";
-    }
 
-    @RequestMapping("/content/toFromId")
-
-    public String toFromId() throws Exception {
-        Subject subject = SecurityUtils.getSubject();
-        System.out.println(subject.isRunAs());
-        if(subject.isRunAs()) {
-            //跳转回上一个身份
-            subject.releaseRunAs();
-        }
-        return "redirect:/content/departmentpage.action";
-    }
 }

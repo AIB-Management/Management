@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
 				<div class="input-wrap">
 					<p id="login-hint">${error}</p>
 					<span class="input-icon">账号</span>
-					<input type="text" name="username" class="input-content" id="account" placeholder="请输入账号" value="${username}">
+					<input type="text" name="username" class="input-content" id="account" placeholder="请输入账号" value="${username}<c:if test="${empty username}">${cookie.username.value}</c:if>">
 				</div>
 				<div class="input-wrap">
 					<span class="input-icon">密码</span>

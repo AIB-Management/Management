@@ -51,8 +51,9 @@ public class ContentController {
     public static final String FILECONTENTPAGE = "filecontent.jsp";
 
 
-    //获取页面内容的接口
+    //获取主页面内容的接口
     @RequestMapping(value = "/content/departmentpage")
+    @RequiresPermissions("page:query")
     public ModelAndView departmentpage(FileSelectVo fileSelectVo) throws Exception {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -62,6 +63,7 @@ public class ContentController {
 
     //获取页面内容的接口
     @RequestMapping(value = "/content/filecontent", params = {"uid"})
+    @RequiresPermissions("file:query")
     public ModelAndView filecontent(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
              throw new GlobalException("uid不能为空");
@@ -93,18 +95,18 @@ public class ContentController {
 
 
     //获取个人信息的接口
-
     @RequestMapping("/content/personalpage")
-//    @RequiresPermissions("content:query")//执行personalpage需要content:query权限
+    @RequiresPermissions("page:query")//执行personalpage需要content:query权限
     public ModelAndView personalpage() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(PERSONALPAGE);
         return modelAndView;
     }
 
-
+    //找到文件夹和文件
     @RequestMapping(value = "/content/ajaxFindNavAndFile", params = {"parent", "depuid"})
     @ResponseBody
+    @RequiresPermissions("file:query")
     public Msg ajaxFindNavAndFile(NavigationSelectVo navigationSelectVo) throws Exception {
         HashMap<String, List<HashMap<String, Object>>> navAndFile = new HashMap<String, List<HashMap<String, Object>>>();
         //查找父类uid为xx的子导航
@@ -153,8 +155,10 @@ public class ContentController {
         return Msg.success().add("navs", navs).add("files", files);
     }
 
+
     @RequestMapping(value = "/content/ajaxFindDepOrPro", params = {"parent"})
     @ResponseBody
+    @RequiresPermissions("depAndPro:query")
     public Msg ajaxFindDepOrPro(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getParent() == null || departmentSelectVo.getParent().trim().equals("")) {
              throw new GlobalException("上级不能为空");

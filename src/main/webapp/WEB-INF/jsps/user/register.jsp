@@ -43,6 +43,7 @@
 						<option value="${dp.department.uid}">${dp.department.content}</option>
 					</c:forEach>
 				</select>
+
 				<select id="special" name="depUid" >
 					<option value="">请选择专业</option>
 				</select>

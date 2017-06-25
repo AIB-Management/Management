@@ -7,6 +7,7 @@ import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import com.github.pagehelper.util.StringUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,7 @@ public class FileController {
     //上传文件
     @RequestMapping(value = "/file/doUploadFile", method = RequestMethod.POST, params = {"title", "navuid"})
     @ResponseBody
+    @RequiresPermissions("file:add")
     public Msg doUploadFile(
 
             FileSelectVo fileSelectVo,
@@ -140,6 +142,7 @@ public class FileController {
     //获取上传文件的条目级链接
     @RequestMapping(value = "/file/ajaxGetServerFileItem", params = {"uid"})
     @ResponseBody
+    @RequiresPermissions("fileItem:query")
     public Msg ajaxGetServerFileItem(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
             throw new GlobalException("uid不能为空");
@@ -165,6 +168,7 @@ public class FileController {
 
     @RequestMapping(value = "/file/ajaxDeleteFile", params = {"uid", "accuid"})
     @ResponseBody
+    @RequiresPermissions("file:delete")
     public Msg ajaxDeleteFile(FileSelectVo fileSelectVo, HttpServletRequest request) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
             throw new GlobalException("主键不能为空");
@@ -199,8 +203,10 @@ public class FileController {
         return Msg.fail();
     }
 
+    //修改文件
     @RequestMapping(value = "/file/ajaxUpdateFile", params = {"uid", "accuid"})
     @ResponseBody
+    @RequiresPermissions("file:update")
     public Msg ajaxUpdateFile(FileSelectVo fileSelectVo) throws Exception {
         if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
             throw new GlobalException("UID不能为空");

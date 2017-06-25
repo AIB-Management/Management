@@ -67,11 +67,6 @@ public class CaptchaController {
     }
 
 
-    //跳转到某页
-    @RequestMapping("/forwardto")
-    public String forwardto(String add){
-        return add;
-    }
 
 
 }

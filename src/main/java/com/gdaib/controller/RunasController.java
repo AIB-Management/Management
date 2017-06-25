@@ -7,6 +7,7 @@ import com.gdaib.service.RunasService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -33,6 +34,7 @@ public class RunasController {
     //点击授权的时候，返回授权和被授权数据
     @RequestMapping("/runas/getRunasUser")
     @ResponseBody
+    @RequiresPermissions("runas:query")
     public Msg getRunasUser() throws Exception {
 
         Subject subject = SecurityUtils.getSubject();
@@ -145,6 +147,7 @@ public class RunasController {
 
     //授权给别人自己的身份
     @RequestMapping("/runas/grant")
+    @RequiresPermissions("runas:add")
     public String grant(String uid,@RequestParam(defaultValue = "1") Integer pn) throws Exception {
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
@@ -164,6 +167,7 @@ public class RunasController {
 
     //取消授权给别人自己的身份
     @RequestMapping("/runas/retract")
+    @RequiresPermissions("runas:delete")
     public String retract(String uid,@RequestParam(defaultValue = "1") Integer pn) throws Exception {
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
@@ -176,6 +180,7 @@ public class RunasController {
     //得到自己被别人授权身份
     @RequestMapping("/runas/getbeAccount")
     @ResponseBody
+    @RequiresPermissions("runas:query")
     public Msg getbeAccount() throws Exception {
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();

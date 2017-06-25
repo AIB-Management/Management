@@ -66,7 +66,7 @@
         <table tableName="t_file" domainObjectName="File"></table>
         <table tableName="t_navigation" domainObjectName="Navigation"></table>
         <table tableName="t_permission" domainObjectName="Permission"></table>
-        <table tableName="v_account_info" domainObjectName="AccountInfo"></table>
+        <table tableName="t_power" domainObjectName="Power"></table>
 
         <!-- <table schema="" tableName="sys_user"></table>
         <table schema="" tableName="sys_role"></table>

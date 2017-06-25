@@ -10,6 +10,7 @@ import com.gdaib.util.Utils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,7 @@ public class ManageController {
      * 转发到管理员页面
      */
     @RequestMapping("/admin/rootPage")
+    @RequiresPermissions("admin:query")
     public ModelAndView rootPage() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(ROOTPAGE);
@@ -65,6 +67,7 @@ public class ManageController {
      * 转发到领导选择系页面
      */
     @RequestMapping("/admin/leader")
+    @RequiresPermissions("leader:query")
     public ModelAndView leader() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(LEADER);
@@ -79,6 +82,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxGetAllDepartment")
     @ResponseBody
+    @RequiresPermissions("department:query")
     public Msg ajaxGetAllDepartment() throws Exception {
         List<DepartmentCustom> allDepartment = departmentService.selectDepartment(null);
         Msg msg = new Msg(100, "请求成功");
@@ -92,6 +96,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxGetCountIsNotPass")
     @ResponseBody
+    @RequiresPermissions("accountType:query")
     public Msg ajaxGetCountIsNotPass() throws Exception {
 
         int num = usersService.findAccountInfoCountByCharacter("reviewing");
@@ -108,6 +113,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxGetAccountInfoIsNotPass")
     @ResponseBody
+    @RequiresPermissions("accountType:query")
     public Msg ajaxGetAccountInfoIsNotPass(@RequestParam(value = "pn", defaultValue = "1") Integer pn) throws Exception {
         // 引入PageHelper分页插件
         // 在查询之前只需要调用，传入页码，以及每页的大小
@@ -128,6 +134,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxGetAccountInfoIsPass")
     @ResponseBody
+    @RequiresPermissions("accountType:query")
     public Msg ajaxGetAccountInfoIsPass(@RequestParam(value = "pn", defaultValue = "1") Integer pn, String parent) throws Exception {
         System.out.println(parent);
         // 引入PageHelper分页插件
@@ -144,6 +151,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxGetAccountInfoIsAdmin")
     @ResponseBody
+    @RequiresPermissions("accountType:query")
     public Msg ajaxGetAccountInfoIsAdmin() throws Exception {
         List<AccountInfo> accountInfo = usersService.findAccountInfoByCharacter("admin", null);
         return Msg.success().add("accountInfo", accountInfo);
@@ -154,6 +162,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxGetAccountInfoIsLeader")
     @ResponseBody
+    @RequiresPermissions("accountType:query")
     public Msg ajaxGetAccountInfoIsLeader() throws Exception {
         List<AccountInfo> accountInfo = usersService.findAccountInfoByCharacter("leader", null);
         return Msg.success().add("accountInfo", accountInfo);
@@ -165,6 +174,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxPassAccount")
     @ResponseBody
+    @RequiresPermissions("accountType:update")
     public Msg ajaxPassAccount(String uid) throws Exception {
         if (uid == null || uid.equals("")) {
             return Msg.fail();
@@ -199,6 +209,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxRejectAccount")
     @ResponseBody
+    @RequiresPermissions("accountType:update")
     public Msg ajaxRejectAccount(String uid, String content, HttpServletRequest request) throws Exception {
         if (uid == null || uid.equals("")) {
             return Msg.fail();
@@ -300,6 +311,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxWithdrawAccount")
     @ResponseBody
+    @RequiresPermissions("accountType:update")
     public Msg ajaxWithdrawAccount(String uid, String content) throws Exception {
         if (uid == null || uid.equals("")) {
             return Msg.fail();
@@ -398,6 +410,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxPassAdmin")
     @ResponseBody
+    @RequiresPermissions("accountType:update")
     public Msg ajaxPassAdmin(String uid) throws Exception {
         if (uid == null || uid.equals("")) {
             return Msg.fail();
@@ -416,6 +429,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxPassLeader")
     @ResponseBody
+    @RequiresPermissions("accountType:update")
     public Msg ajaxPassLeader(String uid) throws Exception {
         if (uid == null || uid.equals("")) {
             return Msg.fail();
@@ -433,6 +447,7 @@ public class ManageController {
      */
     @RequestMapping("/admin/ajaxWithdrawAdmin")
     @ResponseBody
+    @RequiresPermissions("accountType:update")
     public Msg ajaxWithdrawAdmin(String uid) throws Exception {
         if (uid == null || uid.equals("")) {
             return Msg.fail();
@@ -457,9 +472,12 @@ public class ManageController {
         return utfStr;
     }
 
-
+    /**
+     *  增加系别专业
+     */
     @RequestMapping(value = "/admin/ajaxAddDep", params = {"content", "parent"})
     @ResponseBody
+    @RequiresPermissions("department:add")
     public Msg ajaxAddDep(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getContent() == null || departmentSelectVo.getContent().trim().equals("")) {
              throw new GlobalException("内容为空");
@@ -478,8 +496,12 @@ public class ManageController {
         return Msg.fail();
     }
 
+    /**
+     *  删除系别专业
+     */
     @RequestMapping(value = "/admin/ajaxDeleteDep", params = {"uids"})
     @ResponseBody
+    @RequiresPermissions("department:delete")
     public Msg ajaxDeleteDep(String uids) throws Exception {
         if (uids == null || uids.trim().equals("")) {
              throw new GlobalException("参数为空");
@@ -492,8 +514,12 @@ public class ManageController {
         return Msg.fail();
     }
 
+    /**
+     *  改变系别专业
+     */
     @RequestMapping(value = "/admin/ajaxUpdateDep", params = {"uid"})
     @ResponseBody
+    @RequiresPermissions("department:update")
     public Msg ajaxUpdateDep(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getUid().trim().equals("") || departmentSelectVo.getUid() == null) {
              throw new GlobalException("主键不能为空");
@@ -509,8 +535,13 @@ public class ManageController {
         return Msg.fail();
     }
 
+
+    /**
+     *  增加导航
+     */
     @RequestMapping(value = "/admin/ajaxAddNav", params = {"title", "parent", "depuid"})
     @ResponseBody
+    @RequiresPermissions("navigation:add")
     public Msg ajaxAddNav(NavigationSelectVo navigationSelectVo) throws Exception {
         if (navigationSelectVo.getParent().trim().equals("") || navigationSelectVo.getParent() == null) {
              throw new GlobalException("上级目录不能为空");
@@ -539,9 +570,12 @@ public class ManageController {
         return Msg.fail();
     }
 
-
+    /**
+     *  删除导航
+     */
     @RequestMapping(value = "/admin/ajaxDeleteNav", params = {"uids"})
     @ResponseBody
+    @RequiresPermissions("navigation:delete")
     public Msg ajaxDeleteNav(String uids) throws Exception {
         if (uids == null || uids.trim().equals("")) {
              throw new GlobalException("参数为空");
@@ -558,8 +592,12 @@ public class ManageController {
         return Msg.fail();
     }
 
+    /**
+     *  修改导航
+     */
     @RequestMapping(value = "/admin/ajaxUpdateNav", params = {"uid"})
     @ResponseBody
+    @RequiresPermissions("navigation:update")
     public Msg ajaxUpdateNav(NavigationSelectVo navigationSelectVo) throws Exception {
         int result = navigationServer.updateNavigation(navigationSelectVo);
         if (result > 0) {

@@ -11,38 +11,6 @@ public class FilterChainDefinitionMapBuilder {
     public LinkedHashMap<String,String> builderFilterChainDefinitionMap(){
         LinkedHashMap<String,String> map = new LinkedHashMap<String,String>();
 
-//        /**
-//         *
-//         <!--/shiro/login = anon-->
-//         <!--/shiro/logout = logout-->
-//
-//         <!--&lt;!&ndash;具备user角色才可以访问&ndash;&gt;-->
-//         <!--/jsp/user.jsp = roles[user]-->
-//         <!--&lt;!&ndash;具备admin角色才可以访问&ndash;&gt;-->
-//         <!--/jsp/admin.jsp = roles[admin]-->
-//
-//         <!--/** = authc-->
-//         */
-
-//
-
-//        map.put("/shiro/login","anon");
-//        map.put("/shiro/logout","logout");
-//        map.put("/jsp/user.jsp","authc,roles[user]");
-//        map.put("/jsp/admin.jsp","authc,roles[admin]");
-//        map.put("/jsp/list.jsp","user");
-//        map.put("/**","authc");
-
-
-
-//        map.put("/jsps/user/register.jsp","anon");
-//        map.put("/jsps/css/*","anon");
-//        map.put("/jsps/images/*","anon");
-//        map.put("/jsps/js/*","anon");
-//        map.put("/login.action","anon");
-//
-//        map.put("/**","authc");
-
 
 
 
@@ -54,22 +22,31 @@ public class FilterChainDefinitionMapBuilder {
         map.put("/public/login.action","anon");
         map.put("/public/doLogin.action","anon");
 
-            //注册页面
-            map.put("/public/register.action","anon");
-            //得到专业
-            map.put("/public/getProfessionJson.action","anon");
+        //注册页面和注册请求
+        map.put("/public/register.action","anon");
+        map.put("/public/doRegister.action","anon");
+        map.put("/public/ajaxFindUsernameIsExists.action","anon");
+        map.put("/public/ajaxFindEmailIsExists.action","anon");
+
+        //得到专业
+        map.put("/public/getProfessionJson.action","anon");
 
         //验证码
         map.put("/public/getCaptcha.action","anon");
 
         //找回密码
         map.put("/public/findPassword.action","anon");
+        map.put("/public/doFindPassword.action","anon");
+        map.put("/public/sendMail.action","anon");
+        map.put("/public/modifypwdHtml.action","anon");
+        map.put("/public/modifypwd.action","anon");
+
 
         //退出
         map.put("/shiro/logout","logout");
 
-
-//        map.put("/**","authc");
+        //其他资源需要登陆后才能使用
+        map.put("/**","authc");
 
 
         return map;
