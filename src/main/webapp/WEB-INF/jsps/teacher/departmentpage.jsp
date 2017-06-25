@@ -14,7 +14,7 @@
 			<div class="close-btn clearfix">
 				<button type="button" class="close" aria-label="Close"><span id="uploadfile-close-btn" aria-hidden="true">&times;</span></button>
 			</div>
-			<h3 class="upload-file-title">上传文件</h3>
+				<h3 class="upload-file-title">上传文件</h3>
 			<div class="select-identify">
 				<label>选择发布身份</label>
 				<select id="all-identifies-list">
@@ -128,7 +128,10 @@
 				<ul>
 					<li><a href="${pageContext.request.contextPath}/content/personalpage.action">个人信息</a></li>
 					<li><a href="${pageContext.request.contextPath}/public/modifyPassword.action">修改密码</a></li>
-					<li><a href="#" id="authority-manage-enter">权限管理</a></li>
+					<shiro:hasPermission name="runas:query">
+						<li><a href="#" id="authority-manage-enter">权限管理</a></li>
+					</shiro:hasPermission>
+
 				</ul>
 			</div>
 		</div>
@@ -147,10 +150,12 @@
 		<div class="mainbody">
 			<div class="content">
 				<div class="main-tool-bar">
+					<shiro:hasPermission name="file:add">
 					<button class="btn btn-primary btn-sm" id="upload-file-btn">
 						<span class="glyphicon glyphicon-cloud-upload"></span>
 						上传文件
 					</button>
+					</shiro:hasPermission>
 				</div>
 				<div class="main-content-title">
 					<div class="content-select">选择</div>
