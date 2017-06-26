@@ -1,0 +1,6 @@
+db_teacher.sql 为表结构
+db_teacher_date.sql 为表初始化数据
+
+默认管理员: guanliyuan
+密码:passwd
+登录后请修改邮箱

@@ -42,13 +42,13 @@
 
     <delete id="deleteFile" parameterType="com.gdaib.pojo.FileSelectVo">
         <if test="uid!=null">
-            <if test="accuid!=null">
+
                 DELETE FROM
                 `t_file`
                 <where>
                     <include refid="where_File_Select_vo"></include>
                 </where>
-            </if>
+
         </if>
     </delete>
 
