@@ -39,7 +39,7 @@ CREATE TABLE `t_account` (
   KEY `FK_depUid_dep_uid` (`depUid`),
   CONSTRAINT `FK_ROLE` FOREIGN KEY (`role`) REFERENCES `t_character` (`role`),
   CONSTRAINT `FK_depUid_dep_uid` FOREIGN KEY (`depUid`) REFERENCES `t_department` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=826 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
+) ENGINE=InnoDB AUTO_INCREMENT=828 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
 
 /*Table structure for table `t_authorization` */
 
@@ -79,7 +79,7 @@ CREATE TABLE `t_department` (
   `uid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '操作标识',
   PRIMARY KEY (`id`,`uid`),
   KEY `uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=425 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系别';
+) ENGINE=InnoDB AUTO_INCREMENT=638 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系别';
 
 /*Table structure for table `t_file` */
 
