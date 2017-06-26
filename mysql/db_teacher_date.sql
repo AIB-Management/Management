@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v11.11 (64 bit)
-MySQL - 5.7.17 : Database - db_teacher
+SQLyog Professional v12.08 (64 bit)
+MySQL - 5.7.18 : Database - db_teacher
 *********************************************************************
 */
 
@@ -16,52 +16,25 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_teacher` /*!40100 DEFAULT CHARACTER 
 
 USE `db_teacher`;
 
-/*Table structure for table `t_character` */
+/*Data for the table `t_account` */
 
-DROP TABLE IF EXISTS `t_character`;
-
-CREATE TABLE `t_character` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `role` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '角色',
-  `explanation` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '解释',
-  PRIMARY KEY (`id`,`role`),
-  KEY `character` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色表';
+/*Data for the table `t_authorization` */
 
 /*Data for the table `t_character` */
 
 insert  into `t_character`(`id`,`role`,`explanation`) values (1,'admin','管理员'),(2,'leader','领导'),(3,'teacher','教师'),(4,'reviewing','待审核用户');
 
-/*Table structure for table `t_permission` */
+/*Data for the table `t_department` */
 
-DROP TABLE IF EXISTS `t_permission`;
+/*Data for the table `t_file` */
 
-CREATE TABLE `t_permission` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `role` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '角色',
-  `permission` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '分类:操作',
-  PRIMARY KEY (`id`),
-  KEY `FK_role_cha_role` (`role`),
-  KEY `FK_per_cha_per` (`permission`),
-  CONSTRAINT `FK_per_cha_per` FOREIGN KEY (`permission`) REFERENCES `t_power` (`permission`),
-  CONSTRAINT `FK_role_cha_role` FOREIGN KEY (`role`) REFERENCES `t_character` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*Data for the table `t_file_item` */
+
+/*Data for the table `t_navigation` */
 
 /*Data for the table `t_permission` */
 
 insert  into `t_permission`(`id`,`role`,`permission`) values (16,'admin','admin:query'),(17,'admin','department:query'),(18,'admin','accountType:query'),(19,'admin','accountType:update'),(20,'admin','department:add'),(21,'admin','department:delete'),(22,'admin','department:update'),(23,'admin','navigation:add'),(24,'admin','navigation:delete'),(25,'admin','navigation:update'),(26,'leader','leader:query'),(27,'leader','leaderDep:update'),(28,'leader','page:query'),(29,'leader','file:query'),(30,'teacher','runas:query'),(31,'teacher','runas:add'),(32,'teacher','runas:delete'),(33,'teacher','page:query'),(34,'teacher','file:query'),(35,'teacher','file:delete'),(36,'teacher','file:update'),(37,'reviewing','page:query'),(38,'reviewing','file:query'),(39,'leader','depAndPro:query'),(40,'teacher','file:add'),(41,'admin','depAndPro:query'),(42,'admin','file:query');
-
-/*Table structure for table `t_power` */
-
-DROP TABLE IF EXISTS `t_power`;
-
-CREATE TABLE `t_power` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `permission` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '权限',
-  `explanation` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '解释',
-  PRIMARY KEY (`id`,`permission`),
-  KEY `character` (`permission`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色表';
 
 /*Data for the table `t_power` */
 
