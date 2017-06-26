@@ -108,17 +108,18 @@ public class LoginController {
 
 
 //        subject.getSession().setAttribute("AccountInfo",accountInfo);
-        if (accountInfo.getRole().equals("admin")){
-            modelAndView.setViewName("redirect:/admin/rootPage.action");
-            return modelAndView;
-        }
+//        if (accountInfo.getRole().equals("admin")){
+//            modelAndView.setViewName("redirect:/admin/rootPage.action");
+//            return modelAndView;
+//        }
         if (accountInfo.getRole().equals("leader")){
             modelAndView.setViewName("redirect:/admin/leader.action");
             return modelAndView;
         }
 
 
-        modelAndView.setViewName("redirect:/content/departmentpage.action");
+//        modelAndView.setViewName("redirect:/content/departmentpage.action");
+        modelAndView.setViewName("redirect:/");
         return modelAndView;
 
     }
@@ -144,7 +145,7 @@ public class LoginController {
         accountInfo.setDepartmentId(account.getDepartmentId());
         accountInfo.setDepContent(department.getContent());
         accountInfo.setContent("无");
-        return "redirect:/content/departmentpage.action";
+        return "redirect:/";
     }
 
 
