@@ -9,7 +9,9 @@ thead,tbody,tbody tr,tbody tr td{
 	padding: 0 3px;
 }
 /*撤回管理员对话框样式*/
-#recall-admin-dialog-floor,#recall-leader-dialog-floor{
+#recall-admin-dialog-floor,
+#recall-leader-dialog-floor,
+#modify-user-department-floor{
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -17,7 +19,12 @@ thead,tbody,tbody tr,tbody tr td{
 	background-color: rgba(255,255,255,0.5);
 	z-index: 30;
 }
-.manage-admin-dialog-wrap,.manage-leader-dialog-wrap{
+/* #modify-user-department-floor{
+	display: block;
+} */
+.manage-admin-dialog-wrap,
+.manage-leader-dialog-wrap,
+.modify-dep-dialog-wrap{
 	position: absolute;
 	width: 550px;
 	height: 250px;
@@ -29,14 +36,19 @@ thead,tbody,tbody tr,tbody tr td{
 	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
 	background-color: #fff;
 }
-.manage-admin-dialog-wrap h3,.manage-leader-dialog-wrap h3{
+.manage-admin-dialog-wrap h3,
+.manage-leader-dialog-wrap h3,
+.modify-dep-dialog-wrap h3{
 	height: 40px;
 	margin: 20px auto 0 auto;
 	padding-left: 10px;
 	line-height: 40px;
 	border-bottom: 1px solid #ccc;
 }
-.recall-admin-hint,.recall-leader-hint{
+/*撤回领导，撤回管理员，修改用户部门提示信息包裹层*/
+.recall-admin-hint,
+.recall-leader-hint,
+.modify-dep-hint{
 	width: 90%;
 	margin: 20px auto 0 auto;
 	background-color: rgba(235, 63, 47, 0.6);
@@ -47,9 +59,19 @@ thead,tbody,tbody tr,tbody tr td{
 #recall-admin-name,#recall-leader-name{
 	font-size: 17px;
 }
-.recall-admin-btn,.recall-leader-btn{
+.recall-admin-btn,.recall-leader-btn,.modify-dep-btn{
 	width: 90%;
-	margin: 50px auto 0 auto;
+	margin: 30px auto 0 auto;
+}
+/*修改用户部门可选部门下拉框包裹层样式*/
+.select-wrap{
+	width: 90%;
+	margin: 10px auto 0 auto;
+}
+/*选择部门下拉框样式*/
+.select-wrap select{
+	border: 1px solid #ccc;
+	height: 25px;
 }
 /*重命名文件夹对话框样式*/
 #modify-file-name-wrap,#new-file-wrap{

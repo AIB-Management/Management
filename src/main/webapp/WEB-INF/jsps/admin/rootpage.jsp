@@ -12,6 +12,31 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-8"></script>
 </head>
 <body>
+	<!-- 修改已审核用户系别及专业对话框开始 -->
+	<div id="modify-user-department-floor">
+		<div class="modify-dep-dialog-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-user-departmetn-close-btn">&times;</span></button>
+			</div>
+			<h3>修改用户系别</h3>
+			<p class="modify-dep-hint">你确定要修改<b id="modify-user-department-hint"></b>用户的系别及专业吗？</p>
+			<div class="select-wrap">
+				<select id="user-dep">
+					<option value="100">请选择系别</option>
+				</select>
+				<select id="user-spec">
+					<option value="100">请选择专业</option>
+				</select>
+			</div>
+			<div class="modify-dep-btn">
+				<button class="btn btn-danger btn-sm" id="confirm-modify-dep">
+					<span class="glyphicon glyphicon-erase"></span> 
+					确认修改
+				</button>
+			</div>
+		</div>
+	</div>
+	<!-- 修改已审核用户系别及专业对话框结束 -->
 	<!-- 撤回管理员对话框开始 -->
 	<div id="recall-admin-dialog-floor">
 		<div class="manage-admin-dialog-wrap">

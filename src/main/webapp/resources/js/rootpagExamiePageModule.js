@@ -49,6 +49,57 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	}
 
 
+	//输出专业元素
+	//需要两个参数
+	//第一个是系别的id ，第二个是设定特定专业为选中状态的专业id，可为空
+	//第二个参数为空时 列表的选中状态会设为默认选中状态
+	function createDepOptionForModifyUserSpec(data,targetSpec){
+		var list = data.extend.pros;
+		var frag = document.createDocumentFragment();
+
+		//保存第一个option
+		var firstOption = s("#user-spec").options[0].cloneNode(true);
+		s("#user-spec").innerHTML = "";
+
+		for (var i = 0; i < list.length; i++) {
+			var option = createElem("option");
+			option.value = list[i].uid;
+			option.innerText = list[i].pro;
+			if (targetSpec != "") {
+				if (option.value == targetSpec) {
+					option.selected = "selected";
+				}
+			}
+			frag.appendChild(option);
+		}
+		s("#user-spec").appendChild(firstOption);
+		s("#user-spec").appendChild(frag);
+	}
+
+	//发送请求 获取专业信息
+	function getModifyUserDepModuleSpec(depId,targetOption){
+		$.ajax({
+			url: '/Management/content/ajaxFindDepOrPro.action?',
+			type: 'GET',
+			dataType: 'json',
+			data: "parent=" + depId,
+			success: function(data){
+				if (data.code == 100) {
+
+					createDepOptionForModifyUserSpec(data,targetOption);
+
+				}else{
+					alert("获取专业列表失败，请尝试刷新网页");
+				}
+			},
+
+			error: function(){
+				alert("获取专业列表失败，请尝试刷新网页");
+			}
+		})
+	}
+
+
 	//定义表格多选框点击事件通用执行函数
 	function selectAllCheckboxEvent(checkboxList,sellectAllCheckbox){
 		//获取所有多选框元素
@@ -82,6 +133,35 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		s("#recall-username").title = nameTd.title;
 		//显示弹出层
 		floor.style.display = "block";
+	}
+
+
+	//已审核用户修改系别专业按钮点击事件回调函数
+	//撤回按钮点击事件回调函数
+	function examiedMouleModifyDep(){
+		//获取注册用户姓名的单元格
+		var parent = this.parentNode.parentNode;
+		var depId = parent.querySelectorAll("td")[2].title,
+			specId = parent.querySelectorAll("td")[3].title;
+
+		var depOptions = ss("#user-dep option");
+
+		//遍历修改系别的系别下拉框
+		for (var i = 0; i < depOptions.length; i++) {
+			//如果当前用户的系别与下拉框的系别匹配
+			//把这个选项设置为选中状态
+			if (depOptions[i].value == depId) {
+				depOptions[i].selected = "selected";
+			}
+		}
+
+		console.log(specId);
+		//然后根据修改后的系别下拉框的值去获取对应的专业
+		getModifyUserDepModuleSpec(s("#user-dep").value,specId);
+
+
+		//显示弹出层
+		s("#modify-user-department-floor").style.display = 'block';
 	}
 
 
@@ -120,7 +200,19 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 			recallBtn.innerHTML += " 撤回";
 
+			//创建撤回按钮
+			var modifyBtn = createElem("button");
+			var modifyBtnIcon = createElem("span");
+			modifyBtnIcon.innerText = " ";
+			modifyBtnIcon.className = "glyphicon glyphicon-edit";
+			modifyBtnIcon.setAttribute("aria-hidden", "true");
+			//为撤回按钮添加图标
+			modifyBtn.appendChild(modifyBtnIcon);
+			
 
+			modifyBtn.className = "refuse btn btn-warning btn-sm";
+
+			modifyBtn.innerHTML += " 修改教师系别";
 			
 
 			for (var i = 0; i < dataList.length; i++) {
@@ -147,20 +239,27 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				//创建一个系别包裹 td
 				var departmentTd = createElem("td");
 				departmentTd.innerText = dataList[i].depContent;
+				departmentTd.title = dataList[i].departmentId;
 				tr.appendChild(departmentTd);
 
 				//创建一个专业包裹 td
 				var professionTd = createElem("td");
 				professionTd.innerText = dataList[i].content;
+				professionTd.title = dataList[i].professionId;
 				tr.appendChild(professionTd);
 
 				//创建一个按钮包裹 td
 				var btnTd = createElem("td");
 				var recallBtnClone = recallBtn.cloneNode(true);
+				var modifyBtnClone = modifyBtn.cloneNode(true);
 
-				btnTd.appendChild(recallBtnClone);
 				//为按钮绑定事件
 				EventUntil.addHandler(recallBtnClone,"click",examiedModuleRecall);
+				EventUntil.addHandler(modifyBtnClone,"click",examiedMouleModifyDep);
+
+				btnTd.appendChild(recallBtnClone);
+				btnTd.appendChild(modifyBtnClone);
+				
 
 				tr.appendChild(btnTd);
 

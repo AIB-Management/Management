@@ -27,9 +27,9 @@ require(["jquery.min","checkInput","overborwserEvent",
 		if (name.substring(0, 1) == "#") {
 			return document.querySelector(name);
 		}else if (name.substring(0, 1) == ".") {
-			return document.querySelectorAll(name);
+			return document.querySelectorAll(name)[0];
 		}else{
-			return document.querySelectorAll(name);
+			return document.querySelectorAll(name)[0];
 		}
 	}
 
@@ -112,6 +112,115 @@ require(["jquery.min","checkInput","overborwserEvent",
 			checkboxList[i].checked = false;
 		}
 	}
+
+
+	//页面加载完成时 填充修改用户部门下拉列表option
+	function getModifyUserDepModuleDep(){
+		$.ajax({
+			url: '/Management/content/ajaxFindDepOrPro.action?parent=0',
+			type: 'GET',
+			dataType: 'json',
+			success: function(data){
+				if (data.code == 100) {
+
+					createDepOptionForModifyUserDep(data)
+				}else{
+					alert("获取系别列表失败，请尝试刷新网页");
+				}
+			},
+
+			error: function(){
+				alert("获取系别列表失败，请尝试刷新网页");
+			}
+		})
+		
+	}
+
+	//输出系别元素
+	function createDepOptionForModifyUserDep(data){
+		var list = data.extend.deps;
+		var frag = document.createDocumentFragment();
+
+		for (var i = 0; i < list.length; i++) {
+			var option = createElem("option");
+			option.value = list[i].uid;
+			option.innerText = list[i].dep;
+			frag.appendChild(option);
+		}
+
+		s("#user-dep").appendChild(frag);
+	}
+
+	//输出专业元素
+	//需要两个参数
+	//第一个是系别的id ，第二个是设定特定专业为选中状态的专业id，可为空
+	//第二个参数为空时 列表的选中状态会设为默认选中状态
+	function createDepOptionForModifyUserSpec(data,targetSpec){
+		var list = data.extend.pros;
+		var frag = document.createDocumentFragment();
+
+		//保存第一个option
+		var firstOption = s("#user-spec").options[0].cloneNode(true);
+		s("#user-spec").innerHTML = "";
+
+		for (var i = 0; i < list.length; i++) {
+			var option = createElem("option");
+			option.value = list[i].uid;
+			option.innerText = list[i].pro;
+			if (targetSpec != "") {
+				if (option.value == targetSpec) {
+					option.selected = "selected";
+				}
+			}
+			frag.appendChild(option);
+		}
+		s("#user-spec").appendChild(firstOption);
+		s("#user-spec").appendChild(frag);
+	}
+
+	//发送请求 获取专业信息
+	function getModifyUserDepModuleSpec(depId,targetOption){
+		$.ajax({
+			url: '/Management/content/ajaxFindDepOrPro.action?',
+			type: 'GET',
+			dataType: 'json',
+			data: "parent=" + depId,
+			success: function(data){
+				if (data.code == 100) {
+
+					createDepOptionForModifyUserSpec(data,targetOption);
+				}else{
+					alert("获取专业列表失败，请尝试刷新网页");
+				}
+			},
+
+			error: function(){
+				alert("获取专业列表失败，请尝试刷新网页");
+			}
+		})
+	}
+
+
+	//修改用户部门下拉框改变事件回调函数
+	function modifyUserDepChange(){
+		var val = this.value;
+		getModifyUserDepModuleSpec(val);
+	}
+
+
+	//修改用户系别弹出层提交按钮点击事件回调函数
+	function confirmModifyUserDep(){
+		//如果部门选择框的值合法
+		if (s("#user-dep").value != "100" && s("#user-spec").value != "100") {
+			//发送ajax 提交给后台
+		}else{
+			alert("请选择有效的系别或专业！");
+		}
+	}
+
+
+	//修改用户部门下拉框改变事件
+	EventUntil.addHandler(s("#user-dep"),"change",modifyUserDepChange);
 
 
 	//页面加载完成时 显示新增未注册用户数量
@@ -833,6 +942,7 @@ require(["jquery.min","checkInput","overborwserEvent",
 			data: "uid=" + idVal,
 			beforeSend: function(){
 				s("#no-refuse-reason").disabled = "true";
+				s("#send-refuse-info").disabled = "true";
 				s("#refuse-content").disabled = "true";
 				icon.style.visibility = 'visible';
 			},
@@ -850,12 +960,22 @@ require(["jquery.min","checkInput","overborwserEvent",
 					s("#no-refuse-reason").removeAttribute("disabled");
 					//消除输入框的disabled 属性
 					s("#refuse-content").removeAttribute("disabled");
+					//消除发送拒绝信息按钮 disabled 属性
+					s("#send-refuse-info").removeAttribute("disabled");
 					//隐藏弹出层
 					s("#floor").style.display = "none";
 				}
 			},
 
 			error: function(){
+				//隐藏加载图标
+				icon.style.visibility = 'hidden';
+				//消除发送按钮的disabled 属性
+				s("#no-refuse-reason").removeAttribute("disabled");
+				//消除输入框的disabled 属性
+				s("#refuse-content").removeAttribute("disabled");
+				//消除发送拒绝信息按钮 disabled 属性
+				s("#send-refuse-info").removeAttribute("disabled");
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 				alert("未知错误，请稍后重试！");
@@ -1017,6 +1137,14 @@ require(["jquery.min","checkInput","overborwserEvent",
 			},
 
 			error: function(){
+				//隐藏加载图标
+				icon.style.visibility = 'hidden';
+				//清空撤回理由输入框内容
+				s("#recall-content").value = "";
+				//撤回内容输入框消除disabled 属性
+				s("#recall-content").removeAttribute("disabled");
+				//取消撤回按钮消除disabled 属性
+				s("#cancel-recall-user").removeAttribute("disabled");
 				//隐藏弹出层
 				s("#floor").style.display = "none";
 				alert("未知错误，请稍后重试！");
@@ -1143,6 +1271,8 @@ require(["jquery.min","checkInput","overborwserEvent",
 			}
 		})
 	}
+
+
 
 
 	//事件委托函数
@@ -1394,6 +1524,14 @@ require(["jquery.min","checkInput","overborwserEvent",
 			s("#recall-leader-dialog-floor").style.display = 'none';
 
 
+		}else if(target.id == "modify-user-departmetn-close-btn"){
+			//修改用户部门弹出层关闭按钮点击事件
+			s("#modify-user-department-floor").style.display = "none";
+
+		}else if(target.id == "confirm-modify-dep"){
+			//修改用户部门弹出层提交按钮点击事件
+			confirmModifyUserDep();
+
 		}
 	}
 
@@ -1408,6 +1546,8 @@ require(["jquery.min","checkInput","overborwserEvent",
 		showUnexamieUserNums();
 		//赋值下拉框
 		initDepFilter();
+		//赋值修改系别对话框中的下拉框
+		getModifyUserDepModuleDep();
 	}
 
 	//--------------定义层结束-------------

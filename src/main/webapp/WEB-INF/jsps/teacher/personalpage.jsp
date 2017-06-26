@@ -5,15 +5,32 @@
 <head>
 	<meta charset="UTF-8">
 	<title>个人信息</title>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/personalpageMain.js"></script>
 </head>
 <body>
+	<div id="modify-personal-name-floor">
+		<div class="modify-personal-name-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modifyname-close-btn">&times;</span></button>
+			</div>
+			<h3>修改用户名</h3>
+			<div class="input-wrap">
+				<label>用户名</label>
+				<input type="text" id="newUsername">
+				<p id="modify-new-name-hint"></p>
+			</div>
+			<div class="input-wrap">
+				<button class="btn btn-primary" disabled="true" id="confirm-modify">修改</button>
+			</div>
+		</div>
+	</div>
 	<div class="wrapper">
 		<div class="main-content">
 			<h3>个人信息列表</h3>
 			<p class="personal-info-wrap">
 				<span>姓名</span>
 				<span id="personal-name">${AccountInfo.name}<shiro:principal property="name"/></span>
+				<a href="#" id="modify-btn">修改</a>
 			</p>
 			<p class="personal-info-wrap">
 				<span>账号</span>
@@ -33,7 +50,8 @@
 			</p>
 		</div>
 	</div>
-
+	
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/personalpage.css">
 </body>
