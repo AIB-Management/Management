@@ -39,7 +39,7 @@ CREATE TABLE `t_account` (
   KEY `FK_depUid_dep_uid` (`depUid`),
   CONSTRAINT `FK_ROLE` FOREIGN KEY (`role`) REFERENCES `t_character` (`role`),
   CONSTRAINT `FK_depUid_dep_uid` FOREIGN KEY (`depUid`) REFERENCES `t_department` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=828 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
+) ENGINE=InnoDB AUTO_INCREMENT=831 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
 
 /*Table structure for table `t_authorization` */
 
@@ -54,7 +54,7 @@ CREATE TABLE `t_authorization` (
   KEY `FK_beAccUid` (`beAccUid`),
   CONSTRAINT `FK_accUid` FOREIGN KEY (`accUid`) REFERENCES `t_account` (`uid`),
   CONSTRAINT `FK_beAccUid` FOREIGN KEY (`beAccUid`) REFERENCES `t_account` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `t_character` */
 
@@ -79,7 +79,7 @@ CREATE TABLE `t_department` (
   `uid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '操作标识',
   PRIMARY KEY (`id`,`uid`),
   KEY `uid` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=638 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系别';
+) ENGINE=InnoDB AUTO_INCREMENT=643 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系别';
 
 /*Table structure for table `t_file` */
 
@@ -100,7 +100,7 @@ CREATE TABLE `t_file` (
   KEY `uid` (`uid`),
   CONSTRAINT `FK_accUid_t_account_uid` FOREIGN KEY (`accUid`) REFERENCES `t_account` (`uid`),
   CONSTRAINT `Fk_navUid_t_nav_Uid` FOREIGN KEY (`navUid`) REFERENCES `t_navigation` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='数据表9';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='数据表9';
 
 /*Table structure for table `t_file_item` */
 
@@ -119,7 +119,7 @@ CREATE TABLE `t_file_item` (
   KEY `uid` (`uid`),
   KEY `FK_fileUId_t_file_uId` (`fileUid`),
   CONSTRAINT `FK_fileUId_t_file_uId` FOREIGN KEY (`fileUid`) REFERENCES `t_file` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='数据表9';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='数据表9';
 
 /*Table structure for table `t_navigation` */
 
@@ -137,7 +137,7 @@ CREATE TABLE `t_navigation` (
   KEY `uid` (`uid`),
   KEY `FK_depUid` (`depUid`),
   CONSTRAINT `FK_depUid` FOREIGN KEY (`depUid`) REFERENCES `t_department` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `t_permission` */
 
@@ -152,7 +152,7 @@ CREATE TABLE `t_permission` (
   KEY `FK_per_cha_per` (`permission`),
   CONSTRAINT `FK_per_cha_per` FOREIGN KEY (`permission`) REFERENCES `t_power` (`permission`),
   CONSTRAINT `FK_role_cha_role` FOREIGN KEY (`role`) REFERENCES `t_character` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `t_power` */
 

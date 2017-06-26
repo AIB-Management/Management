@@ -7,7 +7,9 @@ import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import com.github.pagehelper.util.StringUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -180,8 +182,14 @@ public class FileController {
 
 
         //添加判断上传账号与登陆账号是否相等
-        if (!fileSelectVo.getAccuid().trim().equals(Utils.getAccountUid())) {
-            throw new GlobalException("登录的账号不是作者账号");
+        Subject subject = SecurityUtils.getSubject();
+        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
+        if (accountInfo.getRole().trim().equals("admin")) {
+            fileSelectVo.setAccuid(null);
+        } else {
+            if (!fileSelectVo.getAccuid().trim().equals(Utils.getAccountUid())) {
+                throw new GlobalException("登录的账号不是作者账号");
+            }
         }
 
         List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);

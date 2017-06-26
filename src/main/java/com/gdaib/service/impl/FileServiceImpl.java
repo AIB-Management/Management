@@ -76,9 +76,9 @@ public class FileServiceImpl implements FileService {
         if (file.getUid() == null || file.getUid().trim().equals("")) {
             throw new Exception("UID不能为空");
         }
-        if (file.getAccuid() == null || file.getAccuid().trim().equals("")) {
-            throw new Exception("账号不能为空");
-        }
+//        if (file.getAccuid() == null || file.getAccuid().trim().equals("")) {
+//            throw new Exception("账号不能为空");
+//        }
         return fileExtMapper.deleteFile(file);
     }
 
