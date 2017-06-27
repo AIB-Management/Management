@@ -438,5 +438,18 @@ public class UsersServiceImpl implements UsersService {
         return permissions;
     }
 
+    @Override
+    public void updateAccountByDepartment(String uid,String departmentUid) throws Exception {
+        Account account = new Account();
+        account.setDepuid(departmentUid);
+
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUidEqualTo(uid);
+
+
+        accountMapper.updateByExampleSelective(account,accountExample);
+    }
+
 
 }

@@ -17,7 +17,7 @@ public class FilterChainDefinitionMapBuilder {
 
         //图片等资源
         map.put("/resources/**","anon");
-        map.put("/TeachersFile","anon");
+        map.put("/TeachersFile/**","anon");
         //登录页面和登录请求
         map.put("/public/login.action","anon");
         map.put("/public/doLogin.action","anon");

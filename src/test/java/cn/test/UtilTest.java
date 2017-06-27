@@ -1,6 +1,9 @@
 package cn.test;
 
+import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.DepartmentExtMapper;
+import com.gdaib.pojo.Account;
+import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.Department;
 import com.gdaib.util.Utils;
 import org.junit.Test;
@@ -68,5 +71,21 @@ public class UtilTest {
         System.out.println("over");
     }
 
+    @Autowired
+    private AccountMapper accountMapper;
+    @Test
+    public void testGetCountNav() throws Exception{
+//        usersService.updateAccountByDepartment("7539a632-b05c-43f1-bc3f-ecc58b6671c2","5e908705-f0f9-42d1-b844-82288fdf1e91");
+
+        Account account = new Account();
+        account.setDepuid("5e908705-f0f9-42d1-b844-82288fdf1e91");
+
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUidEqualTo("7539a632-b05c-43f1-bc3f-ecc58b6671c2");
+
+
+        accountMapper.updateByExampleSelective(account,accountExample);
+    }
 
 }
