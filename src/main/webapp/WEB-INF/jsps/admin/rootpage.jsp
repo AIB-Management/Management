@@ -18,8 +18,12 @@
 			<div class="close-btn clearfix">
 				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-user-departmetn-close-btn">&times;</span></button>
 			</div>
-			<h3>修改用户系别</h3>
-			<p class="modify-dep-hint">你确定要修改<b id="modify-user-department-hint"></b>用户的系别及专业吗？</p>
+			<h3>修改用户资料</h3>
+			<div class="modify-user-name-wrap">
+				<label>用户账号</label>
+				<input type="text" id="user-account">
+				<p id="new-account-hint"></p>
+			</div>
 			<div class="select-wrap">
 				<select id="user-dep">
 					<option value="100">请选择系别</option>
@@ -29,7 +33,7 @@
 				</select>
 			</div>
 			<div class="modify-dep-btn">
-				<button class="btn btn-danger btn-sm" id="confirm-modify-dep">
+				<button class="btn btn-warning btn-sm" id="confirm-modify-dep">
 					<span class="glyphicon glyphicon-erase"></span> 
 					确认修改
 				</button>
@@ -266,6 +270,24 @@
 				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" id="drop-floder-loading-icon">
 			</div>
 		</div>
+		<div id="drop-file-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="drop-file-close-btn">&times;</span></button>
+			</div>
+			<h3>删除文件</h3>
+			<p class="drop-floder-msg">你确认要删除<b id="target-file-name"></b>这个文件吗？</p>
+			<div class="drop-floder-btn">
+				<button class="btn btn-success" id="cancel-drop-file">
+					<span class="glyphicon glyphicon-remove"></span> 
+					取消
+				</button>
+				<button class="btn btn-danger" id="confirm-drop-file">
+					<span class="glyphicon glyphicon-trash"></span> 
+					删除
+				</button>
+				<img src="${pageContext.request.contextPath}/resources/images/loading.gif" alt="" id="drop-file-loading-icon">
+			</div>
+		</div>
 		<!-- 修改导航弹出层内容 -->
 		<div class="filemanage-info">
 			<div class="close-btn clearfix">
@@ -277,7 +299,7 @@
 					新建文件夹
 				</button>
 				<button class="btn btn-default btn-sm" id="drop-floder-btn">
-					<span class="glyphicon glyphicon-trash" id="dropfloder-btn"></span> 
+					<span class="glyphicon glyphicon-trash"></span> 
 					删除文件夹
 				</button>
 			</div>
@@ -288,10 +310,7 @@
 				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
 					<span class="caret"></span>
 				</button>
-				<ul id="overflow-item-wrap">
-					<li>fasfasdfs</li>
-					<li>fasfsadfsad</li>
-				</ul>
+				<ul id="overflow-item-wrap"></ul>
 			</div>
 			</div>
 			<div class="manage-nav-main clearfix">
@@ -431,6 +450,7 @@
 								<tr>
 									<th><input type="checkbox" id="unexamie-select-all">全选</th>
 									<th>姓名</th>
+									<th>账号</th>
 									<th>系别</th>
 									<th>专业</th>
 									<th>操作</th>
@@ -497,6 +517,7 @@
 									<input type="checkbox" id="examied-select-all">全选
 								</th>
 								<th>姓名</th>
+								<th>账号</th>
 								<th>系别</th>
 								<th>专业</th>
 								<th>操作</th>

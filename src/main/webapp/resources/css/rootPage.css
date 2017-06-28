@@ -19,15 +19,12 @@ thead,tbody,tbody tr,tbody tr td{
 	background-color: rgba(255,255,255,0.5);
 	z-index: 30;
 }
-/* #modify-user-department-floor{
-	display: block;
-} */
 .manage-admin-dialog-wrap,
 .manage-leader-dialog-wrap,
 .modify-dep-dialog-wrap{
 	position: absolute;
 	width: 550px;
-	height: 250px;
+	height: 280px;
 	top: 50%;
 	left: 50%;
 	margin-top: -175px;
@@ -47,8 +44,7 @@ thead,tbody,tbody tr,tbody tr td{
 }
 /*撤回领导，撤回管理员，修改用户部门提示信息包裹层*/
 .recall-admin-hint,
-.recall-leader-hint,
-.modify-dep-hint{
+.recall-leader-hint{
 	width: 90%;
 	margin: 20px auto 0 auto;
 	background-color: rgba(235, 63, 47, 0.6);
@@ -64,9 +60,33 @@ thead,tbody,tbody tr,tbody tr td{
 	margin: 30px auto 0 auto;
 }
 /*修改用户部门可选部门下拉框包裹层样式*/
-.select-wrap{
+.select-wrap,.modify-user-name-wrap{
 	width: 90%;
 	margin: 10px auto 0 auto;
+}
+.modify-user-name-wrap{
+	word-spacing: -6px;
+}
+.modify-user-name-wrap label,.modify-user-name-wrap input{
+	display: inline-block;
+	word-spacing: 0;
+}
+.modify-user-name-wrap label{
+	width: 20%;
+	height: 38px;
+	line-height: 38px;
+	background-color: #337ab7;
+	border-radius: 5px 0px 0px 5px;
+	color: #fff;
+	text-align: center;
+}
+.modify-user-name-wrap input{
+	width: 80%;
+	height: 38px;
+	line-height: 38px;
+	border: 1px solid #337ab7;
+	border-radius: 0px 5px 5px 0px;
+	padding-left: 5px;
 }
 /*选择部门下拉框样式*/
 .select-wrap select{
@@ -128,7 +148,9 @@ thead,tbody,tbody tr,tbody tr td{
 	line-height: 30px;
 	margin: 0 auto;
 }
-#new-file-wrap h3,#modify-file-name-wrap h3,#drop-floder-wrap h3{
+/*新建文件夹，修改文件夹名，删除文件夹，删除文件对话框样式*/
+#new-file-wrap h3,#modify-file-name-wrap h3,
+#drop-floder-wrap h3,#drop-file-wrap h3{
 	height: 38px;
 	line-height: 38px;
 	margin-bottom: 10px;
@@ -136,7 +158,8 @@ thead,tbody,tbody tr,tbody tr td{
 	border-bottom: 1px solid #ccc;
 	font-size: 18px;
 }
-#drop-floder-wrap{
+/*删除文件夹和删除文件对话框样式*/
+#drop-floder-wrap,#drop-file-wrap{
 	display: none;
 	position: absolute;
 	width: 550px;
@@ -150,21 +173,27 @@ thead,tbody,tbody tr,tbody tr td{
 	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
 	z-index: 30;
 }
-#drop-floder-wrap .drop-floder-msg{
+/*删除文件夹对话框和删除文件对话框提示字段样式*/
+#drop-floder-wrap .drop-floder-msg,
+#drop-file-wrap .drop-floder-msg{
 	width: 95%;
 	margin: 40px auto 0 auto;
 	border: 2px solid #eb3f2f;
 	background-color: rgba(235,63,47,0.6);
 	font-size: 14px;
 }
-#drop-floder-wrap .drop-floder-btn{
+/*删除文件夹，删除文件对话框按钮包裹层样式*/
+#drop-floder-wrap .drop-floder-btn,
+#drop-file-wrap .drop-floder-btn{
 	width: 95%;
 	margin: 70px auto 0 auto;
 }
-#target-floder-name{
+/*删除文件夹，删除文件对话框文件名样式*/
+#target-floder-name,#target-file-name{
 	font-size: 16px;
 }
-#drop-floder-loading-icon{
+/*删除文件夹，删除文件对话框加载图标样式*/
+#drop-floder-loading-icon,#drop-file-loading-icon{
 	visibility: hidden;
 	width: 30px;
 	height: 30px;
@@ -366,8 +395,15 @@ thead,tbody,tbody tr,tbody tr td{
 .file-content-item .table tr td:nth-child(2){
 	width: 60%;
 }
+/*定义文件夹图标类*/
 .floder:before{
 	content: url(../images/flodericon1.png);
+	display: inline-block;
+	vertical-align: middle;
+}
+/*定义文件图标类*/
+.file:before{
+	content: url(../images/fileicon1.png);
 	display: inline-block;
 	vertical-align: middle;
 }

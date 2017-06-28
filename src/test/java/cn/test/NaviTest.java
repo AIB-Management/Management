@@ -79,16 +79,11 @@ public class NaviTest {
 @Autowired
 private NavigationExtMapper navigationExtMapper;
 
-    @Test
-    public void testGetCountNav() throws Exception{
-        NavigationSelectVo navigationSelectVo = new NavigationSelectVo();
-        navigationSelectVo.setParent("dc3bbd84-6877-4452-8ca0-cb8eef59ea7f");
+@Autowired
+private UsersService usersService;
+
+@Autowired
+private AccountMapper accountMapper;
 
 
-
-        NavigationCustom navigationCustom =  navigationExtMapper.getCountByParent(navigationSelectVo);
-
-        System.out.println(navigationCustom);
-
-    }
 }

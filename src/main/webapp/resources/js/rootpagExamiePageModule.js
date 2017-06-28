@@ -141,8 +141,10 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	function examiedMouleModifyDep(){
 		//获取注册用户姓名的单元格
 		var parent = this.parentNode.parentNode;
-		var depId = parent.querySelectorAll("td")[2].title,
-			specId = parent.querySelectorAll("td")[3].title;
+		var depId = parent.querySelectorAll("td")[3].title,
+			specId = parent.querySelectorAll("td")[4].title,
+			account = parent.querySelectorAll("td")[2].innerText
+			userId = parent.querySelectorAll("td")[1].title;
 
 		var depOptions = ss("#user-dep option");
 
@@ -158,8 +160,9 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		console.log(specId);
 		//然后根据修改后的系别下拉框的值去获取对应的专业
 		getModifyUserDepModuleSpec(s("#user-dep").value,specId);
-
-
+		//输出用户名
+		s("#user-account").value = account;
+		s("#user-account").title = userId;
 		//显示弹出层
 		s("#modify-user-department-floor").style.display = 'block';
 	}
@@ -212,7 +215,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 			modifyBtn.className = "refuse btn btn-warning btn-sm";
 
-			modifyBtn.innerHTML += " 修改教师系别";
+			modifyBtn.innerHTML += " 修改教师信息";
 			
 
 			for (var i = 0; i < dataList.length; i++) {
@@ -235,6 +238,11 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				userTd.innerText = dataList[i].name;
 				userTd.title = dataList[i].uid;
 				tr.appendChild(userTd);
+
+				//创建一个包裹账号包裹 td
+				var accountTd = createElem("td");
+				accountTd.innerText = dataList[i].username;
+				tr.appendChild(accountTd);
 
 				//创建一个系别包裹 td
 				var departmentTd = createElem("td");

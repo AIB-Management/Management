@@ -76,4 +76,8 @@ public interface UsersService {
     public String getLoggingUserName() throws Exception;
 
     public List<Permission> findPermisson(String role) throws Exception;
+
+    //根据uid修改专业
+    public void updateAccountByDepartment(String uid , String departmentUid)throws Exception;
+
 }

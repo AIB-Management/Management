@@ -6,25 +6,17 @@ import com.gdaib.service.DepartmentService;
 import com.gdaib.service.FileService;
 import com.gdaib.service.NavigationServer;
 import com.gdaib.service.UsersService;
-import com.gdaib.util.Utils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+
 
 /**
  * @Author:马汉真

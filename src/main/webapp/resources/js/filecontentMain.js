@@ -54,4 +54,7 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
     	$("#floor").fadeOut('300');
     })
 
+    //初始化可预览和可下载数量
+    initPageNum();
+
 })

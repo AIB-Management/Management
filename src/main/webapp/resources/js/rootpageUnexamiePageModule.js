@@ -263,6 +263,12 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				userTd.title = dataList[i].uid;
 				tr.appendChild(userTd);
 
+				//创建一个账号包裹td
+				var accountTd = createElem("td");
+				accountTd.innerText = dataList[i].username;
+				tr.appendChild(accountTd);
+
+
 				//创建一个系别包裹 td
 				var departmentTd = createElem("td");
 				departmentTd.innerText = dataList[i].depContent;
