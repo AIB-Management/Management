@@ -2,13 +2,13 @@ package com.gdaib.controller;
 
 import com.gdaib.Exception.GlobalException;
 import com.gdaib.pojo.*;
-import com.gdaib.service.DepartmentService;
-import com.gdaib.service.FileService;
-import com.gdaib.service.NavigationServer;
-import com.gdaib.service.UsersService;
+import com.gdaib.service.*;
+import com.gdaib.util.Utils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,6 +37,8 @@ public class ContentController {
 
     @Autowired
     private FileService fileService;
+
+
 
     public static final String DEPARTMENTPAGE = "/teacher/departmentpage.jsp";
     public static final String PERSONALPAGE = "/teacher/personalpage.jsp";
@@ -147,7 +149,7 @@ public class ContentController {
         return Msg.success().add("navs", navs).add("files", files);
     }
 
-
+    //找到系或专业
     @RequestMapping(value = "/content/ajaxFindDepOrPro", params = {"parent"})
     @ResponseBody
     @RequiresPermissions("depAndPro:query")
@@ -181,4 +183,18 @@ public class ContentController {
         }
         return Msg.fail();
     }
+
+    @RequestMapping("/content/ajaxUpdateName")
+    @ResponseBody
+    public Msg ajaxUpdateName(String name) throws Exception {
+        if(StringUtils.isEmpty(name)){
+            return Msg.fail();
+        }
+        AccountInfo login = Utils.getLoginAccountInfo();
+
+        usersService.updateName(name,login.getUid());
+
+        return Msg.success();
+    }
+
 }
