@@ -65,10 +65,11 @@ public class Utils {
         return list;
     }
 
-    //获取登录后账号的uid
-    public static String getAccountUid() throws Exception {
+    //获取登录后信息
+    public static AccountInfo getLoginAccountInfo() throws Exception {
+
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
-        return accountInfo.getUid();
+        return accountInfo;
     }
 }

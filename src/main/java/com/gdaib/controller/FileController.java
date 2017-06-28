@@ -28,23 +28,15 @@ import java.util.*;
 public class FileController {
     public static final String UP_FILE_PATH = "/TeachersFile";
 
-    public static final String UPLOAD_FILE_JSP = "testUpLoadFile.jsp";
 
 
     @Autowired
     FileService fileService;
 
     @Autowired
-    UsersService usersService;
-
-    @Autowired
     RunasService runasService;
 
-    //获取上传文件页面
-    @RequestMapping(value = "/file/uploadFile")
-    public String UploadFile() {
-        return UPLOAD_FILE_JSP;
-    }
+
 
 
     //上传文件
@@ -70,11 +62,12 @@ public class FileController {
             throw new GlobalException("上级目录不能为空");
         }
 
-        //赋值用户uid
+        String accoutUid = Utils.getLoginAccountInfo().getUid();
+        //如果上传者uid为空 则从登录账号获取
         if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
-            fileSelectVo.setAccuid(Utils.getAccountUid());
-        } else if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
-            List<AccountInfo> beAccount = runasService.getBeAccount(Utils.getAccountUid());
+            fileSelectVo.setAccuid(accoutUid);
+        } else if (!fileSelectVo.getAccuid().equals(accoutUid)) {
+            List<AccountInfo> beAccount = runasService.getBeAccount(accoutUid);
             int i = 0;
             for (AccountInfo accountInfo : beAccount) {
                 if (accountInfo.getUid().equals(fileSelectVo.getAccuid())) {
@@ -124,12 +117,13 @@ public class FileController {
         String fileUid = UUID.randomUUID().toString();
         fileSelectVo.setUid(fileUid);
         fileSelectVo.setUrl("this is url");
-        //写入数据库
+        //写入文章信息
         int result = fileService.insertFile(fileSelectVo);
         System.out.println(fileItems.toString());
 
         for (FileItemSelectVo fileItemSelectVo : fileItems) {
             fileItemSelectVo.setFileuid(fileUid);
+            //写入文章文档信息
             fileService.insertFileItem(fileItemSelectVo);
         }
         if (result > 0) {
@@ -182,12 +176,11 @@ public class FileController {
 
 
         //添加判断上传账号与登陆账号是否相等
-        Subject subject = SecurityUtils.getSubject();
-        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
-        if (accountInfo.getRole().trim().equals("admin")) {
+
+        if (Utils.getLoginAccountInfo().getRole().trim().equals("admin")) {
             fileSelectVo.setAccuid(null);
         } else {
-            if (!fileSelectVo.getAccuid().trim().equals(Utils.getAccountUid())) {
+            if (!fileSelectVo.getAccuid().trim().equals(Utils.getLoginAccountInfo().getUid())) {
                 throw new GlobalException("登录的账号不是作者账号");
             }
         }
@@ -225,7 +218,7 @@ public class FileController {
         }
         //添加判断上传账号与登陆账号是否相等
 
-        if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
+        if (!fileSelectVo.getAccuid().equals(Utils.getLoginAccountInfo().getUid())) {
             throw new GlobalException("登录账号不是作者账号");
         }
         int result = fileService.updateFile(fileSelectVo);

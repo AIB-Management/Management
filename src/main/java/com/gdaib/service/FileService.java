@@ -37,7 +37,7 @@ public interface FileService {
     //查找本地文件
     public List<HashMap<String, Object>> selectLocalFileItem(String localPath, String sqlPath) throws Exception;
 
-    //判断上传文件类型
+    //判断上传文件类型是否为允许上传的文件类型
     public boolean judgeContentType(String contentType) throws Exception;
 
     //获取内容细节
