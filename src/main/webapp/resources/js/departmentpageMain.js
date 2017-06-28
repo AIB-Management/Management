@@ -458,7 +458,10 @@ require(["jquery.min","overborwserEvent",
         //关闭弹出层
         s("#upload-file-floor").style.display = 'none';
 
-    });
+    }).on('filebatchuploaderror', function(event, data, msg) {
+	    
+	   alert("不可以上传js,java,php 等可操作性的文件！");
+	});
 
     function uploadFile(){
     	var isNoRepeat = checkFloderName(ss("#main-content-list tr td a"),s("#fileTitle").value);

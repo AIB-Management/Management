@@ -18,13 +18,13 @@ USE `db_teacher`;
 
 /*Data for the table `t_account` */
 
-insert  into `t_account`(`id`,`uid`,`username`,`password`,`name`,`mail`,`role`,`depUid`,`validataCode`,`outDate`) values (827,'a7d31ac6-2576-42f6-af9f-8306abd1e35b','guanliyuan','6a840ecd92279021f868d6dbf70921e1','管理员','184999894@qq.com','admin','b5b8f596-a51d-4823-b8ee-d43b21a2c744',NULL,NULL);
+INSERT  INTO `t_account`(`id`,`uid`,`username`,`password`,`name`,`mail`,`role`,`depUid`,`validataCode`,`outDate`) VALUES (827,'a7d31ac6-2576-42f6-af9f-8306abd1e35b','guanliyuan','6a840ecd92279021f868d6dbf70921e1','管理员','184999894@qq.com','admin','b5b8f596-a51d-4823-b8ee-d43b21a2c744',NULL,NULL);
 
 /*Data for the table `t_authorization` */
 
 /*Data for the table `t_character` */
 
-insert  into `t_character`(`id`,`role`,`explanation`) values (1,'admin','管理员'),(2,'leader','领导'),(3,'teacher','教师'),(4,'reviewing','待审核用户');
+INSERT  INTO `t_character`(`id`,`role`,`explanation`) VALUES (1,'admin','管理员'),(2,'leader','领导'),(3,'teacher','教师'),(4,'reviewing','待审核用户');
 
 /*Data for the table `t_department` */
 
