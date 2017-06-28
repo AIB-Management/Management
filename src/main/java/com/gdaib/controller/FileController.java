@@ -5,6 +5,7 @@ import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.MyStringUtils;
 import com.gdaib.util.Utils;
 import com.github.pagehelper.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
@@ -29,14 +30,11 @@ public class FileController {
     public static final String UP_FILE_PATH = "/TeachersFile";
 
 
-
     @Autowired
     FileService fileService;
 
     @Autowired
     RunasService runasService;
-
-
 
 
     //上传文件
@@ -53,7 +51,7 @@ public class FileController {
 
         //校验是否正确
         if (
-                fileSelectVo.getTitle() == null || fileSelectVo.getTitle().trim().equals("")
+                MyStringUtils.isEmpty(fileSelectVo.getTitle())
                 ) {
 
             throw new GlobalException("标题不能为空");
@@ -64,7 +62,7 @@ public class FileController {
 
         String accoutUid = Utils.getLoginAccountInfo().getUid();
         //如果上传者uid为空 则从登录账号获取
-        if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
+        if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())) {
             fileSelectVo.setAccuid(accoutUid);
         } else if (!fileSelectVo.getAccuid().equals(accoutUid)) {
             List<AccountInfo> beAccount = runasService.getBeAccount(accoutUid);
@@ -84,13 +82,14 @@ public class FileController {
         for (int i = 0; i < files.length; i++) {
             // 获得原始文件名
             String fileName = files[i].getOriginalFilename();
+            System.out.println(fileName);
             if (fileName == null || fileName.trim().equals("")) {
                 throw new GlobalException("文件名不能为空");
 
             }
 
-            String contentType = files[i].getContentType();
-            if (fileService.judgeContentType(contentType)) {
+
+            if (fileService.isAllowUpFileTypeByPrefix(fileName)) {
                 throw new GlobalException("上传文件中有不允许的文件种类");
 
             }
@@ -140,7 +139,9 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("fileItem:query")
     public Msg ajaxGetServerFileItem(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
-        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(fileSelectVo.getUid())
+                ) {
             throw new GlobalException("uid不能为空");
         }
 
@@ -166,11 +167,14 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("file:delete")
     public Msg ajaxDeleteFile(FileSelectVo fileSelectVo, HttpServletRequest request) throws Exception {
-        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(fileSelectVo.getUid())
+                ) {
             throw new GlobalException("主键不能为空");
         }
 
-        if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
+        if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())
+                ) {
             throw new GlobalException("上传作者uid不能为空");
         }
 
@@ -209,11 +213,15 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("file:update")
     public Msg ajaxUpdateFile(FileSelectVo fileSelectVo) throws Exception {
-        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(fileSelectVo.getUid())
+
+                ) {
             throw new GlobalException("UID不能为空");
         }
 
-        if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
+        if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())
+                ) {
             throw new GlobalException("账号ID不能为空");
         }
         //添加判断上传账号与登陆账号是否相等
