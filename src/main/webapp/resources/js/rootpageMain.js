@@ -210,11 +210,38 @@ require(["jquery.min","checkInput","overborwserEvent",
 
 	//修改用户系别弹出层提交按钮点击事件回调函数
 	function confirmModifyUserDep(){
+		//首先验证用户名是否正确
+		var reg = /^[\S\w\d][^\*]{8,16}$/;
+		var newUserNameStatus = reg.test(s("#user-account").value);
 		//如果部门选择框的值合法
-		if (s("#user-dep").value != "100" && s("#user-spec").value != "100") {
+		if (s("#user-dep").value != "100" && 
+			s("#user-spec").value != "100" && newUserNameStatus == true) {
+			//清空提示信息
+			s("#new-account-hint").innerText = "";
 			//发送ajax 提交给后台
+			// $.ajax({
+			// 	url: '',
+			// 	type: 'POST',
+			// 	dataType: 'json',
+			// 	data: {param1: 'value1'},
+			// })
+			
+
+		}else if(newUserNameStatus == false) {
+			//如果新用户名错误 提示错误
+			s("#new-account-hint").style.color = "red";
+			s("#new-account-hint").innerText = "账号不合法,必须为8-16位英文或数字字符不能有特殊字符";
+
 		}else{
 			alert("请选择有效的系别或专业！");
+		}
+	}
+
+	//取消多选框选中状态
+	function clearCheckboxChecked(){
+		var checkboxList = ss("#file-list-content input:checked");
+		for (var i = 0; i < checkboxList.length; i++) {
+			checkboxList[i].checked = false;
 		}
 	}
 
@@ -269,7 +296,7 @@ require(["jquery.min","checkInput","overborwserEvent",
 		
 		//如果当前选择了系别
 		if (manageDepFloder.curManageFloderDepId != "") {
-			var checkboxList = ss("#file-list-content tr td input:checked"),
+			var checkboxList = ss(".floder-select:checked"),
 				//定义保存选中多选框的数组
 				dropFloderName = [],
 				dropFloderUid = [];
@@ -304,6 +331,7 @@ require(["jquery.min","checkInput","overborwserEvent",
 		}
 	}
 
+	
 
 	//溢出导航隐藏按钮点击事件
 	function overflowNavBtnClick(target){
@@ -482,6 +510,38 @@ require(["jquery.min","checkInput","overborwserEvent",
 				alert("此文件夹下存在目录不能删除！");
 			}
 			
+		})
+		
+	}
+
+
+
+
+	//删除文件对话框删除按钮点击事件执行函数
+	function doDropFile(){
+		var uid = s("#target-file-name").title;
+
+		//获取当前删除文件所在路径以及当前页面的系别id 为刷新列表时候所用
+		var curPath = getCurPath();
+		var curDepId = manageDepFloder.curManageFloderDepId;
+
+		//发送ajax
+		$.ajax({
+			url: '',
+			type: 'POST',
+			dataType: 'json',
+			data: "accuid=" + accuid + "&uid=" + uid,
+			success: function(data){
+				if (data.code == 100) {
+					//请求成功后刷新文件列表
+					manageDepFloder.createFloderList(curPath,curDepId);
+					//关闭对话框
+					s("#drop-file-wrap").style.display = 'none';
+					alert("删除成功");
+				}else{
+					alert("删除失败，遇到未知错误请重试");
+				}
+			}
 		})
 		
 	}
@@ -1322,16 +1382,37 @@ require(["jquery.min","checkInput","overborwserEvent",
 			dropFloder();
 
 		}else if(target.id == "cancel-drop-floder"){
+			//清空多选框选中状态
+			clearCheckboxChecked();
 			//删除文件夹弹出层取消按钮点击事件
 			s("#drop-floder-wrap").style.display = "none";
 
 		}else if(target.id == "drop-floder-close-btn") {
+			//清空多选框选中状态
+			clearCheckboxChecked();
 			//删除文件夹弹出层关闭按钮点击事件
 			s("#drop-floder-wrap").style.display = "none";
 
 		}else if(target.id == "confirm-drop-floder") {
 			//删除文件夹确认按钮点击事件
 			doDropFloder();
+
+		}else if(target.id == "drop-file-close-btn") {
+			//清空多选框选中状态
+			clearCheckboxChecked();
+			//删除文件弹出层关闭按钮点击事件
+			s("#drop-file-wrap").style.display = "none";
+
+		}else if(target.id == "cancel-drop-file") {
+			//清空多选框选中状态
+			clearCheckboxChecked();
+			//删除文件弹出层取消删除按钮点击事件
+			s("#drop-file-wrap").style.display = "none";
+
+
+		}else if(target.id == "confirm-drop-file") {
+			//删除文件弹出层确认删除按钮点击事件
+			doDropFile();
 
 		}else if(target.id == "filemanage-close-btn") {
 			//管理文件弹出层关闭按钮点击事件
@@ -1525,6 +1606,8 @@ require(["jquery.min","checkInput","overborwserEvent",
 
 
 		}else if(target.id == "modify-user-departmetn-close-btn"){
+			//清空错误提示框内容
+			s("#new-account-hint").innerText = "";
 			//修改用户部门弹出层关闭按钮点击事件
 			s("#modify-user-department-floor").style.display = "none";
 
@@ -1571,7 +1654,28 @@ require(["jquery.min","checkInput","overborwserEvent",
 		}
 	});
 	
+	//领导管理内容包裹层设置自定义滚动条
 	$(".leader-list-table-wrap").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	})
+
+	//管理文件夹弹出层内容包裹层设置自定义滚动条
+	$(".file-content-item").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	})
+
+	//管理系别弹出层内容包裹层设置自定义滚动条
+	$(".manage-department-maincontent").mCustomScrollbar({
 		axis: "y",
 		theme: "minimal-dark",
 		autoHideScrollbar: true,

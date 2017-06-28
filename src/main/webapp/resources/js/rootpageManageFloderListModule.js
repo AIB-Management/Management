@@ -220,6 +220,21 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	}
 
 
+	//删除文件夹按钮点击事件回调函数
+	function dropFile(){
+		var name = this.parentNode.parentNode.
+					querySelectorAll("a")[0].innerText;
+
+		var uid = this.parentNode.parentNode.
+					querySelectorAll("a")[0].getAttribute("data-path");
+
+		s("#target-file-name").innerText = name;
+		s("#target-file-name").title = uid;
+		s("#drop-file-wrap").style.display = 'block';
+		
+	}
+
+
 	//输出数据函数
 	//文件夹名点击，面包屑导航点击，溢出导航点击，创建文件夹提交，修改文件名提交均调用此函数
 	function createFloderList(path,depId){
@@ -234,7 +249,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			success: function(data){
 				if (data.code == 100) {
 					//请求成功的时候插入元素
-					floderList.appendChild(ergFloderList(data));
+					if (data.extend.navs.length != 0) {
+						floderList.appendChild(ergFloderList(data));
+					}
+					
+					if (data.extend.files.length != 0) {
+						floderList.appendChild(ergFileList(data));
+					}
+					
 				}else{
 					alert("未知错误，请稍后重试");
 				}
@@ -257,6 +279,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			button = createElem("button");
 
 		input.type = "checkbox";
+		input.className = "floder-select"
 		a.href = "#";
 		span.className = "glyphicon glyphicon-edit";
 		button.appendChild(span);
@@ -294,6 +317,73 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			frag.appendChild(row);
 		}
 
+		return frag;
+	}
+
+
+
+	//遍历文件函数
+	//内部会为每一个保存文件夹名字的a 标签绑定点击事件函数fileNameClick
+	//为每一个编辑文件标题按钮绑定 modifyFilenameBtnClick
+	//为每一个删除文件按钮绑定 dropFileBtnClick
+	function ergFileList(data){
+
+		var list = data.extend.files;
+		var checkBox = createElem("input"),
+			tr = createElem("tr"),
+			td = createElem("td"),
+			a = createElem("a"),
+			span = createElem("span"),
+			button = createElem("button"),
+			frag = document.createDocumentFragment();
+
+		
+		checkBox.type = "checkbox";
+		checkBox.className = "file-select";
+
+		span.className = "glyphicon glyphicon-trash";
+		button.className = "btn btn-default btn-sm";
+		button.appendChild(span);
+		button.innerHTML += "删除文件";
+		
+
+		for (var i = 0; i < list.length; i++) {
+			var row = tr.cloneNode(true);
+
+			var checkboxCol = td.cloneNode(true);
+			checkboxCol.className = "item-selectbox";
+
+			var filenameCol = td.cloneNode(true);
+			filenameCol.className = "file-name file";
+
+
+			var operateCol = td.cloneNode(true);
+
+			dropFileBtn = button.cloneNode(true);
+			//为删除文件按钮绑定点击事件
+			EventUntil.addHandler(dropFileBtn,"click",dropFile);
+
+			
+			var checkbox = checkBox.cloneNode(true);
+			checkbox.disabled = "true";
+			checkboxCol.appendChild(checkbox);
+
+			var filename = a.cloneNode(true);
+			filename.href = "#";
+			filename.setAttribute("data-path", list[i].uid);
+			filename.innerText = list[i].title;
+	
+			filenameCol.appendChild(filename);
+
+			operateCol.appendChild(dropFileBtn);
+
+			row.appendChild(checkboxCol);
+			row.appendChild(filenameCol);
+			row.appendChild(operateCol);
+
+			frag.appendChild(row);
+		}
+		//返回文本碎片
 		return frag;
 	}
 
