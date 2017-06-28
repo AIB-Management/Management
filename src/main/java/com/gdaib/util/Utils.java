@@ -6,6 +6,9 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.Properties;
  */
 public class Utils {
 
-    //获取本地IP
+    //获取配置文件的本地IP
     public static String getLocalADDress() throws Exception {
         Resource resource = new ClassPathResource("custom.properties");
         Properties properties = new Properties();
@@ -26,7 +29,23 @@ public class Utils {
         return ipAddress;
     }
 
+    //获取系统当前时间
+    public static Timestamp getSystemCurrentTime() throws Exception{
+        return  new Timestamp(System.currentTimeMillis() / 1000 * 1000);
+    }
 
+
+    /* 获取文章相关文件的保存路径
+    * path 存进数据库的路径
+    *
+    * */
+    public static String getSystemRealFilePath(HttpServletRequest request,String path){
+        ServletContext sc = request.getSession().getServletContext();
+        return  sc.getRealPath(path) + "/";
+    }
+
+
+    //获取邮件配置
     public static HashMap<String, Object> getMailInfo() throws Exception {
         Resource resource = new ClassPathResource("mail.properties");
 
@@ -65,10 +84,11 @@ public class Utils {
         return list;
     }
 
-    //获取登录后账号的uid
-    public static String getAccountUid() throws Exception {
+    //获取登录后信息
+    public static AccountInfo getLoginAccountInfo() throws Exception {
+
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
-        return accountInfo.getUid();
+        return accountInfo;
     }
 }

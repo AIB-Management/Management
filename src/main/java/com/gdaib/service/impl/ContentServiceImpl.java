@@ -1,6 +1,9 @@
 package com.gdaib.service.impl;
 
+import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.NavigationMapper;
+import com.gdaib.pojo.Account;
+import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.Navigation;
 import com.gdaib.pojo.NavigationExample;
 import com.gdaib.service.ContentService;
@@ -18,6 +21,9 @@ public class ContentServiceImpl implements ContentService {
     @Autowired
     private NavigationMapper navigationMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     /**
      *
         得到该系的所有导航条
@@ -31,4 +37,6 @@ public class ContentServiceImpl implements ContentService {
 //        return navigationMapper.selectByExample(navigationExample);
         return null;
     }
+
+
 }

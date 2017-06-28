@@ -8,6 +8,7 @@ import com.gdaib.pojo.FileItem;
 import com.gdaib.pojo.FileItemSelectVo;
 import com.gdaib.pojo.FileSelectVo;
 import com.gdaib.service.FileService;
+import com.gdaib.util.MyStringUtils;
 import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -49,31 +50,40 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int insertFile(FileSelectVo file) throws Exception {
+    public Integer insertFile(FileSelectVo file) throws Exception {
         if (file == null) {
             throw new Exception("参数不能为空");
         }
-        if (file.getUid() == null || file.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(file.getUid())
+                ) {
             throw new Exception("UID不能为空");
         }
-        if (file.getAccuid() == null || file.getAccuid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(file.getAccuid())
+                ) {
             throw new Exception("账号不能为空");
         }
-        if (file.getNavuid() == null || file.getNavuid().trim().equals("")) {
+        if (MyStringUtils.isEmpty(file.getNavuid())
+                ) {
             throw new Exception("上级目录不能为空");
         }
-        if (file.getTitle() == null || file.getTitle().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(file.getTitle())
+                ) {
             throw new Exception("标题不能为空");
         }
         return fileExtMapper.insert(file);
     }
 
     @Override
-    public int deleteFile(FileSelectVo file) throws Exception {
+    public Integer deleteFile(FileSelectVo file) throws Exception {
         if (file == null) {
             throw new Exception("参数不能为空");
         }
-        if (file.getUid() == null || file.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(file.getUid())
+                ) {
             throw new Exception("UID不能为空");
         }
 //        if (file.getAccuid() == null || file.getAccuid().trim().equals("")) {
@@ -83,14 +93,17 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int updateFile(FileSelectVo file) throws Exception {
+    public Integer updateFile(FileSelectVo file) throws Exception {
         if (file == null) {
             throw new Exception("参数不能为空");
         }
-        if (file.getUid() == null || file.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(file.getUid())
+                ) {
             throw new Exception("UID不能为空");
         }
-        if (file.getAccuid() == null || file.getAccuid().trim().equals("")) {
+        if (MyStringUtils.isEmpty(file.getAccuid())
+                ) {
             throw new Exception("账号不能为空");
         }
         return fileExtMapper.updateFile(file);
@@ -117,16 +130,11 @@ public class FileServiceImpl implements FileService {
         FileItemSelectVo fileItemSelectVo;
         if (file != null) {
             fileItemSelectVo = new FileItemSelectVo();
-            fileItemSelectVo.setUid(UUID.randomUUID().toString());
-
             String filename = file.getOriginalFilename();
-            fileItemSelectVo.setFilename(filename);
-            fileItemSelectVo.setPosition(index + 1);
-            String dataType = file.getContentType();
-            fileItemSelectVo.setDatatype(dataType);
-
             String prefix = filename.substring(filename.lastIndexOf("."));
-            if (prefix == null || prefix.trim().equals("")) {
+            if (
+                    MyStringUtils.isEmpty(prefix)
+                    ) {
                 throw new GlobalException("不允许的文件类型");
             }
             for (String type : SHOW_TYPE) {
@@ -137,7 +145,12 @@ public class FileServiceImpl implements FileService {
                     fileItemSelectVo.setShowing(0);
                 }
             }
+
             fileItemSelectVo.setPrefix(prefix);
+            fileItemSelectVo.setUid(UUID.randomUUID().toString());
+            fileItemSelectVo.setFilename(filename);
+            fileItemSelectVo.setPosition(index + 1);
+            fileItemSelectVo.setDatatype(file.getContentType());
 
             return fileItemSelectVo;
         }
@@ -151,17 +164,16 @@ public class FileServiceImpl implements FileService {
         if (!f.exists())
             f.mkdirs();
 
-
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
-        for (int i = 0; i < files.length; i++) {
-            // 获得原始文件名
-            String fileName = files[i].getOriginalFilename();
-
-            System.out.println("原始文件名:" + fileName);
-
+        String fileName="";
+        for (int i = 0,length=files.length; i < length; i++) {
 
             if (!files[i].isEmpty()) {
+                fileItems.add(getFileItemInfoByCommonsMultipartFile(i, files[i]));
                 try {
+                    // 获得原始文件名
+                    fileName= files[i].getOriginalFilename();
+                    System.out.println("原始文件名:" + fileName);
                     fos = new FileOutputStream(path
                             + fileName);
                     in = files[i].getInputStream();
@@ -174,7 +186,6 @@ public class FileServiceImpl implements FileService {
                 } finally {
                     closeStream();
                 }
-                fileItems.add(getFileItemInfoByCommonsMultipartFile(i, files[i]));
             }
 
             System.out.println("上传文件到:" + path + fileName);
@@ -222,13 +233,16 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public boolean judgeContentType(String filename) throws Exception {
-        if (filename == null || filename.trim().equals("")) {
+    public boolean isAllowUpFileTypeByPrefix(String filename) throws Exception {
+        if (MyStringUtils.isEmpty(filename)) {
             throw new Exception("参数不能为空");
         }
 
+        String prefix = filename.substring(filename.lastIndexOf("."));
+
         for (String str : NOT_UP_TYPE) {
-            if (filename.endsWith(str)) {
+            System.out.println(prefix);
+            if (prefix.equals(str)) {
                 return true;
             }
         }
@@ -236,8 +250,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void insertFileItem(FileItemSelectVo fileItemSelectVo) throws Exception {
-        fileItemExtMapper.insert(fileItemSelectVo);
+    public Integer insertFileItem(List<FileItemSelectVo> fileItemSelectVos,String fileUid) throws Exception {
+        return fileItemExtMapper.insertFileItemByList(fileItemSelectVos,fileUid);
     }
 
 

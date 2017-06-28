@@ -5,6 +5,7 @@ import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.MyStringUtils;
 import com.gdaib.util.Utils;
 import com.github.pagehelper.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
@@ -28,23 +29,12 @@ import java.util.*;
 public class FileController {
     public static final String UP_FILE_PATH = "/TeachersFile";
 
-    public static final String UPLOAD_FILE_JSP = "testUpLoadFile.jsp";
-
 
     @Autowired
     FileService fileService;
 
     @Autowired
-    UsersService usersService;
-
-    @Autowired
     RunasService runasService;
-
-    //获取上传文件页面
-    @RequestMapping(value = "/file/uploadFile")
-    public String UploadFile() {
-        return UPLOAD_FILE_JSP;
-    }
 
 
     //上传文件
@@ -61,7 +51,7 @@ public class FileController {
 
         //校验是否正确
         if (
-                fileSelectVo.getTitle() == null || fileSelectVo.getTitle().trim().equals("")
+                MyStringUtils.isEmpty(fileSelectVo.getTitle())
                 ) {
 
             throw new GlobalException("标题不能为空");
@@ -70,11 +60,12 @@ public class FileController {
             throw new GlobalException("上级目录不能为空");
         }
 
-        //赋值用户uid
-        if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
-            fileSelectVo.setAccuid(Utils.getAccountUid());
-        } else if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
-            List<AccountInfo> beAccount = runasService.getBeAccount(Utils.getAccountUid());
+        String accoutUid = Utils.getLoginAccountInfo().getUid();
+        //如果上传者uid为空 则从登录账号获取
+        if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())) {
+            fileSelectVo.setAccuid(accoutUid);
+        } else if (!fileSelectVo.getAccuid().equals(accoutUid)) {
+            List<AccountInfo> beAccount = runasService.getBeAccount(accoutUid);
             int i = 0;
             for (AccountInfo accountInfo : beAccount) {
                 if (accountInfo.getUid().equals(fileSelectVo.getAccuid())) {
@@ -88,54 +79,50 @@ public class FileController {
 
         }
 
+        String fileName;
         for (int i = 0; i < files.length; i++) {
             // 获得原始文件名
-            String fileName = files[i].getOriginalFilename();
-            if (fileName == null || fileName.trim().equals("")) {
+            fileName = files[i].getOriginalFilename();
+            System.out.println(fileName);
+            if (MyStringUtils.isEmpty(fileName)) {
                 throw new GlobalException("文件名不能为空");
 
             }
 
-            String contentType = files[i].getContentType();
-            if (fileService.judgeContentType(contentType)) {
+            if (fileService.isAllowUpFileTypeByPrefix(fileName)) {
                 throw new GlobalException("上传文件中有不允许的文件种类");
 
             }
         }
 
-        //设置时间
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis() / 1000 * 1000);
-        fileSelectVo.setUptime(timestamp);
+        //设置上传时间时间
+        fileSelectVo.setUptime(Utils.getSystemCurrentTime());
 
         //保存到数据库的路径
-        String sqlPath = UP_FILE_PATH + "/" + fileSelectVo.getAccuid() + "/" + UUID.randomUUID();
+        String fileUid = UUID.randomUUID().toString();
+        String sqlPath = UP_FILE_PATH + "/" + fileSelectVo.getAccuid() + "/" + fileUid;
         fileSelectVo.setFilepath(sqlPath);
 
-        // 项目位置
-        ServletContext sc = request.getSession().getServletContext();
-        // 设定文件保存的目录
-        String path = sc.getRealPath(sqlPath) + "/";
+        String path = Utils.getSystemRealFilePath(request, sqlPath);
 
         System.out.println(path);
         //把文件写到目录中
         List<FileItemSelectVo> fileItems = fileService.writeFileToLocal(path, files);
 
-
-        String fileUid = UUID.randomUUID().toString();
         fileSelectVo.setUid(fileUid);
-        fileSelectVo.setUrl("this is url");
-        //写入数据库
-        int result = fileService.insertFile(fileSelectVo);
-        System.out.println(fileItems.toString());
 
-        for (FileItemSelectVo fileItemSelectVo : fileItems) {
-            fileItemSelectVo.setFileuid(fileUid);
-            fileService.insertFileItem(fileItemSelectVo);
-        }
-        if (result > 0) {
-            return Msg.success();
-        }
+        String url = "/Management/content/filecontent.action?uid=" + fileUid;
+        fileSelectVo.setUrl(url);
 
+        //写入文章信息
+        int result = 0;
+        result = fileService.insertFile(fileSelectVo);
+        if ( result > 0) {
+            result = fileService.insertFileItem(fileItems, fileUid);
+            if ( result > 0) {
+                return Msg.success();
+            }
+        }
 
         return Msg.fail();
     }
@@ -146,7 +133,9 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("fileItem:query")
     public Msg ajaxGetServerFileItem(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
-        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(fileSelectVo.getUid())
+                ) {
             throw new GlobalException("uid不能为空");
         }
 
@@ -172,22 +161,24 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("file:delete")
     public Msg ajaxDeleteFile(FileSelectVo fileSelectVo, HttpServletRequest request) throws Exception {
-        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(fileSelectVo.getUid())
+                ) {
             throw new GlobalException("主键不能为空");
         }
 
-        if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
+        if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())
+                ) {
             throw new GlobalException("上传作者uid不能为空");
         }
 
 
         //添加判断上传账号与登陆账号是否相等
-        Subject subject = SecurityUtils.getSubject();
-        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
-        if (accountInfo.getRole().trim().equals("admin")) {
+
+        if (Utils.getLoginAccountInfo().getRole().trim().equals("admin")) {
             fileSelectVo.setAccuid(null);
         } else {
-            if (!fileSelectVo.getAccuid().trim().equals(Utils.getAccountUid())) {
+            if (!fileSelectVo.getAccuid().trim().equals(Utils.getLoginAccountInfo().getUid())) {
                 throw new GlobalException("登录的账号不是作者账号");
             }
         }
@@ -197,10 +188,10 @@ public class FileController {
             throw new GlobalException("文件不存在");
         }
 
-        ServletContext sc = request.getSession().getServletContext();
-        String sqlPath = fileCustoms.get(0).getFile().getFilepath();
-        String localPath = sc.getRealPath(sqlPath) + "/";
-
+//        ServletContext sc = request.getSession().getServletContext();
+//        String sqlPath = fileCustoms.get(0).getFile().getFilepath();
+//        String localPath = sc.getRealPath(sqlPath) + "/";
+        String localPath = Utils.getSystemRealFilePath(request,fileCustoms.get(0).getFile().getFilepath());
         fileService.deleteLocalFile(localPath);
 
         int result = fileService.deleteFile(fileSelectVo);
@@ -216,16 +207,20 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("file:update")
     public Msg ajaxUpdateFile(FileSelectVo fileSelectVo) throws Exception {
-        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
+        if (
+                MyStringUtils.isEmpty(fileSelectVo.getUid())
+
+                ) {
             throw new GlobalException("UID不能为空");
         }
 
-        if (fileSelectVo.getAccuid() == null || fileSelectVo.getAccuid().trim().equals("")) {
+        if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())
+                ) {
             throw new GlobalException("账号ID不能为空");
         }
         //添加判断上传账号与登陆账号是否相等
 
-        if (!fileSelectVo.getAccuid().equals(Utils.getAccountUid())) {
+        if (!fileSelectVo.getAccuid().equals(Utils.getLoginAccountInfo().getUid())) {
             throw new GlobalException("登录账号不是作者账号");
         }
         int result = fileService.updateFile(fileSelectVo);

@@ -2,9 +2,13 @@ package cn.test;
 
 import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.DepartmentExtMapper;
+import com.gdaib.mapper.FileItemExtMapper;
 import com.gdaib.pojo.Account;
 import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.Department;
+import com.gdaib.pojo.FileItemSelectVo;
+import com.gdaib.service.ContentService;
+import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by mahanzhen on 2017/6/12.
@@ -73,19 +76,53 @@ public class UtilTest {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UsersService usersService;
+
+
     @Test
     public void testGetCountNav() throws Exception{
-//        usersService.updateAccountByDepartment("7539a632-b05c-43f1-bc3f-ecc58b6671c2","5e908705-f0f9-42d1-b844-82288fdf1e91");
 
-        Account account = new Account();
-        account.setDepuid("5e908705-f0f9-42d1-b844-82288fdf1e91");
-
-        AccountExample accountExample = new AccountExample();
-        AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andUidEqualTo("7539a632-b05c-43f1-bc3f-ecc58b6671c2");
+        usersService.updateName("xiaoming","7539a632-b05c-43f1-bc3f-ecc58b6671c2");
+    }
 
 
-        accountMapper.updateByExampleSelective(account,accountExample);
+    @Autowired
+    FileItemExtMapper fileItemExtMapper;
+
+    @Test
+    public void testInsertFileItemByFileSelectVo() throws Exception{
+        List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
+        FileItemSelectVo select = new FileItemSelectVo();
+        select.setUid(UUID.randomUUID().toString());
+        select.setFilename("实践课程考核大纲.docx");
+        select.setDatatype("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        select.setShowing(0);
+        select.setPrefix(".docx");
+        select.setPosition(0);
+        fileItems.add(select);
+
+        select = new FileItemSelectVo();
+        select.setUid(UUID.randomUUID().toString());
+        select.setFilename("实践课程考核大纲.docx");
+        select.setDatatype("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        select.setShowing(1);
+        select.setPrefix(".docx");
+        select.setPosition(0);
+        fileItems.add(select);
+
+        select = new FileItemSelectVo();
+        select.setUid(UUID.randomUUID().toString());
+        select.setFilename("实践课程考核大纲.docx");
+        select.setDatatype("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        select.setShowing(0);
+        select.setPrefix(".docx");
+        select.setPosition(0);
+        fileItems.add(select);
+
+
+        fileItemExtMapper.insertFileItemByList(fileItems,"6e6673f7-9af4-4a3c-8052-82629c16c783");
     }
 
 }

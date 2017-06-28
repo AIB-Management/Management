@@ -1,6 +1,6 @@
 /*
-SQLyog Professional v12.08 (64 bit)
-MySQL - 5.7.18 : Database - db_teacher
+SQLyog Ultimate v11.11 (64 bit)
+MySQL - 5.7.17 : Database - db_teacher
 *********************************************************************
 */
 
@@ -18,9 +18,15 @@ USE `db_teacher`;
 
 /*Data for the table `t_account` */
 
+<<<<<<< HEAD
 INSERT  INTO `t_account`(`id`,`uid`,`username`,`password`,`name`,`mail`,`role`,`depUid`,`validataCode`,`outDate`) VALUES (827,'a7d31ac6-2576-42f6-af9f-8306abd1e35b','guanliyuan','6a840ecd92279021f868d6dbf70921e1','管理员','184999894@qq.com','admin','b5b8f596-a51d-4823-b8ee-d43b21a2c744',NULL,NULL);
+=======
+insert  into `t_account`(`id`,`uid`,`username`,`password`,`name`,`mail`,`role`,`depUid`,`validataCode`,`outDate`) values (827,'a7d31ac6-2576-42f6-af9f-8306abd1e35b','guanliyuan','6a840ecd92279021f868d6dbf70921e1','管理员','184999894@qq.com','admin','b5b8f596-a51d-4823-b8ee-d43b21a2c744',NULL,NULL),(831,'7539a632-b05c-43f1-bc3f-ecc58b6671c2','znhoznho','e0bbb65e628dd40297ee1ef12198427c','znho','qweqw11e@163.com','teacher','5e908705-f0f9-42d1-b844-82288fdf1e91',NULL,NULL),(832,'3b65d2dd-93a5-41cb-b1ab-022b877eb52d','lalalala','4a2a2fa3f04dd5f37f2684e37ddf5da3','大撒旦撒','mahz@163.com','teacher','5e908705-f0f9-42d1-b844-82288fdf1e91',NULL,NULL);
+>>>>>>> origin/dev2.0
 
 /*Data for the table `t_authorization` */
+
+insert  into `t_authorization`(`id`,`accUid`,`beAccUid`) values (1,'3b65d2dd-93a5-41cb-b1ab-022b877eb52d','7539a632-b05c-43f1-bc3f-ecc58b6671c2');
 
 /*Data for the table `t_character` */
 
@@ -32,17 +38,23 @@ insert  into `t_department`(`id`,`content`,`parent`,`uid`) values (570,'商务�
 
 /*Data for the table `t_file` */
 
+insert  into `t_file`(`id`,`accUid`,`navUid`,`upTime`,`title`,`url`,`filePath`,`uid`) values (4,'7539a632-b05c-43f1-bc3f-ecc58b6671c2','69cad105-b06d-48ea-bc98-ff10249a1615','2017-06-26 22:04:11','sdsdas','this is url','/TeachersFile/7539a632-b05c-43f1-bc3f-ecc58b6671c2/071d21bc-6de6-465c-baa4-adbda926ab74','0af299b9-6d47-4477-ab95-579c34b2e9e9'),(5,'7539a632-b05c-43f1-bc3f-ecc58b6671c2','113feacd-d3c7-4cfd-88da-ef51d0f934c0','2017-06-27 19:38:51','pdf','this is url','/TeachersFile/7539a632-b05c-43f1-bc3f-ecc58b6671c2/baea7f3d-0941-44cf-85ca-4e11864b1049','91ce8f53-8476-498f-a4f3-d93d788b9a77');
+
 /*Data for the table `t_file_item` */
+
+insert  into `t_file_item`(`id`,`uid`,`filename`,`fileUid`,`datatype`,`showing`,`position`,`prefix`) values (4,'5ee7a508-4e7d-4dc5-9528-9b36092d1191','管理员流程图.jpg','0af299b9-6d47-4477-ab95-579c34b2e9e9','image/jpeg',00000000001,1,'.jpg'),(5,'612f6be5-a94e-4400-8941-d5915cc55b9d','Apache_Shiro_reference_中文版_.pdf','91ce8f53-8476-498f-a4f3-d93d788b9a77','application/pdf',00000000001,1,'.pdf');
 
 /*Data for the table `t_navigation` */
 
+insert  into `t_navigation`(`id`,`parent`,`title`,`url`,`extend`,`uid`,`depUid`) values (19,'0','1','/content/ajaxFindNavAndFile.action?parent=113feacd-d3c7-4cfd-88da-ef51d0f934c0&depuid=55a1c0ef-392d-4092-9e14-1ef416d7b6f2',1,'113feacd-d3c7-4cfd-88da-ef51d0f934c0','55a1c0ef-392d-4092-9e14-1ef416d7b6f2'),(20,'0','2','/content/ajaxFindNavAndFile.action?parent=b58ab7a8-bc4b-4672-a7b7-be3e6f7957bd&depuid=55a1c0ef-392d-4092-9e14-1ef416d7b6f2',1,'b58ab7a8-bc4b-4672-a7b7-be3e6f7957bd','55a1c0ef-392d-4092-9e14-1ef416d7b6f2'),(21,'b58ab7a8-bc4b-4672-a7b7-be3e6f7957bd','3','/content/ajaxFindNavAndFile.action?parent=69cad105-b06d-48ea-bc98-ff10249a1615&depuid=55a1c0ef-392d-4092-9e14-1ef416d7b6f2',1,'69cad105-b06d-48ea-bc98-ff10249a1615','55a1c0ef-392d-4092-9e14-1ef416d7b6f2'),(22,'0','123','/content/ajaxFindNavAndFile.action?parent=6bb53999-1d5f-44d6-b397-58f97a4de8f3&depuid=edda68d5-e77d-41bc-98b8-207172b58ac7',1,'6bb53999-1d5f-44d6-b397-58f97a4de8f3','edda68d5-e77d-41bc-98b8-207172b58ac7');
+
 /*Data for the table `t_permission` */
 
-insert  into `t_permission`(`id`,`role`,`permission`) values (16,'admin','admin:query'),(17,'admin','department:query'),(18,'admin','accountType:query'),(19,'admin','accountType:update'),(20,'admin','department:add'),(21,'admin','department:delete'),(22,'admin','department:update'),(23,'admin','navigation:add'),(24,'admin','navigation:delete'),(25,'admin','navigation:update'),(26,'leader','leader:query'),(27,'leader','leaderDep:update'),(28,'leader','page:query'),(29,'leader','file:query'),(30,'teacher','runas:query'),(31,'teacher','runas:add'),(32,'teacher','runas:delete'),(33,'teacher','page:query'),(34,'teacher','file:query'),(35,'teacher','file:delete'),(36,'teacher','file:update'),(37,'reviewing','page:query'),(38,'reviewing','file:query'),(39,'leader','depAndPro:query'),(40,'teacher','file:add'),(41,'admin','depAndPro:query'),(42,'admin','file:query'),(43,'admin','file:delete');
+insert  into `t_permission`(`id`,`role`,`permission`) values (16,'admin','admin:query'),(17,'admin','department:query'),(18,'admin','accountType:query'),(19,'admin','accountType:update'),(20,'admin','department:add'),(21,'admin','department:delete'),(22,'admin','department:update'),(23,'admin','navigation:add'),(24,'admin','navigation:delete'),(25,'admin','navigation:update'),(26,'leader','leader:query'),(27,'leader','leaderDep:update'),(28,'leader','page:query'),(29,'leader','file:query'),(30,'teacher','runas:query'),(31,'teacher','runas:add'),(32,'teacher','runas:delete'),(33,'teacher','page:query'),(34,'teacher','file:query'),(35,'teacher','file:delete'),(36,'teacher','file:update'),(37,'reviewing','page:query'),(38,'reviewing','file:query'),(39,'leader','depAndPro:query'),(40,'teacher','file:add'),(41,'admin','depAndPro:query'),(42,'admin','file:query'),(43,'admin','file:delete'),(44,'admin','accountDep:update'),(45,'leader','accountName:update'),(46,'teacher','accountName:update'),(47,'reviewing','accountName:update');
 
 /*Data for the table `t_power` */
 
-insert  into `t_power`(`id`,`permission`,`explanation`) values (6,'admin:query','访问管理员页面'),(7,'leader:query','领导选择系页面'),(8,'department:query','查找所有系'),(9,'accountType:query','查看各角色的账户'),(10,'accountType:update','改变用户的角色'),(11,'department:add','增加系别专业'),(12,'department:delete','删除系别专业'),(13,'department:update','修改系别专业'),(14,'navigation:add','增加导航'),(15,'navigation:delete','删除导航'),(16,'navigation:update','修改导航'),(17,'runas:query','查询授权信息'),(18,'runas:add','增加授权'),(19,'runas:delete','取消授权'),(20,'leaderDep:update','更改领导的系别'),(21,'page:query','访问主页'),(22,'file:query','找到文件夹和文件'),(23,'depAndPro:query','查找系和专业'),(24,'fileItem:query','查找文件条目'),(25,'file:delete','删除文件'),(26,'file:update','修改文件'),(27,'file:add','增加文件');
+insert  into `t_power`(`id`,`permission`,`explanation`) values (6,'admin:query','访问管理员页面'),(7,'leader:query','领导选择系页面'),(8,'department:query','查找所有系'),(9,'accountType:query','查看各角色的账户'),(10,'accountType:update','改变用户的角色'),(11,'department:add','增加系别专业'),(12,'department:delete','删除系别专业'),(13,'department:update','修改系别专业'),(14,'navigation:add','增加导航'),(15,'navigation:delete','删除导航'),(16,'navigation:update','修改导航'),(17,'runas:query','查询授权信息'),(18,'runas:add','增加授权'),(19,'runas:delete','取消授权'),(20,'leaderDep:update','更改领导的系别'),(21,'page:query','访问主页'),(22,'file:query','找到文件夹和文件'),(23,'depAndPro:query','查找系和专业'),(24,'fileItem:query','查找文件条目'),(25,'file:delete','删除文件'),(26,'file:update','修改文件'),(27,'file:add','增加文件'),(28,'accountDep:update','修改老师系别'),(29,'accountName:update','修改姓名');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
