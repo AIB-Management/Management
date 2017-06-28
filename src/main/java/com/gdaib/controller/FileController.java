@@ -79,15 +79,15 @@ public class FileController {
 
         }
 
+        String fileName;
         for (int i = 0; i < files.length; i++) {
             // 获得原始文件名
-            String fileName = files[i].getOriginalFilename();
+            fileName = files[i].getOriginalFilename();
             System.out.println(fileName);
-            if (fileName == null || fileName.trim().equals("")) {
+            if (MyStringUtils.isEmpty(fileName)) {
                 throw new GlobalException("文件名不能为空");
 
             }
-
 
             if (fileService.isAllowUpFileTypeByPrefix(fileName)) {
                 throw new GlobalException("上传文件中有不允许的文件种类");
@@ -95,40 +95,34 @@ public class FileController {
             }
         }
 
-        //设置时间
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis() / 1000 * 1000);
-        fileSelectVo.setUptime(timestamp);
+        //设置上传时间时间
+        fileSelectVo.setUptime(Utils.getSystemCurrentTime());
 
         //保存到数据库的路径
-        String sqlPath = UP_FILE_PATH + "/" + fileSelectVo.getAccuid() + "/" + UUID.randomUUID();
+        String fileUid = UUID.randomUUID().toString();
+        String sqlPath = UP_FILE_PATH + "/" + fileSelectVo.getAccuid() + "/" + fileUid;
         fileSelectVo.setFilepath(sqlPath);
 
-        // 项目位置
-        ServletContext sc = request.getSession().getServletContext();
-        // 设定文件保存的目录
-        String path = sc.getRealPath(sqlPath) + "/";
+        String path = Utils.getSystemRealFilePath(request, sqlPath);
 
         System.out.println(path);
         //把文件写到目录中
         List<FileItemSelectVo> fileItems = fileService.writeFileToLocal(path, files);
 
-
-        String fileUid = UUID.randomUUID().toString();
         fileSelectVo.setUid(fileUid);
-        fileSelectVo.setUrl("this is url");
+
+        String url = "/Management/content/filecontent.action?uid=" + fileUid;
+        fileSelectVo.setUrl(url);
+
         //写入文章信息
-        int result = fileService.insertFile(fileSelectVo);
-        System.out.println(fileItems.toString());
-
-        for (FileItemSelectVo fileItemSelectVo : fileItems) {
-            fileItemSelectVo.setFileuid(fileUid);
-            //写入文章文档信息
-            fileService.insertFileItem(fileItemSelectVo);
+        int result = 0;
+        result = fileService.insertFile(fileSelectVo);
+        if ( result > 0) {
+            result = fileService.insertFileItem(fileItems, fileUid);
+            if ( result > 0) {
+                return Msg.success();
+            }
         }
-        if (result > 0) {
-            return Msg.success();
-        }
-
 
         return Msg.fail();
     }
@@ -194,10 +188,10 @@ public class FileController {
             throw new GlobalException("文件不存在");
         }
 
-        ServletContext sc = request.getSession().getServletContext();
-        String sqlPath = fileCustoms.get(0).getFile().getFilepath();
-        String localPath = sc.getRealPath(sqlPath) + "/";
-
+//        ServletContext sc = request.getSession().getServletContext();
+//        String sqlPath = fileCustoms.get(0).getFile().getFilepath();
+//        String localPath = sc.getRealPath(sqlPath) + "/";
+        String localPath = Utils.getSystemRealFilePath(request,fileCustoms.get(0).getFile().getFilepath());
         fileService.deleteLocalFile(localPath);
 
         int result = fileService.deleteFile(fileSelectVo);

@@ -50,7 +50,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int insertFile(FileSelectVo file) throws Exception {
+    public Integer insertFile(FileSelectVo file) throws Exception {
         if (file == null) {
             throw new Exception("参数不能为空");
         }
@@ -77,7 +77,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int deleteFile(FileSelectVo file) throws Exception {
+    public Integer deleteFile(FileSelectVo file) throws Exception {
         if (file == null) {
             throw new Exception("参数不能为空");
         }
@@ -93,7 +93,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public int updateFile(FileSelectVo file) throws Exception {
+    public Integer updateFile(FileSelectVo file) throws Exception {
         if (file == null) {
             throw new Exception("参数不能为空");
         }
@@ -130,17 +130,10 @@ public class FileServiceImpl implements FileService {
         FileItemSelectVo fileItemSelectVo;
         if (file != null) {
             fileItemSelectVo = new FileItemSelectVo();
-            fileItemSelectVo.setUid(UUID.randomUUID().toString());
-
             String filename = file.getOriginalFilename();
-            fileItemSelectVo.setFilename(filename);
-            fileItemSelectVo.setPosition(index + 1);
-            String dataType = file.getContentType();
-            fileItemSelectVo.setDatatype(dataType);
-
             String prefix = filename.substring(filename.lastIndexOf("."));
             if (
-                   MyStringUtils.isEmpty(prefix)
+                    MyStringUtils.isEmpty(prefix)
                     ) {
                 throw new GlobalException("不允许的文件类型");
             }
@@ -152,7 +145,12 @@ public class FileServiceImpl implements FileService {
                     fileItemSelectVo.setShowing(0);
                 }
             }
+
             fileItemSelectVo.setPrefix(prefix);
+            fileItemSelectVo.setUid(UUID.randomUUID().toString());
+            fileItemSelectVo.setFilename(filename);
+            fileItemSelectVo.setPosition(index + 1);
+            fileItemSelectVo.setDatatype(file.getContentType());
 
             return fileItemSelectVo;
         }
@@ -166,17 +164,16 @@ public class FileServiceImpl implements FileService {
         if (!f.exists())
             f.mkdirs();
 
-
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
-        for (int i = 0; i < files.length; i++) {
-            // 获得原始文件名
-            String fileName = files[i].getOriginalFilename();
-
-            System.out.println("原始文件名:" + fileName);
-
+        String fileName="";
+        for (int i = 0,length=files.length; i < length; i++) {
 
             if (!files[i].isEmpty()) {
+                fileItems.add(getFileItemInfoByCommonsMultipartFile(i, files[i]));
                 try {
+                    // 获得原始文件名
+                    fileName= files[i].getOriginalFilename();
+                    System.out.println("原始文件名:" + fileName);
                     fos = new FileOutputStream(path
                             + fileName);
                     in = files[i].getInputStream();
@@ -189,7 +186,6 @@ public class FileServiceImpl implements FileService {
                 } finally {
                     closeStream();
                 }
-                fileItems.add(getFileItemInfoByCommonsMultipartFile(i, files[i]));
             }
 
             System.out.println("上传文件到:" + path + fileName);
@@ -254,8 +250,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void insertFileItem(FileItemSelectVo fileItemSelectVo) throws Exception {
-        fileItemExtMapper.insert(fileItemSelectVo);
+    public Integer insertFileItem(List<FileItemSelectVo> fileItemSelectVos,String fileUid) throws Exception {
+        return fileItemExtMapper.insertFileItemByList(fileItemSelectVos,fileUid);
     }
 
 
