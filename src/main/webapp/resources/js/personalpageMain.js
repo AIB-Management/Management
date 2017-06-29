@@ -34,12 +34,15 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 				url: '/Management/content/ajaxUpdateName.action',
 				type: 'POST',
 				dataType: 'json',
-				data: "name=" + s("#newUsername").value;
+				data: "name=" + s("#newUsername").value,
 				success: function(data){
 					if (data.code == 100) {
 						alert("修改成功!");
+						s("#modify-personal-name-floor").style.display = 'none';
+					}else{
+						alert("修改失败！");
 					}
-				},
+				}
 			});
 			
 		}

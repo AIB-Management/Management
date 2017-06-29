@@ -151,7 +151,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				if (data.code == 100) {
 					specList.appendChild(createSpecialityElem(data));
 				}else{
-					alert("位置错误，请稍后重试");
+					alert("未知错误，请稍后重试");
 				}
 			}
 		})

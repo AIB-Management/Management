@@ -760,10 +760,11 @@ thead,tbody,tbody tr,tbody tr td{
 }
 #number-hints{
 	display: none;
+	width: 25px;
+	height: 25px;
 	vertical-align: middle;
-	margin-left: 5px;
-	padding: 2px;  
-	line-height: 22px;
+	margin-left: 5px;  
+	line-height: 25px;
 	background-color: #E40045;
 	color: #fff;
 	font-size: 12px;
