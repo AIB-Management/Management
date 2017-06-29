@@ -81,10 +81,8 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 		if (count == allInputs.length) {
 			//如果密码输入框和确认密码框都正确
 			//提交按钮触发默认事件 提交给后台
-			alert("修改成功！数据已交给后台处理");
-		}else{
-			//否则不提交 显示错误信息给用户
-			EventUntil.preventDefault(event);
+			s("#reset-content").submit();
+			alert("修改成功!");
 		}
 	})
 })

@@ -1,5 +1,5 @@
 body{
-	background: url(../images/reg-bg.jpg);
+	background: url(../images/selectdep-bg.jpg);
 	background-size: cover;
 	background-position: center;
 	line-height: 50px;
@@ -7,11 +7,13 @@ body{
 }
 /*外层白色背景*/
 .form-wrap{
-	display: inline-block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
 	width: 700px;
 	height: 450px;
-	margin: 50px auto 0px auto;
-	background-color: #fff;
+	margin: -225px 0 0 -350px;
+	background-color: rgba(255, 255, 255, 0.6);
 }
 /*顶层标题*/
 .form-title{

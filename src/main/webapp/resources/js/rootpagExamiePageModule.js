@@ -159,9 +159,6 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		//然后根据修改后的系别下拉框的值去获取对应的专业
 		getModifyUserDepModuleSpec(depId,specId);
-		// //输出用户名
-		// s("#user-account").value = account;
-		// s("#user-account").title = userId;
 		//为下专业下拉框添加自定义属性
 		//保存用户uid
 		s("#user-spec").setAttribute("data-userId", userId);

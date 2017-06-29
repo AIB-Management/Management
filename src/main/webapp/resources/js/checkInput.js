@@ -38,7 +38,7 @@ define(["jquery.min"],function($){
 			hintsContain.style.color = hintcolor;
 			hintsContain.style.border = hintcolor;
 			elem.style.borderColor = hintcolor;
-			elem.style.boxShadow = '0 0 3px' + hintcolor;
+			elem.style.boxShadow = '0 0 8px' + hintcolor;
 			hintsContain.style.visibility = 'visible';
 		},
 
@@ -53,7 +53,7 @@ define(["jquery.min"],function($){
 				hintsContain.innerText = this.hintsData[id]["correct"];
 				hintsContain.style.color = correctColor;
 				elem.style.borderColor = correctColor;
-				elem.style.boxShadow = '0 0 3px' + correctColor;
+				elem.style.boxShadow = '0 0 8px' + correctColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = true;
 
@@ -63,7 +63,7 @@ define(["jquery.min"],function($){
 				hintsContain.innerText = this.hintsData[id]["error"];
 				hintsContain.style.color = errorColor;
 				elem.style.borderColor = errorColor;
-				elem.style.boxShadow = '0 0 3px' + errorColor;
+				elem.style.boxShadow = '0 0 8px' + errorColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = false;
 
@@ -81,7 +81,7 @@ define(["jquery.min"],function($){
 				hintsContain.innerText = this.hintsData[id]["correct"];
 				hintsContain.style.color = correctColor;
 				elem.style.borderColor = correctColor;
-				elem.style.boxShadow = '0 0 3px' + correctColor;
+				elem.style.boxShadow = '0 0 8px' + correctColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = true;
 
@@ -91,7 +91,7 @@ define(["jquery.min"],function($){
 				hintsContain.innerText = this.hintsData[id]["error"];
 				hintsContain.style.color = errorColor;
 				elem.style.borderColor = errorColor;
-				elem.style.boxShadow = '0 0 3px' + errorColor;
+				elem.style.boxShadow = '0 0 8px' + errorColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = false;
 
@@ -148,7 +148,7 @@ define(["jquery.min"],function($){
 						hintsContain.innerText = that.hintsData[id]["ajaxError"];
 						hintsContain.style.color = obj["errorColor"];
 						obj["elem"].style.borderColor = obj["errorColor"];
-						obj["elem"].style.boxShadow = '0 0 3px' + obj["errorColor"];
+						obj["elem"].style.boxShadow = '0 0 8px' + obj["errorColor"];
 						obj["elem"].isCorrect = false;
 						bool = false;
 					}else{
@@ -175,14 +175,14 @@ define(["jquery.min"],function($){
 				hintsContain.style.color = correctColor;
 				hintsContain.style.color = correctColor;
 				elem.style.borderColor = correctColor;
-				elem.style.boxShadow = '0 0 3px' + correctColor;
+				elem.style.boxShadow = '0 0 8px' + correctColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = true;
 			}else{
 				hintsContain.innerText = this.hintsData[id]["error"];
 				hintsContain.style.color = errorColor;
 				elem.style.borderColor = errorColor;
-				elem.style.boxShadow = '0 0 3px' + errorColor;
+				elem.style.boxShadow = '0 0 8px' + errorColor;
 				hintsContain.style.visibility = 'visible';
 				elem.isCorrect = false;
 			}

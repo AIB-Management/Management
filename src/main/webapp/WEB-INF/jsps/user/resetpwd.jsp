@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="form-wrap">
-    <form action="${pageContext.request.contextPath}/public/modifypwd.action" method="post">
+    <form action="${pageContext.request.contextPath}/public/modifypwd.action" method="post" id="reset-content">
         <input type="hidden" name="Code" value="${Code}">
         <input type="hidden" name="username" value="${username}">
 

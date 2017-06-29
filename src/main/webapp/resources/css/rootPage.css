@@ -692,6 +692,7 @@ thead,tbody,tbody tr,tbody tr td{
 	width: 80px;
 	height: 30px;
 	line-height: 30px;
+	margin-left: 20px;
 	border: 1px solid #fff;
 	border-radius: 5px;
 	color: #fff;
@@ -705,7 +706,26 @@ thead,tbody,tbody tr,tbody tr td{
 	-ms-transition: all linear .3s;
 	-o-transition: all linear .3s;
 }
-#logout-btn:hover{
+#modify-pwd-btn{
+	display: inline-block;
+	vertical-align: middle;
+	width: 120px;
+	height: 30px;
+	line-height: 30px;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	transition: all linear .3s;
+	-webkit-transition: all linear .3s;
+	-moz-transition: all linear .3s;
+	-ms-transition: all linear .3s;
+	-o-transition: all linear .3s;
+}
+#logout-btn:hover,#modify-pwd-btn:hover{
 	background-color: #fff;
 	color: #000;
 }

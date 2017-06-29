@@ -39,6 +39,8 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 					if (data.code == 100) {
 						alert("修改成功!");
 						s("#modify-personal-name-floor").style.display = 'none';
+						//刷新页面
+						window.location.reload(true);
 					}else{
 						alert("修改失败！");
 					}
