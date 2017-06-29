@@ -1,8 +1,6 @@
 package com.gdaib.service;
 
-import com.gdaib.pojo.FileCustom;
-import com.gdaib.pojo.FileItemSelectVo;
-import com.gdaib.pojo.FileSelectVo;
+import com.gdaib.pojo.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.HashMap;
@@ -41,8 +39,9 @@ public interface FileService {
     public boolean isAllowUpFileTypeByPrefix(String contentType) throws Exception;
 
 
-    //获取内容细节
+    //获取内容细节总数
     public FileCustom getFileContent(FileSelectVo file) throws Exception;
 
-
+    //获取内容细节
+    public FileItemCustom selectFileItemByUid(String uid);
 }

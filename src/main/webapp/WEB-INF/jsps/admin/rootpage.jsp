@@ -387,6 +387,10 @@
 				<h3 title='<shiro:principal property="uid"/>' id="page-header-title">后台管理页</h3>
 			</div>
 			<div class="logout-btn-wrap">
+				<a id="modify-pwd-btn" href="${pageContext.request.contextPath}/public/modifyPassword.action">
+					<span class="glyphicon glyphicon-lock"></span>
+					修改密码
+				</a>
 				<a id="logout-btn" href="${pageContext.request.contextPath}/shiro/logout">
 					<span class="glyphicon glyphicon-off"></span>
 					退出

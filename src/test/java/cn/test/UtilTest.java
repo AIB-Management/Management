@@ -3,10 +3,7 @@ package cn.test;
 import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.DepartmentExtMapper;
 import com.gdaib.mapper.FileItemExtMapper;
-import com.gdaib.pojo.Account;
-import com.gdaib.pojo.AccountExample;
-import com.gdaib.pojo.Department;
-import com.gdaib.pojo.FileItemSelectVo;
+import com.gdaib.pojo.*;
 import com.gdaib.service.ContentService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
@@ -91,7 +88,7 @@ public class UtilTest {
     @Autowired
     FileItemExtMapper fileItemExtMapper;
 
-    @Test
+//    @Test
     public void testInsertFileItemByFileSelectVo() throws Exception{
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
         FileItemSelectVo select = new FileItemSelectVo();
@@ -123,6 +120,13 @@ public class UtilTest {
 
 
         fileItemExtMapper.insertFileItemByList(fileItems,"6e6673f7-9af4-4a3c-8052-82629c16c783");
+    }
+
+    @Test
+    public void testSelectFileItemByFileId() throws Exception{
+        FileItemCustom fileItemCustom = fileItemExtMapper.selectFileItemByUid("8373b8cd-d4cd-407e-8f20-b80c3a3e800f");
+
+        System.out.println(fileItemCustom);
     }
 
 }

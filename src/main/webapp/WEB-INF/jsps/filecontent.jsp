@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +19,10 @@
     <div class="content-info">
         <p>作者：${filecontent.author}</p>
         <p>标题：${filecontent.title}</p>
-        <p>上传时间：${filecontent.uptime}</p> 
+        <p>上传时间：
+            <%--${filecontent.uptime}--%>
+            <fmt:formatDate value="${filecontent.uptime}" pattern="yyyy年MM月dd日"/>
+        </p>
     </div>
     <div class="preview-content">
         <p><b id="review-count"></b>个文件可预览,共<b id="all-file-count"></b>个文件</p>
@@ -39,8 +43,11 @@
     <div class="download-link">
         <p>可下载链接，共<b id="downloadfile-count"></b>个文件可下载</p>
         <c:forEach items="${filecontent.fileItems}" var="ff">
+            <!--
             <a href="${filecontent.filepath}/${ff.filename}">
-                <span class="glyphicon glyphicon-download-alt"></span> 
+            -->
+            <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
+                <span class="glyphicon glyphicon-download-alt"></span>
                 ${ff.filename}
             </a>
         </c:forEach>

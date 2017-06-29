@@ -62,13 +62,14 @@ public class Utils {
 
     }
 
+
+
     //获取验证码
-    public static void outCaptcha() throws Exception {
-
-    }
-
-    public static String getCaptcha() throws Exception {
-        return null;
+    public static String getCaptcha(HttpServletRequest request) throws Exception {
+        //获取code方法
+        String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+//        System.out.println(kaptchaExpected);
+        return kaptchaExpected;
     }
 
 

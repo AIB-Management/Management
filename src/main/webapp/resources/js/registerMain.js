@@ -246,8 +246,10 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			}
 		}
 
-		if (count != inputs.length) {
-			EventUntil.preventDefault(event);
+		if (count == inputs.length) {
+			//如果所有输入框输入正确提交表单
+			s("#all-input").submit();
+			alert("提交成功，请耐心等待管理员审核");
 			
 		}
 });
