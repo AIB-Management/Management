@@ -628,6 +628,7 @@ public class ManageController {
         if(uid == null || uid.equals("") || departmentUid == null || departmentUid.equals("")){
             return Msg.fail();
         }
+
         usersService.updateAccountByDepartment(uid,departmentUid);
         return Msg.success();
     }

@@ -364,6 +364,10 @@ require(["jquery.min","overborwserEvent",
 			}
 
 		}else if (target.id == "uploadfile-close-btn") {
+			//清空文件上传插件内的文件缓存
+        	$("#fileupload").fileinput("clear");
+        	//清空上传文件标题
+        	s("#fileTitle").value = "";
 			//上传文件弹出层关闭按钮事件
 			s("#upload-file-floor").style.display = 'none';
 
@@ -424,7 +428,7 @@ require(["jquery.min","overborwserEvent",
 	    enctype: 'multipart/form-data',
 	    showCaption: true,//是否显示标题
 	    showUpload: false, //取消上传按钮
-	    uploadAsync: false,
+	    uploadAsync: false,//取消异步上传
 	    uploadIcon: '', //取消文件下面的上传按钮
 	    uploadExtraData: function (){
 	    	return {
@@ -443,7 +447,7 @@ require(["jquery.min","overborwserEvent",
 		s("#upload-batchfile").disabled = "true";
 
 
-    }).on('filebatchuploadcomplete', function(event, files, extra) {
+    }).on('filebatchuploadsuccess', function(event, files, extra) {
     	var curPath = getCurPath();
     	var curDepId = s("#departmentId").title;
        
@@ -458,7 +462,18 @@ require(["jquery.min","overborwserEvent",
         //关闭弹出层
         s("#upload-file-floor").style.display = 'none';
 
-    });
+    }).on('filebatchuploaderror', function(event, data, msg) {
+	    
+	   alert("不可以上传js,java,php 等可操作性的文件！");
+
+	}).on('filecleared', function(event) {
+		//清空文件触发事件
+		//清空文件标题
+		s("#fileTitle").value = "";
+		//禁用按钮
+		s("#upload-batchfile").className = "btn btn-success disabled";
+		s("#upload-batchfile").disabled = "true";
+	});
 
     function uploadFile(){
     	var isNoRepeat = checkFloderName(ss("#main-content-list tr td a"),s("#fileTitle").value);

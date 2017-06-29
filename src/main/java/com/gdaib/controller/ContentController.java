@@ -186,7 +186,7 @@ public class ContentController {
 
     @RequestMapping("/content/ajaxUpdateName")
     @ResponseBody
-    @RequiresPermissions("account:update")
+    @RequiresPermissions("accountName:update")
     public Msg ajaxUpdateName(String name) throws Exception {
         if(StringUtils.isEmpty(name)){
             return Msg.fail();

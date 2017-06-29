@@ -114,9 +114,8 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				nameCol = col.cloneNode(true),
 				depCol = col.cloneNode(true),
 				specCol = col.cloneNode(true),
-				operateCol = col.cloneNode(true),
-				btnicon = btnIcon.cloneNode(true),
-				btn = button.cloneNode(true);
+				operateCol = col.cloneNode(true);
+				
 
 
 			nameCol.innerText = dataList[i].name;
@@ -125,18 +124,30 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			depCol.innerText = dataList[i].depContent;
 			specCol.innerText = dataList[i].content;
 
-			btn.appendChild(btnicon);
-			btn.innerHTML = "撤回管理员";
-			btn.className = "btn btn-danger btn-sm";
-			//授权按钮绑定点击事件
-			EventUntil.addHandler(btn,"click",recallAdmin);
-
-			operateCol.appendChild(btn);
+			
 
 			row.appendChild(nameCol);
 			row.appendChild(depCol);
 			row.appendChild(specCol);
-			row.appendChild(operateCol);
+			if (s("#page-header-title").title != dataList[i].uid) {
+				//如果当前遍历的数据管理员uid 不是当前登陆的管理员
+				//输出操作按钮
+				var btnicon = btnIcon.cloneNode(true),
+					btn = button.cloneNode(true);
+
+				btn.appendChild(btnicon);
+				btn.innerHTML = "撤回管理员";
+				btn.className = "btn btn-danger btn-sm";
+				//授权按钮绑定点击事件
+				EventUntil.addHandler(btn,"click",recallAdmin);
+
+				operateCol.appendChild(btn);
+				row.appendChild(operateCol);
+			}else{
+				operateCol.innerText = "-";
+				row.appendChild(operateCol);
+			}
+			
 
 			frag.appendChild(row);
 

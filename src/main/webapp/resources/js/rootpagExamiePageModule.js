@@ -143,7 +143,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		var parent = this.parentNode.parentNode;
 		var depId = parent.querySelectorAll("td")[3].title,
 			specId = parent.querySelectorAll("td")[4].title,
-			account = parent.querySelectorAll("td")[2].innerText
+			account = parent.querySelectorAll("td")[2].innerText,
 			userId = parent.querySelectorAll("td")[1].title;
 
 		var depOptions = ss("#user-dep option");
@@ -157,12 +157,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			}
 		}
 
-		console.log(specId);
 		//然后根据修改后的系别下拉框的值去获取对应的专业
-		getModifyUserDepModuleSpec(s("#user-dep").value,specId);
-		//输出用户名
-		s("#user-account").value = account;
-		s("#user-account").title = userId;
+		getModifyUserDepModuleSpec(depId,specId);
+		// //输出用户名
+		// s("#user-account").value = account;
+		// s("#user-account").title = userId;
+		//为下专业下拉框添加自定义属性
+		//保存用户uid
+		s("#user-spec").setAttribute("data-userId", userId);
 		//显示弹出层
 		s("#modify-user-department-floor").style.display = 'block';
 	}

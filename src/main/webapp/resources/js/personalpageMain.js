@@ -30,12 +30,20 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 
 		if (status == true) {
 			//如果新名字正确发送ajax
-			// $.ajax({
-			// 	url: '/path/to/file',
-			// 	type: 'default GET (Other values: POST)',
-			// 	dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-			// 	data: {param1: 'value1'},
-			// });
+			$.ajax({
+				url: '/Management/content/ajaxUpdateName.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "name=" + s("#newUsername").value,
+				success: function(data){
+					if (data.code == 100) {
+						alert("修改成功!");
+						s("#modify-personal-name-floor").style.display = 'none';
+					}else{
+						alert("修改失败！");
+					}
+				}
+			});
 			
 		}
 	}
