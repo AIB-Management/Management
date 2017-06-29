@@ -156,6 +156,8 @@ public class ManageController {
                 HashMap<String,Object> map = new HashMap<String,Object>();
                 map.put("username",account.getUsername());
                 map.put("name",account.getName());
+                map.put("mail",account.getMail());
+                map.put("role",account.getRole());
                 map.put("departmentId",account.getDepartmentId());
                 map.put("depContent",account.getDepContent());
                 map.put("professionId",account.getProfessionId());
@@ -166,7 +168,7 @@ public class ManageController {
         }
 
 
-        return Msg.success().add("accountInfo", accountInfoList);
+        return Msg.success().add("accountInfo", accountInfo);
     }
 
     /**
@@ -249,6 +251,7 @@ public class ManageController {
                 if (accountInfos.size() != ids.size()) {
                     return new Msg(200, "用户不存在");
                 }
+
 
 
                 //保存接受者的邮箱
