@@ -43,8 +43,11 @@
     <div class="download-link">
         <p>可下载链接，共<b id="downloadfile-count"></b>个文件可下载</p>
         <c:forEach items="${filecontent.fileItems}" var="ff">
+            <!--
             <a href="${filecontent.filepath}/${ff.filename}">
-                <span class="glyphicon glyphicon-download-alt"></span> 
+            -->
+            <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
+                <span class="glyphicon glyphicon-download-alt"></span>
                 ${ff.filename}
             </a>
         </c:forEach>

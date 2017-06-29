@@ -4,23 +4,26 @@ import com.gdaib.Exception.GlobalException;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
-import com.gdaib.service.UsersService;
 import com.gdaib.util.MyStringUtils;
 import com.gdaib.util.Utils;
-import com.github.pagehelper.util.StringUtil;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by mahanzhen on 17-5-28.
@@ -117,9 +120,9 @@ public class FileController {
         //写入文章信息
         int result = 0;
         result = fileService.insertFile(fileSelectVo);
-        if ( result > 0) {
+        if (result > 0) {
             result = fileService.insertFileItem(fileItems, fileUid);
-            if ( result > 0) {
+            if (result > 0) {
                 return Msg.success();
             }
         }
@@ -188,10 +191,7 @@ public class FileController {
             throw new GlobalException("文件不存在");
         }
 
-//        ServletContext sc = request.getSession().getServletContext();
-//        String sqlPath = fileCustoms.get(0).getFile().getFilepath();
-//        String localPath = sc.getRealPath(sqlPath) + "/";
-        String localPath = Utils.getSystemRealFilePath(request,fileCustoms.get(0).getFile().getFilepath());
+        String localPath = Utils.getSystemRealFilePath(request, fileCustoms.get(0).getFile().getFilepath());
         fileService.deleteLocalFile(localPath);
 
         int result = fileService.deleteFile(fileSelectVo);
@@ -229,6 +229,71 @@ public class FileController {
             return Msg.success();
         }
         return Msg.fail();
+    }
+
+    private InputStream in;
+    private OutputStream out;
+
+    @RequestMapping("/file/downLoadFile")
+    public void downLoadFile(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        if (MyStringUtils.isEmpty(uid)) {
+            throw new GlobalException("uid不能为空");
+        }
+
+        FileItemCustom custom = fileService.selectFileItemByUid(uid);
+
+        //设置文件MIME类型
+        response.setContentType(custom.getDatatype());
+
+        System.out.println(custom);
+        //设置Content-Disposition
+        response.setHeader("Content-Disposition", "attachment;filename=" +
+//                custom.getFilename()
+                        new String(custom.getFilename().getBytes("UTF-8"), "ISO8859-1")
+        );
+
+        //读取目标文件，通过response将目标文件写到客户端
+        //获取目标文件的绝对路径
+        String fullFileName = Utils.getSystemRealFilePath(request, custom.getFilePath()) + custom.getFilename();
+        //System.out.println(fullFileName);
+        try {
+            //读取文件
+            in = new FileInputStream(fullFileName);
+            out = response.getOutputStream();
+            //写文件
+            int b;
+            while ((b = in.read()) != -1) {
+                out.write(b);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeStream();
+        }
+
+    }
+
+
+    //关闭流
+    private void closeStream() {
+
+        try {
+            if (in != null) {
+                in.close();
+                in = null;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (out != null) {
+                out.close();
+                out = null;
+            }
+        } catch (Exception e) {
+        }
     }
 
 

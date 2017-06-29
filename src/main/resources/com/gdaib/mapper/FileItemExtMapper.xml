@@ -8,4 +8,16 @@
             (#{fileItem.uid},#{fileItem.filename},#{fileUid},#{fileItem.datatype},#{fileItem.showing},#{fileItem.position},#{fileItem.prefix})
         </foreach>
     </insert>
+
+    <select id="selectFileItemByUid" parameterType="String" resultType="com.gdaib.pojo.FileItemCustom">
+        SELECT
+t_file.filePath,
+t_file_item.*
+FROM
+t_file_item
+INNER JOIN t_file ON t_file_item.fileUid = t_file.uid
+WHERE
+t_file_item.uid = #{uid}
+
+    </select>
 </mapper>

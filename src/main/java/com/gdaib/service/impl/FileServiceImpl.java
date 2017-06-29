@@ -3,10 +3,7 @@ package com.gdaib.service.impl;
 import com.gdaib.Exception.GlobalException;
 import com.gdaib.mapper.FileExtMapper;
 import com.gdaib.mapper.FileItemExtMapper;
-import com.gdaib.pojo.FileCustom;
-import com.gdaib.pojo.FileItem;
-import com.gdaib.pojo.FileItemSelectVo;
-import com.gdaib.pojo.FileSelectVo;
+import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.util.MyStringUtils;
 import com.gdaib.util.Utils;
@@ -27,7 +24,7 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
     //直接显示的文件类型
     public static final String[] SHOW_TYPE = {
-            ".swf", ".pdf", ".jpg", ".png", ".gif"
+            ".swf", ".pdf", ".jpg", ".png", ".gif",".jpeg"
     };
 
     //不允许上传的文件后缀
@@ -274,5 +271,11 @@ public class FileServiceImpl implements FileService {
 //        content.put("items",fileCustom.getFileItems());
 
         return fileCustom;
+    }
+
+    @Override
+    public FileItemCustom selectFileItemByUid(String uid) {
+        FileItemCustom custom = fileItemExtMapper.selectFileItemByUid(uid);
+        return custom;
     }
 }
