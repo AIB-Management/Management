@@ -211,9 +211,13 @@ thead,tbody,tbody tr,tbody tr td{
 }
 /*文件夹管理弹出层内容*/
 .filemanage-info{
+	position: absolute;
 	width: 1000px;
-	height: 600px;
-	margin: 20px auto 0 auto;
+	height: 620px;
+	top: 50%;
+	left: 50%;
+	margin-top: -310px;
+	margin-left: -500px;
 	border-radius: 5px;
 	background-color: #fff;
 	box-shadow: 0 5px 10px rgba(160,162,122,0.5);
@@ -497,8 +501,9 @@ thead,tbody,tbody tr,tbody tr td{
 .manage-department-main-sidebar{
 	float: left;
 	width: 30%;
-	height: 460px;
+	height: 420px;
 	border-right: 1px solid #ccc;
+	overflow-y: scroll;
 }
 .manage-department-main-sidebar li{
 	height: 38px;
@@ -539,11 +544,11 @@ thead,tbody,tbody tr,tbody tr td{
 	display: none;
 	position: absolute;
 	width: 450px;
-	height: 200px;
+	height: 230px;
 	top: 50%;
 	left: 50%;
 	margin-left: -225px;
-	margin-top: -100px;
+	margin-top: -115px;
 	background-color: #fff;
 	border-radius: 5px;
 	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
@@ -657,6 +662,7 @@ thead,tbody,tbody tr,tbody tr td{
 	height: 50px;
 	font-size: 15px;
 	background-color: #333333;
+	z-index: 20;
 }
 .title-wrap{
 	float: left;

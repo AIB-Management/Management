@@ -1695,6 +1695,7 @@ require(["jquery.min","overborwserEvent",
 		}
 	})
 
+
 	//管理系别弹出层内容包裹层设置自定义滚动条
 	$(".manage-department-maincontent").mCustomScrollbar({
 		axis: "y",
@@ -1703,7 +1704,9 @@ require(["jquery.min","overborwserEvent",
 		mouseWheel: {
 			enable: true
 		}
-	})
+	});
+
+	
 
 
 })
