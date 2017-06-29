@@ -17,10 +17,10 @@ require.config({
 })
 
 //管理页主函数
-require(["jquery.min","checkInput","overborwserEvent",
+require(["jquery.min","overborwserEvent",
 	"rootpageUnexamiePageModule","rootpagExamiePageModule",
 	"rootpageManageFloderListModule","rootpageManageDepartmentModule",
-	"rootpageManageLeaderAdmin","jquery.mousewheel.min","mCustomScrollbar.min"],function main($,checkBy,EventUntil,unexamiePage,examiePage,manageDepFloder,manageDep,manageAdminLeader){
+	"rootpageManageLeaderAdmin","jquery.mousewheel.min","mCustomScrollbar.min"],function main($,EventUntil,unexamiePage,examiePage,manageDepFloder,manageDep,manageAdminLeader){
 
 	//封装选择器函数
 	function s(name){
@@ -140,6 +140,8 @@ require(["jquery.min","checkInput","overborwserEvent",
 	function createDepOptionForModifyUserDep(data){
 		var list = data.extend.deps;
 		var frag = document.createDocumentFragment();
+		//清空系别下拉框内容
+		s("#user-dep").innerHTML = "";
 
 		for (var i = 0; i < list.length; i++) {
 			var option = createElem("option");
@@ -153,28 +155,26 @@ require(["jquery.min","checkInput","overborwserEvent",
 
 	//输出专业元素
 	//需要两个参数
-	//第一个是系别的id ，第二个是设定特定专业为选中状态的专业id，可为空
+	//第一个是系别的id ，第二个是设定特定专业为选中状态，可为空
 	//第二个参数为空时 列表的选中状态会设为默认选中状态
 	function createDepOptionForModifyUserSpec(data,targetSpec){
 		var list = data.extend.pros;
 		var frag = document.createDocumentFragment();
 
-		//保存第一个option
-		var firstOption = s("#user-spec").options[0].cloneNode(true);
+		//清空专业下拉框内容
 		s("#user-spec").innerHTML = "";
 
 		for (var i = 0; i < list.length; i++) {
 			var option = createElem("option");
 			option.value = list[i].uid;
 			option.innerText = list[i].pro;
-			if (targetSpec != "") {
+			if (targetSpec != undefined) {
 				if (option.value == targetSpec) {
 					option.selected = "selected";
 				}
 			}
 			frag.appendChild(option);
 		}
-		s("#user-spec").appendChild(firstOption);
 		s("#user-spec").appendChild(frag);
 	}
 
@@ -203,28 +203,44 @@ require(["jquery.min","checkInput","overborwserEvent",
 
 	//修改用户部门下拉框改变事件回调函数
 	function modifyUserDepChange(){
+
 		var val = this.value;
+		
 		getModifyUserDepModuleSpec(val);
+		
 	}
+
+	//修改用户部门系别弹出层下拉列表改变事件
+	EventUntil.addHandler(s("#user-dep"),"change",modifyUserDepChange);
 
 
 	//修改用户系别弹出层提交按钮点击事件回调函数
 	function confirmModifyUserDep(){
-		//首先验证用户名是否正确
-		var reg = /^[\S\w\d][^\*]{8,16}$/;
-		var newUserNameStatus = reg.test(s("#user-account").value);
+		
 		//如果部门选择框的值合法
-		if (s("#user-dep").value != "100" && 
-			s("#user-spec").value != "100" && newUserNameStatus == true) {
-			//清空提示信息
-			s("#new-account-hint").innerText = "";
+		if (s("#user-spec").value != "" && s("#user-dep").value != "") {
+			//清空提示信息 
+			// s("#new-account-hint").innerText = "";
+			//获取部门id 用户id
+			var depId = s("#user-spec").value,
+				userId = s("#user-spec").getAttribute("data-userid");
 			//发送ajax 提交给后台
-			// $.ajax({
-			// 	url: '',
-			// 	type: 'POST',
-			// 	dataType: 'json',
-			// 	data: {param1: 'value1'},
-			// })
+			$.ajax({
+				url: '/Management/admin/ajaxUpdateTeacherDep.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "uid=" + userId + "&departmentUid=" + depId,
+				success: function(data){
+					if (data.code == 100) {
+						alert("修改成功！");
+						//重新刷新已审核列表信息
+						examiePage.toexamiedPage(examiePage.curExamieModulePage,examiePage.curDepartmentId);
+						s("#modify-user-department-floor").style.display = 'none';
+					}else{
+						alert("修改失败！");
+					}
+				}
+			})
 			
 
 		}else if(newUserNameStatus == false) {
@@ -247,7 +263,7 @@ require(["jquery.min","checkInput","overborwserEvent",
 
 
 	//修改用户部门下拉框改变事件
-	EventUntil.addHandler(s("#user-dep"),"change",modifyUserDepChange);
+	//EventUntil.addHandler(s("#user-dep"),"change",modifyUserDepChange);
 
 
 	//页面加载完成时 显示新增未注册用户数量
@@ -257,8 +273,12 @@ require(["jquery.min","checkInput","overborwserEvent",
 			type: 'GET',
 			dataType: 'json',
 			success: function(data){
-				s("#number-hints").innerText = data.extend.num;
-				s("#number-hints").style.display = 'inline-block';
+				//如果数量不为0 就输出
+				if (data.extend.num != 0) {
+					s("#number-hints").innerText = data.extend.num;
+					s("#number-hints").style.display = 'inline-block';
+				}
+				
 			}
 		})
 		
@@ -519,7 +539,8 @@ require(["jquery.min","checkInput","overborwserEvent",
 
 	//删除文件对话框删除按钮点击事件执行函数
 	function doDropFile(){
-		var uid = s("#target-file-name").title;
+		var uid = s("#target-file-name").title,
+			accuid = s("#page-header-title").title;
 
 		//获取当前删除文件所在路径以及当前页面的系别id 为刷新列表时候所用
 		var curPath = getCurPath();
@@ -527,7 +548,7 @@ require(["jquery.min","checkInput","overborwserEvent",
 
 		//发送ajax
 		$.ajax({
-			url: '',
+			url: '/Management/file/ajaxDeleteFile.action',
 			type: 'POST',
 			dataType: 'json',
 			data: "accuid=" + accuid + "&uid=" + uid,
@@ -1607,7 +1628,7 @@ require(["jquery.min","checkInput","overborwserEvent",
 
 		}else if(target.id == "modify-user-departmetn-close-btn"){
 			//清空错误提示框内容
-			s("#new-account-hint").innerText = "";
+			//s("#new-account-hint").innerText = "";
 			//修改用户部门弹出层关闭按钮点击事件
 			s("#modify-user-department-floor").style.display = "none";
 
@@ -1674,6 +1695,7 @@ require(["jquery.min","checkInput","overborwserEvent",
 		}
 	})
 
+
 	//管理系别弹出层内容包裹层设置自定义滚动条
 	$(".manage-department-maincontent").mCustomScrollbar({
 		axis: "y",
@@ -1682,7 +1704,9 @@ require(["jquery.min","checkInput","overborwserEvent",
 		mouseWheel: {
 			enable: true
 		}
-	})
+	});
+
+	
 
 
 })

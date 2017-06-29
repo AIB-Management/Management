@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 
 <%@ page import="java.util.List" %>
 <%@ page import="com.gdaib.pojo.Department" %>
@@ -18,18 +19,13 @@
 			<div class="close-btn clearfix">
 				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-user-departmetn-close-btn">&times;</span></button>
 			</div>
-			<h3>修改用户资料</h3>
-			<div class="modify-user-name-wrap">
-				<label>用户账号</label>
-				<input type="text" id="user-account">
-				<p id="new-account-hint"></p>
-			</div>
+			<h3>修改用户系别专业</h3>
 			<div class="select-wrap">
 				<select id="user-dep">
-					<option value="100">请选择系别</option>
+					<option value="">请选择系别</option>
 				</select>
 				<select id="user-spec">
-					<option value="100">请选择专业</option>
+					<option value="">请选择专业</option>
 				</select>
 			</div>
 			<div class="modify-dep-btn">
@@ -388,7 +384,7 @@
 	<div class="wrapper">
 		<div class="header clearfix">
 			<div class="title-wrap">
-				<h3>后台管理页</h3>
+				<h3 title='<shiro:principal property="uid"/>' id="page-header-title">后台管理页</h3>
 			</div>
 			<div class="logout-btn-wrap">
 				<a id="logout-btn" href="${pageContext.request.contextPath}/shiro/logout">

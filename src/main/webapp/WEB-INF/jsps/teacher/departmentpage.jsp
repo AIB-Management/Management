@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
-	<title>主页</title>
+	<title><shiro:principal property="depContent"/>主页</title>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170615-13"></script>
 </head>
 <body>
