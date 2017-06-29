@@ -80,4 +80,7 @@ public interface UsersService {
     //根据uid修改专业
     public void updateAccountByDepartment(String uid , String departmentUid)throws Exception;
 
+    //修改用户姓名
+    public void updateName(String name,String uid) throws Exception;
+
 }

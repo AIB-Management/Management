@@ -7,6 +7,8 @@ import com.gdaib.pojo.Account;
 import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.Department;
 import com.gdaib.pojo.FileItemSelectVo;
+import com.gdaib.service.ContentService;
+import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,19 +76,15 @@ public class UtilTest {
 
     @Autowired
     private AccountMapper accountMapper;
-//    @Test
+
+    @Autowired
+    private UsersService usersService;
+
+
+    @Test
     public void testGetCountNav() throws Exception{
-//        usersService.updateAccountByDepartment("7539a632-b05c-43f1-bc3f-ecc58b6671c2","5e908705-f0f9-42d1-b844-82288fdf1e91");
 
-        Account account = new Account();
-        account.setDepuid("5e908705-f0f9-42d1-b844-82288fdf1e91");
-
-        AccountExample accountExample = new AccountExample();
-        AccountExample.Criteria criteria = accountExample.createCriteria();
-        criteria.andUidEqualTo("7539a632-b05c-43f1-bc3f-ecc58b6671c2");
-
-
-        accountMapper.updateByExampleSelective(account,accountExample);
+        usersService.updateName("xiaoming","7539a632-b05c-43f1-bc3f-ecc58b6671c2");
     }
 
 
