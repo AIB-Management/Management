@@ -11,7 +11,7 @@
 <body>
 <div id="floor">
     <div class="close-btn clearfix">
-        <button type="button" class="close" aria-label="Close"><span id="filecontent-close-btn" aria-hidden="true">&times;</span></button>
+        <button type="button" id="filecontent-close-btn" class="close" aria-label="Close">×</button>
     </div>
     <iframe src="" id="file-content"></iframe>
 </div>
@@ -33,8 +33,8 @@
                 <li>文件类型:${ff.prefix}</li>
                 <!-- <li>文档位置:${ff.position}</li> -->
                 <a href="${filecontent.filepath}/${ff.filename}">
-                    <span class="glyphicon glyphicon-paperclip"></span> 
-                    链接
+                    <span class="glyphicon glyphicon-eye-open"></span> 
+                    预览${ff.filename}
                 </a>
             </c:if>
             

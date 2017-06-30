@@ -17,7 +17,7 @@
 	<div id="modify-user-department-floor">
 		<div class="modify-dep-dialog-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-user-departmetn-close-btn">&times;</span></button>
+				<button type="button" id="modify-user-departmetn-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>修改用户系别专业</h3>
 			<div class="select-wrap">
@@ -41,7 +41,7 @@
 	<div id="recall-admin-dialog-floor">
 		<div class="manage-admin-dialog-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="recall-admin-close-btn">&times;</span></button>
+				<button type="button" id="recall-admin-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>撤回管理员</h3>
 			<p class="recall-admin-hint">你确定要撤回<b id="recall-admin-name"></b>的管理员身份吗？</p>
@@ -62,7 +62,7 @@
 	<div id="recall-leader-dialog-floor">
 		<div class="manage-leader-dialog-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="recall-leader-close-btn">&times;</span></button>
+				<button type="button" id="recall-leader-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>撤回领导</h3>
 			<p class="recall-leader-hint">你确定要撤回<b id="recall-leader-name"></b>的领导身份吗？</p>
@@ -83,7 +83,7 @@
 	<div id="manage-department-floor">
 		<div id="new-department-dialog">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="new-department-close-btn">&times;</span></button>
+				<button type="button" id="new-department-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>新建系别</h3>
 			<div class="department-content">
@@ -100,7 +100,7 @@
 		</div>
 		<div id="new-specialy-dialog">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="new-specialy-close-btn">&times;</span></button>
+				<button type="button" id="new-specialy-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>新建专业</h3>
 			<div class="department-content">
@@ -117,7 +117,7 @@
 		</div>
 		<div id="modify-specialy-dialog">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-specialy-close-btn">&times;</span></button>
+				<button type="button" id="modify-specialy-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>修改专业</h3>
 			<div class="department-content">
@@ -134,7 +134,7 @@
 		</div>
 		<div id="modify-department-dialog">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-department-close-btn">&times;</span></button>
+				<button type="button" id="modify-department-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>修改系别</h3>
 			<div class="department-content">
@@ -179,7 +179,7 @@
 		</div>
 		<div class="manage-department-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="manage-department-close-btn">&times;</span></button>
+				<button type="button" id="manage-department-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>管理系别及专业</h3>
 			<div class="manage-department-toolbar">
@@ -214,7 +214,7 @@
 		<!-- 修改文件夹名模态框 -->
 		<div id="modify-file-name-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modify-flodername-close-btn">&times;</span></button>
+				<button type="button" id="modify-flodername-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>修改文件夹名</h3>
 			<div class="input-wrap">
@@ -232,7 +232,7 @@
 		</div>
 		<div id="new-file-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="new-floder-close-btn">&times;</span></button>
+				<button type="button" id="new-floder-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>新建文件夹</h3>
 			<div class="input-wrap">
@@ -250,7 +250,7 @@
 		</div>
 		<div id="drop-floder-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="drop-floder-close-btn">&times;</span></button>
+				<button type="button" id="drop-floder-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>删除文件夹</h3>
 			<p class="drop-floder-msg">你确认要删除<b id="target-floder-name"></b>这（几个/个）文件夹吗？若当前文件夹下有子目录此操作会造成异常！</p>
@@ -268,7 +268,7 @@
 		</div>
 		<div id="drop-file-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="drop-file-close-btn">&times;</span></button>
+				<button type="button" id="drop-file-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>删除文件</h3>
 			<p class="drop-floder-msg">你确认要删除<b id="target-file-name"></b>这个文件吗？</p>
@@ -287,7 +287,7 @@
 		<!-- 修改导航弹出层内容 -->
 		<div class="filemanage-info">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="filemanage-close-btn">&times;</span></button>
+				<button type="button" id="filemanage-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<div class="manage-tool-bar">
 				<button class="btn btn-primary btn-sm" id="newfloder-btn">
@@ -334,7 +334,7 @@
 		<!-- 拒绝用户注册回馈信息弹出层 -->
 		<div id="refuse-info">
 			<div class="close-btn-wrap clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="refuse-close-btn">&times;</span></button>
+				<button type="button" id="refuse-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>拒绝信息填写</h3>
 			<p class="refuse-info-wrap refuse-hint">

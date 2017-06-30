@@ -343,10 +343,11 @@ require(["jquery.min","overborwserEvent",
 
 	//事件委托函数
 	function entrustEvent(event){
-
 		event = EventUntil.getEvent(event);
 		//获取真正触发事件的对象
-		var target = event.target;
+		var target = EventUntil.getTarget(event);
+		
+		console.log(target);
 
 		//隐藏溢出导航栏按钮事件
 		if (target.id == "show-hidden-menu") {
@@ -473,6 +474,7 @@ require(["jquery.min","overborwserEvent",
 		//禁用按钮
 		s("#upload-batchfile").className = "btn btn-success disabled";
 		s("#upload-batchfile").disabled = "true";
+
 	});
 
     function uploadFile(){
