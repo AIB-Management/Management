@@ -184,6 +184,7 @@ public class ContentController {
         return Msg.fail();
     }
 
+    //修改教师姓名
     @RequestMapping("/content/ajaxUpdateName")
     @ResponseBody
     @RequiresPermissions("accountName:update")
@@ -194,6 +195,12 @@ public class ContentController {
         AccountInfo login = Utils.getLoginAccountInfo();
 
         usersService.updateName(name,login.getUid());
+
+        AccountInfo accountInfo = Utils.getLoginAccountInfo();
+        accountInfo.setName(name);
+
+
+
 
         return Msg.success();
     }

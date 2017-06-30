@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Author:马汉真
@@ -151,6 +149,25 @@ public class ManageController {
     @RequiresPermissions("accountType:query")
     public Msg ajaxGetAccountInfoIsAdmin() throws Exception {
         List<AccountInfo> accountInfo = usersService.findAccountInfoByCharacter("admin", null);
+        List<Map<String,Object>> accountInfoList = new ArrayList<Map<String, Object>>();
+        AccountInfo adminAccount = Utils.getLoginAccountInfo();
+        for(AccountInfo account : accountInfo){
+            if(!account.getUid().equals(adminAccount.getUid())){
+                HashMap<String,Object> map = new HashMap<String,Object>();
+                map.put("username",account.getUsername());
+                map.put("name",account.getName());
+                map.put("mail",account.getMail());
+                map.put("role",account.getRole());
+                map.put("departmentId",account.getDepartmentId());
+                map.put("depContent",account.getDepContent());
+                map.put("professionId",account.getProfessionId());
+                map.put("content",account.getContent());
+                map.put("uid",account.getUid());
+                accountInfoList.add(map);
+            }
+        }
+
+
         return Msg.success().add("accountInfo", accountInfo);
     }
 
@@ -234,6 +251,7 @@ public class ManageController {
                 if (accountInfos.size() != ids.size()) {
                     return new Msg(200, "用户不存在");
                 }
+
 
 
                 //保存接受者的邮箱
