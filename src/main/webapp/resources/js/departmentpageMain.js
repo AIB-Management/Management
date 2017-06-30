@@ -424,7 +424,7 @@ require(["jquery.min","overborwserEvent",
         language: 'zh', //设置语言
     	uploadUrl: "/Management/file/doUploadFile.action", //上传的地址
 	    allowedFileExtensions: null,//接收的文件后缀,
-	    maxFileCount: 3,
+	    maxFileCount: 100,
 	   	dropZoneEnabled: true,
 	    enctype: 'multipart/form-data',
 	    showCaption: true,//是否显示标题
