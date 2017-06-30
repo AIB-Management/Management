@@ -112,6 +112,10 @@ public class FileController {
         //把文件写到目录中
         List<FileItemSelectVo> fileItems = fileService.writeFileToLocal(path, files);
 
+        if(fileItems ==null){
+            return Msg.fail();
+        }
+
         fileSelectVo.setUid(fileUid);
 
         String url = "/Management/content/filecontent.action?uid=" + fileUid;

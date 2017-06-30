@@ -12,6 +12,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
     //直接显示的文件类型
     public static final String[] SHOW_TYPE = {
-            ".swf", ".pdf", ".jpg", ".png", ".gif",".jpeg"
+            ".swf", ".pdf", ".jpg", ".png", ".gif", ".jpeg"
     };
 
     //不允许上传的文件后缀
@@ -109,17 +110,26 @@ public class FileServiceImpl implements FileService {
     private FileOutputStream fos;
     private InputStream in;
 
-    private void closeStream() throws Exception {
+    private void closeStream()  {
 
-        if (in != null) {
-            in.close();
-            in = null;
+        try {
+            if (in != null) {
+                in.close();
+                in = null;
+            }
+        }catch (Exception e){
+
         }
 
-        if (fos != null) {
-            fos.close();
-            fos = null;
+        try {
+            if (fos != null) {
+                fos.close();
+                fos = null;
+            }
+        }catch (Exception e){
+
         }
+
     }
 
 
@@ -162,14 +172,14 @@ public class FileServiceImpl implements FileService {
             f.mkdirs();
 
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
-        String fileName="";
-        for (int i = 0,length=files.length; i < length; i++) {
+        String fileName = "";
 
-            if (!files[i].isEmpty()) {
-                fileItems.add(getFileItemInfoByCommonsMultipartFile(i, files[i]));
-                try {
+        try {
+            for (int i = 0, length = files.length; i < length; i++) {
+                if (!files[i].isEmpty()) {
+                    fileItems.add(getFileItemInfoByCommonsMultipartFile(i, files[i]));
                     // 获得原始文件名
-                    fileName= files[i].getOriginalFilename();
+                    fileName = files[i].getOriginalFilename();
                     System.out.println("原始文件名:" + fileName);
                     fos = new FileOutputStream(path
                             + fileName);
@@ -178,17 +188,15 @@ public class FileServiceImpl implements FileService {
                     while ((b = in.read()) != -1) {
                         fos.write(b);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    closeStream();
                 }
+                System.out.println("上传文件到:" + path + fileName);
             }
-
-            System.out.println("上传文件到:" + path + fileName);
-
+        } catch (Exception e) {
+            deleteFile(f);
+            return null;
+        } finally {
+            closeStream();
         }
-
         return fileItems;
     }
 
@@ -247,8 +255,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Integer insertFileItem(List<FileItemSelectVo> fileItemSelectVos,String fileUid) throws Exception {
-        return fileItemExtMapper.insertFileItemByList(fileItemSelectVos,fileUid);
+    public Integer insertFileItem(List<FileItemSelectVo> fileItemSelectVos, String fileUid) throws Exception {
+        return fileItemExtMapper.insertFileItemByList(fileItemSelectVos, fileUid);
     }
 
 
