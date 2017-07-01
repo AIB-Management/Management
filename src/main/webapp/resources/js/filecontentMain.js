@@ -42,7 +42,7 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
             ss(".boost-preview-file")[i].className = "btn btn-default boost-preview-file";
         }
         //再为当前点击的按钮添加活动样式
-        this.className += " boost-preview-file-active";
+        this.className = "btn btn-default boost-preview-file boost-preview-file-active";
         var path = this.getAttribute("data-src");
         s("#review-area").src = path;
     }

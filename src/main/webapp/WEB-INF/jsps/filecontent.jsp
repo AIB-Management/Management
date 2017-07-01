@@ -38,22 +38,23 @@
                 <!-- <li>文档位置:${ff.position}</li> -->
                <!--  <iframe src="${filecontent.filepath}/${ff.filename}" class="review-file-content"></iframe> -->
                 <!-- 文件预览标签-->
-                <!--
-                <c:if test="${ff.prefix=='.swf' || ff.prefix=='.pdf'}">
+                
+                <button class="btn btn-default boost-preview-file" data-src="${filecontent.filepath}/${ff.filename}">
+                    <span class="glyphicon glyphicon-eye-open"></span> 
+                    预览${ff.filename}
+                </button>
+
+                <!-- <c:if test="${ff.prefix=='.swf' || ff.prefix=='.pdf'}">
                     <embed width="737" height="602" src="${filecontent.filepath}/${ff.filename}" type="${ff.datatype}" play="true" loop="true" menu="true"></embed>
                 </c:if>
 
                 <c:if test="${ff.prefix=='.png' || ff.prefix=='.jpg' || ff.prefix=='.gif' || ff.prefix=='.jpeg'}">
                     <img src="${filecontent.filepath}/${ff.filename}" width="737" alt="${ff.filename}"/>
-                </c:if>
-                -->
-                <button class="btn btn-default boost-preview-file" data-src="${filecontent.filepath}/${ff.filename}">
-                    <span class="glyphicon glyphicon-eye-open"></span> 
-                    预览${ff.filename}
-                </button>
+                </c:if> -->
             </c:if>
         </c:forEach>
-        <iframe src="" frameborder="0" id="review-area"></iframe>
+        <!-- <EMBED type=application/x-shockwave-flash pluginspage=http://www.macromedia.com/go/getflashplayer height=602 width=737 src=/e/upload/s1/fck/flash/2014-09/专业人才培养方案的系统设计、开发.swf menu="true" loop="true" play="true"> -->
+        <iframe src="" frameborder="0" id="review-area">浏览器不支持此媒体播放</iframe>
     </div>
     <div class="download-link">
         <p>

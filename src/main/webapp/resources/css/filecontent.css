@@ -60,7 +60,7 @@ html,body{
 	-ms-transition: all linear .3s;
 }
 .boost-preview-file-active{
-	background-color: #408DD2;
+	background-color: #408DD2 !important;
 	border-color: #408DD2;
 	color: #fff;
 	box-shadow: 0 0 10px rgba(0,0,0,0.6);
