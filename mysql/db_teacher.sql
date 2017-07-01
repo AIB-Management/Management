@@ -12,7 +12,7 @@ MySQL - 5.7.18 : Database - db_teacher
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_teacher` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`db_teacher` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
 
 USE `db_teacher`;
 
@@ -31,15 +31,16 @@ CREATE TABLE `t_account` (
   `depUid` varchar(40) COLLATE utf8_bin DEFAULT NULL,
   `validataCode` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '找回密码的UUID',
   `outDate` datetime DEFAULT NULL COMMENT '找回密码的过期时间',
-  PRIMARY KEY (`id`,`username`,`uid`),
+  PRIMARY KEY (`id`,`uid`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `mail` (`mail`),
   KEY `account` (`username`),
-  KEY `account_2` (`username`),
   KEY `FK_t_account_character` (`role`),
   KEY `uid` (`uid`),
   KEY `FK_depUid_dep_uid` (`depUid`),
   CONSTRAINT `FK_ROLE` FOREIGN KEY (`role`) REFERENCES `t_character` (`role`),
   CONSTRAINT `FK_depUid_dep_uid` FOREIGN KEY (`depUid`) REFERENCES `t_department` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=831 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
+) ENGINE=InnoDB AUTO_INCREMENT=845 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
 
 /*Table structure for table `t_authorization` */
 
@@ -137,7 +138,7 @@ CREATE TABLE `t_navigation` (
   KEY `uid` (`uid`),
   KEY `FK_depUid` (`depUid`),
   CONSTRAINT `FK_depUid` FOREIGN KEY (`depUid`) REFERENCES `t_department` (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `t_permission` */
 
@@ -152,7 +153,7 @@ CREATE TABLE `t_permission` (
   KEY `FK_per_cha_per` (`permission`),
   CONSTRAINT `FK_per_cha_per` FOREIGN KEY (`permission`) REFERENCES `t_power` (`permission`),
   CONSTRAINT `FK_role_cha_role` FOREIGN KEY (`role`) REFERENCES `t_character` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Table structure for table `t_power` */
 
@@ -164,7 +165,7 @@ CREATE TABLE `t_power` (
   `explanation` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '解释',
   PRIMARY KEY (`id`,`permission`),
   KEY `character` (`permission`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色表';
 
 /* Trigger structure for table `t_account` */
 
@@ -172,7 +173,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `delete_author_accUid_by_uid` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'%' */ /*!50003 TRIGGER `delete_author_accUid_by_uid` BEFORE DELETE ON `t_account` FOR EACH ROW DELETE FROM `t_authorization` WHERE `accUid`=old.uid */$$
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'%' */ /*!50003 TRIGGER `delete_author_accUid_by_uid` BEFORE DELETE ON `t_account` FOR EACH ROW DELETE FROM `t_authorization` WHERE `accUid`=old.uid ; */$$
 
 
 DELIMITER ;
@@ -183,7 +184,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `delete_author_beAccUid_by_uid` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'%' */ /*!50003 TRIGGER `delete_author_beAccUid_by_uid` BEFORE DELETE ON `t_account` FOR EACH ROW DELETE FROM `t_authorization` WHERE `beAccUid`=old.uid */$$
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'%' */ /*!50003 TRIGGER `delete_author_beAccUid_by_uid` BEFORE DELETE ON `t_account` FOR EACH ROW DELETE FROM `t_authorization` WHERE `beAccUid`=old.uid ; */$$
 
 
 DELIMITER ;
@@ -194,7 +195,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `delete_file_item_before` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'%' */ /*!50003 TRIGGER `delete_file_item_before` BEFORE DELETE ON `t_file` FOR EACH ROW DELETE FROM `t_file_item` WHERE (`fileUid`=old.uid) */$$
+/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'%' */ /*!50003 TRIGGER `delete_file_item_before` BEFORE DELETE ON `t_file` FOR EACH ROW DELETE FROM `t_file_item` WHERE (`fileUid`=old.uid) ; */$$
 
 
 DELIMITER ;
