@@ -12,7 +12,7 @@
 	<div id="upload-file-floor">
 		<div class="upload-file-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span id="uploadfile-close-btn" aria-hidden="true">&times;</span></button>
+				<button type="button" id="uploadfile-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 				<h3 class="upload-file-title">上传文件</h3>
 			<div class="select-identify">
@@ -42,7 +42,7 @@
 	<div id="authority-manage-floor">
 		<div class="authority-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span  id="authority-manage-close-btn" aria-hidden="true">&times;</span></button>
+				<button type="button" id="authority-manage-close-btn" class="close" aria-label="Close">&times;</button>
 			</div>
 			<h3>权限管理</h3>
 			<div class="authority-list-content">
@@ -76,7 +76,7 @@
 	<div id="drop-file-floor">
 		<div class="drop-file-dialog-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span  id="drop-file-close-btn" aria-hidden="true">&times;</span></button>
+				<button type="button" id="drop-file-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>删除文件</h3>
 			<p class="drop-file-content">
@@ -97,7 +97,7 @@
 	<div id="modify-filename-floor">
 		<div class="modify-filename-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span  id="modify-filename-close-btn" aria-hidden="true">&times;</span></button>
+				<button type="button" id="modify-filename-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>修改文件标题名称</h3>
 			<div class="modify-filename-content">

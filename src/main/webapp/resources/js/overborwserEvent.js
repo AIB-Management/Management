@@ -17,8 +17,8 @@ define(function(){
 		},
 
 		//获取事件对象
-		getEvent: function(type){
-			return type? event:window.event;
+		getEvent: function(event){
+			return event? event:window.event;
 		},
     	//获取事件的实际目标
 		getTarget: function(event){

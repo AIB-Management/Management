@@ -20,7 +20,7 @@ html,body{
 }
 #file-content{
 	position: absolute;
-	width: 800px;
+	width: 900px;
 	height: 600px;
 	top: 50%;
 	left: 50%;
@@ -33,41 +33,54 @@ html,body{
 	margin: 20px auto 0 auto;
 }
 .content-info{
+	text-align: center;
 	word-spacing: -6px;
 }
 .content-info p{
-	height: 30px;
-	line-height: 30px;
+	height: 38px;
+	line-height: 38px;
+	margin-top: 10px;
 	word-spacing: 0px;
 	text-align: center;
 }
+.periview-list-title{
+	font-size: 16px;
+}
+/*文件预览包裹层样式*/
 .preview-content{
 	margin-top: 30px;
 	text-align: center;
 }
-.preview-content a{
+.boost-preview-file{
 	display: inline-block;
-	width: 80px;
-	height: 45px;
-	line-height: 45px;
-	margin-top: 10px;
-	border: 1px solid #ccc;
-	color: #333;
-	text-decoration: none;
 	transition: all linear .3s;
 	-webkit-transition: all linear .3s;
 	-moz-transition: all linear .3s;
-	-o-transition: all linear .3s;;
+	-o-transition: all linear .3s;
 	-ms-transition: all linear .3s;
 }
-.preview-content a:hover{
+.boost-preview-file-active{
 	background-color: #408DD2;
 	border-color: #408DD2;
 	color: #fff;
 	box-shadow: 0 0 10px rgba(0,0,0,0.6);
 }
+.boost-preview-file:hover{
+	background-color: #408DD2;
+	border-color: #408DD2;
+	color: #fff;
+	box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+#review-area{
+	display: block;
+	width: 100%;
+	height: 500px;
+	margin-top: 20px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
 .download-link{
 	margin-top: 30px;
+	margin-bottom: 20px;
 	text-align: center;
 }
 .download-link a{
@@ -82,7 +95,7 @@ html,body{
 	transition: all linear .3s;
 	-webkit-transition: all linear .3s;
 	-moz-transition: all linear .3s;
-	-o-transition: all linear .3s;;
+	-o-transition: all linear .3s;
 	-ms-transition: all linear .3s;
 }
 .download-link a:hover{

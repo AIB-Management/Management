@@ -343,10 +343,11 @@ require(["jquery.min","overborwserEvent",
 
 	//事件委托函数
 	function entrustEvent(event){
-
 		event = EventUntil.getEvent(event);
 		//获取真正触发事件的对象
-		var target = event.target;
+		var target = EventUntil.getTarget(event);
+		
+		console.log(target);
 
 		//隐藏溢出导航栏按钮事件
 		if (target.id == "show-hidden-menu") {
@@ -423,7 +424,7 @@ require(["jquery.min","overborwserEvent",
         language: 'zh', //设置语言
     	uploadUrl: "/Management/file/doUploadFile.action", //上传的地址
 	    allowedFileExtensions: null,//接收的文件后缀,
-	    maxFileCount: 3,
+	    maxFileCount: 100,
 	   	dropZoneEnabled: true,
 	    enctype: 'multipart/form-data',
 	    showCaption: true,//是否显示标题
@@ -473,6 +474,7 @@ require(["jquery.min","overborwserEvent",
 		//禁用按钮
 		s("#upload-batchfile").className = "btn btn-success disabled";
 		s("#upload-batchfile").disabled = "true";
+
 	});
 
     function uploadFile(){

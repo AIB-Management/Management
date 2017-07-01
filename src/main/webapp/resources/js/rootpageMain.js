@@ -393,8 +393,10 @@ require(["jquery.min","overborwserEvent",
 
 		//根据filenameStatus 判断文件名的合法性
 		if (floderNameIsCorrect == false) {
+
 			s("#newfloder-msg-hint").style.color = "red";
 			s("#newfloder-msg-hint").innerText = "已有同名的文件夹";
+
 		}else if (floderNameIsCorrect == true) {
 
 			//调用自定义方法获取当前的操作路径
@@ -1359,7 +1361,8 @@ require(["jquery.min","overborwserEvent",
 	//事件委托函数
 	function entrustEvent(event){
 		event = EventUntil.getEvent(event);
-		var target = event.target;
+		var target = EventUntil.getTarget(event);
+		console.log(event);
 
 		if (target.id == "manage-floder") {
 			//如果部门列表没有元素才发送请求刷新数据
@@ -1663,7 +1666,9 @@ require(["jquery.min","overborwserEvent",
 
 
 	//事件委托
-	EventUntil.addHandler(document,"click",entrustEvent);
+	EventUntil.addHandler(document,"click",function(event){
+		entrustEvent(event);
+	});
 
 	//初始化管理员和领导管理模块滚动条
 	$(".admin-list-table-wrap").mCustomScrollbar({

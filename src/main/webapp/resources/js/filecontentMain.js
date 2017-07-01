@@ -19,9 +19,9 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 		return document.querySelectorAll(elemStr)
 	}
 
-	function initPageNum(){
+	function initPage(){
 		var links = ss(".download-link a"),
-        previewLinks = ss(".preview-content a"),
+        previewLinks = ss(".boost-preview-file"),
         previewCountNum = s("#review-count"),
         fileTotal = s("#all-file-count"),
         downloadcountNum = s("#downloadfile-count");
@@ -30,31 +30,32 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 	    downloadcountNum.innerText = links.length;
 	    previewCountNum.innerText = previewLinks.length;
 	    fileTotal.innerText = links.length;
+
+        if (previewLinks.length == 0) {
+            s("#review-area").style.display = 'none';
+        }
 	}
 
     function previewLinkClick(event){
-    	event = EventUntil.getEvent(event);
-    	EventUntil.preventDefault(event);
-
-    	//获得a 标签的href 内容
-    	var src = this.href;
-
-    	var frame = document.querySelector("#file-content");
-    	frame.src = src;
-
-    	$("#floor").fadeIn(300);
+        //先去除其他按钮的类名
+        for (var i = 0; i < ss(".boost-preview-file").length; i++) {
+            ss(".boost-preview-file")[i].className = "btn btn-default boost-preview-file";
+        }
+        //再为当前点击的按钮添加活动样式
+        this.className += " boost-preview-file-active";
+        var path = this.getAttribute("data-src");
+        s("#review-area").src = path;
     }
 
-    for (var i = 0; i < ss(".preview-content a").length; i++) {
-    	EventUntil.addHandler(ss(".preview-content a")[i],"click",previewLinkClick);
+    //为每一个预览按钮绑定点击事件
+    for (var i = 0; i < ss(".boost-preview-file").length; i++) {
+    	EventUntil.addHandler(ss(".boost-preview-file")[i],"click",previewLinkClick);
     }
 
-
-    EventUntil.addHandler(s("#filecontent-close-btn"),"click",function(){
-    	$("#floor").fadeOut('300');
-    })
 
     //初始化可预览和可下载数量
-    initPageNum();
+    initPage();
+    //初始化时 第一个按钮模拟点击
+    ss(".boost-preview-file")[0].click();
 
 })
