@@ -8,6 +8,7 @@
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/>
 	<meta charset="UTF-8">
 	<title>选择系别</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/selectdepMain.js"></script>
 </head>
 <body>

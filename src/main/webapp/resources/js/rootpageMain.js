@@ -366,7 +366,7 @@ require(["jquery.min","overborwserEvent",
 
 			s("#overflow-item-wrap").style.right = (curWidth / 2) + "px";
 			
-			s("#overflow-item-wrap").style.top = (curHeight + 15) + "px";
+			s("#overflow-item-wrap").style.top = (curHeight + 5) + "px";
 
 			s("#overflow-item-wrap").style.display = "block";
 
@@ -530,6 +530,7 @@ require(["jquery.min","overborwserEvent",
 
 			error: function(){
 				alert("此文件夹下存在目录不能删除！");
+				s("#drop-floder-wrap").style.display = 'none';
 			}
 			
 		})
@@ -602,7 +603,6 @@ require(["jquery.min","overborwserEvent",
 	// ---------------- 文件夹管理模块结束 -------------------
 
 	//----------------- 可用部门管理模块开始 -----------------
-
 
 	//专业名修改按钮点击事件
 	function editSpecBtnClick(){
@@ -707,6 +707,8 @@ require(["jquery.min","overborwserEvent",
 				//删除系别对话框关闭
 				s("#drop-department-dialog").style.display = 'none';
 				s("#add-speciality").style.display = 'none';
+				//清空记录的系别id
+				manageDep.curManageDepDepId = "";
 				alert("删除成功！");
 			},
 			error: function(){
@@ -741,6 +743,10 @@ require(["jquery.min","overborwserEvent",
 						s("#speciality-list-content").innerHTML = "";
 						//关闭对话框
 						s("#modify-department-dialog").style.display = 'none';
+						//清空当前的部门id
+						manageDep.curManageDepDepId = "";
+						//隐藏增加专业按钮
+						s("#add-speciality").style.display = 'none';
 						alert("修改成功");
 
 					}else{
@@ -780,7 +786,9 @@ require(["jquery.min","overborwserEvent",
 						//清空提示框信息
 						s("#new-department-hint").innerText = "";
 						//清空保存的系别id
-						manageDep.curManageFloderDepId = "";
+						manageDep.curManageDepDepId = "";
+						//隐藏增加专业按钮
+						s("#add-speciality").style.display = 'none';
 						//关闭对话框
 						s("#new-department-dialog").style.display = 'none';
 						alert("创建成功");
@@ -1362,7 +1370,6 @@ require(["jquery.min","overborwserEvent",
 	function entrustEvent(event){
 		event = EventUntil.getEvent(event);
 		var target = EventUntil.getTarget(event);
-		console.log(event);
 
 		if (target.id == "manage-floder") {
 			//如果部门列表没有元素才发送请求刷新数据
@@ -1386,6 +1393,10 @@ require(["jquery.min","overborwserEvent",
 			}
 
 		}else if(target.id == "new-floder-close-btn") {
+			//清空输入框的值
+			s("#new-file-name").value = "";
+			//清空错误提示信息
+			s("#newfloder-msg-hint").innerText = "";
 			//新建文件夹弹出层关闭按钮点击事件
 			s("#new-file-wrap").style.display = 'none';
 
@@ -1394,6 +1405,10 @@ require(["jquery.min","overborwserEvent",
 			submitNewFloder();
 
 		}else if(target.id == "modify-flodername-close-btn"){
+			//清空错误提示信息
+			s("#modify-msg-hint").innerText = "";
+			//修改按钮的不可用状态
+			s("#rename-submit").disabled = "true";
 			//修改文件夹名弹出层关闭按钮点击事件
 			s("#modify-file-name-wrap").style.display = 'none';
 
@@ -1408,7 +1423,7 @@ require(["jquery.min","overborwserEvent",
 		}else if(target.id == "cancel-drop-floder"){
 			//清空多选框选中状态
 			clearCheckboxChecked();
-			//删除文件夹弹出层取消按钮点击事件
+			
 			s("#drop-floder-wrap").style.display = "none";
 
 		}else if(target.id == "drop-floder-close-btn") {
@@ -1420,6 +1435,8 @@ require(["jquery.min","overborwserEvent",
 		}else if(target.id == "confirm-drop-floder") {
 			//删除文件夹确认按钮点击事件
 			doDropFloder();
+			//清空多选框选中状态
+			clearCheckboxChecked();
 
 		}else if(target.id == "drop-file-close-btn") {
 			//清空多选框选中状态
@@ -1474,7 +1491,7 @@ require(["jquery.min","overborwserEvent",
 		}else if(target.id == "confirm-new-department") {
 			//新建系别对话框提交按钮点击事件
 			submitNewDepartment();
-
+			
 
 		}else if(target.id == "add-speciality") {
 			//新建专业按钮点击事件
@@ -1491,7 +1508,7 @@ require(["jquery.min","overborwserEvent",
 
 		}else if(target.id == "modify-department") {
 			//修改系别对话框按钮点击事件
-			if (manageDep.curManageDepDepName != "") {
+			if (manageDep.curManageDepDepId  != "") {
 				//有就显示修改系别对话框
 				s("#modify-department-name").value = manageDep.curManageDepDepName;
 				s("#modify-department-dialog").style.display = 'block';
@@ -1711,7 +1728,34 @@ require(["jquery.min","overborwserEvent",
 		}
 	});
 
-	
+	$("#overflow-item-wrap").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	});
+
+	//管理系别 专业侧边栏调用自定义滚动条插件
+	$("#manage-dep-list-wrap").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	});
+
+	//管理文件夹侧边栏调用自定义滚动条插件
+	$("#manage-side-bar").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	});
 
 
 })

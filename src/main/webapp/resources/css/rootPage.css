@@ -262,6 +262,7 @@ thead,tbody,tbody tr,tbody tr td{
 }
 .crumb-nav .crumb-hint{
 	display: inline-block;
+	vertical-align: middle;
 	width: 10%;
 	height: 25px;
 	line-height: 25px;
@@ -278,17 +279,8 @@ thead,tbody,tbody tr,tbody tr td{
 	word-spacing: 0px;
 }
 .crumb-nav .breadcrumb li{
-	width: 10%;
 	height: 25px;
 	line-height: 25px;
-}
-.crumb-nav .breadcrumb li a{
-	display: inline-block;
-	vertical-align: middle;
-	width: 70%;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
 }
 #hidden-meun-item-btn{
 	position: relative;
@@ -297,34 +289,35 @@ thead,tbody,tbody tr,tbody tr td{
 	z-index: 20;
 }
 #hidden-meun-item-btn .btn{
-	display: none;
+	 display: none;
 }
-/*溢出导航包裹层样式*/
 #overflow-item-wrap{
 	display: none;
 	position: absolute;
 	width: 220px;
+	height: 400px;
 	padding: 5px 10px;
 	border: 1px solid #ccc;
 	background-color: #fff;
 	box-shadow: 0px 5px 10px #666;
 	border-radius: 5px;
+	overflow-y: scroll;
 }
-#overflow-item-wrap li{
+#overflow-item-wrap ul li{
 	padding-top: 10px;
 	cursor: default;
 }
-#overflow-item-wrap li a{
+#overflow-item-wrap ul li a{
 	display: inline-block;
 	width: 90%;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
-#overflow-item-wrap li a:hover{
+#overflow-item-wrap ul li a:hover{
 	text-decoration: underline;
 }
-#overflow-item-wrap li:hover{
+#overflow-item-wrap ul li:hover{
 	background-color: #f5f5f5;
 }
 /*选择系别侧边栏样式*/
@@ -338,6 +331,7 @@ thead,tbody,tbody tr,tbody tr td{
 	height: 100%;
 	border-right: 1px solid #ccc;
 	box-shadow: 0 5px 0 0 5px rgba(160,162,122,0.5);
+	overflow-y: scroll;
 }
 #manage-side-bar h3{
 	font-size: 20px;
@@ -513,7 +507,7 @@ thead,tbody,tbody tr,tbody tr td{
 	height: 460px;
 	margin-top: 20px;
 }
-.manage-department-main-sidebar{
+#manage-dep-list-wrap{
 	float: left;
 	width: 30%;
 	height: 420px;

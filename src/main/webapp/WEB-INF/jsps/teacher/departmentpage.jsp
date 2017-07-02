@@ -6,6 +6,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title><shiro:principal property="depContent"/>主页</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170615-13"></script>
 </head>
 <body>
@@ -126,7 +127,7 @@
 			</div>
 			<div id="user-operate">
 				<ul>
-					<li><a href="${pageContext.request.contextPath}/content/personalpage.action">个人信息</a></li>
+					<li><a href="${pageContext.request.contextPath}/content/personalpage.action" id="link-modify-personalinfo">个人信息</a></li>
 					<li><a href="${pageContext.request.contextPath}/public/modifyPassword.action">修改密码</a></li>
 					<shiro:hasPermission name="runas:query">
 						<li><a href="#" id="authority-manage-enter">权限管理</a></li>
@@ -142,7 +143,30 @@
 				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
 					<span class="caret"></span>
 				</button>
-				<ul id="overflow-item-wrap"></ul>
+				<div id="overflow-item-wrap">
+					<ul>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+						<li>fsafsaf</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		

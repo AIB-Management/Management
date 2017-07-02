@@ -10,6 +10,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-8"></script>
 </head>
 <body>
@@ -201,7 +202,9 @@
 				</button>
 			</div>
 			<div class="manage-department-main clearfix">
-				<ul class="manage-department-main-sidebar" id="manage-department-list"></ul>
+				<div id="manage-dep-list-wrap">
+					<ul class="manage-department-main-sidebar" id="manage-department-list"></ul>
+				</div>
 				<div class="manage-department-maincontent">
 					<table class="table table-striped table-hover">
 						<tbody class="speciality-list-wrap" id="speciality-list-content"></tbody>
@@ -306,7 +309,9 @@
 				<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="show-hidden-menu">
 					<span class="caret"></span>
 				</button>
-				<ul id="overflow-item-wrap"></ul>
+				<div id="overflow-item-wrap">
+					<ul></ul>
+				</div>
 			</div>
 			</div>
 			<div class="manage-nav-main clearfix">

@@ -297,7 +297,7 @@ require(["jquery.min","overborwserEvent",
 
 			s("#overflow-item-wrap").style.right = (curWidth / 2) + "px";
 			
-			s("#overflow-item-wrap").style.top = (curHeight + 15) + "px";
+			s("#overflow-item-wrap").style.top = (curHeight + 5) + "px";
 
 			s("#overflow-item-wrap").style.display = "block";
 
@@ -353,6 +353,11 @@ require(["jquery.min","overborwserEvent",
 		if (target.id == "show-hidden-menu") {
 			//执行溢出导航栏按钮点击事件回调函数
 			overFlowNavBtnClick(target);
+
+		}else if(target.id == "link-modify-personalinfo") {
+			EventUntil.preventDefault(event);
+			//个人信息修改栏点击事件
+			window.location.replace("/Management/content/personalpage.action");
 
 		}else if (target.id == "upload-file-btn") {
 			//上传文件按钮点击事件
@@ -410,6 +415,16 @@ require(["jquery.min","overborwserEvent",
 
 	//初始化授权管理模块列表滚动条
 	$(".authoritied-tabel-wrap").mCustomScrollbar({
+		axis: "y",
+		theme: "minimal-dark",
+		autoHideScrollbar: true,
+		mouseWheel: {
+			enable: true
+		}
+	});
+
+	//溢出导航栏包裹层设置滚动条
+	$("#overflow-item-wrap").mCustomScrollbar({
 		axis: "y",
 		theme: "minimal-dark",
 		autoHideScrollbar: true,

@@ -67,7 +67,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			}
 		}
 
-		this.className += "filedep-item-active";
+		this.className = "filedep-item-active";
 		//侧边栏系别点击时
 		//获取这个系别的id
 		manageDepModule.curManageDepDepId = this.getAttribute("data-depid");
@@ -78,6 +78,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		//上面工具栏的增加专业按钮显示
 		s("#add-speciality").style.display = 'inline-block';
+		console.log(this.getAttribute("data-depid"));
 	}
 
 	//从系别数据里面创建元素

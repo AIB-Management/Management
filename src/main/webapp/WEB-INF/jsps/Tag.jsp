@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>提示</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
     <style type="text/css">
         h3{
         	width: 90%;

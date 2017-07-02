@@ -107,27 +107,50 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		//获取全部子元素的宽度
 		var childWidthTotal = 0;
-		for (var i = 0; i < childnode.length; i++) {
-			//获取每一个子元素的实际宽度
-			var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width")) + 10;
-			childWidthTotal += curChildWidth;
-			//获取父元素与此时子元素总宽度的差值
-			var diffWidth = parentWidth - childWidthTotal;
-			
-			//如果此时的差值不能容纳下子元素
-			if (diffWidth < curChildWidth) {
-				//复制这个节点
-				var temp = childnode[i].cloneNode(true);
-				//为每个复制的节点绑定事件函数  overflowNavItemClick
-				EventUntil.addHandler(temp,"click",overflowNavItemClick);
-				//将此时的子元素添加到溢出导航包裹层里面
-				moreNavContain.appendChild(temp);
-				//面包屑导航栏移除子元素
-				navWrap.removeChild(childnode[i]);
+		if (navWrap.isFully == undefined || navWrap.isFully == false) {
+			for (var i = 0; i < childnode.length; i++) {
+				//获取每一个子元素的实际宽度
+				var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width"));
+				childWidthTotal += curChildWidth;
+				//获取父元素与此时子元素总宽度的差值
+				var diffWidth = parentWidth - childWidthTotal;
+				
+				//如果此时的差值不能容纳下子元素
+				if (diffWidth < curChildWidth) {
+					//复制这个节点
+					var temp = childnode[i].cloneNode(true);
+					//为每个复制的节点绑定事件函数  overflowNavItemClick
+					EventUntil.addHandler(temp,"click",overflowNavItemClick);
+					//将此时的子元素添加到溢出导航包裹层里面
+					moreNavContain.appendChild(temp);
+					//面包屑导航栏移除子元素
+					navWrap.removeChild(childnode[i]);
+					//设置导航栏包裹层isFully 属性为true
+					//留作给下一次文件夹点击时 对到面包屑导航栏是否已经容不下导航做判断
+					navWrap.isFully = true;
+					
+				}
 				
 			}
-			
+
+		}else if(navWrap.isFully == true) {
+			//如果面包屑导航栏曾经被填满过
+			//把它最后一个li 放进去溢出导航栏里面
+			var len = childnode.length;
+			var temp = navWrap.querySelectorAll("li")[len-1].cloneNode(true);
+			//消除原来的点击事件
+			temp.onclick = null;
+			//重新绑定点击事件
+			EventUntil.addHandler(temp,"click",overflowNavItemClick);
+			//将此时的子元素添加到溢出导航包裹层里面
+			moreNavContain.appendChild(temp);
+			//移除最后一个子元素
+			navWrap.removeChild(navWrap.querySelectorAll("li")[len-1]);
+				
 		}
+		
+
+		
 
 		if (moreNavContain.childNodes.length != 0) {
 			icon.style.display = "block";
@@ -152,9 +175,9 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		if (event.target.tagName.toLowerCase() == "a") {
 			
 			//获取溢出导航包裹层
-			var overflowNavWrap = s("#overflow-item-wrap");
+			var overflowNavWrap = ss("#overflow-item-wrap ul")[0];
 			//获取所有溢出导航层的li 子元素
-			var overflowNavItemList = ss("#overflow-item-wrap li");
+			var overflowNavItemList = ss("#overflow-item-wrap ul li");
 			//获得点击当前元素的索引
 			var index = Array.prototype.indexOf.call(overflowNavItemList,this);
 			//如果点击的这个元素不是溢出导航栏的最后一个元素
@@ -206,7 +229,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		//每一次添加都进行一次导航数量的控制
 		controlNavNums(s("#breadcurmb-nav-wrap"),ss("#breadcurmb-nav-wrap li"),
-			s("#overflow-item-wrap"),s("#show-hidden-menu"));
+			ss("#overflow-item-wrap ul")[0],s("#show-hidden-menu"));
 
 		//调整完样式之后就可以输出数据了
 		var path = this.getAttribute("data-path");
@@ -238,7 +261,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		}
 		//无论面包屑导航点击的是哪个子元素
 		//都要清空溢出导航包裹层的所有子元素
-		s("#overflow-item-wrap").innerHTML = "";
+		ss("#overflow-item-wrap ul").innerHTML = "";
 		//隐藏显示溢出导航按钮
 		s("#show-hidden-menu").style.display = 'none';
 		s("#overflow-item-wrap").style.display = 'none';
@@ -251,6 +274,8 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		var depId = s("#departmentId").title;
 		createFileList(path,depId);
 		
+		//重设面包屑导航栏isFully属性
+		breadCrumbWrap.isFully = false;
 	}
 
 

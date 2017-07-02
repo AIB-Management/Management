@@ -35,7 +35,7 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 	//--------- 调用层----------
 	checkBy.init({
 		newpwd:{hint:"必填，长度为6~16位字符,包含字母和数字",correct:"输入正确",error:"输入不正确"
-		,reg:/^\S[\S\d\w.]{5,16}/,minLen: 6,maxLen: 16},
+		,reg:/\S[\S\d\w.]/g,minLen: 6,maxLen: 16},
 		confirmpwd:{hint:"必须和密码一致",correct:"输入正确",error:"输入不正确"}
 	});
 
