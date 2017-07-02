@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,21 +57,27 @@
         <!-- <EMBED type=application/x-shockwave-flash pluginspage=http://www.macromedia.com/go/getflashplayer height=602 width=737 src=/e/upload/s1/fck/flash/2014-09/专业人才培养方案的系统设计、开发.swf menu="true" loop="true" play="true"> -->
         <iframe src="" frameborder="0" id="review-area">浏览器不支持此媒体播放</iframe>
     </div>
-    <div class="download-link">
-        <p>
-            <span class="glyphicon glyphicon-tag"></span> 
-            文件下载链接，共<b id="downloadfile-count"></b>个文件可下载
-        </p>
-        <c:forEach items="${filecontent.fileItems}" var="ff">
-            <!--
-            <a href="${filecontent.filepath}/${ff.filename}">
-            -->
-            <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
-                <span class="glyphicon glyphicon-download-alt"></span>
-                ${ff.filename}
-            </a>
-        </c:forEach>
-    </div>
+
+        <div class="download-link">
+            <p>
+                <span class="glyphicon glyphicon-tag"></span>
+
+                文件下载链接，共<b id="downloadfile-count"></b>个文件可下载
+
+            </p>
+            <shiro:hasPermission name="file:down">
+            <c:forEach items="${filecontent.fileItems}" var="ff">
+                <!--
+                <a href="${filecontent.filepath}/${ff.filename}">
+                -->
+                <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
+                    <span class="glyphicon glyphicon-download-alt"></span>
+                    ${ff.filename}
+                </a>
+            </c:forEach>
+            </shiro:hasPermission>
+        </div>
+
 </div>
 
 

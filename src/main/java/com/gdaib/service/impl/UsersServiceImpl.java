@@ -80,7 +80,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void judgeLoginInfo(HttpSession session, RegisterPojo registerPojo) throws Exception {
         judgeLogin(registerPojo);
-//        judgeVtCode(session,registerPojo.getVtCode());
+        judgeVtCode(session,registerPojo.getVtCode());
         judgeAccount(registerPojo.getUsername());
         judgePwd(registerPojo.getPwd(), registerPojo.getPwd());
     }

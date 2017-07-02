@@ -238,7 +238,7 @@ public class FileController {
 
     private InputStream in;
     private OutputStream out;
-
+    @RequiresPermissions("file:down")
     @RequestMapping("/file/downLoadFile")
     public void downLoadFile(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
