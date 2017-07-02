@@ -311,6 +311,7 @@ public class ManageController {
             //发送邮件
             mailService.sendAttachMail(mailPojo);
 
+
             //批量删除用户
             usersService.deleteAccountById(ids);
 

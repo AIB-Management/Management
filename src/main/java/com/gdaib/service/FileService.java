@@ -44,4 +44,7 @@ public interface FileService {
 
     //获取内容细节
     public FileItemCustom selectFileItemByUid(String uid);
+
+
+
 }

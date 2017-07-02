@@ -164,6 +164,7 @@ public class FileController {
         return Msg.fail();
     }
 
+    //删除文件
     @RequestMapping(value = "/file/ajaxDeleteFile", params = {"uid", "accuid"})
     @ResponseBody
     @RequiresPermissions("file:delete")

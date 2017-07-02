@@ -48,7 +48,7 @@ public class UsersServiceImpl implements UsersService {
 
 
         List<Account> accounts = accountMapper.selectByExample(accountExample);
-        return accounts==null ? null : accounts.get(0);
+        return accounts.size() == 0 ? null : accounts.get(0);
     }
 
     /**
@@ -58,11 +58,17 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void judgeRegisterInfo(HttpSession session, RegisterPojo registerPojo) throws Exception {
 
-
+        //校验数据是否为空
         judgeRegister(registerPojo);
+        //校验验证码
         judgeVtCode(session, registerPojo.getVtCode());
+        //校验用户名
         judgeAccount(registerPojo.getUsername());
+        //校验用户名是否存在
+        judgeAccountIsExist(registerPojo.getUsername());
+        //校验密码
         judgePwd(registerPojo.getPwd(), registerPojo.getConfirmpwd());
+        //校验邮箱
         judgeMail(registerPojo.getEmail());
 
 
@@ -171,12 +177,16 @@ public class UsersServiceImpl implements UsersService {
         }
 
 
-        //判断用户是否已经存在
-//        Account account = findAccountForUsername(username);
-//        if (account != null) {
-//            throw  new Exception("该账号已被使用！");
-//        }
 
+
+    }
+
+    private void judgeAccountIsExist(String username) throws Exception{
+                //判断用户是否已经存在
+        Account account = findAccountForUsername(username);
+        if (account != null) {
+            throw  new Exception("该账号已被使用！");
+        }
     }
 
     //验证密码长度和是否一致
