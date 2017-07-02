@@ -11,12 +11,6 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/filecontentMain.js"></script>
 </head>
 <body>
-<div id="floor">
-    <div class="close-btn clearfix">
-        <button type="button" id="filecontent-close-btn" class="close" aria-label="Close">×</button>
-    </div>
-    <iframe src="" id="file-content"></iframe>
-</div>
 <div class="wrapper">
     <div class="content-info">
         <h3>${filecontent.title}</h3>
@@ -44,7 +38,6 @@
         </c:forEach>
         <iframe src="" frameborder="0" id="review-area"></iframe>
     </div>
-<<<<<<< HEAD
     <div class="download-link">
         <p>
             <span class="glyphicon glyphicon-tag"></span> 
@@ -57,30 +50,10 @@
             </a>
         </c:forEach>
     </div>
-=======
 
-        <div class="download-link">
-            <p>
-                <span class="glyphicon glyphicon-tag"></span>
 
-                文件下载链接，共<b id="downloadfile-count"></b>个文件可下载
-
-            </p>
-            <shiro:hasPermission name="file:down">
-            <c:forEach items="${filecontent.fileItems}" var="ff">
-                <!--
-                <a href="${filecontent.filepath}/${ff.filename}">
-                -->
-                <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
-                    <span class="glyphicon glyphicon-download-alt"></span>
-                    ${ff.filename}
-                </a>
-            </c:forEach>
-            </shiro:hasPermission>
-        </div>
-
->>>>>>> origin/dev2.0
 </div>
+
 
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
