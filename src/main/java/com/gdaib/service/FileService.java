@@ -44,4 +44,7 @@ public interface FileService {
 
     //获取内容细节
     public FileItemCustom selectFileItemByUid(String uid);
+
+    //批量修改用户文件作者为管理员
+    void updateBatchFileAccUid(List<String> ids) throws Exception;
 }

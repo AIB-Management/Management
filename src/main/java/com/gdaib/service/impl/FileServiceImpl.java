@@ -3,6 +3,7 @@ package com.gdaib.service.impl;
 import com.gdaib.Exception.GlobalException;
 import com.gdaib.mapper.FileExtMapper;
 import com.gdaib.mapper.FileItemExtMapper;
+import com.gdaib.mapper.FileMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.util.MyStringUtils;
@@ -285,5 +286,22 @@ public class FileServiceImpl implements FileService {
     public FileItemCustom selectFileItemByUid(String uid) {
         FileItemCustom custom = fileItemExtMapper.selectFileItemByUid(uid);
         return custom;
+    }
+
+
+    @Autowired
+    public FileMapper fileMapper;
+    @Override
+    public void updateBatchFileAccUid(List<String> ids) throws Exception {
+        com.gdaib.pojo.File file = new com.gdaib.pojo.File();
+        AccountInfo accountInfo = Utils.getLoginAccountInfo();
+        file.setAccuid(accountInfo.getUid());
+
+
+        FileExample fileExample = new FileExample();
+        FileExample.Criteria criteria = fileExample.createCriteria();
+        criteria.andAccuidIn(ids);
+
+        fileMapper.updateByExampleSelective(file,fileExample);
     }
 }

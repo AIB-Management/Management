@@ -164,6 +164,7 @@ public class FileController {
         return Msg.fail();
     }
 
+    //删除文件
     @RequestMapping(value = "/file/ajaxDeleteFile", params = {"uid", "accuid"})
     @ResponseBody
     @RequiresPermissions("file:delete")
@@ -237,7 +238,7 @@ public class FileController {
 
     private InputStream in;
     private OutputStream out;
-
+    @RequiresPermissions("file:down")
     @RequestMapping("/file/downLoadFile")
     public void downLoadFile(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
 

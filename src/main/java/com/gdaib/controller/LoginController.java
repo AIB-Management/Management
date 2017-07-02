@@ -101,10 +101,7 @@ public class LoginController {
 
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
-        //添加cookie
-        Cookie cookie = new Cookie("username",accountInfo.getUsername());
-        cookie.setMaxAge(1 * 60 * 60 * 24 * 10);
-        response.addCookie(cookie);
+
 
 
 //        subject.getSession().setAttribute("AccountInfo",accountInfo);

@@ -2,10 +2,7 @@ package com.gdaib.controller;
 
 import com.gdaib.Exception.GlobalException;
 import com.gdaib.pojo.*;
-import com.gdaib.service.DepartmentService;
-import com.gdaib.service.MailService;
-import com.gdaib.service.NavigationServer;
-import com.gdaib.service.UsersService;
+import com.gdaib.service.*;
 import com.gdaib.util.Utils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -43,6 +40,9 @@ public class ManageController {
     private MailService mailService;
 
     private static final String FROMADDRESS = "18707513901@163.com";
+
+    @Autowired
+    private FileService fileService;
 
 
     /**
@@ -310,6 +310,9 @@ public class ManageController {
 
             //发送邮件
             mailService.sendAttachMail(mailPojo);
+
+            //批量修改用户文件作者为管理员
+            fileService.updateBatchFileAccUid(ids);
 
             //批量删除用户
             usersService.deleteAccountById(ids);
