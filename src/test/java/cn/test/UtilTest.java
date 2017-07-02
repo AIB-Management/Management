@@ -5,6 +5,7 @@ import com.gdaib.mapper.DepartmentExtMapper;
 import com.gdaib.mapper.FileItemExtMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.ContentService;
+import com.gdaib.service.FileService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import org.junit.Test;
@@ -77,11 +78,18 @@ public class UtilTest {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private FileService fileService;
 
     @Test
     public void testGetCountNav() throws Exception{
 
-        usersService.updateName("xiaoming","7539a632-b05c-43f1-bc3f-ecc58b6671c2");
+        List<String> ids = new ArrayList<String>();
+        ids.add("513f81e9-f346-47b0-9868-de587fb98db9");
+        ids.add("4e7a265a-1db8-4d7a-9b9d-05a46cacfe37");
+
+        fileService.updateBatchFileAccUid(ids);
+
     }
 
 
