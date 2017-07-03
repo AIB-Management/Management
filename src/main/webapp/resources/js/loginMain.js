@@ -124,7 +124,7 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		event = EventUntil.getEvent(event);
 		EventUntil.preventDefault(event);
 
-        		s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
+        		s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date().getTime();
 	})
 
     	//验证码图片点击事件
@@ -132,7 +132,7 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 	        event = EventUntil.getEvent(event);
 	        EventUntil.preventDefault(event);
 
-	        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date();
+	        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date().getTime();
 	    })
 
 

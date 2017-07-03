@@ -174,16 +174,22 @@ public class FileServiceImpl implements FileService {
 
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
         String fileName = "";
+        FileItemSelectVo fileItemSelectVo = null;
 
         try {
             for (int i = 0, length = files.length; i < length; i++) {
                 if (!files[i].isEmpty()) {
-                    fileItems.add(getFileItemInfoByCommonsMultipartFile(i, files[i]));
+                    fileItemSelectVo = getFileItemInfoByCommonsMultipartFile(i, files[i]);
+                    fileItems.add(fileItemSelectVo);
                     // 获得原始文件名
                     fileName = files[i].getOriginalFilename();
                     System.out.println("原始文件名:" + fileName);
                     fos = new FileOutputStream(path
-                            + fileName);
+                            +
+//                            fileName
+                            fileItemSelectVo.getUid()+fileItemSelectVo.getPrefix()
+                    );
+
                     in = files[i].getInputStream();
                     int b = 0;
                     while ((b = in.read()) != -1) {
