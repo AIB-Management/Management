@@ -43,6 +43,7 @@
         <div class="download-link">
             <p>
                 <span class="glyphicon glyphicon-tag"></span>
+                文件下载链接，共<b id="downloadfile-count"></b>个文件可下载
             </p>
             <shiro:hasPermission name="file:down">
             <c:forEach items="${filecontent.fileItems}" var="ff">

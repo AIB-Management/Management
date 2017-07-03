@@ -111,14 +111,14 @@ public class FileServiceImpl implements FileService {
     private FileOutputStream fos;
     private InputStream in;
 
-    private void closeStream()  {
+    private void closeStream() {
 
         try {
             if (in != null) {
                 in.close();
                 in = null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -127,7 +127,7 @@ public class FileServiceImpl implements FileService {
                 fos.close();
                 fos = null;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -173,21 +173,19 @@ public class FileServiceImpl implements FileService {
             f.mkdirs();
 
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
-        String fileName = "";
-        FileItemSelectVo fileItemSelectVo = null;
+        String fileName;
+        FileItemSelectVo fileItemSelectVo;
 
         try {
             for (int i = 0, length = files.length; i < length; i++) {
                 if (!files[i].isEmpty()) {
                     fileItemSelectVo = getFileItemInfoByCommonsMultipartFile(i, files[i]);
                     fileItems.add(fileItemSelectVo);
-                    // 获得原始文件名
-                    fileName = files[i].getOriginalFilename();
-                    System.out.println("原始文件名:" + fileName);
+
+                    fileName = fileItemSelectVo.getUid() + fileItemSelectVo.getPrefix();
                     fos = new FileOutputStream(path
                             +
-//                            fileName
-                            fileItemSelectVo.getUid()+fileItemSelectVo.getPrefix()
+                            fileName
                     );
 
                     in = files[i].getInputStream();
@@ -196,7 +194,6 @@ public class FileServiceImpl implements FileService {
                         fos.write(b);
                     }
                 }
-                System.out.println("上传文件到:" + path + fileName);
             }
         } catch (Exception e) {
             deleteFile(f);
@@ -297,6 +294,7 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     public FileMapper fileMapper;
+
     @Override
     public void updateBatchFileAccUid(List<String> ids) throws Exception {
         com.gdaib.pojo.File file = new com.gdaib.pojo.File();
@@ -308,6 +306,6 @@ public class FileServiceImpl implements FileService {
         FileExample.Criteria criteria = fileExample.createCriteria();
         criteria.andAccuidIn(ids);
 
-        fileMapper.updateByExampleSelective(file,fileExample);
+        fileMapper.updateByExampleSelective(file, fileExample);
     }
 }
