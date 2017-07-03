@@ -78,7 +78,6 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		//上面工具栏的增加专业按钮显示
 		s("#add-speciality").style.display = 'inline-block';
-		console.log(this.getAttribute("data-depid"));
 	}
 
 	//从系别数据里面创建元素

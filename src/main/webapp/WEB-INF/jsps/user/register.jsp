@@ -44,7 +44,6 @@
 						<option value="${dp.department.uid}">${dp.department.content}</option>
 					</c:forEach>
 				</select>
-
 				<select id="special" name="depUid" >
 					<option value="">请选择专业</option>
 				</select>
@@ -61,11 +60,11 @@
 				<a href="#" id="change-vt-code">换一个</a>
 				<span class="hint">${error}</span>
 			</p>
-			<p class="input-wrap">
-				<button id="complete-reg" type="submit">注册</button>
-				<a href="${pageContext.request.contextPath}/public/login.action" class="link-login">已有账号，直接登陆</a>
-			</p>
 		</form>
+		<p class="btn-wrap">
+			<button id="complete-reg">注册</button>
+			<a href="${pageContext.request.contextPath}/public/login.action" class="link-login">已有账号，直接登陆</a>
+		</p>
 	</div>
 
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">

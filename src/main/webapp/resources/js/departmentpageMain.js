@@ -35,9 +35,9 @@ require.config({
 })
 
 //departmentpage 脚本main函数
-require(["jquery.min","overborwserEvent",
+require(["domReady","jquery.min","overborwserEvent",
 	"departmentpageauthorityManage","departmentPageFileListModule",
-	"bootstrap.min","fileinput.min","es","zh","jquery.mousewheel.min","mCustomScrollbar.min"],function main($,EventUntil,authorityModule,depFileListModule){
+	"bootstrap.min","fileinput.min","es","zh","jquery.mousewheel.min","mCustomScrollbar.min"],function main(domready,$,EventUntil,authorityModule,depFileListModule){
 
 	//封装选择器函数
 	function s(name){
@@ -181,109 +181,32 @@ require(["jquery.min","overborwserEvent",
 
 
 	//------------- 调用层 ----------------
+	
 
-	//初始化页面
-	initPage();
+	
 
-	//用户名栏鼠标移入事件
-	EventUntil.addHandler(s("#user-name"),"mouseover",function(event){
-		event = EventUntil.getEvent(event);
-		var target = EventUntil.getTarget(event);
-		var floor = document.querySelector("#user-operate");
-		var top = getComputedStyle(s(".header")[0], null)["height"];
-		floor.style.left = (target.offsetLeft - 50) + "px";
-		floor.style.top = top;
-		floor.style.visibility = "visible";
-		
-	});
+	function uploadFile(){
+    	var isNoRepeat = checkFloderName(ss("#main-content-list tr td a"),s("#fileTitle").value);
+    	if (isNoRepeat == true) {
+    		//如果文件名没有重复
+    		//清空错误提示字段文字
+    		s("#filetitle-hint").innerText = "";
+    		//再判断文件插件是否有文件存在
+    		
+    		if ($("#fileupload").fileinput("getFileStack").length != 0) {
+    			//如果有文件
+				//触发文件上传插件上传事件
+    			$("#fileupload").fileinput("upload");
+    		}else{
+    			alert("请选择文件");
+    		}
+    		
 
-
-	//用户操作下拉框鼠标移入事件
-	EventUntil.addHandler(s("#user-operate"),"mouseover",function(){
-		this.style.visibility = "visible";
-	});
-
-	//用户名栏鼠标移出事件
-	EventUntil.addHandler(s("#user-name"),"mouseout",function(){
-		s("#user-operate").style.visibility = "hidden";
-	});
-
-	//用户操作下拉框栏鼠标移出事件
-	EventUntil.addHandler(s("#user-operate"),"mouseout",function(){
-		this.style.visibility = "hidden";
-	});
-
-	//修改文件名对话框输入框键盘输入事件
-	EventUntil.addHandler(s("#new-filename"),"keyup",function(){
-		if (this.value != "") {
-			s("#submit-newfilename").className = "btn btn-primary btn-sm";
-			s("#submit-newfilename").removeAttribute("disabled");
-
-		}else{
-			s("#submit-newfilename").className = "btn btn-primary btn-sm disabled";
-			s("#submit-newfilename").disabled = "true";
-		}
-	});
-
-
-	//修改文件名对话框提交按钮点击事件
-	EventUntil.addHandler(s("#submit-newfilename"),"click",function(){
-		//获取输入内容是否正确
-		var newNameStatus = checkFloderName(ss("#main-content-list tr td a"),s("#new-filename").value);
-
-		if (newNameStatus == true) {
-			s("#new-filename-hint").innerText = "";
-			//获取相应的后台参数
-			var accuid = s("#user-name").title,
-			 	uid = s("#new-filename").title,
-			 	title = s("#new-filename").value;
-
-			//获取当前删除文件所在路径以及当前页面的系别id 为刷新列表时候所用
-			var curPath = getCurPath(),
-				curDepId = s("#departmentId").title;
-
-			$.ajax({
-				url: '/Management/file/ajaxUpdateFile.action',
-				type: 'POST',
-				dataType: 'json',
-				data: "accuid=" + accuid + "&uid=" + uid + "&title=" + title,
-				success: function(data){
-					if (data.code == 100) {
-						//请求成功后刷新文件列表
-						depFileListModule.initFileList(curPath,curDepId);
-						//清空错误提示信息
-						s("#new-filename-hint").innerText = "";
-						//关闭对话框
-						s("#modify-filename-floor").style.display = 'none';
-						alert("修改成功！");
-					}else{
-						alert("修改失败i，遇到未知错误，请重试");
-					}
-				}
-			})
-			
-
-		}else{
-			s("#new-filename-hint").style.color = "red";
-			s("#new-filename-hint").innerText = "已有相同的文件名";
-		}
-	})
-
-
-	//文件标题输入框输入事件
-	EventUntil.addHandler(s("#fileTitle"),"keyup",function(){
-		if (this.value.length != 0) {
-			s("#upload-batchfile").className = "btn btn-success";
-			s("#upload-batchfile").removeAttribute("disabled");
-
-		}else{
-			s("#upload-batchfile").className = "btn btn-success disabled";
-			s("#upload-batchfile").disabled = "true";
-
-		}
-	})
-
-
+    	}else{
+    		s("#filetitle-hint").style.color = "red";
+    		s("#filetitle-hint").innerText = "已存在此文件名";
+    	}
+    }
 	
 	//溢出导航栏按钮点击事件回调函数
 	function overFlowNavBtnClick(target){
@@ -410,110 +333,194 @@ require(["jquery.min","overborwserEvent",
 	}
 
 
-	EventUntil.addHandler(document,"click",entrustEvent);
+	
 
 
-	//初始化授权管理模块列表滚动条
-	$(".authoritied-tabel-wrap").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
+	domready(function(){
+		//初始化页面
+		initPage();
+
+		//用户名栏鼠标移入事件
+		EventUntil.addHandler(s("#user-name"),"mouseover",function(event){
+			event = EventUntil.getEvent(event);
+			var target = EventUntil.getTarget(event);
+			var floor = document.querySelector("#user-operate");
+			var top = getComputedStyle(s(".header")[0], null)["height"];
+			floor.style.left = (target.offsetLeft - 50) + "px";
+			floor.style.top = top;
+			floor.style.visibility = "visible";
+			
+		});
+
+
+		//用户操作下拉框鼠标移入事件
+		EventUntil.addHandler(s("#user-operate"),"mouseover",function(){
+			this.style.visibility = "visible";
+		});
+
+		//用户名栏鼠标移出事件
+		EventUntil.addHandler(s("#user-name"),"mouseout",function(){
+			s("#user-operate").style.visibility = "hidden";
+		});
+
+		//用户操作下拉框栏鼠标移出事件
+		EventUntil.addHandler(s("#user-operate"),"mouseout",function(){
+			this.style.visibility = "hidden";
+		});
+
+		//修改文件名对话框输入框键盘输入事件
+		EventUntil.addHandler(s("#new-filename"),"keyup",function(){
+			if (this.value != "") {
+				s("#submit-newfilename").className = "btn btn-primary btn-sm";
+				s("#submit-newfilename").removeAttribute("disabled");
+
+			}else{
+				s("#submit-newfilename").className = "btn btn-primary btn-sm disabled";
+				s("#submit-newfilename").disabled = "true";
+			}
+		});
+
+
+		//修改文件名对话框提交按钮点击事件
+		EventUntil.addHandler(s("#submit-newfilename"),"click",function(){
+			//获取输入内容是否正确
+			var newNameStatus = checkFloderName(ss("#main-content-list tr td a"),s("#new-filename").value);
+
+			if (newNameStatus == true) {
+				s("#new-filename-hint").innerText = "";
+				//获取相应的后台参数
+				var accuid = s("#user-name").title,
+				 	uid = s("#new-filename").title,
+				 	title = s("#new-filename").value;
+
+				//获取当前删除文件所在路径以及当前页面的系别id 为刷新列表时候所用
+				var curPath = getCurPath(),
+					curDepId = s("#departmentId").title;
+
+				$.ajax({
+					url: '/Management/file/ajaxUpdateFile.action',
+					type: 'POST',
+					dataType: 'json',
+					data: "accuid=" + accuid + "&uid=" + uid + "&title=" + title,
+					success: function(data){
+						if (data.code == 100) {
+							//请求成功后刷新文件列表
+							depFileListModule.initFileList(curPath,curDepId);
+							//清空错误提示信息
+							s("#new-filename-hint").innerText = "";
+							//关闭对话框
+							s("#modify-filename-floor").style.display = 'none';
+							alert("修改成功！");
+						}else{
+							alert("修改失败i，遇到未知错误，请重试");
+						}
+					}
+				})
+				
+
+			}else{
+				s("#new-filename-hint").style.color = "red";
+				s("#new-filename-hint").innerText = "已有相同的文件名";
+			}
+		})
+
+
+		//文件标题输入框输入事件
+		EventUntil.addHandler(s("#fileTitle"),"keyup",function(){
+			if (this.value.length != 0) {
+				s("#upload-batchfile").className = "btn btn-success";
+				s("#upload-batchfile").removeAttribute("disabled");
+
+			}else{
+				s("#upload-batchfile").className = "btn btn-success disabled";
+				s("#upload-batchfile").disabled = "true";
+
+			}
+		})
+
+		//事件委托
+		EventUntil.addHandler(document,"click",entrustEvent);
+
+
+		//初始化授权管理模块列表滚动条
+		$(".authoritied-tabel-wrap").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		});
+
+		//溢出导航栏包裹层设置滚动条
+		$("#overflow-item-wrap").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		});
+
+
+		//初始化拖拽上传插件
+		$("#fileupload").fileinput({
+	        language: 'zh', //设置语言
+	    	uploadUrl: "/Management/file/doUploadFile.action", //上传的地址
+		    allowedFileExtensions: null,//接收的文件后缀,
+		    maxFileCount: 100,
+		   	dropZoneEnabled: true,
+		    enctype: 'multipart/form-data',
+		    showCaption: true,//是否显示标题
+		    showUpload: false, //取消上传按钮
+		    uploadAsync: false,//取消异步上传
+		    uploadIcon: '', //取消文件下面的上传按钮
+		    uploadExtraData: function (){
+		    	return {
+		    		title: s("#fileTitle").value,
+			    	navuid: getCurPath(),
+			    	accuid: s("#all-identifies-list").value
+		    	}
+	        }, 
+		    browseClass: "btn btn-primary", //按钮样式             
+		    previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
+		    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
+
+	    }).on('filebatchpreupload', function(event, data, previewId, index) {
+	    	//文件上传前禁用上传按钮
+	    	s("#upload-batchfile").className = "btn btn-success disabled";
+			s("#upload-batchfile").disabled = "true";
+
+
+	    }).on('filebatchuploadsuccess', function(event, files, extra) {
+	    	var curPath = getCurPath();
+	    	var curDepId = s("#departmentId").title;
+	       
+	       	alert("上传成功！");
+
+	    	//更新下面的文件列表
+	        depFileListModule.initFileList(curPath,curDepId);
+	        //清空文件上传插件内的文件缓存
+	        $("#fileupload").fileinput("clear");
+	        //清空文件标题
+	        s("#fileTitle").value = "";
+	        //关闭弹出层
+	        s("#upload-file-floor").style.display = 'none';
+
+	    }).on('filebatchuploaderror', function(event, data, msg) {
+		    
+		   alert("不可以上传js,java,php 等可操作性的文件！");
+
+		}).on('filecleared', function(event) {
+			//清空文件触发事件
+			//清空文件标题
+			s("#fileTitle").value = "";
+			//禁用按钮
+			s("#upload-batchfile").className = "btn btn-success disabled";
+			s("#upload-batchfile").disabled = "true";
+
+		});
 	});
-
-	//溢出导航栏包裹层设置滚动条
-	$("#overflow-item-wrap").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
-	});
-
-
-	//初始化拖拽上传插件
-	$("#fileupload").fileinput({
-        language: 'zh', //设置语言
-    	uploadUrl: "/Management/file/doUploadFile.action", //上传的地址
-	    allowedFileExtensions: null,//接收的文件后缀,
-	    maxFileCount: 100,
-	   	dropZoneEnabled: true,
-	    enctype: 'multipart/form-data',
-	    showCaption: true,//是否显示标题
-	    showUpload: false, //取消上传按钮
-	    uploadAsync: false,//取消异步上传
-	    uploadIcon: '', //取消文件下面的上传按钮
-	    uploadExtraData: function (){
-	    	return {
-	    		title: s("#fileTitle").value,
-		    	navuid: getCurPath(),
-		    	accuid: s("#all-identifies-list").value
-	    	}
-        }, 
-	    browseClass: "btn btn-primary", //按钮样式             
-	    previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
-	    msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
-
-    }).on('filebatchpreupload', function(event, data, previewId, index) {
-    	//文件上传前禁用上传按钮
-    	s("#upload-batchfile").className = "btn btn-success disabled";
-		s("#upload-batchfile").disabled = "true";
-
-
-    }).on('filebatchuploadsuccess', function(event, files, extra) {
-    	var curPath = getCurPath();
-    	var curDepId = s("#departmentId").title;
-       
-       	alert("上传成功！");
-
-    	//更新下面的文件列表
-        depFileListModule.initFileList(curPath,curDepId);
-        //清空文件上传插件内的文件缓存
-        $("#fileupload").fileinput("clear");
-        //清空文件标题
-        s("#fileTitle").value = "";
-        //关闭弹出层
-        s("#upload-file-floor").style.display = 'none';
-
-    }).on('filebatchuploaderror', function(event, data, msg) {
-	    
-	   alert("不可以上传js,java,php 等可操作性的文件！");
-
-	}).on('filecleared', function(event) {
-		//清空文件触发事件
-		//清空文件标题
-		s("#fileTitle").value = "";
-		//禁用按钮
-		s("#upload-batchfile").className = "btn btn-success disabled";
-		s("#upload-batchfile").disabled = "true";
-
-	});
-
-    function uploadFile(){
-    	var isNoRepeat = checkFloderName(ss("#main-content-list tr td a"),s("#fileTitle").value);
-    	if (isNoRepeat == true) {
-    		//如果文件名没有重复
-    		//清空错误提示字段文字
-    		s("#filetitle-hint").innerText = "";
-    		//再判断文件插件是否有文件存在
-    		
-    		if ($("#fileupload").fileinput("getFileStack").length != 0) {
-    			//如果有文件
-				//触发文件上传插件上传事件
-    			$("#fileupload").fileinput("upload");
-    		}else{
-    			alert("请选择文件");
-    		}
-    		
-
-    	}else{
-    		s("#filetitle-hint").style.color = "red";
-    		s("#filetitle-hint").innerText = "已存在此文件名";
-    	}
-    }
 
 
 	
