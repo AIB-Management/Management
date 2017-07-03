@@ -24,7 +24,11 @@
     <div class="preview-content">
         <p class="periview-list-title">
             <span class="glyphicon glyphicon-tag"></span> 
+<<<<<<< HEAD
+            <b id="review-count"></b>个文件可预览,共<b id="all-file-count"></b>个文件（如果不能正常显示请更换浏览器或下载后观看）
+=======
             <b id="review-count"></b>个文件可预览,共<b id="all-file-count"></b>个文件（如不能正常显示,请更换浏览器或下载后观看）
+>>>>>>> origin/dev2.0
         </p>
         <c:forEach items="${filecontent.fileItems}" var="ff">
             <c:if test="${ff.showing!=0}">
