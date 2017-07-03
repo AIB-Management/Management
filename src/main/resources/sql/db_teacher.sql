@@ -1,0 +1,181 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 127.0.0.1
+Source Server Version : 50718
+Source Host           : 127.0.0.1:3306
+Source Database       : db_teacher
+
+Target Server Type    : MYSQL
+Target Server Version : 50718
+File Encoding         : 65001
+
+Date: 2017-07-03 15:59:01
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for t_account
+-- ----------------------------
+DROP TABLE IF EXISTS `t_account`;
+CREATE TABLE `t_account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `uid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '操作标识',
+  `username` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '账号',
+  `password` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '密码',
+  `name` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '姓名',
+  `mail` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '邮件',
+  `role` varchar(20) COLLATE utf8_bin DEFAULT 'reviewing' COMMENT '角色',
+  `depUid` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `validataCode` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '找回密码的UUID',
+  `outDate` datetime DEFAULT NULL COMMENT '找回密码的过期时间',
+  PRIMARY KEY (`id`,`username`,`uid`),
+  KEY `account` (`username`),
+  KEY `account_2` (`username`),
+  KEY `FK_t_account_character` (`role`),
+  KEY `uid` (`uid`),
+  KEY `FK_depUid_dep_uid` (`depUid`),
+  CONSTRAINT `FK_ROLE` FOREIGN KEY (`role`) REFERENCES `t_character` (`role`),
+  CONSTRAINT `FK_depUid_dep_uid` FOREIGN KEY (`depUid`) REFERENCES `t_department` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=832 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='账号表';
+
+-- ----------------------------
+-- Table structure for t_authorization
+-- ----------------------------
+DROP TABLE IF EXISTS `t_authorization`;
+CREATE TABLE `t_authorization` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `accUid` varchar(40) COLLATE utf8_bin NOT NULL,
+  `beAccUid` varchar(40) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_accUid` (`accUid`),
+  KEY `FK_beAccUid` (`beAccUid`),
+  CONSTRAINT `FK_accUid` FOREIGN KEY (`accUid`) REFERENCES `t_account` (`uid`),
+  CONSTRAINT `FK_beAccUid` FOREIGN KEY (`beAccUid`) REFERENCES `t_account` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Table structure for t_character
+-- ----------------------------
+DROP TABLE IF EXISTS `t_character`;
+CREATE TABLE `t_character` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `role` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '角色',
+  `explanation` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '解释',
+  PRIMARY KEY (`id`,`role`),
+  KEY `character` (`role`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色表';
+
+-- ----------------------------
+-- Table structure for t_department
+-- ----------------------------
+DROP TABLE IF EXISTS `t_department`;
+CREATE TABLE `t_department` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `content` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `parent` varchar(40) COLLATE utf8_bin DEFAULT NULL COMMENT '为0时是系别，等于id时是专业',
+  `uid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '操作标识',
+  PRIMARY KEY (`id`,`uid`),
+  KEY `uid` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=643 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系别';
+
+-- ----------------------------
+-- Table structure for t_file
+-- ----------------------------
+DROP TABLE IF EXISTS `t_file`;
+CREATE TABLE `t_file` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `accUid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '账号标识',
+  `navUid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '系别模块id',
+  `upTime` datetime NOT NULL COMMENT '时间',
+  `title` text COLLATE utf8_bin NOT NULL COMMENT '文本标题',
+  `url` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '操作标识',
+  `filePath` text COLLATE utf8_bin NOT NULL COMMENT '文件实体路径',
+  `uid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '查询标识',
+  PRIMARY KEY (`id`,`uid`),
+  KEY `FK_t_file_info_account` (`accUid`),
+  KEY `FK_t_file_info_navigation_id` (`navUid`) USING BTREE,
+  KEY `uid` (`uid`),
+  CONSTRAINT `FK_accUid_t_account_uid` FOREIGN KEY (`accUid`) REFERENCES `t_account` (`uid`),
+  CONSTRAINT `Fk_navUid_t_nav_Uid` FOREIGN KEY (`navUid`) REFERENCES `t_navigation` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='数据表9';
+
+-- ----------------------------
+-- Table structure for t_file_item
+-- ----------------------------
+DROP TABLE IF EXISTS `t_file_item`;
+CREATE TABLE `t_file_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `uid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '查询标识',
+  `filename` text COLLATE utf8_bin NOT NULL COMMENT '文件名',
+  `fileUid` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `datatype` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `showing` int(11) unsigned zerofill NOT NULL,
+  `position` int(11) NOT NULL COMMENT '在文章中的位置',
+  `prefix` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '后缀',
+  PRIMARY KEY (`id`,`uid`),
+  KEY `uid` (`uid`),
+  KEY `FK_fileUId_t_file_uId` (`fileUid`),
+  CONSTRAINT `FK_fileUId_t_file_uId` FOREIGN KEY (`fileUid`) REFERENCES `t_file` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='数据表9';
+
+-- ----------------------------
+-- Table structure for t_navigation
+-- ----------------------------
+DROP TABLE IF EXISTS `t_navigation`;
+CREATE TABLE `t_navigation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `parent` varchar(40) COLLATE utf8_bin NOT NULL DEFAULT '0' COMMENT '等于0一级，等于Uid的为UID子目录',
+  `title` text COLLATE utf8_bin NOT NULL,
+  `url` varchar(200) COLLATE utf8_bin DEFAULT NULL,
+  `extend` int(11) NOT NULL DEFAULT '0',
+  `uid` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '查询的唯一标识',
+  `depUid` varchar(40) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`,`uid`),
+  KEY `uid` (`uid`),
+  KEY `FK_depUid` (`depUid`),
+  CONSTRAINT `FK_depUid` FOREIGN KEY (`depUid`) REFERENCES `t_department` (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Table structure for t_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `t_permission`;
+CREATE TABLE `t_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `role` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '角色',
+  `permission` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '分类:操作',
+  PRIMARY KEY (`id`),
+  KEY `FK_role_cha_role` (`role`),
+  KEY `FK_per_cha_per` (`permission`),
+  CONSTRAINT `FK_per_cha_per` FOREIGN KEY (`permission`) REFERENCES `t_power` (`permission`),
+  CONSTRAINT `FK_role_cha_role` FOREIGN KEY (`role`) REFERENCES `t_character` (`role`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ----------------------------
+-- Table structure for t_power
+-- ----------------------------
+DROP TABLE IF EXISTS `t_power`;
+CREATE TABLE `t_power` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `permission` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '权限',
+  `explanation` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '解释',
+  PRIMARY KEY (`id`,`permission`),
+  KEY `character` (`permission`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色表';
+DROP TRIGGER IF EXISTS `delete_author_accUid_by_uid`;
+DELIMITER ;;
+CREATE TRIGGER `delete_author_accUid_by_uid` BEFORE DELETE ON `t_account` FOR EACH ROW DELETE FROM `t_authorization` WHERE `accUid`=old.uid ;
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `delete_author_beAccUid_by_uid`;
+DELIMITER ;;
+CREATE TRIGGER `delete_author_beAccUid_by_uid` BEFORE DELETE ON `t_account` FOR EACH ROW DELETE FROM `t_authorization` WHERE `beAccUid`=old.uid ;
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `delete_file_item_before`;
+DELIMITER ;;
+CREATE TRIGGER `delete_file_item_before` BEFORE DELETE ON `t_file` FOR EACH ROW DELETE FROM `t_file_item` WHERE (`fileUid`=old.uid) ;
+;;
+DELIMITER ;
