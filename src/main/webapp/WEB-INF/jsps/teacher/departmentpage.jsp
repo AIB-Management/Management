@@ -144,28 +144,7 @@
 					<span class="caret"></span>
 				</button>
 				<div id="overflow-item-wrap">
-					<ul>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-						<li>fsafsaf</li>
-					</ul>
+					<ul></ul>
 				</div>
 			</div>
 		</div>
