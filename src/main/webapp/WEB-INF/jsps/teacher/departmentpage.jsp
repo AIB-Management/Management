@@ -10,6 +10,9 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170615-13"></script>
 </head>
 <body>
+	<div id="loading-file-floor">
+		<img src="${pageContext.request.contextPath}/resources/images/loading.gif">
+	</div>
 	<div id="upload-file-floor">
 		<div class="upload-file-wrap">
 			<div class="close-btn clearfix">
