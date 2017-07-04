@@ -39,14 +39,32 @@
 			<p class="input-wrap">
 				<label class="select-spec-tag">选择专业</label>
 				<select id="department" name="departmentId">
+
 					<option value="">请选择系别</option>
+
 					<c:forEach items="${department}" var="dp">
-						<option value="${dp.department.uid}">${dp.department.content}</option>
+						<c:if test="${RegisterPojo.departmentId ==dp.department.uid}">
+							<option value="${dp.department.uid}" selected>${dp.department.content}</option>
+						</c:if>
+						<c:if test="${RegisterPojo.departmentId !=dp.department.uid}">
+							<option value="${dp.department.uid}" >${dp.department.content}</option>
+						</c:if>
 					</c:forEach>
 				</select>
-
 				<select id="special" name="depUid" >
+
 					<option value="">请选择专业</option>
+
+					<c:if test="${pros!=null}">
+						<c:forEach items="${pros}" var="pro">
+							<c:if test="${pro.uid == RegisterPojo.depUid}">
+							<option value="${pro.uid}" selected>${pro.pro}</option>
+							</c:if>
+							<c:if test="${pro.uid != RegisterPojo.depUid}">
+								<option value="${pro.uid}" >${pro.pro}</option>
+							</c:if>
+						</c:forEach>
+					</c:if>
 				</select>
 			</p>
 			<p class="input-wrap">
@@ -61,11 +79,11 @@
 				<a href="#" id="change-vt-code">换一个</a>
 				<span class="hint">${error}</span>
 			</p>
-			<p class="input-wrap">
-				<button id="complete-reg" type="submit">注册</button>
-				<a href="${pageContext.request.contextPath}/public/login.action" class="link-login">已有账号，直接登陆</a>
-			</p>
 		</form>
+		<p class="btn-wrap">
+			<button id="complete-reg">注册</button>
+			<a href="${pageContext.request.contextPath}/public/login.action" class="link-login">已有账号，直接登陆</a>
+		</p>
 	</div>
 
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">

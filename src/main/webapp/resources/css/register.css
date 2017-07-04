@@ -88,6 +88,11 @@ body{
 #change-vt-code{
 	color: #000;
 }
+.btn-wrap{
+	width: 90%;
+	margin: 20px auto 0 auto;
+	text-align: left;
+}
 /*提交按钮*/
 #complete-reg{
 	display: inline-block;
@@ -95,7 +100,6 @@ body{
 	width: 100px;
 	height: 40px;
 	line-height: 40px;
-	margin-left: 75px;
 	border-radius: 5px;
 	background-color: #339933;
 	color: #fff;

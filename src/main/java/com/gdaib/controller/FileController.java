@@ -256,11 +256,12 @@ public class FileController {
         response.setHeader("Content-Disposition", "attachment;filename=" +
 //                custom.getFilename()
                         new String(custom.getFilename().getBytes("UTF-8"), "ISO8859-1")
+//                custom.getUid()+custom.getPrefix()
         );
 
         //读取目标文件，通过response将目标文件写到客户端
         //获取目标文件的绝对路径
-        String fullFileName = Utils.getSystemRealFilePath(request, custom.getFilePath()) + custom.getFilename();
+        String fullFileName = Utils.getSystemRealFilePath(request, custom.getFilePath()) +  custom.getUid()+custom.getPrefix();
         //System.out.println(fullFileName);
         try {
             //读取文件

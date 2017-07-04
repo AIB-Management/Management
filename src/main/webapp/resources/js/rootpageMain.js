@@ -17,10 +17,10 @@ require.config({
 })
 
 //管理页主函数
-require(["jquery.min","overborwserEvent",
+require(["domReady","jquery.min","overborwserEvent",
 	"rootpageUnexamiePageModule","rootpagExamiePageModule",
 	"rootpageManageFloderListModule","rootpageManageDepartmentModule",
-	"rootpageManageLeaderAdmin","jquery.mousewheel.min","mCustomScrollbar.min"],function main($,EventUntil,unexamiePage,examiePage,manageDepFloder,manageDep,manageAdminLeader){
+	"rootpageManageLeaderAdmin","jquery.mousewheel.min","mCustomScrollbar.min"],function main(domready,$,EventUntil,unexamiePage,examiePage,manageDepFloder,manageDep,manageAdminLeader){
 
 	//封装选择器函数
 	function s(name){
@@ -125,12 +125,12 @@ require(["jquery.min","overborwserEvent",
 
 					createDepOptionForModifyUserDep(data)
 				}else{
-					alert("获取系别列表失败，请尝试刷新网页");
+					alert("获取修改用户信息系别列表失败，请尝试刷新网页");
 				}
 			},
 
 			error: function(){
-				alert("获取系别列表失败，请尝试刷新网页");
+				alert("获取修改用户信息系别列表失败，请尝试刷新网页");
 			}
 		})
 		
@@ -219,8 +219,6 @@ require(["jquery.min","overborwserEvent",
 		
 		//如果部门选择框的值合法
 		if (s("#user-spec").value != "" && s("#user-dep").value != "") {
-			//清空提示信息 
-			// s("#new-account-hint").innerText = "";
 			//获取部门id 用户id
 			var depId = s("#user-spec").value,
 				userId = s("#user-spec").getAttribute("data-userid");
@@ -239,14 +237,12 @@ require(["jquery.min","overborwserEvent",
 					}else{
 						alert("修改失败！");
 					}
+				},
+				error: function(){
+					alert("修改失败，请稍后重试");
 				}
 			})
 			
-
-		}else if(newUserNameStatus == false) {
-			//如果新用户名错误 提示错误
-			s("#new-account-hint").style.color = "red";
-			s("#new-account-hint").innerText = "账号不合法,必须为8-16位英文或数字字符不能有特殊字符";
 
 		}else{
 			alert("请选择有效的系别或专业！");
@@ -260,10 +256,6 @@ require(["jquery.min","overborwserEvent",
 			checkboxList[i].checked = false;
 		}
 	}
-
-
-	//修改用户部门下拉框改变事件
-	//EventUntil.addHandler(s("#user-dep"),"change",modifyUserDepChange);
 
 
 	//页面加载完成时 显示新增未注册用户数量
@@ -424,8 +416,11 @@ require(["jquery.min","overborwserEvent",
 						//关闭创建文件夹弹出层
 						s("#new-file-wrap").style.display = "none";
 					}else{
-						alert("未知错误，请稍后重试！");
+						alert("未知错误，请稍后重试");
 					}
+				},
+				error: function(){
+					alert("未知错误，请稍后重试");
 				}
 			})
 			
@@ -487,7 +482,8 @@ require(["jquery.min","overborwserEvent",
 						s("#modify-file-name-wrap").style.display = "none";
 
 					}else{
-						alert("未知错误，请稍后重试");
+						s("#modify-file-name-wrap").style.display = "none";
+						alert("修改失败，请稍后重试");
 					}
 				}
 			})
@@ -510,7 +506,6 @@ require(["jquery.min","overborwserEvent",
 				//发送之前显示加载图标
 				s("#drop-floder-loading-icon").style.visibility = 'visible';
 			},
-
 			success: function(data){
 				//发送成功之后显示提示
 				//隐藏加载图标
@@ -531,6 +526,8 @@ require(["jquery.min","overborwserEvent",
 			error: function(){
 				alert("此文件夹下存在目录不能删除！");
 				s("#drop-floder-wrap").style.display = 'none';
+				//隐藏加载图标
+				s("#drop-floder-loading-icon").style.visibility = 'hidden';
 			}
 			
 		})
@@ -555,6 +552,10 @@ require(["jquery.min","overborwserEvent",
 			type: 'POST',
 			dataType: 'json',
 			data: "accuid=" + accuid + "&uid=" + uid,
+			beforeSend: function(){
+				//发送之前显示加载图标
+				s("#drop-file-loading-icon").style.visibility = 'visible';
+			},
 			success: function(data){
 				if (data.code == 100) {
 					//请求成功后刷新文件列表
@@ -563,42 +564,23 @@ require(["jquery.min","overborwserEvent",
 					s("#drop-file-wrap").style.display = 'none';
 					alert("删除成功");
 				}else{
+					//隐藏加载图标
+					s("#drop-file-loading-icon").style.visibility = 'hidden';
 					alert("删除失败，遇到未知错误请重试");
 				}
+			},
+			error: function(){
+				//隐藏加载图标
+				s("#drop-file-loading-icon").style.visibility = 'hidden';
+				alert("未知错误，请稍后重试");
 			}
 		})
 		
 	}
 
 
-	//新建文件夹输入框键盘输入事件
-	EventUntil.addHandler(s("#new-file-name"),"keyup",function(){
-		if (this.value.length != 0) {
-			s("#newfloder-submit").removeAttribute("disabled");
-			s("#newfloder-submit").className = "btn btn-primary";
-		}else{
-			s("#newfloder-submit").disabled = "true";
-			s("#newfloder-submit").className = "btn btn-primary disabled";
-		}
-	})
 
 
-
-
-
-	//修改文件夹输入框键盘输入事件
-	EventUntil.addHandler(s("#rename-file"),"keyup",function(){
-		if (this.value.length != 0) {
-			s("#rename-submit").removeAttribute("disabled");
-			s("#rename-submit").className = "btn btn-primary";
-		}else{
-			s("#rename-submit").disabled = "true";
-			s("#rename-submit").className = "btn btn-primary disabled";
-		}
-	})
-
-
-	
 
 	// ---------------- 文件夹管理模块结束 -------------------
 
@@ -672,7 +654,6 @@ require(["jquery.min","overborwserEvent",
 				dataType: 'json',
 				data: "uid=" + id + "&content=" + val,
 				success: function(data){
-					
 					//修改成功之后刷新右侧专业栏
 					manageDep.outputSpeciality(manageDep.curManageDepDepId);
 					//清空提示信息
@@ -706,6 +687,7 @@ require(["jquery.min","overborwserEvent",
 				manageDep.createManageDepDepsList();
 				//删除系别对话框关闭
 				s("#drop-department-dialog").style.display = 'none';
+				//隐藏增加专业按钮
 				s("#add-speciality").style.display = 'none';
 				//清空记录的系别id
 				manageDep.curManageDepDepId = "";
@@ -728,6 +710,7 @@ require(["jquery.min","overborwserEvent",
 			$.ajax({
 				url: '/Management/admin/ajaxUpdateDep.action',
 				type: 'POST',
+				async: false,
 				dataType: 'json',
 				data: "uid=" + manageDep.curManageDepDepId + "&parent=0&content=" +  modifyVal,
 				success: function(data){
@@ -747,19 +730,29 @@ require(["jquery.min","overborwserEvent",
 						manageDep.curManageDepDepId = "";
 						//隐藏增加专业按钮
 						s("#add-speciality").style.display = 'none';
+
 						alert("修改成功");
 
 					}else{
-						alert("未知错误，请稍后重试！");
+						alert("修改失败，请稍后重试");
 					}
 
+				},
+				error: function(){
+					alert("修改失败，请稍后重试");
 				}
+				
 			})
 			
-		}else{
+		}else if(modifyValIsCorrect == false){
 			s("#modify-department-hint").style.color = "red";
-			s("#modify-department-hint").innerText = "系别名错误";
+			s("#modify-department-hint").innerText = "此系别名已存在";
+
+		}else if(modifyVal == ""){
+			s("#modify-department-hint").style.color = "red";
+			s("#modify-department-hint").innerText = "系别名不能为空";
 		}
+
 	}
 
 
@@ -796,14 +789,18 @@ require(["jquery.min","overborwserEvent",
 				},
 
 				error: function(){
-					alert("未知错误，请稍后重试！");
+					alert("创建失败，请稍后重试！");
 				}
 			});
 
 			
-		}else{
+		}else if(depNameIsCorrect == false){
 			s("#new-department-hint").style.color = "red";
 			s("#new-department-hint").innerText = "系别名称错误";
+
+		}else if(newDepName == ""){
+			s("#new-department-hint").style.color = "red";
+			s("#new-department-hint").innerText = "系别名称不能为空";
 		}
 	}
 
@@ -833,15 +830,22 @@ require(["jquery.min","overborwserEvent",
 						alert("创建成功");
 
 					}else{
-						alert("未知错误，请稍后重试！");
+						alert("新建失败，请稍后重试");
 					}
+				},
+				error: function(){
+					alert("新建失败，请稍后重试");
 				}
 			});
 
 			
-		}else{
+		}else if(specNameIsCorrect == false){
 			s("#new-specialy-hint").style.color = "red";
-			s("#new-specialy-hint").innerText = "专业名称错误";
+			s("#new-specialy-hint").innerText = "已有此专业名称";
+
+		}else if(newSpecName == ""){
+			s("#new-specialy-hint").style.color = "red";
+			s("#new-specialy-hint").innerText = "专业名不能为空";
 		}
 	}
 
@@ -1007,6 +1011,9 @@ require(["jquery.min","overborwserEvent",
 					s("#floor").style.display = "none";
 
 				}else{
+					icon.style.visibility = 'visible';
+					//隐藏弹出层
+					s("#floor").style.display = "none";
 					alert("未知错误，请稍后重试！");
 				}
 			}
@@ -1077,20 +1084,7 @@ require(["jquery.min","overborwserEvent",
 	}
 
 
-	//拒绝理由信息输入框输入事件
-	EventUntil.addHandler(s("#refuse-content"),"keyup",function(){
-
-		var sendBtn = s("#send-refuse-info");
-
-		if (this.value.length == 0) {
-			sendBtn.disabled = "disabled";
-			sendBtn.style.backgroundColor = "#999999"
-		}else{
-			sendBtn.removeAttribute("disabled");
-			sendBtn.className = "btn btn-success";
-			sendBtn.style.backgroundColor = "#05a828";
-		}
-	})
+	
 	
 
 	//------------- 未审核模块操作事件结束 -------------------------
@@ -1245,22 +1239,6 @@ require(["jquery.min","overborwserEvent",
 	}
 
 
-
-
-	//下拉选择框改变事件
-	EventUntil.addHandler(s("#examie-filter"),"change",filterOnChange);
-
-	//2、撤回理由输入框键盘输入事件
-	EventUntil.addHandler(s("#recall-content"),"keyup",function(){
-		//获取提交按钮
-		var sendBtn = s("#confirm-recall-user");
-
-		if (this.value.length != 0) {
-			sendBtn.removeAttribute("disabled");
-		}else{
-			sendBtn.disabled = "true";
-		}
-	})
 
 
 	//---------------- 已审核模块操作事件结束 ----------------------
@@ -1672,90 +1650,149 @@ require(["jquery.min","overborwserEvent",
 		initDepFilter();
 		//赋值修改系别对话框中的下拉框
 		getModifyUserDepModuleDep();
+
+		//下拉选择框改变事件
+		EventUntil.addHandler(s("#examie-filter"),"change",filterOnChange);
+
+		//2、撤回理由输入框键盘输入事件
+		EventUntil.addHandler(s("#recall-content"),"keyup",function(){
+			//获取提交按钮
+			var sendBtn = s("#confirm-recall-user");
+
+			if (this.value.length != 0) {
+				sendBtn.removeAttribute("disabled");
+			}else{
+				sendBtn.disabled = "true";
+			}
+		})
+
+		//拒绝理由信息输入框输入事件
+		EventUntil.addHandler(s("#refuse-content"),"keyup",function(){
+
+			var sendBtn = s("#send-refuse-info");
+
+			if (this.value.length == 0) {
+				sendBtn.disabled = "disabled";
+				sendBtn.style.backgroundColor = "#999999"
+			}else{
+				sendBtn.removeAttribute("disabled");
+				sendBtn.className = "btn btn-success";
+				sendBtn.style.backgroundColor = "#05a828";
+			}
+		})
+
+
+		//修改文件夹输入框键盘输入事件
+		EventUntil.addHandler(s("#rename-file"),"keyup",function(){
+			if (this.value.length != 0) {
+				s("#rename-submit").removeAttribute("disabled");
+				s("#rename-submit").className = "btn btn-primary";
+			}else{
+				s("#rename-submit").disabled = "true";
+				s("#rename-submit").className = "btn btn-primary disabled";
+			}
+		})
+
+
+		//新建文件夹输入框键盘输入事件
+		EventUntil.addHandler(s("#new-file-name"),"keyup",function(){
+			if (this.value.length != 0) {
+				s("#newfloder-submit").removeAttribute("disabled");
+				s("#newfloder-submit").className = "btn btn-primary";
+			}else{
+				s("#newfloder-submit").disabled = "true";
+				s("#newfloder-submit").className = "btn btn-primary disabled";
+			}
+		})
 	}
 
 	//--------------定义层结束-------------
 
+	//加载完成dom元素时
+	domready(function(){
+		//初始化页面
+		init();
+		//事件委托
+		EventUntil.addHandler(document,"click",function(event){
+			entrustEvent(event);
+		});
+		//初始化管理员和领导管理模块滚动条
+		$(".admin-list-table-wrap").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		});
+		
+		//领导管理内容包裹层设置自定义滚动条
+		$(".leader-list-table-wrap").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		})
+
+		//管理文件夹弹出层内容包裹层设置自定义滚动条
+		$(".file-content-item").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		})
 
 
-	//初始化页面
-	init();
+		//管理系别弹出层内容包裹层设置自定义滚动条
+		$(".manage-department-maincontent").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		});
 
+		$("#overflow-item-wrap").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		});
 
-	//事件委托
-	EventUntil.addHandler(document,"click",function(event){
-		entrustEvent(event);
-	});
+		//管理系别 专业侧边栏调用自定义滚动条插件
+		$("#manage-dep-list-wrap").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		});
 
-	//初始化管理员和领导管理模块滚动条
-	$(".admin-list-table-wrap").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
-	});
+		//管理文件夹侧边栏调用自定义滚动条插件
+		$("#manage-side-bar").mCustomScrollbar({
+			axis: "y",
+			theme: "minimal-dark",
+			autoHideScrollbar: true,
+			mouseWheel: {
+				enable: true
+			}
+		});
+	})
+
 	
-	//领导管理内容包裹层设置自定义滚动条
-	$(".leader-list-table-wrap").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
-	})
-
-	//管理文件夹弹出层内容包裹层设置自定义滚动条
-	$(".file-content-item").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
-	})
 
 
-	//管理系别弹出层内容包裹层设置自定义滚动条
-	$(".manage-department-maincontent").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
-	});
+	
 
-	$("#overflow-item-wrap").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
-	});
-
-	//管理系别 专业侧边栏调用自定义滚动条插件
-	$("#manage-dep-list-wrap").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
-	});
-
-	//管理文件夹侧边栏调用自定义滚动条插件
-	$("#manage-side-bar").mCustomScrollbar({
-		axis: "y",
-		theme: "minimal-dark",
-		autoHideScrollbar: true,
-		mouseWheel: {
-			enable: true
-		}
-	});
+	
 
 
 })

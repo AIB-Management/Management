@@ -1,9 +1,6 @@
 package com.gdaib.controller;
 
-import com.gdaib.pojo.DepartmentSelectVo;
-import com.gdaib.pojo.Msg;
-import com.gdaib.pojo.Profession;
-import com.gdaib.pojo.RegisterPojo;
+import com.gdaib.pojo.*;
 import com.gdaib.service.DepartmentService;
 import com.gdaib.service.UsersService;
 import com.github.pagehelper.PageHelper;
@@ -52,7 +49,14 @@ public class RegisterController {
 
         ModelAndView modelAndView = new ModelAndView();
         try {
+            RegisterPojo registerPojo = (RegisterPojo) request.getAttribute("RegisterPojo");
             modelAndView.addObject("department", departmentService.selectDepartment(null));
+            if(registerPojo != null) {
+                String depUid = registerPojo.getDepartmentId();
+                DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
+                departmentSelectVo.setParent(depUid);
+                modelAndView.addObject("pros",departmentService.selectProfession(departmentSelectVo));
+            }
         } catch (Exception e) {
             modelAndView.addObject("department", null);
             e.printStackTrace();
@@ -93,6 +97,7 @@ public class RegisterController {
 
             //开始注册动作
             usersService.insertAccountByRegisterPojo(registerPojo);
+
 
 
         } catch (Exception e) {

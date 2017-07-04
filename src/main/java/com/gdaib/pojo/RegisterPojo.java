@@ -21,6 +21,16 @@ public class RegisterPojo {
     //验证码
     private String vtCode;
 
+    //系别ID
+    private String departmentId;
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
 
     //旧密码
     private String oldpwd;

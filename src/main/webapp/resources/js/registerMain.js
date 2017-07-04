@@ -231,7 +231,9 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 
 		event = EventUntil.getEvent(event);
 		var inputs = ss(".input-wrap input");
-		var count = 0;
+		var count = 0,
+			departmentVal = s("#department").value,
+			specialVal = s("#special").value;
 		
 		for (var i = 0; i < inputs.length; i++) {
 			//提交按钮点击时
@@ -246,11 +248,18 @@ require(["jquery.min","checkInput","overborwserEvent"],function main($,checkBy,E
 			}
 		}
 
-		if (count == inputs.length) {
+		if (count == inputs.length && departmentVal != "" && specialVal != "") {
 			//如果所有输入框输入正确提交表单
 			s("#all-input").submit();
-			alert("提交成功，请耐心等待管理员审核");
 			
+		}else if(count == inputs.length && (departmentVal == "" || specialVal == "")) {
+			alert("你还有专业或系别未填写");
+
+		}else if(count != inputs.length && departmentVal != "" && specialVal != "") {
+			alert("个别信息填写错误，请核实后再提交");
+
+		}else{
+			alert("注册信息不能为空！");
 		}
 });
 	

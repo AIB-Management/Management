@@ -24,12 +24,12 @@
     <div class="preview-content">
         <p class="periview-list-title">
             <span class="glyphicon glyphicon-tag"></span> 
-            <b id="review-count"></b>个文件可预览,共<b id="all-file-count"></b>个文件
+            <b id="review-count"></b>个文件可预览,共<b id="all-file-count"></b>个文件（如果不能正常显示请更换浏览器或下载后观看）
         </p>
         <c:forEach items="${filecontent.fileItems}" var="ff">
             <c:if test="${ff.showing!=0}">
                 
-                <button class="btn btn-default boost-preview-file" data-src="${filecontent.filepath}/${ff.filename}">
+                <button class="btn btn-default boost-preview-file" data-src="${filecontent.filepath}/${ff.uid}${ff.prefix}">
                     <span class="glyphicon glyphicon-eye-open"></span> 
                     预览${ff.filename}
                 </button>
@@ -43,17 +43,18 @@
         <div class="download-link">
             <p>
                 <span class="glyphicon glyphicon-tag"></span>
+                文件下载链接，共<b id="downloadfile-count"></b>个文件可下载
             </p>
             <shiro:hasPermission name="file:down">
-            <c:forEach items="${filecontent.fileItems}" var="ff">
-                <!--
-                <a href="${filecontent.filepath}/${ff.filename}">
-                -->
-                <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
-                    <span class="glyphicon glyphicon-download-alt"></span>
-                    ${ff.filename}
-                </a>
-            </c:forEach>
+                <c:forEach items="${filecontent.fileItems}" var="ff">
+                    <!--
+                    <a href="${filecontent.filepath}/${ff.filename}">
+                    -->
+                    <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
+                        <span class="glyphicon glyphicon-download-alt"></span>
+                        ${ff.filename}
+                    </a>
+                </c:forEach>
             </shiro:hasPermission>
         </div>
 
