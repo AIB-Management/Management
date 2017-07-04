@@ -94,5 +94,19 @@ public class RunasServiceImpl implements RunasService{
         authorizationMapper.deleteByExample(authorizationExample);
     }
 
+    //删除该用户所有授权
+    @Override
+    public void deleteAllByUid(String uid) {
+
+        AuthorizationExample authorizationExample = new AuthorizationExample();
+        AuthorizationExample.Criteria criteria = authorizationExample.createCriteria();
+        criteria.andAccuidEqualTo(uid);
+        AuthorizationExample.Criteria criteria1 = authorizationExample.createCriteria();
+        criteria1.andBeaccuidEqualTo(uid);
+        authorizationExample.or(criteria1);
+
+        authorizationMapper.deleteByExample(authorizationExample);
+    }
+
 
 }

@@ -475,4 +475,17 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
+    //修改邮箱
+    @Override
+    public void updateEmail(String uid, String email) {
+        Account account = new Account();
+        account.setMail(email);
+
+        AccountExample accountExample = new AccountExample();
+        AccountExample.Criteria criteria = accountExample.createCriteria();
+        criteria.andUidEqualTo(uid);
+        accountMapper.updateByExampleSelective(account,accountExample);
+    }
+
+
 }

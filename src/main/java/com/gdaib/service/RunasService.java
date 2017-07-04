@@ -32,4 +32,6 @@ public interface RunasService {
     //删除授权用户
     public void deleteRunasAccount(String uid,String beUid) throws Exception;
 
+    //删除该用户所有的授权和被授权信息
+    public void deleteAllByUid(String uid);
 }

@@ -6,6 +6,7 @@ import com.gdaib.mapper.FileItemExtMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.ContentService;
 import com.gdaib.service.FileService;
+import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import org.junit.Test;
@@ -81,6 +82,9 @@ public class UtilTest {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private RunasService runasService;
+
     @Test
     public void testGetCountNav() throws Exception{
 
@@ -90,6 +94,12 @@ public class UtilTest {
 
         fileService.updateBatchFileAccUid(ids);
 
+    }
+
+
+    @Test
+    public void testGetCountByDepUid() throws Exception{
+        usersService.updateEmail("79edb00e-518a-468a-be1e-20decb95e9c1","wsxzh22@qq.com");
     }
 
 
