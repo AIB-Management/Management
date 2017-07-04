@@ -176,31 +176,34 @@ public class FileServiceImpl implements FileService {
         String fileName;
         FileItemSelectVo fileItemSelectVo;
 
-        try {
-            for (int i = 0, length = files.length; i < length; i++) {
-                if (!files[i].isEmpty()) {
+
+        for (int i = 0, length = files.length; i < length; i++) {
+            if (!files[i].isEmpty()) {
+
+                try {
                     fileItemSelectVo = getFileItemInfoByCommonsMultipartFile(i, files[i]);
                     fileItems.add(fileItemSelectVo);
-
                     fileName = fileItemSelectVo.getUid() + fileItemSelectVo.getPrefix();
                     fos = new FileOutputStream(path
                             +
                             fileName
                     );
-
                     in = files[i].getInputStream();
                     int b = 0;
                     while ((b = in.read()) != -1) {
                         fos.write(b);
                     }
+                } catch (Exception e) {
+                    deleteFile(f);
+                    e.printStackTrace();
+                    return null;
+                } finally {
+                    closeStream();
                 }
+                 
             }
-        } catch (Exception e) {
-            deleteFile(f);
-            return null;
-        } finally {
-            closeStream();
         }
+
         return fileItems;
     }
 
