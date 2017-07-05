@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: znho
-  Date: 2017/5/7
-  Time: 19:47
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -28,6 +21,22 @@
     </style>
 </head>
 <body>
-<h3>${error}${success}</h3>
+<h3>${error}${success}（<span id="countDown">5s秒后自动跳转</span>）</h3>
+
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        var totalSeconds = 5;
+
+        window.setInterval(function(){
+            totalSeconds--;
+            if(totalSeconds == 0){
+                window.location.href = "${pageContext.request.contextPath}/";
+            }
+            $("#countDown").html(totalSeconds+"秒后自动跳转");
+        }, 1000);
+
+    </script>
 </body>
 </html>

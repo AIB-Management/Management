@@ -9,8 +9,8 @@
 	<meta http-equiv = "X-UA-Compatible" content = "IE=Edge" /> 
 	<title>注册</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js"
-			defer async="true" data-main="${pageContext.request.contextPath}/resources/js/registerMain.js?t=170612-23"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js"
+			defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/registerMain-min.js?t=170612-23"></script>
 </head>
 <body>
 	<div class="form-wrap">
@@ -86,7 +86,6 @@
 		</p>
 	</div>
 
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/register.css?20170508-2">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/cssdist/registerMain-min.css?20170508-2">
 </body>
 </html>

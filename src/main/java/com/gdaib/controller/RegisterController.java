@@ -31,6 +31,7 @@ public class RegisterController {
 
     private static final String REGISTER = "/user/register.jsp";
     private static final String LOGIN = "/user/login.jsp";
+    private static final String TAG = "Tag.jsp";
 
     @Autowired
     private DepartmentService departmentService;
@@ -83,12 +84,12 @@ public class RegisterController {
      *      执行注册
      */
     @RequestMapping(value = "/public/doRegister", method = RequestMethod.POST)
-    public String doRegister(
+    public ModelAndView doRegister(
             RegisterPojo registerPojo,
             HttpServletRequest request,
             HttpServletResponse response
     ) throws ServletException, IOException {
-        System.out.println(registerPojo.toString());
+        ModelAndView modelAndView = new ModelAndView();
         try {
             HttpSession session = request.getSession();
             //判断账号是否合法
@@ -101,14 +102,16 @@ public class RegisterController {
 
         } catch (Exception e) {
             //如果有错误 返回异常信息
-            System.out.print(e.getMessage());
+
             request.setAttribute("error", e.getMessage());
             request.setAttribute("RegisterPojo", registerPojo);
 
             request.getRequestDispatcher("/public/register.action").forward(request, response);
         }
+        modelAndView.addObject("success","注册成功！请登录");
+        modelAndView.setViewName(TAG);
 
-        return  LOGIN;
+        return modelAndView;
 
     }
 

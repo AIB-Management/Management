@@ -46,7 +46,7 @@ public class FilterChainDefinitionMapBuilder {
         map.put("/shiro/logout","logout");
 
         //其他资源需要登陆后才能使用
-        map.put("/**","authc");
+        map.put("/**","authc,kickout");
 
 
         return map;

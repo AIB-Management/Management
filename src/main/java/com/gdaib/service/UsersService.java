@@ -83,4 +83,6 @@ public interface UsersService {
     //修改用户姓名
     public void updateName(String name,String uid) throws Exception;
 
+    //修改邮箱
+    public void updateEmail(String uid, String email);
 }

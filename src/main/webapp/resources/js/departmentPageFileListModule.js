@@ -502,6 +502,9 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=" + path + "&depuid=" + depId,
+			beforeSend: function(){
+				s("#loading-file-floor").style.display = 'block';
+			},
 			success:function(data){
 				//第一步 清空文件列表
 				s("#main-content-list").innerHTML = "";
@@ -516,6 +519,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				if (fileList.length != 0) {
 					s("#main-content-list").appendChild(ergFileList(fileList));
 				}
+
+				//隐藏加载弹出层
+				s("#loading-file-floor").style.display = 'none';
+			},
+			error: function(){
+				//隐藏加载弹出层
+				s("#loading-file-floor").style.display = 'none';
+				alert("无法加载文件列表，请检查你的网络或稍后重试");
 			}
 		})
 		

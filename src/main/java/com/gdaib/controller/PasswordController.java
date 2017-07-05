@@ -1,17 +1,17 @@
 package com.gdaib.controller;
 
-import com.gdaib.pojo.AccountInfo;
-import com.gdaib.pojo.EmailUrlPojo;
-import com.gdaib.pojo.MailPojo;
-import com.gdaib.pojo.RegisterPojo;
+import com.gdaib.pojo.*;
 import com.gdaib.service.MailService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,12 @@ public class PasswordController {
 
     private static final String TAG = "Tag.jsp";
 
-    private static final String MODIFYPDW = "/teacher/modifypwd.jsp";
+    private static final String MODIFYPDW = "/teacher/modifyemail.jsp";
+
+
+
+
+
 
     /**
      * 转发到修改密码页面
@@ -50,6 +55,45 @@ public class PasswordController {
 
         return modelAndView;
     }
+
+
+    /**
+     * 转发到找回密码页面
+     */
+    @RequestMapping(value = "/public/findPassword")
+    public ModelAndView findPassword() {
+        ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
+
+        return modelAndView;
+    }
+
+
+    /**
+     * 修改邮箱
+     */
+    @RequestMapping(value = "/public/ajaxDoModifyEmail")
+    @ResponseBody
+    public Msg ajaxDoModifyEmail(String email) throws Exception {
+
+
+        if(StringUtils.isEmpty(email)){
+            return Msg.fail().add("error","邮箱不能为空");
+        }
+        Boolean Emailboolean = usersService.findEmailIsExists(email);
+        System.out.println(Emailboolean);
+        if(!Emailboolean){
+            return Msg.fail().add("error","邮箱已存在");
+        }
+
+        AccountInfo loginAccountInfo = Utils.getLoginAccountInfo();
+
+        usersService.updateEmail(loginAccountInfo.getUid(),email);
+        loginAccountInfo.setMail(email);
+        return Msg.success();
+
+    }
+
+
 
     /**
      * 修改密码
@@ -90,15 +134,7 @@ public class PasswordController {
         return  modelAndView;
     }
 
-    /**
-     * 转发到找回密码页面
-     */
-    @RequestMapping(value = "/public/findPassword")
-    public ModelAndView findPassword() {
-        ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
 
-        return modelAndView;
-    }
 
 
     /**

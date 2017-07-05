@@ -39,6 +39,9 @@ public class ManageController {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private RunasService runasService;
+
     private static final String FROMADDRESS = "18707513901@163.com";
 
     @Autowired
@@ -634,7 +637,7 @@ public class ManageController {
         if(uid == null || uid.equals("") || departmentUid == null || departmentUid.equals("")){
             return Msg.fail();
         }
-
+        runasService.deleteAllByUid(uid);
         usersService.updateAccountByDepartment(uid,departmentUid);
         return Msg.success();
     }

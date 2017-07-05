@@ -34,6 +34,9 @@ public class NaviTest {
     private UsersMapper usersMapper;
 
     @Autowired
+    private RunasService runasService;
+
+    @Autowired
     private DepartmentExtMapper departmentExtMapper;
     @Test
     public void testSelectFileAndFileItem() throws Exception{
@@ -45,21 +48,8 @@ public class NaviTest {
     }
 
     @Test
-    public void testGetCountPer() throws Exception{
-        DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
-        departmentSelectVo.setParent("a434d90d-a267-457c-8e10-89028ce6ed27");
-        DepartmentCustom departmentCustom = departmentExtMapper.getCountProfessional(departmentSelectVo);
-
-        System.out.println(departmentCustom);
-    }
-
-    @Test
     public void testGetCountByDepUid() throws Exception{
-        DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
-        departmentSelectVo.setParent("0");
-        List<DepartmentCustom> departmentCustoms = departmentExtMapper.selectDepartment(departmentSelectVo);
-
-        System.out.println(departmentCustoms);
+        usersService.updateEmail("79edb00e-518a-468a-be1e-20decb95e9c1","wsxzh22@qq.com");
     }
 
 
