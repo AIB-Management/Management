@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: znho
-  Date: 2017/5/7
-  Time: 19:47
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -43,6 +36,6 @@
 
 </head>
 <body>
-<h3>${error}${success}（<span id="countDown">5s秒后自动跳转</span>）</h3>
+<h3>${error}${success}（<span id="countDown">5秒后自动跳转</span>）</h3>
 </body>
 </html>

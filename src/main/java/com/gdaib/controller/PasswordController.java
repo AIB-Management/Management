@@ -1,9 +1,6 @@
 package com.gdaib.controller;
 
-import com.gdaib.pojo.AccountInfo;
-import com.gdaib.pojo.EmailUrlPojo;
-import com.gdaib.pojo.MailPojo;
-import com.gdaib.pojo.RegisterPojo;
+import com.gdaib.pojo.*;
 import com.gdaib.service.MailService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
@@ -14,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,10 +39,10 @@ public class PasswordController {
 
     private static final String TAG = "Tag.jsp";
 
-    private static final String MODIFYPDW = "/teacher/modifypwd.jsp";
+    private static final String MODIFYPDW = "/teacher/modifyemail.jsp";
 
 
-    private static final String MODIFYEMAIL = "/teacher/modifypwd.jsp";
+
 
 
 
@@ -58,14 +56,6 @@ public class PasswordController {
         return modelAndView;
     }
 
-    /**
-     * 转发到修改邮箱页面
-     */
-    @RequestMapping(value = "/public/modifyEmail")
-    public ModelAndView modifyEmail() {
-        ModelAndView modelAndView = new ModelAndView(MODIFYEMAIL);
-        return modelAndView;
-    }
 
     /**
      * 转发到找回密码页面
@@ -81,30 +71,24 @@ public class PasswordController {
     /**
      * 修改邮箱
      */
-    @RequestMapping(value = "/public/doModifyEmail")
-    public ModelAndView doModifyEmail(String email) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
+    @RequestMapping(value = "/public/ajaxDoModifyEmail")
+    @ResponseBody
+    public Msg ajaxDoModifyEmail(String email) throws Exception {
+
 
         if(StringUtils.isEmpty(email)){
-            modelAndView.setViewName(MODIFYEMAIL);
-            modelAndView.addObject("error","邮箱不能为空");
-            return modelAndView;
+            return Msg.fail().add("error","邮箱不能为空");
         }
         Boolean Emailboolean = usersService.findEmailIsExists(email);
         System.out.println(Emailboolean);
         if(!Emailboolean){
-            modelAndView.setViewName(MODIFYEMAIL);
-            modelAndView.addObject("error","邮箱已存在，请重新输入");
-            return modelAndView;
+            return Msg.fail().add("error","邮箱已存在");
         }
 
         AccountInfo loginAccountInfo = Utils.getLoginAccountInfo();
 
         usersService.updateEmail(loginAccountInfo.getUid(),email);
-        modelAndView.addObject("success","修改成功");
-        modelAndView.setViewName(TAG);
-
-        return modelAndView;
+        return Msg.success();
     }
 
 
