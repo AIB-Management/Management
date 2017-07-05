@@ -43,6 +43,7 @@ body{
 }
 .input-wrap label,.input-wrap input{
 	display: inline-block;
+	vertical-align: top;
 	height: 38px;
 	line-height: 38px;
 	word-spacing: 0;

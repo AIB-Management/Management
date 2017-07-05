@@ -262,7 +262,6 @@ require(["domReady","jquery.min","overborwserEvent",
 		//获取真正触发事件的对象
 		var target = EventUntil.getTarget(event);
 		
-		console.log(target);
 
 		//隐藏溢出导航栏按钮事件
 		if (target.id == "show-hidden-menu") {

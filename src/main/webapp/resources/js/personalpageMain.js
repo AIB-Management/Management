@@ -29,8 +29,8 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 		var status = checkBy.regWithoutLimit(s("#newUsername"),"p","#00C12B","#FB000D");
 
 		if (status == true) {
-			//隐藏错误提示
-			s("#modify-new-name-hint").style.display = 'none';
+			//清空错误提示
+			s("#modify-new-name-hint").innerText = "";
 			//如果新名字正确发送ajax
 			$.ajax({
 				url: '/Management/content/ajaxUpdateName.action',
@@ -62,11 +62,11 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 		var status = checkBy.regWithoutLimit(s("#newEmail"),"p","#00C12B","#FB000D");
 
 		if (status == true) {
-			//隐藏错误提示
-			s("#modify-new-email-hint").style.display = 'none';
+			//清空错误提示
+			s("#modify-new-email-hint").innerText = "";
 			//认证成功发送ajax
 			$.ajax({
-				url: '/Management/public/doModifyEmail.action',
+				url: '/Management/public/ajaxDoModifyEmail.action',
 				type: 'POST',
 				dataType: 'json',
 				data: "email=" + s("#newEmail").value,

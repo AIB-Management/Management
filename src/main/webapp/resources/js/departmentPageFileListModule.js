@@ -403,6 +403,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			dropBtn = button.cloneNode(true);
 		
 		checkBox.type = "checkbox";
+		checkBox.disabled = "true";
 
 		modifyBtnIcon.className = "glyphicon glyphicon-edit";
 		modifyBtn.className = "btn btn-default btn-sm";
