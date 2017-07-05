@@ -88,7 +88,9 @@ public class PasswordController {
         AccountInfo loginAccountInfo = Utils.getLoginAccountInfo();
 
         usersService.updateEmail(loginAccountInfo.getUid(),email);
+        loginAccountInfo.setMail(email);
         return Msg.success();
+
     }
 
 
