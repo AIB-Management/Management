@@ -18,6 +18,25 @@
 	position: relative;
 	z-index: 1;
 }
+/*加载文件列表时的弹出层*/
+#loading-file-floor{
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.5);
+	z-index: 80;
+}
+#loading-file-floor img{
+	display: inline-block;
+	position: absolute;
+	width: 96px;
+	height: 96px;
+	top: 50%;
+	left: 50%;
+	margin-top: -48px;
+	margin-left: -48px;
+}
 /*上传文件弹出层样式*/
 #upload-file-floor{
 	display: none;
