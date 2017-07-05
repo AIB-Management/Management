@@ -3,7 +3,8 @@ body{
 	background-size: cover;
 	background-position: center;
 }
-#modify-personal-name-floor{
+#modify-personal-name-floor,
+#modify-personal-email-floor{
 	display: none;
 	position: fixed;
 	width: 100%;
@@ -11,7 +12,8 @@ body{
 	background-color: rgba(255,255,255,0.5);
 	z-index: 30;
 }
-.modify-personal-name-wrap{
+.modify-personal-name-wrap,
+.modify-personal-email-wrap{
 	position: absolute;
 	width: 580px;
 	height: 250px;
@@ -23,10 +25,12 @@ body{
 	border-radius: 5px;
 	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
 }
-#modifyname-close-btn{
+#modifyname-close-btn,
+#modifyemail-close-btn{
 	font-size: 30px;
 }
-.modify-personal-name-wrap h3{
+.modify-personal-name-wrap h3,
+.modify-personal-email-wrap h3{
 	height: 35px;
 	line-height: 35px;
 	padding-left: 10px;
