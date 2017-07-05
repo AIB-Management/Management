@@ -43,11 +43,11 @@
 					<option value="">请选择系别</option>
 
 					<c:forEach items="${department}" var="dp">
-						<c:if test="${RegisterPojo.departmentId ==dp.department.uid}">
-							<option value="${dp.department.uid}" selected>${dp.department.content}</option>
+						<c:if test="${RegisterPojo.departmentId ==dp.uid}">
+							<option value="${dp.uid}" selected>${dp.content}</option>
 						</c:if>
-						<c:if test="${RegisterPojo.departmentId !=dp.department.uid}">
-							<option value="${dp.department.uid}" >${dp.department.content}</option>
+						<c:if test="${RegisterPojo.departmentId !=dp.uid}">
+							<option value="${dp.uid}" >${dp.content}</option>
 						</c:if>
 					</c:forEach>
 				</select>

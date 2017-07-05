@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gdaib.mapper.DepartmentExtMapper">
-    <resultMap id="DepartmentCustom" type="com.gdaib.pojo.DepartmentCustom">
-        <id column="id" property="department.id" jdbcType="INTEGER"/>
-        <id column="uid" property="department.uid" jdbcType="VARCHAR"/>
-        <result column="content" property="department.content" jdbcType="VARCHAR"/>
-        <result column="parent" property="department.parent" jdbcType="VARCHAR"/>
-        <!--<result column="profession" property="professions" jdbcType="VARCHAR" />-->
+    <resultMap id="DepartmentCustom" type="com.gdaib.pojo.DepartmentCustom" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="uid" property="uid" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="parent" property="parent" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="where_department_select_vo">

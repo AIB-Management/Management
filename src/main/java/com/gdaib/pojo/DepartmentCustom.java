@@ -6,7 +6,7 @@ package com.gdaib.pojo;
 public class DepartmentCustom  extends  Department{
 
     private Integer count;
-    private Department department;
+
 
     public Integer getCount() {
         return count;
@@ -16,13 +16,4 @@ public class DepartmentCustom  extends  Department{
         this.count = count;
     }
 
-
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
 }
