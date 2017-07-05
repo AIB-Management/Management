@@ -39,7 +39,7 @@ public class PasswordController {
 
     private static final String TAG = "Tag.jsp";
 
-    private static final String MODIFYPDW = "/teacher/modifyemail.jsp";
+    private static final String MODIFYPDW = "/teacher/modifypwd.jsp";
 
 
 
