@@ -133,14 +133,13 @@ public class LoginController {
         if(departmentCustoms == null || departmentCustoms.size() == 0){
             return "redirect:/admin/leader.action";
         }
-        DepartmentCustom departmentCustom = departmentCustoms.get(0);
-        Department department = departmentCustom.getDepartment();
 
+        DepartmentCustom departmentCustom = departmentCustoms.get(0);
 
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
         accountInfo.setDepartmentId(account.getDepartmentId());
-        accountInfo.setDepContent(department.getContent());
+        accountInfo.setDepContent(departmentCustom.getContent());
         accountInfo.setContent("无");
         return "redirect:/";
     }

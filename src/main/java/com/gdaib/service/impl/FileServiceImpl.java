@@ -200,7 +200,7 @@ public class FileServiceImpl implements FileService {
                 } finally {
                     closeStream();
                 }
-                 
+
             }
         }
 
@@ -294,9 +294,15 @@ public class FileServiceImpl implements FileService {
         return custom;
     }
 
+    @Override
+    public List<HashMap<String, Object>> selectFileByAuthorOrTitle(FileSelectVo file) throws Exception {
+        List<FileCustom> customs = fileExtMapper.selectFileByAuthorOrTitle(file);
+        if (customs != null) {
+            return fileCustomToCustomMap(customs);
+        }
+        return null;
+    }
 
-    @Autowired
-    public FileMapper fileMapper;
 
     @Override
     public void updateBatchFileAccUid(List<String> ids) throws Exception {
@@ -309,6 +315,24 @@ public class FileServiceImpl implements FileService {
         FileExample.Criteria criteria = fileExample.createCriteria();
         criteria.andAccuidIn(ids);
 
-        fileMapper.updateByExampleSelective(file, fileExample);
+        fileExtMapper.updateByExampleSelective(file, fileExample);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> fileCustomToCustomMap(List<FileCustom> fileCustoms) throws Exception {
+        List<HashMap<String, Object>> maps = new ArrayList<HashMap<String, Object>>();
+        if (fileCustoms != null || fileCustoms.size() > 0) {
+            for (FileCustom file : fileCustoms) {
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("uid", file.getUid());
+                hashMap.put("title", file.getTitle());
+                hashMap.put("upTime", file.getUptime());
+                hashMap.put("author", file.getAuthor());
+                hashMap.put("accuid", file.getAccuid());
+                maps.add(hashMap);
+            }
+            return maps;
+        }
+        return null;
     }
 }

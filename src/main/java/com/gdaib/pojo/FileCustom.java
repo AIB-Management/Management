@@ -8,8 +8,6 @@ import java.util.List;
 public class FileCustom extends File {
     private Integer count;
 
-    private File file;
-
     private String  author;
 
     private List<FileItemCustom> fileItems;
@@ -38,11 +36,5 @@ public class FileCustom extends File {
         this.author = author;
     }
 
-    public File getFile() {
-        return file;
-    }
 
-    public void setFile(File file) {
-        this.file = file;
-    }
 }

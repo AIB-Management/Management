@@ -9,17 +9,9 @@ require.config({
 			deps:['jquery.min']
 		},
 
-		'fileinput.min':{
+		'fileinput':{
 			deps: ['jquery.min','bootstrap.min']
 
-		},
-
-		'es':{
-			deps: ['jquery.min','bootstrap.min','fileinput.min']
-		},
-
-		'zh':{
-			deps: ['jquery.min','bootstrap.min','fileinput.min','es']
 		},
 
 		'jquery.mousewheel.min': {
@@ -37,7 +29,7 @@ require.config({
 //departmentpage 脚本main函数
 require(["domReady","jquery.min","overborwserEvent",
 	"departmentpageauthorityManage","departmentPageFileListModule",
-	"bootstrap.min","fileinput.min","es","zh","jquery.mousewheel.min","mCustomScrollbar.min"],function main(domready,$,EventUntil,authorityModule,depFileListModule){
+	"bootstrap.min","fileinput","jquery.mousewheel.min","mCustomScrollbar.min"],function main(domready,$,EventUntil,authorityModule,depFileListModule){
 
 	//封装选择器函数
 	function s(name){
@@ -270,7 +262,6 @@ require(["domReady","jquery.min","overborwserEvent",
 		//获取真正触发事件的对象
 		var target = EventUntil.getTarget(event);
 		
-		console.log(target);
 
 		//隐藏溢出导航栏按钮事件
 		if (target.id == "show-hidden-menu") {

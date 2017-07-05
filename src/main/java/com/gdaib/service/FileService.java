@@ -46,5 +46,9 @@ public interface FileService {
     public FileItemCustom selectFileItemByUid(String uid);
 
     //批量修改用户文件作者为管理员
-    void updateBatchFileAccUid(List<String> ids) throws Exception;
+    public void updateBatchFileAccUid(List<String> ids) throws Exception;
+
+    public List<HashMap<String,Object>> fileCustomToCustomMap(List<FileCustom> fileCustoms) throws Exception;
+
+    public List<HashMap<String,Object>> selectFileByAuthorOrTitle(FileSelectVo file) throws Exception;
 }

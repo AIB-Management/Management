@@ -152,7 +152,7 @@ public class FileController {
         }
 
         ServletContext sc = request.getSession().getServletContext();
-        String sqlPath = fileCustoms.get(0).getFile().getFilepath();
+        String sqlPath = fileCustoms.get(0).getFilepath();
         String localPath = sc.getRealPath(sqlPath) + "/";
 
         List<HashMap<String, Object>> filenames = fileService.selectLocalFileItem(localPath, sqlPath);
@@ -196,7 +196,7 @@ public class FileController {
             throw new GlobalException("文件不存在");
         }
 
-        String localPath = Utils.getSystemRealFilePath(request, fileCustoms.get(0).getFile().getFilepath());
+        String localPath = Utils.getSystemRealFilePath(request, fileCustoms.get(0).getFilepath());
         fileService.deleteLocalFile(localPath);
 
         int result = fileService.deleteFile(fileSelectVo);
@@ -254,9 +254,7 @@ public class FileController {
         System.out.println(custom);
         //设置Content-Disposition
         response.setHeader("Content-Disposition", "attachment;filename=" +
-//                custom.getFilename()
                         new String(custom.getFilename().getBytes("UTF-8"), "ISO8859-1")
-//                custom.getUid()+custom.getPrefix()
         );
 
         //读取目标文件，通过response将目标文件写到客户端

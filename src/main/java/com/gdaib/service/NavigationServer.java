@@ -3,6 +3,7 @@ package com.gdaib.service;
 import com.gdaib.pojo.NavigationCustom;
 import com.gdaib.pojo.NavigationSelectVo;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,8 +22,9 @@ public interface NavigationServer {
     //查询文件夹信息
     public List<NavigationCustom> selectNavigation(NavigationSelectVo navigation) throws Exception;
 
+    public List<HashMap<String,Object>> navigationCustomToCustomMap(List<NavigationCustom> navigationCustoms) throws Exception;
 
-    
+
 
     //插入一条导航
 //    public Integer insertNavigation(Navigation navigation) throws Exception;

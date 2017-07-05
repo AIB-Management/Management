@@ -14,6 +14,22 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js?20170518-8"></script>
 </head>
 <body>
+	<div id="modify-admin-email-floor">
+		<div class="modify-admin-email-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modifyadminemail-close-btn">&times;</span></button>
+			</div>
+			<h3>修改邮箱</h3>
+			<div class="modifyemail-input-wrap">
+				<label>新邮箱</label>
+				<input type="text" name="email" id="newEmail">
+				<p id="modify-new-email-hint"></p>
+			</div>
+			<div class="modifyemail-input-wrap">
+				<button class="btn btn-primary" disabled="true" id="confirm-modifyemail">修改</button>
+			</div>
+		</div>
+	</div>
 	<!-- 修改已审核用户系别及专业对话框开始 -->
 	<div id="modify-user-department-floor">
 		<div class="modify-dep-dialog-wrap">
@@ -392,6 +408,10 @@
 				<h3 title='<shiro:principal property="uid"/>' id="page-header-title">后台管理页</h3>
 			</div>
 			<div class="logout-btn-wrap">
+				<a id="modify-email-btn" href="#">
+					<span class="glyphicon glyphicon-glyphicon glyphicon-envelope"></span>
+					修改注册邮箱
+				</a>
 				<a id="modify-pwd-btn" href="${pageContext.request.contextPath}/public/modifyPassword.action">
 					<span class="glyphicon glyphicon-lock"></span>
 					修改密码

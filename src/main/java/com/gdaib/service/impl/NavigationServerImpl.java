@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -354,5 +355,24 @@ public class NavigationServerImpl implements NavigationServer {
 //            throw new GlobalException("上级目录为空");
 //        }
         return navigationExtMapper.selectNavigation(navigation);
+    }
+
+    @Override
+    public List<HashMap<String,Object>> navigationCustomToCustomMap(List<NavigationCustom> navigationCustoms) throws Exception{
+        List<HashMap<String, Object>> navs ;
+        if (navigationCustoms != null || navigationCustoms.size() > 0) {
+            navs = new ArrayList<HashMap<String, Object>>();
+            Navigation navigation;
+            for (NavigationCustom custom : navigationCustoms) {
+                navigation = custom.getNavigation();
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
+                hashMap.put("uid", navigation.getUid());
+                hashMap.put("nav", navigation.getTitle());
+                navs.add(hashMap);
+
+            }
+            return navs;
+        }
+        return null;
     }
 }

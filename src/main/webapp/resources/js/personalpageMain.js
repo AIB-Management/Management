@@ -29,6 +29,8 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 		var status = checkBy.regWithoutLimit(s("#newUsername"),"p","#00C12B","#FB000D");
 
 		if (status == true) {
+			//清空错误提示
+			s("#modify-new-name-hint").innerText = "";
 			//如果新名字正确发送ajax
 			$.ajax({
 				url: '/Management/content/ajaxUpdateName.action',
@@ -42,22 +44,61 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 						//刷新页面
 						window.location.reload(true);
 					}else{
-						alert("修改失败！");
+						alert("修改失败！请稍后重试");
+						s("#modify-personal-name-floor").style.display = 'none';
 					}
+				},
+				error: function(){
+					alert("修改失败！请稍后重试");
+					s("#modify-personal-name-floor").style.display = 'none';
 				}
 			});
 			
 		}
 	}
 
+	//确认修改用户邮箱点击事件回调函数
+	function confirmModifyEmail(){
+		var status = checkBy.regWithoutLimit(s("#newEmail"),"p","#00C12B","#FB000D");
 
-	//定义表单认证的提示内容以及正则表达式
+		if (status == true) {
+			//清空错误提示
+			s("#modify-new-email-hint").innerText = "";
+			//认证成功发送ajax
+			$.ajax({
+				url: '/Management/public/ajaxDoModifyEmail.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "email=" + s("#newEmail").value,
+				success: function(data){
+					if (data.code == 100) {
+						alert("修改成功!");
+						s("#modify-personal-email-floor").style.display = 'none';
+						//刷新页面
+						window.location.reload(true);
+					}else{
+						alert("修改失败！请稍后重试");
+						s("#modify-personal-email-floor").style.display = 'none';
+					}
+				},
+				error: function(){
+					alert("修改失败！请稍后重试");
+					s("#modify-personal-email-floor").style.display = 'none';
+				}
+			});
+		}
+	}
+
+
 	checkBy.init({
 		newUsername:{hint:"长度为2~10位中文或英文字符,不能有数字",correct:"",error:"输入不正确"
-		,reg: /^\S[\u4E00-\u9FA5\uF900-\uFA2D\w][^0-9]{1,10}$/}
+		,reg: /^\S[\u4E00-\u9FA5\uF900-\uFA2D\w][^0-9]{1,10}$/},
+		newEmail: {hint:"请填写正确的邮箱地址",correct:"",error:"输入不正确"
+		,reg: /^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}$/}
 
 	});
 
+	//修改用户名按钮点击事件
 	EventUntil.addHandler(s("#modify-btn"),"click",function(event){
 		event = EventUntil.getEvent(event);
 		EventUntil.preventDefault(event);
@@ -67,10 +108,12 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 		s("#modify-personal-name-floor").style.display = 'block';
 	});
 
+	//修改用户名对话框关闭按钮点击事件
 	EventUntil.addHandler(s("#modifyname-close-btn"),"click",function(){
 		s("#modify-personal-name-floor").style.display = 'none';
 	})
 
+	//新用户名输入框键盘输入事件
 	EventUntil.addHandler(s("#newUsername"),"keyup",function(){
 		if (this.value.length != 0) {
 			s("#confirm-modify").removeAttribute("disabled");
@@ -79,5 +122,37 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 		}
 	})
 
+	//确认修改用户名按钮点击事件
 	EventUntil.addHandler(s("#confirm-modify"),"click",confirmModify);
+
+
+	//修改邮箱按钮点击事件
+	EventUntil.addHandler(s("#modify-email"),"click",function(event){
+		event = EventUntil.getEvent(event);
+		EventUntil.preventDefault(event);
+
+		var name = s("#personal-email").innerText;
+		s("#newEmail").value = name;
+		s("#modify-personal-email-floor").style.display = 'block';
+	});
+
+
+	//修邮箱对话框关闭按钮点击事件
+	EventUntil.addHandler(s("#modifyemail-close-btn"),"click",function(){
+		s("#modify-personal-email-floor").style.display = 'none';
+	})
+
+
+	//新邮箱输入框键盘输入事件
+	EventUntil.addHandler(s("#newEmail"),"keyup",function(){
+		if (this.value.length != 0) {
+			s("#confirm-modifyemail").removeAttribute("disabled");
+		}else{
+			s("#confirm-modifyemail").disabled = "true";
+		}
+	})
+
+	//确认修改用户名按钮点击事件
+	EventUntil.addHandler(s("#confirm-modifyemail"),"click",confirmModifyEmail);
+
 })

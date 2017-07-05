@@ -21,6 +21,62 @@ thead,tbody,tbody tr,tbody tr td{
 	display: block;
 	height: auto;
 }
+/*修改管理员密码对话框样式*/
+#modify-admin-email-floor{
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5);
+	z-index: 30;
+}
+.modify-admin-email-wrap{
+	position: absolute;
+	width: 580px;
+	height: 250px;
+	top: 50%;
+	left: 50%;
+	margin-top: -125px;
+	margin-left: -290px;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 5px 15px rgba(160,162,122,0.5);
+}
+.modify-admin-email-wrap h3{
+	height: 35px;
+	line-height: 35px;
+	padding-left: 10px;
+	border-bottom: 1px solid #ccc;
+}
+#modifyadminemail-close-btn{
+	font-size: 30px;
+}
+.modifyemail-input-wrap{
+	width: 90%;
+	margin: 20px auto 0 auto;
+	word-spacing: -6px;
+}
+.modifyemail-input-wrap label,
+.modifyemail-input-wrap input{
+	display: inline-block;
+	vertical-align: top;
+	height: 38px;
+	line-height: 38px;
+	word-spacing: 0;
+}
+.modifyemail-input-wrap label{
+	width: 20%;
+	background-color: #337ab7;
+	border-radius: 5px 0px 0px 5px;
+	color: #fff;
+	text-align: center;
+}
+.modifyemail-input-wrap input{
+	width: 80%;
+	border: 1px solid #337ab7;
+	border-radius: 0px 5px 5px 0px;
+	padding-left: 5px;
+}
 /*撤回管理员对话框样式*/
 #recall-admin-dialog-floor,
 #recall-leader-dialog-floor,
@@ -699,11 +755,11 @@ thead,tbody,tbody tr,tbody tr td{
 	display: inline-block;
 	vertical-align: middle;
 	width: 80px;
-	height: 30px;
-	line-height: 30px;
+	height: 38px;
+	line-height: 38px;
 	margin-left: 20px;
 	border: 1px solid #fff;
-	border-radius: 5px;
+	border-radius: 8px;
 	color: #fff;
 	font-weight: bold;
 	text-align: center;
@@ -718,11 +774,11 @@ thead,tbody,tbody tr,tbody tr td{
 #modify-pwd-btn{
 	display: inline-block;
 	vertical-align: middle;
-	width: 120px;
-	height: 30px;
-	line-height: 30px;
+	width: 100px;
+	height: 38px;
+	line-height: 38px;
 	border: 1px solid #fff;
-	border-radius: 5px;
+	border-radius: 8px;
 	color: #fff;
 	font-weight: bold;
 	text-align: center;
@@ -734,7 +790,28 @@ thead,tbody,tbody tr,tbody tr td{
 	-ms-transition: all linear .3s;
 	-o-transition: all linear .3s;
 }
-#logout-btn:hover,#modify-pwd-btn:hover{
+#modify-email-btn{
+	display: inline-block;
+	vertical-align: middle;
+	width: 125px;
+	height: 38px;
+	line-height: 38px;
+	border: 1px solid #fff;
+	border-radius: 8px;
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	transition: all linear .3s;
+	-webkit-transition: all linear .3s;
+	-moz-transition: all linear .3s;
+	-ms-transition: all linear .3s;
+	-o-transition: all linear .3s;
+}
+#logout-btn:hover,
+#modify-pwd-btn:hover,
+#modify-email-btn:hover{
 	background-color: #fff;
 	color: #000;
 }

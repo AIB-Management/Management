@@ -2,6 +2,7 @@ package cn.test;
 
 import com.gdaib.mapper.AccountMapper;
 import com.gdaib.mapper.DepartmentExtMapper;
+import com.gdaib.mapper.FileExtMapper;
 import com.gdaib.mapper.FileItemExtMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.ContentService;
@@ -82,10 +83,8 @@ public class UtilTest {
     @Autowired
     private FileService fileService;
 
-    @Autowired
-    private RunasService runasService;
 
-    @Test
+    //    @Test
     public void testGetCountNav() throws Exception{
 
         List<String> ids = new ArrayList<String>();
@@ -95,6 +94,10 @@ public class UtilTest {
         fileService.updateBatchFileAccUid(ids);
 
     }
+
+
+    @Autowired
+    private RunasService runasService;
 
 
     @Test
@@ -140,11 +143,23 @@ public class UtilTest {
         fileItemExtMapper.insertFileItemByList(fileItems,"6e6673f7-9af4-4a3c-8052-82629c16c783");
     }
 
-    @Test
+//    @Test
     public void testSelectFileItemByFileId() throws Exception{
         FileItemCustom fileItemCustom = fileItemExtMapper.selectFileItemByUid("8373b8cd-d4cd-407e-8f20-b80c3a3e800f");
 
         System.out.println(fileItemCustom);
+    }
+
+
+    @Autowired
+    FileExtMapper fileExtMapper;
+    @Test
+    public void testSelectFileByAuthorOrTitle()throws Exception{
+        FileSelectVo fileSelectVo = new FileSelectVo();
+        fileSelectVo.setDepUid("edda68d5-e77d-41bc-98b8-207172b58ac7");
+        fileSelectVo.setTitle("t");
+        List<FileCustom> fileCustoms = fileExtMapper.selectFileByAuthorOrTitle(fileSelectVo);
+        System.out.println(fileCustoms);
     }
 
 }

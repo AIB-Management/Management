@@ -19,7 +19,12 @@
           color: #fff;
         }
     </style>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+</head>
+<body>
+<h3>${error}${success}（<span id="countDown">5s秒后自动跳转</span>）</h3>
+
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
     <script type="text/javascript">
 
         var totalSeconds = 5;
@@ -33,9 +38,5 @@
         }, 1000);
 
     </script>
-
-</head>
-<body>
-<h3>${error}${success}（<span id="countDown">5秒后自动跳转</span>）</h3>
 </body>
 </html>

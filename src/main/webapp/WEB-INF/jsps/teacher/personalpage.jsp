@@ -9,6 +9,22 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/personalpageMain.js"></script>
 </head>
 <body>
+	<div id="modify-personal-email-floor">
+		<div class="modify-personal-email-wrap">
+			<div class="close-btn clearfix">
+				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modifyemail-close-btn">&times;</span></button>
+			</div>
+			<h3>修改邮箱</h3>
+			<div class="input-wrap">
+				<label>新邮箱</label>
+				<input type="text" name="email" id="newEmail">
+				<p id="modify-new-email-hint"></p>
+			</div>
+			<div class="input-wrap">
+				<button class="btn btn-primary" disabled="true" id="confirm-modifyemail">修改</button>
+			</div>
+		</div>
+	</div>
 	<div id="modify-personal-name-floor">
 		<div class="modify-personal-name-wrap">
 			<div class="close-btn clearfix">
@@ -48,6 +64,7 @@
 			<p class="personal-info-wrap">
 				<span>邮箱</span>
 				<span id="personal-email">${AccountInfo.mail}<shiro:principal property="mail"/></span>
+				<a href="#" id="modify-email">修改</a>
 			</p>
 			<p class="personal-info-wrap">
 				<a href="/Management/" class="return-homepage">返回主页</a>

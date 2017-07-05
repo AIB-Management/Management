@@ -64,21 +64,6 @@ public class ContentController {
         }
         ModelAndView modelAndView = new ModelAndView();
 
-//        List<FileCustom> customs = fileService.selectFile(fileSelectVo);
-//        if (customs.size() == 0) {
-//             throw new GlobalException("无效文件");
-//        }
-//
-//        FileCustom fileCustom = customs.get(0);
-//        modelAndView.addObject("fileCustom", fileCustom);
-//
-//        String sqlPath = fileCustom.getFile().getFilepath();
-//        // 上传位置
-//        ServletContext sc = request.getSession().getServletContext();
-//        String path = sc.getRealPath(sqlPath) + "/";  // 设定文件保存的目录
-//
-//        List<HashMap<String, Object>> fileItems = fileService.selectLocalFileItem(path, sqlPath);
-//        modelAndView.addObject("fileItems", fileItems);
 
         FileCustom fileCustom =fileService.getFileContent(fileSelectVo);
         modelAndView.addObject("filecontent",fileCustom);
@@ -105,43 +90,15 @@ public class ContentController {
         HashMap<String, List<HashMap<String, Object>>> navAndFile = new HashMap<String, List<HashMap<String, Object>>>();
         //查找父类uid为xx的子导航
         List<NavigationCustom> navigationCustoms = navigationServer.selectNavigation(navigationSelectVo);
-        List<HashMap<String, Object>> navs = new ArrayList<HashMap<String, Object>>();
-        Navigation navigation;
-        //如果找到的子导航不为空
-        if (navigationCustoms != null || navigationCustoms.size() > 0) {
-            for (NavigationCustom custom : navigationCustoms) {
-                navigation = custom.getNavigation();
-                HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                hashMap.put("uid", navigation.getUid());
-                hashMap.put("nav", navigation.getTitle());
-                navs.add(hashMap);
 
-            }
-        } else {
-            navs = null;
-        }
+        List<HashMap<String, Object>> navs = navigationServer.navigationCustomToCustomMap(navigationCustoms);
 
         //查找当前目录下有没有文件
         FileSelectVo fileSelectVo = new FileSelectVo();
         fileSelectVo.setNavuid(navigationSelectVo.getParent());
-
         List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
-        List<HashMap<String, Object>> files = new ArrayList<HashMap<String, Object>>();
-        File file;
-        if (fileCustoms != null || fileCustoms.size() > 0) {
-            for (FileCustom custom : fileCustoms) {
-                file = custom.getFile();
-                HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                hashMap.put("uid", file.getUid());
-                hashMap.put("title", file.getTitle());
-                hashMap.put("upTime", file.getUptime());
-                hashMap.put("author", custom.getAuthor());
-                hashMap.put("accuid", file.getAccuid());
-                files.add(hashMap);
-            }
-        } else {
-            files = null;
-        }
+
+        List<HashMap<String, Object>> files =fileService.fileCustomToCustomMap(fileCustoms);
 
         navAndFile.put("navs", navs);
         navAndFile.put("files", files);
@@ -160,17 +117,13 @@ public class ContentController {
         List<HashMap<String, Object>> depAndpro = new ArrayList<HashMap<String, Object>>();
         if (departmentSelectVo.getParent().equals("0")) {
             List<DepartmentCustom> departmentCustoms = departmentService.selectDepartment(departmentSelectVo);
-
             if (departmentCustoms.size() > 0) {
-                for (DepartmentCustom departmentCustom : departmentCustoms) {
-                    Department department = departmentCustom.getDepartment();
+                for (DepartmentCustom department : departmentCustoms) {
                     HashMap<String, Object> hashMap = new HashMap<String, Object>();
                     hashMap.put("dep", department.getContent());
                     hashMap.put("uid", department.getUid());
-
                     departmentSelectVo.setParent(department.getUid());
                     List<HashMap<String, Object>> pros = departmentService.selectProfession(departmentSelectVo);
-
                     hashMap.put("pros", pros);
                     depAndpro.add(hashMap);
                 }
@@ -199,10 +152,24 @@ public class ContentController {
         AccountInfo accountInfo = Utils.getLoginAccountInfo();
         accountInfo.setName(name);
 
-
-
-
         return Msg.success();
+    }
+
+    //根据教师名或者文章标题查询所登录账号本系的文件信息
+    @RequestMapping(value = "/content/ajaxGetFileByAuthorOrTitle")
+    @ResponseBody
+    public Msg ajaxGetFileByAuthorOrTitle(FileSelectVo file) throws Exception{
+
+        if(file.getAuthor() ==null && file.getTitle() ==null){
+            throw new GlobalException("参数错误");
+        }
+        file.setDepUid(Utils.getLoginAccountInfo().getDepartmentId());
+        List<HashMap<String,Object>> files = fileService.selectFileByAuthorOrTitle(file);
+
+        if(files!=null){
+            return Msg.success().add("files",files);
+        }
+        return Msg.fail();
     }
 
 }

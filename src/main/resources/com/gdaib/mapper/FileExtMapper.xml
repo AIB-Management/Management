@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gdaib.mapper.FileExtMapper">
-    <resultMap id="FileCustom" type="com.gdaib.pojo.FileCustom">
-        <id column="id" property="file.id" jdbcType="INTEGER"/>
-        <id column="uid" property="file.uid" jdbcType="VARCHAR"/>
-        <result column="accUid" property="file.accuid" jdbcType="VARCHAR"/>
-        <result column="navUid" property="file.navuid" jdbcType="VARCHAR"/>
-        <result column="upTime" property="file.uptime" jdbcType="TIMESTAMP"/>
-        <result column="title" property="file.title" jdbcType="VARCHAR"/>
-        <result column="url" property="file.url" jdbcType="VARCHAR"/>
-        <result column="filePath" property="file.filepath" jdbcType="VARCHAR"/>
+    <resultMap id="FileCustom" type="com.gdaib.pojo.FileCustom" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="uid" property="uid" jdbcType="VARCHAR" />
+        <result column="accUid" property="accuid" jdbcType="VARCHAR" />
+        <result column="navUid" property="navuid" jdbcType="VARCHAR" />
+        <result column="upTime" property="uptime" jdbcType="TIMESTAMP" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="filePath" property="filepath" jdbcType="VARCHAR" />
         <result column="author" property="author" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -54,21 +54,23 @@
 
     <select id="selectFile" parameterType="com.gdaib.pojo.FileSelectVo" resultMap="FileCustom">
         SELECT
-        t_file.uid,
-        t_file.filePath,
-        t_file.url,
-        t_file.title,
-        t_file.upTime,
-        t_file.navUid,
-        t_file.accUid,
-        t_file.id,
-        t_account.`name` AS author
+            t_file.uid,
+            t_file.filePath,
+            t_file.url,
+            t_file.title,
+            t_file.upTime,
+            t_file.navUid,
+            t_file.accUid,
+            t_file.id,
+            t_account.`name` AS author
         FROM
-        t_account
+          t_account
         INNER JOIN t_file ON t_file.accUid = t_account.uid
         <where>
             <include refid="where_File_Select_vo"></include>
         </where>
+        ORDER BY
+        t_file.upTime DESC
     </select>
 
     <update id="updateFile" parameterType="com.gdaib.pojo.FileSelectVo">
@@ -137,7 +139,42 @@
     </select>
 
     <select id="getCountFile" parameterType="com.gdaib.pojo.FileSelectVo" resultType="com.gdaib.pojo.FileCustom">
-        SELECT COUNT(id) count FROM `t_file` WHERE navUid=#{navuid} LIMIT 0, 1000
+        SELECT COUNT(id) count FROM `t_file` WHERE navUid=#{navuid} LIMIT 0, 20
+    </select>
+
+    <sql id="where_author_or_title">
+        <if test="author!=null">
+
+            AND t_account.`name` LIKE '%${author}%'
+        </if>
+        <if test="title!=null">
+            AND t_file.title LIKE '%${title}%'
+        </if>
+    </sql>
+
+    <select id="selectFileByAuthorOrTitle" parameterType="com.gdaib.pojo.FileSelectVo" resultType="FileCustom">
+        <if test="author!=null || title!=null">
+            SELECT
+            t_account.`name` AS author,
+            t_file.uid,
+            t_file.filePath,
+            t_file.url,
+            t_file.title,
+            t_file.upTime,
+            t_file.navUid,
+            t_file.accUid
+            FROM
+            t_account
+            INNER JOIN t_file ON t_file.accUid = t_account.uid
+            INNER JOIN t_navigation ON t_file.navUid = t_navigation.uid
+            <where>
+                t_navigation.depUid =#{depUid}
+                <include refid="where_author_or_title"></include>
+            </where>
+            ORDER BY
+            t_file.upTime DESC
+        </if>
+
     </select>
 
 </mapper>
