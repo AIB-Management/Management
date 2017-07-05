@@ -160,7 +160,7 @@ public class ContentController {
     @ResponseBody
     public Msg ajaxGetFileByAuthorOrTitle(FileSelectVo file) throws Exception{
 
-        if(file.getAuthor() ==null || file.getTitle() ==null){
+        if(file.getAuthor() ==null && file.getTitle() ==null){
             throw new GlobalException("参数错误");
         }
         file.setDepUid(Utils.getLoginAccountInfo().getDepartmentId());
