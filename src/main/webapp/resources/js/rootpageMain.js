@@ -1342,6 +1342,43 @@ require(["domReady","jquery.min","overborwserEvent",
 	}
 
 
+	//修改注册邮箱提交按钮点击事件回调函数
+	function modifyCofimEmail(){
+		//定义正则表达式验证输入邮箱的内容
+		var reg = /^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}$/;
+		var status = reg.test(s("#newEmail").value);
+
+		if (status == true) {
+			//隐藏错误提示
+			s("#modify-new-email-hint").innerText = "";
+			//认证成功发送ajax
+			$.ajax({
+				url: '/Management/public/ajaxDoModifyEmail.action',
+				type: 'POST',
+				dataType: 'json',
+				data: "email=" + s("#newEmail").value,
+				success: function(data){
+					if (data.code == 100) {
+						alert("修改成功!");
+						s("#modify-admin-email-floor").style.display = 'none';
+						//刷新页面
+						window.location.reload(true);
+					}else{
+						alert("修改失败！请稍后重试");
+						s("#modify-admin-email-floor").style.display = 'none';
+					}
+				},
+				error: function(){
+					alert("修改失败！请稍后重试");
+					s("#modify-admin-email-floor").style.display = 'none';
+				}
+			});
+
+		}else{
+			s("#modify-new-email-hint").style.color = "red";
+			s("#modify-new-email-hint").innerText = "邮箱格式错误";
+		}
+	}
 
 
 	//事件委托函数
@@ -1634,6 +1671,18 @@ require(["domReady","jquery.min","overborwserEvent",
 			//修改用户部门弹出层提交按钮点击事件
 			confirmModifyUserDep();
 
+		}else if(target.id == "modify-email-btn") {
+			//修改注册邮箱按钮点击事件
+			EventUntil.preventDefault(event);
+			s("#modify-admin-email-floor").style.display = 'block';
+
+		}else if (target.id == "modifyadminemail-close-btn") {
+			//修改邮箱对话框关闭按钮点击事件
+			s("#modify-admin-email-floor").style.display = 'none';
+
+		}else if(target.id == "confirm-modifyemail"){
+			//修改邮箱对话框提交按钮点击事件
+			modifyCofimEmail();
 		}
 	}
 
@@ -1705,6 +1754,19 @@ require(["domReady","jquery.min","overborwserEvent",
 			}
 		})
 	}
+
+
+	//修改邮箱输入框键盘输入事件
+	EventUntil.addHandler(s("#newEmail"),"keyup",function(){
+		if (this.value.length != 0) {
+			s("#confirm-modifyemail").removeAttribute("disabled");
+			s("#confirm-modifyemail").className = "btn btn-primary";
+
+		}else{
+			s("#confirm-modifyemail").disabled = "true";
+			s("#confirm-modifyemail").className = "btn btn-primary disabled";
+		}
+	})
 
 	//--------------定义层结束-------------
 
