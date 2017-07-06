@@ -3,7 +3,6 @@ package com.gdaib.service.impl;
 import com.gdaib.Exception.GlobalException;
 import com.gdaib.mapper.FileExtMapper;
 import com.gdaib.mapper.FileItemExtMapper;
-import com.gdaib.mapper.FileMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.util.MyStringUtils;
@@ -11,10 +10,9 @@ import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,9 +83,6 @@ public class FileServiceImpl implements FileService {
                 ) {
             throw new Exception("UID不能为空");
         }
-//        if (file.getAccuid() == null || file.getAccuid().trim().equals("")) {
-//            throw new Exception("账号不能为空");
-//        }
         return fileExtMapper.deleteFile(file);
     }
 
@@ -107,32 +102,6 @@ public class FileServiceImpl implements FileService {
         }
         return fileExtMapper.updateFile(file);
     }
-
-    private FileOutputStream fos;
-    private InputStream in;
-
-    private void closeStream() {
-
-        try {
-            if (in != null) {
-                in.close();
-                in = null;
-            }
-        } catch (Exception e) {
-
-        }
-
-        try {
-            if (fos != null) {
-                fos.close();
-                fos = null;
-            }
-        } catch (Exception e) {
-
-        }
-
-    }
-
 
     private FileItemSelectVo getFileItemInfoByCommonsMultipartFile(int index, CommonsMultipartFile file) throws Exception {
         FileItemSelectVo fileItemSelectVo;
@@ -166,6 +135,27 @@ public class FileServiceImpl implements FileService {
         return null;
     }
 
+    BufferedOutputStream bos = null;
+    BufferedInputStream bis = null;
+
+    private void closeStream() {
+        try {
+            if(bos!=null) {
+                bos.flush();
+                bos.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            if(bis!=null) {
+                bis.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public List<FileItemSelectVo> writeFileToLocal(String path, CommonsMultipartFile[] files) throws Exception {
         File f = new File(path);
@@ -176,28 +166,27 @@ public class FileServiceImpl implements FileService {
         String fileName;
         FileItemSelectVo fileItemSelectVo;
 
-
         for (int i = 0, length = files.length; i < length; i++) {
             if (!files[i].isEmpty()) {
-
                 try {
                     fileItemSelectVo = getFileItemInfoByCommonsMultipartFile(i, files[i]);
                     fileItems.add(fileItemSelectVo);
+
                     fileName = fileItemSelectVo.getUid() + fileItemSelectVo.getPrefix();
-                    fos = new FileOutputStream(path
-                            +
-                            fileName
-                    );
-                    in = files[i].getInputStream();
-                    int b = 0;
-                    while ((b = in.read()) != -1) {
-                        fos.write(b);
+                    bis = new BufferedInputStream(files[i].getInputStream());
+                    bos = new BufferedOutputStream(new FileOutputStream(path + fileName));
+                    byte[] b = new byte[512];
+                    int len = bis.read(b);
+                    while (len != -1) {
+                        bos.write(b, 0, len);
+                        len = bis.read(b);
                     }
                 } catch (Exception e) {
                     deleteFile(f);
                     e.printStackTrace();
                     return null;
                 } finally {
+                    //关闭流
                     closeStream();
                 }
 
@@ -269,7 +258,6 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileCustom getFileContent(FileSelectVo file) throws Exception {
-//        HashMap<String,Object> content = new HashMap<String, Object>();
 
         List<FileCustom> fileCustoms = fileExtMapper.selectFileAndFileItem(file);
         if (fileCustoms == null || fileCustoms.size() == 0) {
@@ -280,10 +268,6 @@ public class FileServiceImpl implements FileService {
         String sqlFilePath = fileCustom.getFilepath();
         String link = Utils.getLocalADDress() + sqlFilePath;
         fileCustom.setFilepath(link);
-//        content.put("author",fileCustom.getAuthor());
-//        content.put("uptime",fileCustom.getUptime());
-//        content.put("title",fileCustom.getTitle());
-//        content.put("items",fileCustom.getFileItems());
 
         return fileCustom;
     }
@@ -295,8 +279,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<HashMap<String, Object>> selectFileByAuthorOrTitle(FileSelectVo file) throws Exception {
-        List<FileCustom> customs = fileExtMapper.selectFileByAuthorOrTitle(file);
+    public List<HashMap<String, Object>> selectFileByKeyWord(FileSelectVo file) throws Exception {
+        List<FileCustom> customs = fileExtMapper.selectFileByKeyWord(file);
         if (customs != null) {
             return fileCustomToCustomMap(customs);
         }
@@ -334,5 +318,26 @@ public class FileServiceImpl implements FileService {
             return maps;
         }
         return null;
+    }
+
+
+    @Override
+    public void getFileStreamToHttp(String path, HttpServletResponse response) throws Exception {
+        try {
+            //读取文件
+            bis = new BufferedInputStream(new FileInputStream(path));
+            bos = new BufferedOutputStream(response.getOutputStream());
+            //写文件
+            byte[] b = new byte[512];
+            int len = bis.read(b);
+            while (len != -1) {
+                bos.write(b, 0, len);
+                len = bis.read(b);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeStream();
+        }
     }
 }

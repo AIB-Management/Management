@@ -156,15 +156,15 @@ public class ContentController {
     }
 
     //根据教师名或者文章标题查询所登录账号本系的文件信息
-    @RequestMapping(value = "/content/ajaxGetFileByAuthorOrTitle")
+    @RequestMapping(value = "/content/ajaxGetFileByKeyWord")
     @ResponseBody
-    public Msg ajaxGetFileByAuthorOrTitle(FileSelectVo file) throws Exception{
+    public Msg ajaxGetFileByKeyWord(FileSelectVo file) throws Exception{
 
-        if(file.getAuthor() ==null && file.getTitle() ==null){
+        if(file.getKeyWord() ==null ){
             throw new GlobalException("参数错误");
         }
         file.setDepUid(Utils.getLoginAccountInfo().getDepartmentId());
-        List<HashMap<String,Object>> files = fileService.selectFileByAuthorOrTitle(file);
+        List<HashMap<String,Object>> files = fileService.selectFileByKeyWord(file);
 
         if(files!=null){
             return Msg.success().add("files",files);
