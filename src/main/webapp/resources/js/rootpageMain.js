@@ -694,6 +694,8 @@ require(["domReady","jquery.min","overborwserEvent",
 				alert("删除成功！");
 			},
 			error: function(){
+				//删除系别对话框关闭
+				s("#drop-department-dialog").style.display = 'none';
 				alert("删除失败，此系别下存在专业！");
 			}
 		})
@@ -1106,8 +1108,8 @@ require(["domReady","jquery.min","overborwserEvent",
  				var result = data.extend.Department;
  				for (var i = 0; i < result.length; i++) {
  					var option = createElem("option");
- 					option.value = result[i].department.uid;
- 					option.innerText = result[i].department.content;
+ 					option.value = result[i].uid;
+ 					option.innerText = result[i].content;
  					frag.appendChild(option);
  				}
 
@@ -1364,12 +1366,12 @@ require(["domReady","jquery.min","overborwserEvent",
 						//刷新页面
 						window.location.reload(true);
 					}else{
-						alert("修改失败！请稍后重试");
+						alert("邮箱已被使用或网络错误");
 						s("#modify-admin-email-floor").style.display = 'none';
 					}
 				},
 				error: function(){
-					alert("修改失败！请稍后重试");
+					alert("邮箱已被使用或网络错误");
 					s("#modify-admin-email-floor").style.display = 'none';
 				}
 			});

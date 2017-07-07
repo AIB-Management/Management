@@ -116,6 +116,34 @@
 .upload-file-btn{
 	width: 90%;
 	margin: 78px auto 0 auto;
+	transition: all linear .3s;
+	-webkit-transition: all linear .3s;
+	-moz-transition: all linear .3s;
+	-o-transition: all linear .3s;
+	-ms-transition: all linear .3s;
+}
+/*搜索框样式*/
+.search-bar-wrap{
+	position: relative;
+	display: inline-block;
+}
+#serach-bar{
+	vertical-align: middle;
+	width: 280px;
+	height: 35px;
+	line-height: 35px;
+	padding-left: 15px;
+	border-radius: 15px;
+	border: 1px solid #ccc;
+}
+#serach-bar:focus{
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+#search-action-btn{
+	position: absolute;
+	top: 20px;
+	right: 10px;
+	cursor: pointer;
 }
 /*上传文件插件样式*/
 .file-drop-zone{
@@ -365,6 +393,31 @@
 	-ms-transition: all linear .3s;
 }
 #logout-btn:hover{
+	background-color: #fff;
+	color: #000;
+}
+#return-selectDep-btn{
+	float: right;
+	display: block;
+	width: 135px;
+	height: 38px;
+	line-height: 38px;
+	margin-top: 6px;
+	margin-right: 10px;
+	color: #fff;
+	text-align: center;
+	cursor: default;
+	text-decoration: none;
+	border-radius: 5px;
+	border: 1px solid #fff;
+	cursor: pointer;
+	transition: all linear .3s;
+	-webkit-transition: all linear .3s;
+	-moz-transition: all linear .3s;
+	-o-transition: all linear .3s;
+	-ms-transition: all linear .3s;
+}
+#return-selectDep-btn:hover{
 	background-color: #fff;
 	color: #000;
 }

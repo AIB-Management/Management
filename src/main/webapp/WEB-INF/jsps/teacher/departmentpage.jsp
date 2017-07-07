@@ -125,6 +125,10 @@
 				<span class="glyphicon glyphicon-off"></span> 
 				退出
 			</a>
+			<a href="${pageContext.request.contextPath}/shiro/logout" id="return-selectDep-btn">
+				<span class="glyphicon glyphicon-chevron-left"></span> 
+				返回系别选择页
+			</a>
 			<span class="over-ride">|</span>
 			<div class="header-tag" id="user-name-wrap">
 				<span id="user-name" title='<shiro:principal property="uid"/>'><shiro:principal property="name"/></span>
@@ -163,6 +167,10 @@
 						上传文件
 					</button>
 					</shiro:hasPermission>
+					<div class="search-bar-wrap">
+						<input type="text" id="serach-bar" placeholder="输入要搜索的文件名或教师名">
+						<span id="search-action-btn" class="glyphicon glyphicon-search"></span>
+					</div>
 				</div>
 				<div class="main-content-title">
 					<div class="content-select">选择</div>
