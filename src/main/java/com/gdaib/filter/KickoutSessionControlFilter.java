@@ -22,15 +22,7 @@ import java.io.Serializable;
 import java.util.*;
 
 
-/**
- * @author 作者 z77z
- * @date 创建时间：2017年3月5日 下午1:16:38
- * 1.读取当前登录用户名，获取在缓存中的sessionId队列
- * 2.判断队列的长度，大于最大登录限制的时候，按踢出规则
- *  将之前的sessionId中的session域中存入kickout：true，并更新队列缓存
- * 3.判断当前登录的session域中的kickout如果为true，
- * 想将其做退出登录处理，然后再重定向到踢出登录提示页面
- */
+
 public class KickoutSessionControlFilter extends AccessControlFilter {
 
     private String kickoutUrl; //踢出后到的地址
@@ -148,10 +140,10 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
                 Map<String, String> resultMap = new HashMap<String, String>();
                 //判断是不是Ajax请求
 
-                
+
 
                 if ("XMLHttpRequest".equals(header)) {
-                    resultMap.put("user_status", "300");
+                    resultMap.put("code", "300");
                     resultMap.put("message", "您已经在其他地方登录，请重新登录！");
                     //输出json串
                     out(response, resultMap);
@@ -170,6 +162,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
             throws IOException {
         try {
             hresponse.setCharacterEncoding("UTF-8");
+            hresponse.setContentType("application/json");
             PrintWriter out = hresponse.getWriter();
             out.println(JSON.toJSONString(resultMap));
             out.flush();
