@@ -155,13 +155,15 @@
         <property name="sessionManager" ref="sessionManager"/>
         <property name="kickoutAfter" value="false"/>
         <property name="maxSession" value="1"/>
-        <property name="kickoutUrl" value="/Management"/>
+        <property name="kickoutUrl" value="/Management/public/login.action?error=你已被踢出！"/>
     </bean>
 
 
     <!-- 会话管理器 -->
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!--默认超时时间-->
         <property name="globalSessionTimeout" value="1800000"/>
+
         <property name="deleteInvalidSessions" value="true"/>
         <property name="sessionValidationSchedulerEnabled" value="true"/>
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>

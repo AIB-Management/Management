@@ -1,13 +1,16 @@
 package com.gdaib.filter;
 import com.alibaba.fastjson.JSON;
 import com.gdaib.pojo.AccountInfo;
+import com.github.pagehelper.util.StringUtil;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.StringUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.apache.shiro.web.session.mgt.WebSessionKey;
 import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
@@ -16,10 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -67,6 +67,8 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        HttpServletRequest req = (HttpServletRequest) request;
+        String header = req.getHeader("X-Requested-With");
         Subject subject = getSubject(request, response);
         if(!subject.isAuthenticated() && !subject.isRemembered()) {
             //如果没有登录，直接进行之后的流程
@@ -90,62 +92,78 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 
         //如果队列里没有此sessionId，且用户没有被踢出；放入队列
         if(!deque.contains(sessionId) && session.getAttribute("kickout") == null) {
-            //将sessionId存入队列
+            //将sessionId存入队列,push:推到栈顶
             deque.push(sessionId);
             //将用户的sessionId队列缓存
             cache.put(username, deque);
         }
 
         //如果队列里的sessionId数超出最大会话数，开始踢人
-        while(deque.size() > maxSession) {
+        if(deque.size() > maxSession) {
             Serializable kickoutSessionId = null;
             if(kickoutAfter) { //如果踢出后者
                 kickoutSessionId = deque.removeFirst();
                 //踢出后再更新下缓存队列
                 cache.put(username, deque);
             } else { //否则踢出前者
-                kickoutSessionId = deque.removeLast();
+//                kickoutSessionId = deque.removeLast();
                 //踢出后再更新下缓存队列
                 cache.put(username, deque);
             }
 
 
 
-            try {
-                //获取被踢出的sessionId的session对象
-                Session kickoutSession = sessionManager.getSession(new DefaultSessionKey(kickoutSessionId));
-                if(kickoutSession != null) {
-                    //设置会话的kickout属性表示踢出了
-                    kickoutSession.setAttribute("kickout", true);
+
+
+//            try {
+//                //获取被踢出的sessionId的session对象
+//
+//
+//                Session kickoutSession = sessionManager.getSession(new DefaultSessionKey(kickoutSessionId));
+//
+//                if(kickoutSession != null) {
+//                    //设置会话的kickout属性表示踢出了
+//                    kickoutSession.setAttribute("kickout", true);
+//                }
+//            } catch (Exception e) {//ignore exception
+//                System.out.println(123);
+//            }
+//        }
+
+            Serializable id = subject.getSession().getId();
+            Serializable bid = deque.getFirst();
+            System.out.println("lahaid"+id);
+            System.out.println("lahaid" + kickoutSessionId);
+            if(!id.equals(bid)){
+                deque.removeLast();
+                cache.put(username, deque);
+                //会话被踢出了
+                try {
+                    //退出登录
+                    subject.logout();
+                } catch (Exception e) { //ignore
                 }
-            } catch (Exception e) {//ignore exception
-                System.out.println(123);
+                saveRequest(request);
+
+                Map<String, String> resultMap = new HashMap<String, String>();
+                //判断是不是Ajax请求
+
+                
+
+                if ("XMLHttpRequest".equals(header)) {
+                    resultMap.put("user_status", "300");
+                    resultMap.put("message", "您已经在其他地方登录，请重新登录！");
+                    //输出json串
+                    out(response, resultMap);
+                }else{
+                    //重定向
+                    WebUtils.issueRedirect(request, response, kickoutUrl);
+                }
+                return false;
             }
+
         }
 
-        //如果被踢出了，直接退出，重定向到踢出后的地址
-        if ((Boolean)session.getAttribute("kickout")!=null&&(Boolean)session.getAttribute("kickout") == true) {
-            //会话被踢出了
-            try {
-                //退出登录
-                subject.logout();
-            } catch (Exception e) { //ignore
-            }
-            saveRequest(request);
-
-            Map<String, String> resultMap = new HashMap<String, String>();
-            //判断是不是Ajax请求
-            if ("XMLHttpRequest".equalsIgnoreCase(((HttpServletRequest) request).getHeader("X-Requested-With"))) {
-                resultMap.put("user_status", "300");
-                resultMap.put("message", "您已经在其他地方登录，请重新登录！");
-                //输出json串
-                out(response, resultMap);
-            }else{
-                //重定向
-                WebUtils.issueRedirect(request, response, kickoutUrl);
-            }
-            return false;
-        }
         return true;
     }
     private void out(ServletResponse hresponse, Map<String, String> resultMap)
