@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<title>选择系别</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/selectdepMain.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/selectdepMain-min.js"></script>
 </head>
 <body>
 	<div class="form-wrap">
@@ -24,7 +24,6 @@
 		</form>
 	</div>
 
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/selectdepartment.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/cssdist/selectdepartment-min.css">
 </body>
 </html>

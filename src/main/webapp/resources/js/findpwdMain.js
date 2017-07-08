@@ -28,7 +28,7 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 
   //--------- 调用层----------
   checkBy.init({
-    username: {reg: /\S/g, correct: "", error: "输入不正确", minLen: 8, maxLen: 16},
+    username: {reg: /\S/g, hint: "", correct: "", error: "输入不正确", minLen: 8, maxLen: 16},
     mail: {
       hint: "请填写正确的邮箱地址", correct: "输入正确", error: "输入不正确"
       , reg: /^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}/
@@ -48,6 +48,11 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
   //账号输入框失焦事件
   EventUntil.addHandler(s("#username"), "blur", function () {
     checkBy.regWithLimit(this, "span", "#00C12B", "#FB000D");
+  })
+
+  //账号输入框聚焦事件
+  EventUntil.addHandler(s("#username"), "focus", function () {
+    checkBy.onFocus(this, "span", "#408DD2");
   })
 
   //下一步点击按钮点击事件
@@ -70,8 +75,6 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
         count++;
       }
     }
-    console.log(allInputs);
-    console.log(count);
 
     if (count == allInputs.length) {
       //如果全部都正确
@@ -81,9 +84,8 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
       s("#forms").submit();
 
 
-    } else {
-      //如果有误 页面提示错误 阻止提交按钮的默认事件
-      EventUntil.preventDefault(event);
+    }else{
+      alert("部分选项填写错误 请填写正确再提交");
     }
   })
 })

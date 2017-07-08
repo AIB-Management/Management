@@ -157,8 +157,8 @@ public class UtilTest {
     public void testSelectFileByAuthorOrTitle()throws Exception{
         FileSelectVo fileSelectVo = new FileSelectVo();
         fileSelectVo.setDepUid("edda68d5-e77d-41bc-98b8-207172b58ac7");
-        fileSelectVo.setTitle("t");
-        List<FileCustom> fileCustoms = fileExtMapper.selectFileByAuthorOrTitle(fileSelectVo);
+        fileSelectVo.setKeyWord("load");
+        List<FileCustom> fileCustoms = fileExtMapper.selectFileByKeyWord(fileSelectVo);
         System.out.println(fileCustoms);
     }
 

@@ -112,6 +112,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		$.ajax({
 			url: '/Management/content/ajaxFindDepOrPro.action',
 			type: 'GET',
+			async: false,
 			dataType: 'json',
 			data: "parent=0",
 			success: function(data){

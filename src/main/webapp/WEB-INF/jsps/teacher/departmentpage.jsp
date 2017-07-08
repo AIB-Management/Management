@@ -7,7 +7,7 @@
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title><shiro:principal property="depContent"/>主页</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js?20170615-13"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/departmentpageMain-min.js"></script>
 </head>
 <body>
 	<div id="loading-file-floor">
@@ -39,7 +39,7 @@
 					<span class="glyphicon glyphicon-cloud-upload"></span> 
 					上传
 				</button>
-				如需展示，请将文件制作成swf,pdf,jpg,png,gif类型材料,不需要展示的材料请压缩后上传
+				<span>如需展示，请将文件制作成swf,pdf,jpg,png,gif类型材料,不需要展示的材料请压缩后上传</span>
 			</div>
 		</div>
 	</div>
@@ -125,6 +125,10 @@
 				<span class="glyphicon glyphicon-off"></span> 
 				退出
 			</a>
+			<a href="${pageContext.request.contextPath}/shiro/" id="return-selectDep-btn">
+				<span class="glyphicon glyphicon-chevron-left"></span> 
+				返回系别选择页
+			</a>
 			<span class="over-ride">|</span>
 			<div class="header-tag" id="user-name-wrap">
 				<span id="user-name" title='<shiro:principal property="uid"/>'><shiro:principal property="name"/></span>
@@ -163,6 +167,10 @@
 						上传文件
 					</button>
 					</shiro:hasPermission>
+					<div class="search-bar-wrap">
+						<input type="text" id="serach-bar" placeholder="输入要搜索的文件名或教师名">
+						<span id="search-action-btn" class="glyphicon glyphicon-search"></span>
+					</div>
 				</div>
 				<div class="main-content-title">
 					<div class="content-select">选择</div>
@@ -181,7 +189,6 @@
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mCustomScrollbar.min.css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/fileinput.min.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/departmentpage.css?20170607-10">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/cssdist/departmentpage-min.css">
 </body>
 </html>

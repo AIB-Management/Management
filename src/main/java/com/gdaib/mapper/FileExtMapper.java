@@ -27,5 +27,5 @@ public interface FileExtMapper extends FileMapper {
     public FileCustom getCountFile(FileSelectVo file) throws Exception;
 
     //根据教师名或文章标题获取文章信息
-    public List<FileCustom> selectFileByAuthorOrTitle(FileSelectVo file) throws Exception;
+    public List<FileCustom> selectFileByKeyWord(FileSelectVo file) throws Exception;
 }

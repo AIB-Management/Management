@@ -31,6 +31,14 @@ require(["domReady","jquery.min","overborwserEvent",
 	"departmentpageauthorityManage","departmentPageFileListModule",
 	"bootstrap.min","fileinput","jquery.mousewheel.min","mCustomScrollbar.min"],function main(domready,$,EventUntil,authorityModule,depFileListModule){
 
+	//*******
+	//全局变量
+	//保存面包屑导航栏的导航和溢出导航栏的导航数组
+	//用作回滚数据
+	var saveBreadCrumbNav = [],
+		saveOverflowNav = [];
+	//*******
+
 	//封装选择器函数
 	function s(name){
 		if (name.substring(0, 1) == "#") {
@@ -54,13 +62,15 @@ require(["domReady","jquery.min","overborwserEvent",
 
 	//获取浏览器最终样式的函数
 	function getCurStyle(elem,pusedo,targetProperty){
-		if (elem.currentStyle != undefined) {
-			return elem.currentStyle[targetProperty];
+		
+		//ie独有方法 兼容ie6 - 8且所有ie 浏览器都支持
+		//但是返回的宽度属性会显示为auto失去计算意义
+		//所以这里记一下 没有实际作用
+		//return elem.currentStyle[targetProperty];
+
+		return window.getComputedStyle(elem,pusedo)[targetProperty];
 			
-		}else{
-			return window.getComputedStyle(elem,pusedo)[targetProperty];
-			
-		}
+		
 	}
 
 	function formateDate(dateStr){
@@ -84,7 +94,7 @@ require(["domReady","jquery.min","overborwserEvent",
 	//获取当前路径函数
 	function getCurPath(){
 
-		var overflowNavList = ss("#overflow-item-wrap li"),
+		var overflowNavList = ss("#overflow-item-wrap ul li"),
 			breadCrumbNavs = ss("#breadcurmb-nav-wrap li"),
 			lastChild = null,
 			curPath = "";
@@ -212,7 +222,7 @@ require(["domReady","jquery.min","overborwserEvent",
 
 			s("#overflow-item-wrap").style.right = (curWidth / 2) + "px";
 			
-			s("#overflow-item-wrap").style.top = (curHeight + 5) + "px";
+			s("#overflow-item-wrap").style.top = (curHeight + 10) + "px";
 
 			s("#overflow-item-wrap").style.display = "block";
 
@@ -253,8 +263,193 @@ require(["domReady","jquery.min","overborwserEvent",
 		
 	}
 
+	//回滚数据函数
+	function reloadBeforeSearchData(event){
+
+		event = EventUntil.getEvent(event);
+		EventUntil.preventDefault(event);
+
+		var breadCrumbNavsFrag = document.createDocumentFragment(),
+			overFlowNavFrag = document.createDocumentFragment();
+		
+		//获取当前系别
+		var depId = s("#departmentId").title;
+
+		
+		//点击回滚数据导航的时候先判断溢出导航栏数组有没有元素
+		if (saveBreadCrumbNav.length != 1 && saveOverflowNav.length != 0) {
+			//如果有且面包屑导航栏也有元素
+			//清空路径上的元素
+			s("#breadcurmb-nav-wrap").innerHTML = "";
+			//遍历数组 将元素推入碎片器
+			for (var i = 0; i < saveBreadCrumbNav.length; i++) {
+				breadCrumbNavsFrag.appendChild(saveBreadCrumbNav[i]);
+			}
+
+			for (var j = 0; j < saveOverflowNav.length; j++) {
+
+				overFlowNavFrag.appendChild(saveOverflowNav[j]);
+			}
+			//然后输出面包屑导航的元素
+			s("#breadcurmb-nav-wrap").appendChild(breadCrumbNavsFrag);
+			//再输出溢出导航栏的元素
+			ss("#overflow-item-wrap ul")[0].appendChild(overFlowNavFrag);
+			//显示溢出导航点击按钮
+			s("#show-hidden-menu").style.display = 'inline-block';
+			//获取当前的路径
+			var path = getCurPath();
+			//输出文件列表
+			depFileListModule.initFileList(path,depId);
+			//显示上传文件按钮
+			s("#upload-file-btn").style.display = 'inline-block';
+			//清空搜索输入框内容
+			s("#serach-bar").value = "";
+
+		}else if(saveBreadCrumbNav.length != 0 && saveOverflowNav.length == 0) {
+			//如果面包屑导航栏有元素 但是溢出导航栏没有元素
+			//先清空包屑导航栏
+			s("#breadcurmb-nav-wrap").innerHTML = "";
+
+			//把数组元素推进碎片器
+			for (var i = 0; i < saveBreadCrumbNav.length; i++) {
+				breadCrumbNavsFrag.appendChild(saveBreadCrumbNav[i]);
+			}
+			//然后输出面包屑导航的元素
+			s("#breadcurmb-nav-wrap").appendChild(breadCrumbNavsFrag);
+
+			//获取当前的路径
+			var path = getCurPath();
+			//输出文件列表
+			depFileListModule.initFileList(path,depId);
+			//显示上传文件按钮
+			s("#upload-file-btn").style.display = 'inline-block';
+			//清空搜索输入框内容
+			s("#serach-bar").value = "";
+		}
+		
 
 
+	}
+
+	//调整面包屑导航栏的内容
+	function adjustBreadCrumb(){
+		var breadCrumbList = ss("#breadcurmb-nav-wrap li"),
+			overflowNavList = ss("#overflow-item-wrap ul li");
+
+		//每次执行函数都要清空一次面包屑导航栏数组
+		saveBreadCrumbNav.splice(0, saveBreadCrumbNav.length);
+		//清空溢出导航栏的数组
+		saveOverflowNav.splice(0, saveOverflowNav.length);
+
+		//如果面包屑导航栏个数不为0
+		if (breadCrumbList.length != 0) {
+			
+			//遍历清空面包屑导航的子元素
+			for (var i = 0; i < breadCrumbList.length; i++) {
+				//在删除之前先保存 用作回滚用
+				saveBreadCrumbNav.push(breadCrumbList[i]);
+				s("#breadcurmb-nav-wrap").removeChild(breadCrumbList[i]);
+				
+			}
+		}
+
+		//清空溢出导航栏元素
+		//如果溢出导航栏有元素
+		if (overflowNavList.length != 0) {
+			
+			//遍历保存溢出导航层元素
+			for (var j = 0; j < overflowNavList.length; j++) {
+				saveOverflowNav.push(overflowNavList[j]);
+				ss("#overflow-item-wrap ul")[0].removeChild(overflowNavList[j]);
+
+			}
+
+			//隐藏溢出导航栏
+			s("#overflow-item-wrap").style.display = 'none';
+			//隐藏溢出导航点击按钮
+			s("#show-hidden-menu").style.display = 'none';
+		}
+
+		//然后添加搜索内容导航
+		var li = createElem("li"),
+			a = createElem("a")
+			spanIcon = createElem("span");
+
+		spanIcon.className = "glyphicon glyphicon-chevron-left";
+		spanIcon.style.color = "#337ab7";
+
+		var returnFileListNav = li.cloneNode(),
+			returnFileListNavText = a.cloneNode(),
+			searchTitleNav = li.cloneNode(),
+			searchTitleNavText = a.cloneNode();
+
+		returnFileListNav.appendChild(spanIcon);
+		returnFileListNavText.innerText+= "返回文件列表";
+		returnFileListNavText.href = "#";
+		returnFileListNav.appendChild(returnFileListNavText);
+		//为返回文件列表的导航项绑定点击事件
+		EventUntil.addHandler(returnFileListNav,"click",reloadBeforeSearchData);
+
+		searchTitleNavText.innerText = "搜索内容";
+		searchTitleNavText.href = "#";
+		searchTitleNav.appendChild(searchTitleNavText);
+
+		s("#breadcurmb-nav-wrap").appendChild(returnFileListNav);
+		s("#breadcurmb-nav-wrap").appendChild(searchTitleNav);
+
+	}
+
+
+	//搜索按钮点击事件回调函数
+	function doSearch(){
+		//判断搜索内容是否为空
+		if (s("#serach-bar").value != "") {
+			//不为空发送ajax 获取搜索数据
+			$.ajax({
+				url: '/Management/content/ajaxGetFileByKeyWord.action',
+				type: 'GET',
+				dataType: 'json',
+				data: "keyWord=" + s("#serach-bar").value,
+				beforeSend: function(){
+					s("#loading-file-floor").style.display = 'block';
+				},
+				success: function(data){
+					if (data.code == 100) {
+						//如果处理成功
+						//获取搜索文件数据
+						var list = data.extend.files;
+						//调整面包屑导航栏的元素
+						adjustBreadCrumb();
+						//如果文件搜索内容不为空
+						if (list.length != 0) {
+							//清空文件列表
+							s("#main-content-list").innerHTML = "";
+							//添加输出搜索的内容
+							s("#main-content-list").appendChild(depFileListModule.outputFiles(list));
+							//隐藏上传文件按钮
+							s("#upload-file-btn").style.display = 'none';
+							//隐藏加载层
+							s("#loading-file-floor").style.display = 'none';
+						}else{
+							//隐藏加载层
+							s("#loading-file-floor").style.display = 'none';
+							alert("没有匹配的文件内容");
+						}
+
+					}else if(data.code == 200) {
+						//隐藏加载层
+						s("#loading-file-floor").style.display = 'none';
+						alert("未知错误，请稍后重试");
+					}
+					
+					
+				}
+			})
+			
+		}else{
+			alert("搜索内容不能为空");
+		}
+	}
 
 	//事件委托函数
 	function entrustEvent(event){
@@ -320,6 +515,10 @@ require(["domReady","jquery.min","overborwserEvent",
 		}else if(target.id == "upload-batchfile") {
 			//上传按钮点击事件
 			uploadFile();
+
+		}else if(target.id == "search-action-btn") {
+			//搜索按钮点击事件
+			doSearch();
 		}
 	}
 

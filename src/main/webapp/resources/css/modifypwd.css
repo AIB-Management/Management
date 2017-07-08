@@ -71,10 +71,12 @@ body{
 	color: #fff;
 }
 .input-wrap-btn{
+	width: 80%;
+	margin: 20px auto 0 auto;
 	text-align: left;
+	cursor: pointer;
 }
 /*跳转链接*/
 .link-homepage{
-
-	color: #FF9900;
+	text-decoration: none;
 }

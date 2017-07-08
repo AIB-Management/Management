@@ -77,12 +77,12 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 						//刷新页面
 						window.location.reload(true);
 					}else{
-						alert("修改失败！请稍后重试");
+						alert("邮箱已被使用或网络错误");
 						s("#modify-personal-email-floor").style.display = 'none';
 					}
 				},
 				error: function(){
-					alert("修改失败！请稍后重试");
+					alert("邮箱已被使用或网络错误");
 					s("#modify-personal-email-floor").style.display = 'none';
 				}
 			});

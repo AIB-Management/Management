@@ -39,13 +39,16 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 	//获取浏览器最终样式的函数
 	function getCurStyle(elem,pusedo,targetProperty){
-		if (elem.currentStyle != undefined) {
-			return elem.currentStyle[targetProperty];
-			
-		}else{
-			return window.getComputedStyle(elem,pusedo)[targetProperty];
-			
-		}
+		
+		//ie独有方法 兼容ie6 - 8 
+		//但是返回的宽度属性会显示为auto 所以这里记一下 没有实际作用
+		//return elem.currentStyle[targetProperty];
+		
+	
+		//现代浏览器方法 ie9+
+		return window.getComputedStyle(elem,pusedo)[targetProperty];
+		
+		
 	}
 
 
@@ -111,6 +114,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			for (var i = 0; i < childnode.length; i++) {
 				//获取每一个子元素的实际宽度
 				var curChildWidth = parseInt(getCurStyle(childnode[i],null,"width"));
+
 				childWidthTotal += curChildWidth;
 				//获取父元素与此时子元素总宽度的差值
 				var diffWidth = parentWidth - childWidthTotal;
@@ -171,8 +175,9 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//获取事件对象
 		event = EventUntil.getEvent(event);
 		EventUntil.preventDefault(event);
+		var target = EventUntil.getTarget(event);
 		//如果点击的目标元素是 a 标签 执行如下操作
-		if (event.target.tagName.toLowerCase() == "a") {
+		if (target.tagName.toLowerCase() == "a") {
 			
 			//获取溢出导航包裹层
 			var overflowNavWrap = ss("#overflow-item-wrap ul")[0];
@@ -188,7 +193,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				}
 
 				//获取当前点击元素的 data-path
-				var path = event.target.getAttribute("data-path");
+				var path = target.getAttribute("data-path");
 				//获取当前页面的部门id
 				var depId = s("#departmentId").title;
 				//然后发送ajax 刷新下面的内容
@@ -245,6 +250,8 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		event = EventUntil.getEvent(event);
 		//阻止其默认事件
 		EventUntil.preventDefault(event);
+
+		var target = EventUntil.getTarget(event);
 		//获取面包屑导航的外包裹层
 		var breadCrumbWrap = s("#breadcurmb-nav-wrap");
 		//获取所有面包屑导航的li
@@ -261,7 +268,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		}
 		//无论面包屑导航点击的是哪个子元素
 		//都要清空溢出导航包裹层的所有子元素
-		ss("#overflow-item-wrap ul").innerHTML = "";
+		ss("#overflow-item-wrap ul")[0].innerHTML = "";
 		//隐藏显示溢出导航按钮
 		s("#show-hidden-menu").style.display = 'none';
 		s("#overflow-item-wrap").style.display = 'none';
@@ -270,12 +277,25 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//调用 createFileList(path,depId) 函数刷新下面的文件夹内容
 		//path 为这个面包屑导航的 data-path 属性
 		//depId 为页面的系别的id 实际情况由登录页面的时候获取部门id
-		var path = event.target.getAttribute("data-path");
+		var path = target.getAttribute("data-path");
 		var depId = s("#departmentId").title;
 		createFileList(path,depId);
 		
 		//重设面包屑导航栏isFully属性
 		breadCrumbWrap.isFully = false;
+
+		//如果点击的是根目录的面包屑导航
+		//为其增加多一个功能 显示上传文件按钮
+		if (this.id == "rootNav-breadCrumb") {
+			//判断上传文件按钮是否有 display:none 的内联属性
+			if (s("#upload-file-btn").style.display == "none") {
+				//如果有 将它显示出来（因为搜索后 上传文件按钮会设置display:none 属性）
+				//设置它为inline-block
+				s("#upload-file-btn").style.display = "inline-block";
+				//清空搜索框内容
+				s("#serach-bar").value = "";
+			}
+		}
 	}
 
 
@@ -550,6 +570,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//此处还应该获取当前页面的 depId 这里先写死
 		a.innerText = "根目录";
 		li.appendChild(a);
+		li.id = "rootNav-breadCrumb";
 		EventUntil.addHandler(li,"click",breadCrumbItemClick);
 		frag.appendChild(li);
 		crumbNav.appendChild(frag);
@@ -558,7 +579,8 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 	return {
 		initFileList: createFileList,
-		initBreadCrumbNav: initCrumbNav
+		initBreadCrumbNav: initCrumbNav,
+		outputFiles: ergFileList
 	}
 
 })	

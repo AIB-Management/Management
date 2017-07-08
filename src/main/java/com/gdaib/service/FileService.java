@@ -3,6 +3,7 @@ package com.gdaib.service;
 import com.gdaib.pojo.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,5 +51,7 @@ public interface FileService {
 
     public List<HashMap<String,Object>> fileCustomToCustomMap(List<FileCustom> fileCustoms) throws Exception;
 
-    public List<HashMap<String,Object>> selectFileByAuthorOrTitle(FileSelectVo file) throws Exception;
+    public List<HashMap<String,Object>> selectFileByKeyWord(FileSelectVo file) throws Exception;
+
+    public void getFileStreamToHttp(String path, HttpServletResponse response) throws Exception;
 }
