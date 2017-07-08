@@ -43,12 +43,12 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			success: function(data){
 				//请求成功后 输出元素列表
 				if (data.code == 100) {
-					if (data.extend.accountInfo.length != 0) {
-						//管理员列表清空内容
-						s("#admin-list").innerHTML = "";
-						//输出更新后的未授权列表
-						createAdminList(data);
-					}
+				
+					//管理员列表清空内容
+					s("#admin-list").innerHTML = "";
+					//输出更新后的未授权列表
+					createAdminList(data);
+					
 				}else{
 					alert("未知错误！");
 				}
@@ -66,12 +66,12 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			success: function(data){
 				//请求成功后 输出元素列表
 				if (data.code == 100) {
-					if (data.extend.accountInfo.length != 0) {
-						//管理员列表清空内容
-						s("#leader-list").innerHTML = "";
-						//输出更新后的未授权列表
-						createLeaderList(data);
-					}
+					
+					//管理员列表清空内容
+					s("#leader-list").innerHTML = "";
+					//输出更新后的未授权列表
+					createLeaderList(data);
+					
 				}else{
 					alert("未知错误！");
 				}

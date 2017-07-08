@@ -667,9 +667,13 @@ require(["domReady","jquery.min","overborwserEvent",
 				}
 			})
 			
-		}else{
+		}else if(valIsCorrect == false) {
 			s("#modify-specialy-hint").style.color = "red";
-			s("#modify-specialy-hint").innerText = "专业名名称有误";
+			s("#modify-specialy-hint").innerText = "已有此专业";
+
+		}else if(val == ""){
+			s("#modify-specialy-hint").style.color = "red";
+			s("#modify-specialy-hint").innerText = "专业名名称不能为空";
 		}
 	}
 
@@ -722,18 +726,12 @@ require(["domReady","jquery.min","overborwserEvent",
 						//清空输入框的值
 						s("#modify-department-name").value = manageDep.curManageDepDepName;
 						//清空提示信息
-						s("#modify-department-hint").innerText;
+						s("#modify-department-hint").innerText = "";
 						//清空右侧专业内容
 						s("#speciality-list-content").innerHTML = "";
 						//关闭对话框
 						s("#modify-department-dialog").style.display = 'none';
-						//清空当前的部门id
-						//manageDep.curManageDepDepId = "";
-						//隐藏增加专业按钮
-						//s("#add-speciality").style.display = 'none';
-
 						alert("修改成功");
-
 						//回滚修改操作前的数据
 						var depList = ss("#manage-department-list li");
 						//遍历查找修改系别之前的系别项
@@ -746,7 +744,6 @@ require(["domReady","jquery.min","overborwserEvent",
 								manageDep.outputSpeciality(manageDep.curManageDepDepId);
 								//修改保存的当前系别名的成员变量
 								manageDep.curManageDepDepName = depList[i].innerText;
-								console.log(depList[i].innerText);
 								break;
 							}
 						}
@@ -816,7 +813,7 @@ require(["domReady","jquery.min","overborwserEvent",
 			
 		}else if(depNameIsCorrect == false){
 			s("#new-department-hint").style.color = "red";
-			s("#new-department-hint").innerText = "系别名称错误";
+			s("#new-department-hint").innerText = "已有此系别";
 
 		}else if(newDepName == ""){
 			s("#new-department-hint").style.color = "red";
@@ -1348,7 +1345,7 @@ require(["domReady","jquery.min","overborwserEvent",
 			success: function(data){
 				if (data.code == 100) {
 					alert("撤回领导成功！");
-					//输出更新后的管理员表
+					//输出更新后的领导表
 					manageAdminLeader.outputLeaderList();
 				}else{
 					alert("撤回失败，遇到未知错误，请重试！");
@@ -1544,7 +1541,7 @@ require(["domReady","jquery.min","overborwserEvent",
 		}else if(target.id == "modify-department") {
 			//修改系别对话框按钮点击事件
 			if (manageDep.curManageDepDepId  != "") {
-				// //有就显示修改系别对话框
+				//有选中的系别就显示修改系别对话框
 				s("#modify-department-name").value = manageDep.curManageDepDepName;
 				s("#modify-department-dialog").style.display = 'block';
 

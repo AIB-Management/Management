@@ -125,7 +125,7 @@
 				<span class="glyphicon glyphicon-off"></span> 
 				退出
 			</a>
-			<a href="${pageContext.request.contextPath}/shiro/logout" id="return-selectDep-btn">
+			<a href="${pageContext.request.contextPath}/shiro/" id="return-selectDep-btn">
 				<span class="glyphicon glyphicon-chevron-left"></span> 
 				返回系别选择页
 			</a>
