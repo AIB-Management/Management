@@ -271,10 +271,7 @@ require(["domReady","jquery.min","overborwserEvent",
 
 		var breadCrumbNavsFrag = document.createDocumentFragment(),
 			overFlowNavFrag = document.createDocumentFragment();
-
-		console.log(saveBreadCrumbNav);
-		console.log(saveOverflowNav);
-
+		
 		//获取当前系别
 		var depId = s("#departmentId").title;
 

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <title>重置密码</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/resetpwdMain.js?t=170506-10"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/resetpwdMain-min.js"></script>
 </head>
 <body>
 <div class="form-wrap">
@@ -35,7 +35,6 @@
     </form>
 </div>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/resetpwd.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/cssdist/resetpwd-min.css">
 </body>
 </html>

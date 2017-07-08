@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title>文件内容</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/filecontentMain.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/filecontentMain-min.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -63,8 +63,6 @@
 
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/filecontent.css">
-
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/cssdist/filecontent-min.css">
 </body>
 </html>

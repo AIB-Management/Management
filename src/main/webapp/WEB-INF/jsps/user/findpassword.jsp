@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <title>找回密码</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/findpwdMain.js?t=170612-7"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/findpwdMain-min.js"></script>
 
 
 </head>
@@ -25,15 +25,15 @@
                 <input type="text" class="modify-input-style findpwdContent" id="mail" name="mail" value="${mail}">
                 <span class="hint">${error}</span>
             </p>
-            <p class="input-wrap">
-                <input type="submit" id="next-step" value="下一步"/>
-                <a href="${pageContext.request.contextPath}/public/login.action" class="link-login">返回登陆</a>
-            </p>
         </form>
+        <p class="btn-wrap">
+            <input type="submit" id="next-step" value="下一步"/>
+            <a href="${pageContext.request.contextPath}/public/login.action" class="link-login">返回登陆</a>
+        </p>
     </div>
 </div>
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findpassword.css">
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/cssdist/findpassword-min.css">
 </body>
 </html>
