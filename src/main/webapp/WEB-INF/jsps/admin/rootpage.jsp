@@ -17,7 +17,7 @@
 	<div id="modify-admin-email-floor">
 		<div class="modify-admin-email-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close"><span aria-hidden="true" id="modifyadminemail-close-btn">&times;</span></button>
+				<button type="button" class="close" aria-label="Close" id="modifyadminemail-close-btn"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<h3>修改邮箱</h3>
 			<div class="modifyemail-input-wrap">

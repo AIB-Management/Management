@@ -11,7 +11,6 @@
 	1、s(),ss()
 	2、createElem(),
 	3、getCurStyle(), 获取当前样式
-	4、
 
 */
 define(["jquery.min","overborwserEvent"],function($,EventUntil){
@@ -48,13 +47,13 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 	//获取浏览器最终样式的函数
 	function getCurStyle(elem,pusedo,targetProperty){
-		if (elem.currentStyle != undefined) {
-			return elem.currentStyle[targetProperty];
-			
-		}else{
-			return window.getComputedStyle(elem,pusedo)[targetProperty];
-			
-		}
+		//ie独有方法 兼容ie6 - 8且所有ie 浏览器都支持
+		//但是返回的宽度属性会显示为auto失去计算意义
+		//所以这里记一下 没有实际作用
+		//return elem.currentStyle[targetProperty];
+		
+		return window.getComputedStyle(elem,pusedo)[targetProperty];		
+	
 	}
 
 	//获取当前路径函数

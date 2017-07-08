@@ -53,13 +53,12 @@ require(["domReady","jquery.min","overborwserEvent",
 
 	//获取浏览器最终样式的函数
 	function getCurStyle(elem,pusedo,targetProperty){
-		if (elem.currentStyle != undefined) {
-			return elem.currentStyle[targetProperty];
-			
-		}else{
-			return window.getComputedStyle(elem,pusedo)[targetProperty];
-			
-		}
+		//ie独有方法 兼容ie6 - 8且所有ie 浏览器都支持
+		//但是返回的宽度属性会显示为auto失去计算意义
+		//所以这里记一下 没有实际作用
+		//return elem.currentStyle[targetProperty];
+		return window.getComputedStyle(elem,pusedo)[targetProperty];			
+		
 	}
 
 	//获取当前路径函数
@@ -358,7 +357,7 @@ require(["domReady","jquery.min","overborwserEvent",
 
 			s("#overflow-item-wrap").style.right = (curWidth / 2) + "px";
 			
-			s("#overflow-item-wrap").style.top = (curHeight + 5) + "px";
+			s("#overflow-item-wrap").style.top = (curHeight + 10) + "px";
 
 			s("#overflow-item-wrap").style.display = "block";
 
@@ -721,7 +720,7 @@ require(["domReady","jquery.min","overborwserEvent",
 						//刷新左侧部门列表
 						manageDep.createManageDepDepsList();
 						//清空输入框的值
-						s("#modify-department-name").value = "";
+						s("#modify-department-name").value = manageDep.curManageDepDepName;
 						//清空提示信息
 						s("#modify-department-hint").innerText;
 						//清空右侧专业内容
@@ -729,11 +728,28 @@ require(["domReady","jquery.min","overborwserEvent",
 						//关闭对话框
 						s("#modify-department-dialog").style.display = 'none';
 						//清空当前的部门id
-						manageDep.curManageDepDepId = "";
+						//manageDep.curManageDepDepId = "";
 						//隐藏增加专业按钮
-						s("#add-speciality").style.display = 'none';
+						//s("#add-speciality").style.display = 'none';
 
 						alert("修改成功");
+
+						//回滚修改操作前的数据
+						var depList = ss("#manage-department-list li");
+						//遍历查找修改系别之前的系别项
+						for (var i = 0; i < depList.length; i++) {
+							var temp = depList[i].getAttribute("data-depid");
+							if (temp == manageDep.curManageDepDepId) {
+								//为修改前的系别项添加样式
+								depList[i].className = "filedep-item-active";
+								//输出对应系别的专业
+								manageDep.outputSpeciality(manageDep.curManageDepDepId);
+								//修改保存的当前系别名的成员变量
+								manageDep.curManageDepDepName = depList[i].innerText;
+								console.log(depList[i].innerText);
+								break;
+							}
+						}
 
 					}else{
 						alert("修改失败，请稍后重试");
@@ -745,6 +761,7 @@ require(["domReady","jquery.min","overborwserEvent",
 				}
 				
 			})
+
 			
 		}else if(modifyValIsCorrect == false){
 			s("#modify-department-hint").style.color = "red";
@@ -756,6 +773,7 @@ require(["domReady","jquery.min","overborwserEvent",
 		}
 
 	}
+	
 
 
 	//新建系别对话框提交按钮点击事件回调函数
@@ -1526,7 +1544,7 @@ require(["domReady","jquery.min","overborwserEvent",
 		}else if(target.id == "modify-department") {
 			//修改系别对话框按钮点击事件
 			if (manageDep.curManageDepDepId  != "") {
-				//有就显示修改系别对话框
+				// //有就显示修改系别对话框
 				s("#modify-department-name").value = manageDep.curManageDepDepName;
 				s("#modify-department-dialog").style.display = 'block';
 

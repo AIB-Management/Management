@@ -39,7 +39,7 @@
 					<span class="glyphicon glyphicon-cloud-upload"></span> 
 					上传
 				</button>
-				如需展示，请将文件制作成swf,pdf,jpg,png,gif类型材料,不需要展示的材料请压缩后上传
+				<span>如需展示，请将文件制作成swf,pdf,jpg,png,gif类型材料,不需要展示的材料请压缩后上传</span>
 			</div>
 		</div>
 	</div>

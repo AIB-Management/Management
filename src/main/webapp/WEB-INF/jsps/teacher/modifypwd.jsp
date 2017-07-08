@@ -10,9 +10,7 @@
 </head>
 <body>
 <div class="form-wrap">
-    <div>${error}</div>
     <form action="${pageContext.request.contextPath}/public/domodifyPassword.action" method="post" id="modifyPwdForm">
-
         <div class="form-content">
             <h3 class="form-title">修改密码</h3>
             <p class="input-wrap">
@@ -30,13 +28,12 @@
                 <input type="password" class="reg-input-style" id="confirmpwd" name="confirmpwd">
                 <span class="hint"></span>
             </p>
-            <p class="input-wrap input-wrap-btn">
-                <button id="modify">确认修改</button>
-                <a href="${pageContext.request.contextPath}/content/departmentpage.action" class="link-homepage">返回主页</a>
-            </p>
         </div>
-
     </form>
+    <p class="input-wrap-btn">
+        <button id="modify">确认修改</button>
+        <a href="${pageContext.request.contextPath}/content/departmentpage.action" class="link-homepage">返回主页</a>
+    </p>
 </div>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/normal.css">

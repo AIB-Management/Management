@@ -132,17 +132,15 @@
 	width: 280px;
 	height: 35px;
 	line-height: 35px;
-	padding-left: 15px;
+	padding-left: 30px;
+	padding-right: 20px;
 	border-radius: 15px;
 	border: 1px solid #ccc;
-}
-#serach-bar:focus{
-	box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 #search-action-btn{
 	position: absolute;
 	top: 20px;
-	right: 10px;
+	left: 10px;
 	cursor: pointer;
 }
 /*上传文件插件样式*/
@@ -469,7 +467,6 @@
 }
 .crumb-hint{
 	display: inline-block;
-	vertical-align: middle;
 	width: 10%;
 	height: 45px;
 	line-height: 45px;
