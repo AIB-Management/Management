@@ -80,7 +80,7 @@
 				<a href="#" id="modify-email">修改</a>
 			</p>
 			<p class="personal-info-wrap">
-				<a href="/Management/" class="return-homepage">返回主页</a>
+				<a href="${pageContext.request.contextPath}/" class="return-homepage">返回主页</a>
 			</p>
 		</div>
 	</div>

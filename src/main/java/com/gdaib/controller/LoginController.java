@@ -103,21 +103,21 @@ public class LoginController {
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
 
-
-
-//        subject.getSession().setAttribute("AccountInfo",accountInfo);
-//        if (accountInfo.getRole().equals("admin")){
-//            modelAndView.setViewName("redirect:/admin/rootPage.action");
-//            return modelAndView;
-//        }
         if (accountInfo.getRole().equals("leader")){
             modelAndView.setViewName("redirect:/admin/leader.action");
             return modelAndView;
         }
 
+        if(accountInfo.getRole().equals("teacher")){
+            modelAndView.setViewName("redirect:/content/departmentpage.action");
+        }
+
+        if(accountInfo.getRole().equals("admin")){
+            modelAndView.setViewName("redirect:/admin/rootPage.action");
+        }
 
 //        modelAndView.setViewName("redirect:/content/departmentpage.action");
-        modelAndView.setViewName("redirect:/");
+//        modelAndView.setViewName("redirect:/");
         return modelAndView;
 
     }

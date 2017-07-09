@@ -45,7 +45,7 @@
     </form>
     <p class="input-wrap-btn">
         <button id="modify">确认修改</button>
-        <a href="${pageContext.request.contextPath}/content/departmentpage.action" class="link-homepage">返回主页</a>
+        <a href="${pageContext.request.contextPath}/" class="link-homepage">返回主页</a>
     </p>
 </div>
 

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
     <title>提示</title>
@@ -32,6 +33,7 @@
         window.setInterval(function(){
             totalSeconds--;
             if(totalSeconds == 0){
+
                 window.location.href = "${pageContext.request.contextPath}/";
             }
             $("#countDown").html(totalSeconds+"秒后自动跳转");
