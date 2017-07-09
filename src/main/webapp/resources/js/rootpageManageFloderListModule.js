@@ -166,6 +166,12 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 						depListWrap.innerHTML = "";
 						depListWrap.appendChild(createElemForDepList(data,selectDepClick));
 					}
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
 					alert("获取文件夹管理模块系别内容失败，请稍后重试");
 				}
@@ -276,8 +282,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 						floderList.appendChild(ergFileList(data));
 					}
 					
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+					
 				}else{
-					alert("未知错误，请稍后重试");
+					alert("加载文件夹失败，请检查网络");
 				}
 			}
 		})

@@ -88,6 +88,15 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					//返回数据的时候回到操作前停留的页码处
 					//全局变量 curUnexamieModulePage
 					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
+				}else {
+					alert("操作失败，请检查网络或稍后重试");
 				}
 			}
 		});
@@ -126,7 +135,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		//发送ajax 把用户id 传给后台
 		$.ajax({
-			url: '/Management//admin/ajaxPassAdmin.action',
+			url: '/Management/admin/ajaxPassAdmin.action',
 			type: 'POST',
 			dataType: 'json',
 			data: 'uid=' + userId,
@@ -135,8 +144,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					alert("操作成功!");
 					//刷新当前页未审核用户列表
 					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("未知错误,操作失败");
+					alert("操作失败,请检查网络或稍后重试");
 				}
 			}
 		})
@@ -155,7 +170,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 		//发送ajax 把用户id 传给后台
 		$.ajax({
-			url: '/Management//admin/ajaxPassLeader.action',
+			url: '/Management/admin/ajaxPassLeader.action',
 			type: 'POST',
 			dataType: 'json',
 			data: 'uid=' + userId,
@@ -164,8 +179,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					alert("操作成功!");
 					//刷新当前页未审核用户列表
 					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("未知错误,操作失败");
+					alert("操作失败,请检查网络或稍后重试");
 				}
 			}
 		})
@@ -461,8 +482,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 						self.curUnexamieModulePage = data.extend.page.pageNum;
 
 
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
-						alert(data.msg);
+						alert("加载失败，请检查网络");
 					}
 				}
 			})

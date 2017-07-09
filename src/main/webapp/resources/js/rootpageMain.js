@@ -122,7 +122,7 @@ require(["domReady","jquery.min","overborwserEvent",
 			success: function(data){
 				if (data.code == 100) {
 
-					createDepOptionForModifyUserDep(data)
+					createDepOptionForModifyUserDep(data);
 				}else{
 					alert("获取修改用户信息系别列表失败，请尝试刷新网页");
 				}
@@ -188,13 +188,19 @@ require(["domReady","jquery.min","overborwserEvent",
 				if (data.code == 100) {
 
 					createDepOptionForModifyUserSpec(data,targetOption);
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("获取专业列表失败，请尝试刷新网页");
+					alert("获取专业列表失败，请检查网络");
 				}
 			},
 
 			error: function(){
-				alert("获取专业列表失败，请尝试刷新网页");
+				alert("获取专业列表失败，请检查网络");
 			}
 		})
 	}
@@ -233,12 +239,18 @@ require(["domReady","jquery.min","overborwserEvent",
 						//重新刷新已审核列表信息
 						examiePage.toexamiedPage(examiePage.curExamieModulePage,examiePage.curDepartmentId);
 						s("#modify-user-department-floor").style.display = 'none';
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
-						alert("修改失败！");
+						alert("修改失败！请检查网络或稍后重试");
 					}
 				},
 				error: function(){
-					alert("修改失败，请稍后重试");
+					alert("修改失败！请检查网络或稍后重试");
 				}
 			})
 			
@@ -414,12 +426,19 @@ require(["domReady","jquery.min","overborwserEvent",
 						s("#newfloder-submit").className = "btn btn-primary disabled";
 						//关闭创建文件夹弹出层
 						s("#new-file-wrap").style.display = "none";
+
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
-						alert("未知错误，请稍后重试");
+						alert("创建失败，请检查网络或稍后重试");
 					}
 				},
 				error: function(){
-					alert("未知错误，请稍后重试");
+					alert("创建失败，请检查网络或稍后重试");
 				}
 			})
 			
@@ -480,10 +499,21 @@ require(["domReady","jquery.min","overborwserEvent",
 						//关闭创建文件夹弹出层
 						s("#modify-file-name-wrap").style.display = "none";
 
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
 					}else{
+
 						s("#modify-file-name-wrap").style.display = "none";
-						alert("修改失败，请稍后重试");
+						alert("修改失败，请检查网络或稍后重试");
 					}
+				},
+				error: function(){
+
+					s("#modify-file-name-wrap").style.display = "none";
+					alert("修改失败，请检查网络或稍后重试");
 				}
 			})
 			
@@ -510,15 +540,27 @@ require(["domReady","jquery.min","overborwserEvent",
 				//隐藏加载图标
 				//关闭弹窗
 				//输出操作后的文件夹列表
-				//定义两个变量保存最后一个子元素和当前路径
-				var	curPath = getCurPath();
+				if (data.code == 100) {
+					//保存最后一个子元素和当前路径
+					var	curPath = getCurPath();
 
-				//输出删除文件夹后的数据
-				manageDepFloder.createFloderList(curPath,manageDepFloder.curManageFloderDepId);
-				
-				s("#drop-floder-loading-icon").style.visibility = 'hidden';
-				s("#drop-floder-wrap").style.display = 'none';
-				alert("删除成功");
+					//输出删除文件夹后的数据
+					manageDepFloder.createFloderList(curPath,manageDepFloder.curManageFloderDepId);
+					
+					s("#drop-floder-loading-icon").style.visibility = 'hidden';
+					s("#drop-floder-wrap").style.display = 'none';
+					alert("删除成功");
+
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
+				}else{
+					alert("删除文件夹失败，此文件夹下存在子目录或请检查网络稍后重试");
+				}
+			
 
 			},
 
@@ -562,16 +604,27 @@ require(["domReady","jquery.min","overborwserEvent",
 					//关闭对话框
 					s("#drop-file-wrap").style.display = 'none';
 					alert("删除成功");
+
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
 					//隐藏加载图标
 					s("#drop-file-loading-icon").style.visibility = 'hidden';
-					alert("删除失败，遇到未知错误请重试");
+					//关闭对话框
+					s("#drop-file-wrap").style.display = 'none';
+					alert("删除文件失败，请检查网络或稍后重试");
 				}
 			},
 			error: function(){
 				//隐藏加载图标
 				s("#drop-file-loading-icon").style.visibility = 'hidden';
-				alert("未知错误，请稍后重试");
+				//关闭对话框
+				s("#drop-file-wrap").style.display = 'none';
+				alert("删除文件失败，请检查网络或稍后重试");
 			}
 		})
 		
@@ -624,13 +677,28 @@ require(["domReady","jquery.min","overborwserEvent",
 			type: 'POST',
 			dataType: 'json',
 			data: "uids=" + id,
-			success: function(){
-				//修改成功之后刷新右侧专业栏
-				manageDep.outputSpeciality(manageDep.curManageDepDepId);
-				s("#drop-specialy-dialog").style.display = 'none';
-				alert("删除成功");
+			success: function(data){
+				if (data.code == 100) {
+					//修改成功之后刷新右侧专业栏
+					manageDep.outputSpeciality(manageDep.curManageDepDepId);
+					s("#drop-specialy-dialog").style.display = 'none';
+					alert("删除成功");
+
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
+				}else {
+					s("#drop-specialy-dialog").style.display = 'none';
+					alert("删除失败！此专业下存在教师！");
+				}
+
+				
 			},
 			error: function(){
+				s("#drop-specialy-dialog").style.display = 'none';
 				alert("删除失败！此专业下存在教师！");
 			}
 		})
@@ -653,17 +721,38 @@ require(["domReady","jquery.min","overborwserEvent",
 				dataType: 'json',
 				data: "uid=" + id + "&content=" + val,
 				success: function(data){
-					//修改成功之后刷新右侧专业栏
-					manageDep.outputSpeciality(manageDep.curManageDepDepId);
+					if (data.code == 100) {
+						//修改成功之后刷新右侧专业栏
+						manageDep.outputSpeciality(manageDep.curManageDepDepId);
+						//清空提示信息
+						s("#modify-specialy-hint").innerText = "";
+						//关闭对话框
+						s("#modify-specialy-dialog").style.display = 'none';
+						alert("修改成功！");
+
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
+					}else{
+						//清空提示信息
+						s("#modify-specialy-hint").innerText = "";
+						//关闭对话框
+						s("#modify-specialy-dialog").style.display = 'none';
+						alert("修改失败，请检查网络或稍后重试");
+					}
+
+					
+				},
+
+				error: function(){
 					//清空提示信息
 					s("#modify-specialy-hint").innerText = "";
 					//关闭对话框
 					s("#modify-specialy-dialog").style.display = 'none';
-					alert("修改成功！");
-				},
-
-				error: function(){
-					alert("未知错误，请稍后重试!");
+					alert("修改失败，请检查网络或稍后重试");
 				}
 			})
 			
@@ -685,16 +774,31 @@ require(["domReady","jquery.min","overborwserEvent",
 			type: 'POST',
 			dataType: 'json',
 			data: "uids=" + manageDep.curManageDepDepId,
-			success: function(){
-				//更新系别列表
-				manageDep.createManageDepDepsList();
-				//删除系别对话框关闭
-				s("#drop-department-dialog").style.display = 'none';
-				//隐藏增加专业按钮
-				s("#add-speciality").style.display = 'none';
-				//清空记录的系别id
-				manageDep.curManageDepDepId = "";
-				alert("删除成功！");
+			success: function(data){
+				if (data.code == 100) {
+					//更新系别列表
+					manageDep.createManageDepDepsList();
+					//删除系别对话框关闭
+					s("#drop-department-dialog").style.display = 'none';
+					//隐藏增加专业按钮
+					s("#add-speciality").style.display = 'none';
+					//清空记录的系别id
+					manageDep.curManageDepDepId = "";
+					alert("删除成功！");
+
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
+				}else {
+					//删除系别对话框关闭
+					s("#drop-department-dialog").style.display = 'none';
+					alert("删除失败！此系别下存在教师！");
+				}
+
+				
 			},
 			error: function(){
 				//删除系别对话框关闭
@@ -748,13 +852,23 @@ require(["domReady","jquery.min","overborwserEvent",
 							}
 						}
 
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
-						alert("修改失败，请稍后重试");
+						//关闭对话框
+						s("#modify-department-dialog").style.display = 'none';
+						alert("修改失败，请检查网络或稍后重试");
 					}
 
 				},
 				error: function(){
-					alert("修改失败，请稍后重试");
+					//关闭对话框
+					s("#modify-department-dialog").style.display = 'none';
+					alert("修改失败，请检查网络或稍后重试");
 				}
 				
 			})
@@ -802,11 +916,24 @@ require(["domReady","jquery.min","overborwserEvent",
 						//关闭对话框
 						s("#new-department-dialog").style.display = 'none';
 						alert("创建成功");
+					
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
+					}else {
+						//关闭对话框
+						s("#new-department-dialog").style.display = 'none';
+						alert("创建失败，请检查网络或稍后重试");
 					}
 				},
 
 				error: function(){
-					alert("创建失败，请稍后重试！");
+					//关闭对话框
+					s("#new-department-dialog").style.display = 'none';
+					alert("创建失败，请检查网络或稍后重试");
 				}
 			});
 
@@ -846,12 +973,22 @@ require(["domReady","jquery.min","overborwserEvent",
 						s("#new-specialy-dialog").style.display = 'none';
 						alert("创建成功");
 
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
-						alert("新建失败，请稍后重试");
+						//关闭对话框
+						s("#new-specialy-dialog").style.display = 'none';
+						alert("新建失败，请检查网络稍后重试");
 					}
 				},
 				error: function(){
-					alert("新建失败，请稍后重试");
+					//关闭对话框
+					s("#new-specialy-dialog").style.display = 'none';
+					alert("新建失败，请检查网络稍后重试");
 				}
 			});
 
@@ -919,13 +1056,19 @@ require(["domReady","jquery.min","overborwserEvent",
 						//所以每次点击完之后都要把多选框的 checked 取消掉
 						s("#unexamie-select-all").checked = false;
 						alert("操作成功！");
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
-						alert("操作失败！");
+						alert("操作失败！请检查网络或稍后重试");
 					}
 				},
 
 				error: function(){
-					alert("操作失败！");
+					alert("操作失败！请检查网络或稍后重试");
 				}
 			});
 			
@@ -1027,12 +1170,24 @@ require(["domReady","jquery.min","overborwserEvent",
 					//隐藏弹出层
 					s("#floor").style.display = "none";
 
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					icon.style.visibility = 'visible';
+					icon.style.visibility = 'hidden';
 					//隐藏弹出层
 					s("#floor").style.display = "none";
-					alert("未知错误，请稍后重试！");
+					alert("发送失败，请检查网络或稍后重试");
 				}
+			},
+			error: function(){
+				icon.style.visibility = 'hidden';
+				//隐藏弹出层
+				s("#floor").style.display = "none";
+				alert("发送失败，请检查网络或稍后重试");
 			}
 		});
 		
@@ -1079,6 +1234,19 @@ require(["domReady","jquery.min","overborwserEvent",
 					s("#send-refuse-info").removeAttribute("disabled");
 					//隐藏弹出层
 					s("#floor").style.display = "none";
+
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
+				}else {
+					//隐藏加载图标
+					icon.style.visibility = 'hidden';
+					//隐藏弹出层
+					s("#floor").style.display = "none";
+					alert("操作失败！请检查网络或稍后重试");
 				}
 			},
 
@@ -1235,6 +1403,26 @@ require(["domReady","jquery.min","overborwserEvent",
 					s("#cancel-recall-user").removeAttribute("disabled");
 					//取消全选多选按钮选中样式
 					s("#examied-select-all").checked = false;
+					alert("撤回成功");
+
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
+				}else{
+					//隐藏加载图标
+					icon.style.visibility = 'hidden';
+					//清空撤回理由输入框内容
+					s("#recall-content").value = "";
+					//撤回内容输入框消除disabled 属性
+					s("#recall-content").removeAttribute("disabled");
+					//取消撤回按钮消除disabled 属性
+					s("#cancel-recall-user").removeAttribute("disabled");
+					//隐藏弹出层
+					s("#floor").style.display = "none";
+					alert("发送失败，请检查网络或稍后重试");
 				}
 			},
 
@@ -1321,13 +1509,19 @@ require(["domReady","jquery.min","overborwserEvent",
 					alert("撤回管理员成功！");
 					//输出更新后的管理员表
 					manageAdminLeader.outputAdminList();
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("撤回失败，遇到未知错误，请重试！");
+					alert("撤回失败，请检查网络或稍后重试！");
 				}
 			},
 
 			error: function(){
-				alert("撤回失败，遇到未知错误，请重试！");
+				alert("撤回失败，请检查网络或稍后重试！");
 			}
 		})
 		
@@ -1347,13 +1541,19 @@ require(["domReady","jquery.min","overborwserEvent",
 					alert("撤回领导成功！");
 					//输出更新后的领导表
 					manageAdminLeader.outputLeaderList();
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("撤回失败，遇到未知错误，请重试！");
+					alert("撤回失败，请检查网络或稍后重试！");
 				}
 			},
 
 			error: function(){
-				alert("撤回失败，遇到未知错误，请重试！");
+				alert("撤回失败，请检查网络或稍后重试！");
 			}
 		})
 	}
@@ -1380,6 +1580,12 @@ require(["domReady","jquery.min","overborwserEvent",
 						s("#modify-admin-email-floor").style.display = 'none';
 						//刷新页面
 						window.location.reload(true);
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
 						alert("邮箱已被使用或网络错误");
 						s("#modify-admin-email-floor").style.display = 'none';

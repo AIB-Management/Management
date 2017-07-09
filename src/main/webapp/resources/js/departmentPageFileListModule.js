@@ -527,18 +527,28 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				s("#loading-file-floor").style.display = 'block';
 			},
 			success:function(data){
-				//第一步 清空文件列表
-				s("#main-content-list").innerHTML = "";
-				//第二步 获取文件夹和文件数据
-				var floderList = data.extend.navs;
-				var fileList = data.extend.files;
-				//第三步 判断后台文件夹列表是否为空
-				if (floderList.length != 0) {
-					s("#main-content-list").appendChild(ergFloderList(floderList));
-				}
-				//判断后台文件列表是否为空
-				if (fileList.length != 0) {
-					s("#main-content-list").appendChild(ergFileList(fileList));
+				if (data.code == 100) {
+					//第一步 清空文件列表
+					s("#main-content-list").innerHTML = "";
+					//第二步 获取文件夹和文件数据
+					var floderList = data.extend.navs;
+					var fileList = data.extend.files;
+					//第三步 判断后台文件夹列表是否为空
+					if (floderList.length != 0) {
+						s("#main-content-list").appendChild(ergFloderList(floderList));
+					}
+					//判断后台文件列表是否为空
+					if (fileList.length != 0) {
+						s("#main-content-list").appendChild(ergFileList(fileList));
+					}
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
+				}else{
+					alert("加载数据失败，请检查网络");
 				}
 
 				//隐藏加载弹出层

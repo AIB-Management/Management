@@ -51,9 +51,19 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					createUnauthorityList(data);
 					//输出更新后的已授权列表
 					createHasAuthorityList(data);
+
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("未知错误！");
+					alert("未能加载授权列表，请检查网络");
 				}
+			},
+			error: function(){
+				alert("未能加载授权列表，请检查网络");
 			}
 		})
 		
@@ -78,8 +88,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 					alert("授权成功！");
 
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("授权失败！");
+					alert("授权失败！请检查网络或稍后重试");
 				}
 			}
 		})
@@ -143,8 +159,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					//请求成功更新未授权和已授权列表
 					outputauthorityModuleList();
 					alert("撤回授权成功！");
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("撤回失败！");
+					alert("撤回授权失败！请检查你的网络");
 				}
 			}
 		});

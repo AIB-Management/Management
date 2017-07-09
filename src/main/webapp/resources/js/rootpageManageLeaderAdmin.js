@@ -49,8 +49,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					//输出更新后的未授权列表
 					createAdminList(data);
 					
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("未知错误！");
+					alert("加载管理员列表失败，请检查网络");
 				}
 			}
 		})
@@ -72,8 +78,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					//输出更新后的未授权列表
 					createLeaderList(data);
 					
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("未知错误！");
+					alert("加载领导列表失败，请检查网络");
 				}
 			}
 		})

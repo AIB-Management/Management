@@ -125,8 +125,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 						//如果有部门就输出数据
 						depListWrap.appendChild(createElemForDepList(data,manageDepListSelect));
 					}
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("未知错误，请稍后重试");
+					alert("无法加载系别列表，请检查网络");
 				}
 			}
 		})
@@ -151,8 +157,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			success: function(data){
 				if (data.code == 100) {
 					specList.appendChild(createSpecialityElem(data));
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("未知错误，请稍后重试");
+					alert("无法加载专业列表，请检查网络");
 				}
 			}
 		})

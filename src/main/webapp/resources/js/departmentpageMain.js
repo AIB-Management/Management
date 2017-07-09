@@ -255,6 +255,12 @@ require(["domReady","jquery.min","overborwserEvent",
 					//关闭对话框
 					s("#drop-file-floor").style.display = 'none';
 					alert("删除成功");
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
 					alert("删除失败，遇到未知错误请重试");
 				}
@@ -440,6 +446,12 @@ require(["domReady","jquery.min","overborwserEvent",
 						//隐藏加载层
 						s("#loading-file-floor").style.display = 'none';
 						alert("未知错误，请稍后重试");
+
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
 					}
 					
 					
@@ -601,8 +613,14 @@ require(["domReady","jquery.min","overborwserEvent",
 							//关闭对话框
 							s("#modify-filename-floor").style.display = 'none';
 							alert("修改成功！");
+						}else if(data.code == 300) {
+							//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+							//返回错误信息并跳转到登陆页
+							alert(data.message);
+							window.location.replace("/Management/public/login.action");
+							
 						}else{
-							alert("修改失败i，遇到未知错误，请重试");
+							alert("修改失败，遇到未知错误，请重试");
 						}
 					}
 				})
@@ -682,24 +700,34 @@ require(["domReady","jquery.min","overborwserEvent",
 			s("#upload-batchfile").disabled = "true";
 
 
-	    }).on('filebatchuploadsuccess', function(event, files, extra) {
-	    	var curPath = getCurPath();
-	    	var curDepId = s("#departmentId").title;
-	       
-	       	alert("上传成功！");
+	    }).on('filebatchuploadsuccess', function(event, data, previewId, index) {
 
-	    	//更新下面的文件列表
-	        depFileListModule.initFileList(curPath,curDepId);
-	        //清空文件上传插件内的文件缓存
-	        $("#fileupload").fileinput("clear");
-	        //清空文件标题
-	        s("#fileTitle").value = "";
-	        //关闭弹出层
-	        s("#upload-file-floor").style.display = 'none';
+	        if (data.response.code == 300) {
+	        	alert(data.response.message);
+	        	window.location.replace("/Management/public/login.action");
+
+	        }else{
+	        	var curPath = getCurPath();
+		    	var curDepId = s("#departmentId").title;
+		       
+		       	alert("上传成功！");
+
+		    	//更新下面的文件列表
+		        depFileListModule.initFileList(curPath,curDepId);
+		        //清空文件上传插件内的文件缓存
+		        $("#fileupload").fileinput("clear");
+		        //清空文件标题
+		        s("#fileTitle").value = "";
+		        //关闭弹出层
+		        s("#upload-file-floor").style.display = 'none';
+	        }
+
+	        console.log(JSON.stringify(data));
 
 	    }).on('filebatchuploaderror', function(event, data, msg) {
 		    
 		   alert("不可以上传js,java,php 等可操作性的文件！");
+		   console.log(data);
 
 		}).on('filecleared', function(event) {
 			//清空文件触发事件

@@ -7,7 +7,7 @@
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title><shiro:principal property="depContent"/>主页</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/departmentpageMain-min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js"></script>
 </head>
 <body>
 	<div id="loading-file-floor">

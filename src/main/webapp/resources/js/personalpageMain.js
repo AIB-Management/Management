@@ -43,9 +43,16 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 						s("#modify-personal-name-floor").style.display = 'none';
 						//刷新页面
 						window.location.reload(true);
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
 						alert("修改失败！请稍后重试");
 						s("#modify-personal-name-floor").style.display = 'none';
+
 					}
 				},
 				error: function(){
@@ -76,6 +83,12 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 						s("#modify-personal-email-floor").style.display = 'none';
 						//刷新页面
 						window.location.reload(true);
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+						
 					}else{
 						alert("邮箱已被使用或网络错误");
 						s("#modify-personal-email-floor").style.display = 'none';

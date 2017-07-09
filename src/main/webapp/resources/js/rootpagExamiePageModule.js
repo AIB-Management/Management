@@ -79,7 +79,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	//发送请求 获取专业信息
 	function getModifyUserDepModuleSpec(depId,targetOption){
 		$.ajax({
-			url: '/Management/content/ajaxFindDepOrPro.action?',
+			url: '/Management/content/ajaxFindDepOrPro.action',
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=" + depId,
@@ -88,8 +88,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 					createDepOptionForModifyUserSpec(data,targetOption);
 
+				}else if(data.code == 300) {
+					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+					//返回错误信息并跳转到登陆页
+					alert(data.message);
+					window.location.replace("/Management/public/login.action");
+
 				}else{
-					alert("获取专业列表失败，请尝试刷新网页");
+					alert("获取专业列表失败，请检查网络");
 				}
 			},
 
@@ -439,12 +445,18 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 						self.createExamiedTable(data);
 						//输出分页导航栏
 						self.createExamiePageNav(data);
-						//为全局变量 curExamieModulePage （保存当前分页页码）
+						//为成员变量 curExamieModulePage （保存当前分页页码）
 						self.curExamieModulePage = data.extend.page.pageNum;
 
 
+					}else if(data.code == 300) {
+						//后台状态码为300 表示这个账号在另一个浏览器或终端登录
+						//返回错误信息并跳转到登陆页
+						alert(data.message);
+						window.location.replace("/Management/public/login.action");
+
 					}else{
-						alert(data.msg);
+						alert("加载失败，请检查网络");
 					}
 				}
 			})
