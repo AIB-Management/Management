@@ -303,21 +303,21 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	//遍历输出文件夹数据函数
 	//内部会为每一个保存文件夹名字的a 标签绑定点击事件函数createBradCurmbItem
 	function ergFloderList(list){
-		var checkBox = createElem("input"),
-			tr = createElem("tr"),
+		var tr = createElem("tr"),
 			td = createElem("td"),
 			a = createElem("a"),
 			frag = document.createDocumentFragment();
+			//checkBox = createElem("input")
 
-		checkBox.type = "checkbox";
-		checkBox.className = "disabled";
-		checkBox.disabled = true;
+		// checkBox.type = "checkbox";
+		// checkBox.className = "disabled";
+		// checkBox.disabled = true;
 
 		for (var i = 0; i < list.length; i++) {
 			var row = tr.cloneNode(true);
 
-			var checkboxCol = td.cloneNode(true);
-			checkboxCol.className = "item-selectbox";
+			// var checkboxCol = td.cloneNode(true);
+			// checkboxCol.className = "item-selectbox";
 
 			var floderNameCol = td.cloneNode(true);
 			floderNameCol.className = "file-name floder";
@@ -326,12 +326,12 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			authorCol.className = "item-author";
 
 			var timeCol = td.cloneNode(true);
-			timeCol.className = "ite-publish-time";
+			timeCol.className = "item-publish-time";
 
 			var operateCol = td.cloneNode(true);
 			operateCol.className = "operate-btn";
 
-			var checkbox = checkBox.cloneNode(true);
+			// var checkbox = checkBox.cloneNode(true);
 
 			var floderName = a.cloneNode(true);
 			floderName.innerText = list[i].nav;
@@ -340,13 +340,13 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			//为a 元素绑定事件 回调函数是生成面包屑导航函数
 			EventUntil.addHandler(floderName,"click",createBradCurmbItem);
 
-			checkboxCol.appendChild(checkbox);
+			//checkboxCol.appendChild(checkbox);
 			floderNameCol.appendChild(floderName);
 			authorCol.innerText = "管理员";
 			timeCol.innerText = "-";
 			operateCol.innerText = "无";
 
-			row.appendChild(checkboxCol);
+			//row.appendChild(checkboxCol);
 			row.appendChild(floderNameCol);
 			row.appendChild(authorCol);
 			row.appendChild(timeCol);
@@ -407,13 +407,13 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	//为每一个编辑文件标题按钮绑定 modifyFilenameBtnClick
 	//为每一个删除文件按钮绑定 dropFileBtnClick
 	function ergFileList(list){
-		var checkBox = createElem("input"),
-			button = createElem("button"),
+		var button = createElem("button"),
 			tr = createElem("tr"),
 			td = createElem("td"),
 			a = createElem("a"),
 			span = createElem("span"),
 			frag = document.createDocumentFragment();
+			//checkBox = createElem("input")
 
 		var curUsername = s("#user-name").title;
 
@@ -422,8 +422,8 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			modifyBtn = button.cloneNode(true),
 			dropBtn = button.cloneNode(true);
 		
-		checkBox.type = "checkbox";
-		checkBox.disabled = "true";
+		// checkBox.type = "checkbox";
+		// checkBox.disabled = "true";
 
 		modifyBtnIcon.className = "glyphicon glyphicon-edit";
 		modifyBtn.className = "btn btn-default btn-sm";
@@ -439,8 +439,8 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		for (var i = 0; i < list.length; i++) {
 			var row = tr.cloneNode(true);
 
-			var checkboxCol = td.cloneNode(true);
-			checkboxCol.className = "item-selectbox";
+			// var checkboxCol = td.cloneNode(true);
+			// checkboxCol.className = "item-selectbox";
 
 			var filenameCol = td.cloneNode(true);
 			filenameCol.className = "file-name file";
@@ -458,14 +458,14 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			//判断是否给checkbox 加上 disabled 类名
 			if (list[i].accuid != curUsername) {
 
-				var checkbox = checkBox.cloneNode(true);
-				checkbox.className = "disabled";
-				checkbox.disabled = "true";
+				// var checkbox = checkBox.cloneNode(true);
+				// checkbox.className = "disabled";
+				// checkbox.disabled = "true";
 				operateCol.innerText = "无权限";
-				checkboxCol.appendChild(checkbox);
+				//checkboxCol.appendChild(checkbox);
 
 			}else{
-				var checkbox = checkBox.cloneNode(true);
+				//var checkbox = checkBox.cloneNode(true);
 				var modifyFileBtn = modifyBtn.cloneNode(true),
 					dropFileBtn = dropBtn.cloneNode(true);
 
@@ -475,7 +475,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				//为删除文件按钮绑定点击事件
 				EventUntil.addHandler(dropFileBtn,"click",dropFileBtnClick);
 
-				checkboxCol.appendChild(checkbox);
+				//checkboxCol.appendChild(checkbox);
 				operateCol.appendChild(modifyFileBtn);
 				operateCol.appendChild(dropFileBtn);
 
@@ -496,7 +496,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			timeCol.innerHTML = formateDate(list[i].upTime);
 			
 
-			row.appendChild(checkboxCol);
+			//row.appendChild(checkboxCol);
 			row.appendChild(filenameCol);
 			row.appendChild(authorCol);
 			row.appendChild(timeCol);

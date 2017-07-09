@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title>文件内容</title>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/filecontentMain.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/filecontentMain-min.js"></script>
 </head>
 <body>
 <div id="warning">
@@ -49,27 +49,23 @@
 
             </c:if>
         </c:forEach>
-        <iframe src="" frameborder="0" id="review-area"></iframe>
-    </div>
-
-
+        <iframe src="" frameborder="0" id="review-area" name="preview-frame"></iframe>
         <div class="download-link">
-            <p>
-                <span class="glyphicon glyphicon-tag"></span>
-                文件下载链接，共<b id="downloadfile-count"></b>个文件可下载
-            </p>
-            <shiro:hasPermission name="file:down">
-                <c:forEach items="${filecontent.fileItems}" var="ff">
-                    <!--
-                    <a href="${filecontent.filepath}/${ff.filename}">
-                    -->
-                    <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
-                        <span class="glyphicon glyphicon-download-alt"></span>
-                        ${ff.filename}
-                    </a>
-                </c:forEach>
-            </shiro:hasPermission>
-        </div>
+        <p>
+            <span class="glyphicon glyphicon-tag"></span>
+            文件下载链接，共<b id="downloadfile-count"></b>个文件可下载
+        </p>
+        <shiro:hasPermission name="file:down">
+            <c:forEach items="${filecontent.fileItems}" var="ff">
+                <a href="${pageContext.request.contextPath}/file/downLoadFile.action?uid=${ff.uid}">
+                    <span class="glyphicon glyphicon-download-alt"></span>
+                    ${ff.filename}
+                </a>
+            </c:forEach>
+        </shiro:hasPermission>
+    </div>
+    </div>
+    
 
 </div>
 

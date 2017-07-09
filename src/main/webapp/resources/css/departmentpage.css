@@ -575,7 +575,7 @@
 	word-spacing: -6px;
 	z-index: 5;
 }
-.content-select,.content-name,.content-author,.content-publish-time,.content-edit-btn{
+.content-name,.content-author,.content-publish-time,.content-edit-btn{
 	display: inline-block;
 	vertical-align: middle;
 	padding-left: 10px;
@@ -584,8 +584,8 @@
 	width: 40%;
 	word-spacing: 0;
 }
-.content-select,.content-author,.content-publish-time,.content-edit-btn{
-	width: 15%;
+.content-author,.content-publish-time,.content-edit-btn{
+	width: 20%;
 	word-spacing: 20px;
 }
 .file-name,.item-author,.item-publish-time,.operate-btn{
@@ -597,8 +597,8 @@
 .file-name{
 	width: 40%;
 }
-.item-selectbox,.item-author,.item-publish-time,.operate-btn{
-	width: 15%;
+.item-author,.item-publish-time,.operate-btn{
+	width: 20%;
 	word-spacing: 0;
 }
 .operate-btn button:nth-child(2){
