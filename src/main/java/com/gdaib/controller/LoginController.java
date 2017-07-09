@@ -42,9 +42,10 @@ public class LoginController {
 
     //登录页面
     @RequestMapping("/public/login")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,String id) {
-        System.out.println(id);
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,String error) {
+        System.out.println("laya"+error);
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("error",error);
         modelAndView.setViewName(LOGIN);
         return modelAndView;
     }

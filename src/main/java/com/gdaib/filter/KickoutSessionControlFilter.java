@@ -12,13 +12,16 @@ import org.apache.shiro.util.StringUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.session.mgt.WebSessionKey;
 import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.propertyeditors.URLEditor;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -60,6 +63,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
         String header = req.getHeader("X-Requested-With");
         Subject subject = getSubject(request, response);
         if(!subject.isAuthenticated() && !subject.isRemembered()) {
@@ -143,13 +147,22 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 
 
                 if ("XMLHttpRequest".equals(header)) {
+//                    String path = req.getContextPath();
+//                    String basePath = req.getScheme() + "://"+ req.getServerName() + ":" + req.getServerPort()+ path + "/";
+//
+//                    resp.setHeader("SESSIONSTATUS", "TIMEOUT");
+//                    resp.setHeader("CONTEXTPATH", basePath+"index.jsp");
+//
+                    resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
                     resultMap.put("code", "300");
                     resultMap.put("message", "您已经在其他地方登录，请重新登录！");
                     //输出json串
                     out(response, resultMap);
                 }else{
                     //重定向
-                    WebUtils.issueRedirect(request, response, kickoutUrl);
+                    String error = URLEncoder.encode("您已在其他地方登录，请重新登录", "utf-8");
+                    WebUtils.issueRedirect(request, response, kickoutUrl+"?error="+error);
                 }
                 return false;
             }
@@ -161,6 +174,8 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
     private void out(ServletResponse hresponse, Map<String, String> resultMap)
             throws IOException {
         try {
+
+
             hresponse.setCharacterEncoding("UTF-8");
             hresponse.setContentType("application/json");
             PrintWriter out = hresponse.getWriter();

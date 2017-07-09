@@ -125,10 +125,14 @@
 				<span class="glyphicon glyphicon-off"></span> 
 				退出
 			</a>
-			<a href="${pageContext.request.contextPath}/shiro/" id="return-selectDep-btn">
-				<span class="glyphicon glyphicon-chevron-left"></span> 
-				返回系别选择页
-			</a>
+			<shiro:hasPermission name="leader:query">
+
+				<a href="${pageContext.request.contextPath}/admin/leader.action" id="return-selectDep-btn">
+					<span class="glyphicon glyphicon-chevron-left"></span>
+					返回系别选择页
+				</a>
+
+			</shiro:hasPermission>
 			<span class="over-ride">|</span>
 			<div class="header-tag" id="user-name-wrap">
 				<span id="user-name" title='<shiro:principal property="uid"/>'><shiro:principal property="name"/></span>

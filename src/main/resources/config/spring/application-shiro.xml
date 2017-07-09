@@ -155,7 +155,7 @@
         <property name="sessionManager" ref="sessionManager"/>
         <property name="kickoutAfter" value="false"/>
         <property name="maxSession" value="1"/>
-        <property name="kickoutUrl" value="/Management/public/login.action?error=你已被踢出！"/>
+        <property name="kickoutUrl" value="/public/login.action"/>
     </bean>
 
 
