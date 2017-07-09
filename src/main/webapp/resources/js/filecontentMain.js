@@ -32,7 +32,7 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
 	    fileTotal.innerText = links.length;
 
         if (previewLinks.length == 0) {
-            s("#review-area").style.display = 'none';
+            s(".review-area").style.display = 'none';
         }
 	}
 
@@ -45,6 +45,7 @@ require(["jquery.min","overborwserEvent"],function main($,EventUntil){
         this.className = "btn btn-default boost-preview-file boost-preview-file-active";
         var path = this.getAttribute("data-src");
         s("#review-area").src = path
+
     }
 
     

@@ -11,7 +11,7 @@
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>管理员页</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/rootpageMain.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/rootpageMain-min.js"></script>
 </head>
 <body>
 	<div id="warning">
@@ -30,7 +30,7 @@
 	<div id="modify-admin-email-floor">
 		<div class="modify-admin-email-wrap">
 			<div class="close-btn clearfix">
-				<button type="button" class="close" aria-label="Close" id="modifyadminemail-close-btn"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close" aria-label="Close" id="modifyadminemail-close-btn">×</button>
 			</div>
 			<h3>修改邮箱</h3>
 			<div class="modifyemail-input-wrap">

@@ -7,7 +7,7 @@
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title><shiro:principal property="depContent"/>主页</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/js/departmentpageMain.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/departmentpageMain-min.js"></script>
 </head>
 <body>
 	<div id="warning">
@@ -190,7 +190,6 @@
 					</div>
 				</div>
 				<div class="main-content-title">
-					<div class="content-select">选择</div>
 					<div class="content-name">名称</div>
 					<div class="content-author">上传者</div>
 					<div class="content-publish-time">上传时间</div>

@@ -1,5 +1,5 @@
 ({
     cssIn: "../tools/buildcss.css",
-    out: "../cssdist/filecontent-min.css",
+    out: "../cssdist/departmentpage-min.css",
     optimizeCss: "standard.keepLines"
 })
