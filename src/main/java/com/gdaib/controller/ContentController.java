@@ -12,6 +12,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.rmi.CORBA.Util;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +45,22 @@ public class ContentController {
     public static final String DEPARTMENTPAGE = "/teacher/departmentpage.jsp";
     public static final String PERSONALPAGE = "/teacher/personalpage.jsp";
     public static final String FILECONTENTPAGE = "filecontent.jsp";
+
+
+    //根据角色切换不同的页面
+    @RequestMapping(value = "/content/relayById")
+    public ModelAndView relayById(FileSelectVo fileSelectVo) throws Exception {
+        AccountInfo accountInfo = Utils.getLoginAccountInfo();
+        String role = accountInfo.getRole();
+        ModelAndView modelAndView = new ModelAndView();
+        if("admin".equals(role)){
+            modelAndView.setViewName("redirect:/admin/rootPage.action");
+            return modelAndView;
+        }else{
+            modelAndView.setViewName("redirect:/content/departmentpage.action");
+            return modelAndView;
+        }
+    }
 
 
     //获取主页面内容的接口
