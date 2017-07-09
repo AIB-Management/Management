@@ -603,6 +603,8 @@ require(["domReady","jquery.min","overborwserEvent",
 					manageDepFloder.createFloderList(curPath,curDepId);
 					//关闭对话框
 					s("#drop-file-wrap").style.display = 'none';
+					//隐藏加载图标
+					s("#drop-file-loading-icon").style.visibility = 'hidden';
 					alert("删除成功");
 
 				}else if(data.code == 300) {
@@ -1437,7 +1439,7 @@ require(["domReady","jquery.min","overborwserEvent",
 				s("#cancel-recall-user").removeAttribute("disabled");
 				//隐藏弹出层
 				s("#floor").style.display = "none";
-				alert("未知错误，请稍后重试！");
+				alert("发送失败，请检查网络或稍后重试");
 			}
 		});
 		

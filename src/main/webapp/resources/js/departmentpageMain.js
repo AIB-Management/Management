@@ -184,7 +184,7 @@ require(["domReady","jquery.min","overborwserEvent",
 
 	//------------- 调用层 ----------------
 	
-
+	console.log('')
 	
 
 	function uploadFile(){
