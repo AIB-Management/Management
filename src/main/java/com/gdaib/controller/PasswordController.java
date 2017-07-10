@@ -209,7 +209,7 @@ public class PasswordController {
 
         //发送邮件
         mailService.sendAttachMail(mailPojo);
-        modelAndView.addObject("success", "发送成功");
+        modelAndView.addObject("success", "发送成功,请到邮箱中查看验证信息");
 
         return modelAndView;
     }
