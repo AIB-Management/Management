@@ -174,10 +174,7 @@ require(["domReady","jquery.min","overborwserEvent",
 		depFileListModule.initFileList(0,s("#departmentId").title);
 		//输出第一个面包屑导航
 		depFileListModule.initBreadCrumbNav();
-		//权限管理模块页面初始化的时候输出数据
-		authorityModule();
-		//初始化上传文件身份选择下拉框内容
-		initAuthorityList();
+		
 	}
 		
 
@@ -487,6 +484,8 @@ require(["domReady","jquery.min","overborwserEvent",
 				alert("不能够在根目录下发布文件！");
 
 			}else{
+				//初始化上传文件身份选择下拉框内容
+				initAuthorityList();
 				s("#upload-file-floor").style.display = 'block';
 			}
 
@@ -502,6 +501,8 @@ require(["domReady","jquery.min","overborwserEvent",
 			//权限管理选项点击事件
 			//阻止默认事件
 			EventUntil.preventDefault(event);
+			//权限管理模块页面初始化的时候输出数据
+			authorityModule();
 			s("#authority-manage-floor").style.display = "block";
 
 		}else if(target.id == "authority-manage-close-btn") {
