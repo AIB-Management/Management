@@ -519,7 +519,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//此方法 将会在表格里面的文件夹名点击，面包屑导航，溢出导航点击时调用
 		//发送ajax 请求
 		$.ajax({
-			url: '/Management/content/ajaxFindNavAndFile.action',
+			url: '/Management/content/ajaxFindNavAndFile.action?',
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=" + path + "&depuid=" + depId,

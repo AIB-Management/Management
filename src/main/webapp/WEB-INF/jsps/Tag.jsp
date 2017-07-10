@@ -19,10 +19,13 @@
         	font-size: 30px;
           color: #fff;
         }
+        h3 a{
+          color: #fff;
+        }
     </style>
 </head>
 <body>
-<h3>${error}${success}（<span id="countDown">5s秒后自动跳转</span>）</h3>
+<h3>${error}${success}（<span id="countDown">5秒后自动跳转</span>）<a href="${pageContext.request.contextPath}/">手动跳转</a></h3>
 
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>

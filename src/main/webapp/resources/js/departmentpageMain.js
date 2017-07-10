@@ -181,30 +181,31 @@ require(["domReady","jquery.min","overborwserEvent",
 
 	//------------- 调用层 ----------------
 	
-	console.log('')
-	
 
 	function uploadFile(){
-    	var isNoRepeat = checkFloderName(ss("#main-content-list tr td a"),s("#fileTitle").value);
-    	if (isNoRepeat == true) {
-    		//如果文件名没有重复
-    		//清空错误提示字段文字
-    		s("#filetitle-hint").innerText = "";
-    		//再判断文件插件是否有文件存在
-    		
-    		if ($("#fileupload").fileinput("getFileStack").length != 0) {
-    			//如果有文件
-				//触发文件上传插件上传事件
-    			$("#fileupload").fileinput("upload");
-    		}else{
-    			alert("请选择文件");
-    		}
-    		
+    	
+			//如果不是ie9
+			var isNoRepeat = checkFloderName(ss("#main-content-list tr td a"),s("#fileTitle").value);
+	    	if (isNoRepeat == true) {
+	    		//如果文件名没有重复
+	    		//清空错误提示字段文字
+	    		s("#filetitle-hint").innerText = "";
 
-    	}else{
-    		s("#filetitle-hint").style.color = "red";
-    		s("#filetitle-hint").innerText = "已存在此文件名";
-    	}
+	    		//再判断文件插件是否有文件存在
+	    		if ($("#fileupload").fileinput("getFileStack").length != 0 || s("#fileupload").value != "") {
+	    			//如果有文件
+					//触发文件上传插件上传事件
+	    			$("#fileupload").fileinput("upload");
+	    		}else{
+	    			alert("请选择文件");
+	    		}
+	    		
+
+	    	}else{
+	    		s("#filetitle-hint").style.color = "red";
+	    		s("#filetitle-hint").innerText = "已存在此文件名";
+	    	}
+    	
     }
 	
 	//溢出导航栏按钮点击事件回调函数
@@ -601,7 +602,7 @@ require(["domReady","jquery.min","overborwserEvent",
 					curDepId = s("#departmentId").title;
 
 				$.ajax({
-					url: '/Management/file/ajaxUpdateFile.action',
+					url: '/Management/file/ajaxUpdateFile.action?',
 					type: 'POST',
 					dataType: 'json',
 					data: "accuid=" + accuid + "&uid=" + uid + "&title=" + title,
@@ -739,6 +740,9 @@ require(["domReady","jquery.min","overborwserEvent",
 			s("#upload-batchfile").disabled = "true";
 
 		});
+
+
+
 	});
 
 

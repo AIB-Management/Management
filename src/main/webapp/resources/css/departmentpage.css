@@ -122,6 +122,10 @@
 	-o-transition: all linear .3s;
 	-ms-transition: all linear .3s;
 }
+/*备用表单元素样式（ie9 下需要用到）*/
+#title-text,#navuid-text,#accuid-text{
+	display: none;
+}
 /*搜索框样式*/
 .search-bar-wrap{
 	position: relative;

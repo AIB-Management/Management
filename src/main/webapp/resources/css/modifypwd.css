@@ -58,6 +58,9 @@ body{
 	border: 1px solid #999;
 	border-radius: 0 5px 5px 0;
 }
+.hint{
+	color: red;
+}
 /*修改提交按钮*/
 #modify{
 	display: inline-block;
