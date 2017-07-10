@@ -47,20 +47,7 @@ public class ContentController {
     public static final String FILECONTENTPAGE = "filecontent.jsp";
 
 
-    //根据角色切换不同的页面
-    @RequestMapping(value = "/content/relayById")
-    public ModelAndView relayById(FileSelectVo fileSelectVo) throws Exception {
-        AccountInfo accountInfo = Utils.getLoginAccountInfo();
-        String role = accountInfo.getRole();
-        ModelAndView modelAndView = new ModelAndView();
-        if("admin".equals(role)){
-            modelAndView.setViewName("redirect:/admin/rootPage.action");
-            return modelAndView;
-        }else{
-            modelAndView.setViewName("redirect:/content/departmentpage.action");
-            return modelAndView;
-        }
-    }
+
 
 
     //获取主页面内容的接口

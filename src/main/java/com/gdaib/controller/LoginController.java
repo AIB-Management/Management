@@ -4,6 +4,7 @@ package com.gdaib.controller;
 import com.gdaib.pojo.*;
 import com.gdaib.service.DepartmentService;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -103,23 +104,44 @@ public class LoginController {
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
 
 
-        if (accountInfo.getRole().equals("leader")){
-            modelAndView.setViewName("redirect:/admin/leader.action");
-            return modelAndView;
-        }
-
-        if(accountInfo.getRole().equals("teacher")){
-            modelAndView.setViewName("redirect:/content/departmentpage.action");
-        }
-
-        if(accountInfo.getRole().equals("admin")){
-            modelAndView.setViewName("redirect:/admin/rootPage.action");
-        }
+//        if (accountInfo.getRole().equals("leader")){
+//            modelAndView.setViewName("redirect:/admin/leader.action");
+//            return modelAndView;
+//        }
+//
+//        if(accountInfo.getRole().equals("teacher")||accountInfo.getRole().equals("teacher")){
+//            modelAndView.setViewName("redirect:/content/departmentpage.action");
+//        }
+//
+//        if(accountInfo.getRole().equals("admin")){
+//            modelAndView.setViewName("redirect:/admin/rootPage.action");
+//        }
 
 //        modelAndView.setViewName("redirect:/content/departmentpage.action");
 //        modelAndView.setViewName("redirect:/");
+
+        modelAndView.setViewName("forward:/content/relayById.action");
+
         return modelAndView;
 
+    }
+
+    //根据角色切换不同的页面
+    @RequestMapping(value = "/content/relayById")
+    public ModelAndView relayById(FileSelectVo fileSelectVo) throws Exception {
+        AccountInfo accountInfo = Utils.getLoginAccountInfo();
+        String role = accountInfo.getRole();
+        ModelAndView modelAndView = new ModelAndView();
+        if("admin".equals(role)){
+            modelAndView.setViewName("redirect:/admin/rootPage.action");
+            return modelAndView;
+        }else if("leader".equals(role)){
+            modelAndView.setViewName("redirect:/admin/leader.action");
+            return modelAndView;
+        }else{
+            modelAndView.setViewName("redirect:/content/departmentpage.action");
+            return modelAndView;
+        }
     }
 
     //领导登录，传入系id和系名称，改变系
@@ -142,7 +164,7 @@ public class LoginController {
         accountInfo.setDepartmentId(account.getDepartmentId());
         accountInfo.setDepContent(departmentCustom.getContent());
         accountInfo.setContent("无");
-        return "redirect:/";
+        return "redirect:/content/departmentpage.action";
     }
 
 
