@@ -1,6 +1,6 @@
 ({
     baseUrl: '../js',
-    mainConfigFile: "../js/rootpageMain.js",
-    name: "rootpageMain",
-    out: "../jsdist/rootpageMain-min.js"
+    mainConfigFile: "../js/loginMain.js",
+    name: "loginMain",
+    out: "../jsdist/loginMain-min.js"
 })

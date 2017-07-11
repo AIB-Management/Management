@@ -422,8 +422,6 @@ require(["domReady","jquery.min","overborwserEvent",
 						//如果处理成功
 						//获取搜索文件数据
 						var list = data.extend.files;
-						//调整面包屑导航栏的元素
-						adjustBreadCrumb();
 						//如果文件搜索内容不为空
 						if (list.length != 0) {
 							//清空文件列表
@@ -434,6 +432,8 @@ require(["domReady","jquery.min","overborwserEvent",
 							s("#upload-file-btn").style.display = 'none';
 							//隐藏加载层
 							s("#loading-file-floor").style.display = 'none';
+							//调整面包屑导航栏的元素
+							adjustBreadCrumb();
 						}else{
 							//隐藏加载层
 							s("#loading-file-floor").style.display = 'none';
@@ -724,12 +724,11 @@ require(["domReady","jquery.min","overborwserEvent",
 		        s("#upload-file-floor").style.display = 'none';
 	        }
 
-	        console.log(JSON.stringify(data));
 
 	    }).on('filebatchuploaderror', function(event, data, msg) {
 		    
 		   alert("不可以上传js,java,php 等可操作性的文件！");
-		   console.log(data);
+			
 
 		}).on('filecleared', function(event) {
 			//清空文件触发事件

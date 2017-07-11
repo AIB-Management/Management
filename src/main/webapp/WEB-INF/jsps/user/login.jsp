@@ -8,7 +8,7 @@
 	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
 	<title>登录</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/loginMain-min.js?t=170504-2"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/loginMain-min.js"></script>
 </head>
 
 
@@ -31,7 +31,7 @@
 			<h1>欢迎登陆</h1>
 			<p>AIB专业信息管理系统</p>
 		</div>
-		<form action="${pageContext.request.contextPath}/public/doLogin.action" method="post" class="login-wrap">
+		<form action="${pageContext.request.contextPath}/public/doLogin.action" method="post" class="login-wrap" id="login-form">
 			<div class="form-content">
 				<div class="input-wrap">
 					<p id="login-hint">${error}</p>
