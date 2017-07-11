@@ -27,7 +27,6 @@
 <div class="wrapper">
     <div class="content-info">
         <h3>${filecontent.title}</h3>
-
         <p>作者：${filecontent.author}</p>
         <p>
             上传时间：
