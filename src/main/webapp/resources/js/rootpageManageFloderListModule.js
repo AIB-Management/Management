@@ -326,6 +326,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 			var floderName = a.cloneNode(true);
 			floderName.innerText = list[i].nav;
+			floderName.title = list[i].nav;
 			floderName.setAttribute("data-path", list[i].uid);
 			//为a 标签绑定点击事件
 			EventUntil.addHandler(floderName,"click",createBradCurmbItem);
@@ -403,6 +404,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			filename.href = "#";
 			filename.setAttribute("data-path", list[i].uid);
 			filename.innerText = list[i].title;
+			filename.title = list[i].title;
 	
 			filenameCol.appendChild(filename);
 

@@ -335,6 +335,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 			var floderName = a.cloneNode(true);
 			floderName.innerText = list[i].nav;
+			floderName.title = list[i].nav;
 			floderName.href = "#";
 			floderName.setAttribute("data-path", list[i].uid);
 			//为a 元素绑定事件 回调函数是生成面包屑导航函数
@@ -487,6 +488,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			filename.href = "#";
 			filename.setAttribute("data-path", list[i].uid);
 			filename.innerText = list[i].title;
+			filename.title = list[i].title;
 			//为文件名绑定点击事件
 			EventUntil.addHandler(filename,"click",fileNameClick);
 	
