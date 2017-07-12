@@ -108,7 +108,7 @@ public class RegisterController {
 
             request.getRequestDispatcher("/public/register.action").forward(request, response);
         }
-        modelAndView.addObject("success","注册成功！请登录");
+        modelAndView.addObject("success","注册成功！请耐心等待审核");
         modelAndView.setViewName(TAG);
 
         return modelAndView;
