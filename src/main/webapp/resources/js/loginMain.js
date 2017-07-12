@@ -30,7 +30,6 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 	//登陆按钮点击时根据需求保存cookie
 	function saveCookie(){
 		var account = s("#account");
-		var pwd = s("#pwd");
 		var rm = s("#remember-me");
 
 		if (rm.checked == true) {
@@ -53,6 +52,7 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 			//当账号和密码不为空时
 			//账号和密码输入框isCorrect 属性设置为true
 			//数据交给后台验证处理
+			hint.innerText = ""; //清空错误提示信息
 			account.isCorrect = true;
 			pwd.isCorrect = true;
 
@@ -77,6 +77,7 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		}else{
 			//不为空时把验证码输入框属性 isCorrect 设置为true
 			//验证码交给后台处理
+			vtHint.innerText = ""; //清空错误提示内容
 			vtCode.isCorrect = true;
 	
 		}
@@ -91,11 +92,13 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		var pwd = s("#pwd");
 		var vtCode = s("#vt-code");
 
-		if (account.isCorrect == false || pwd.isCorrect == false || vtCode.isCorrect == false) {
-			EventUntil.preventDefault(event);
-
-		}else if (account.isCorrect == true && pwd.isCorrect == true && vtCode.isCorrect == true) {
+		if (account.isCorrect == true && pwd.isCorrect == true && vtCode.isCorrect == true) {
+			s("#login-form").submit();
 			saveCookie();
+
+		}else{
+			event = EventUntil.getEvent(event);
+			EventUntil.preventDefault(event);
 		}
 	}
 
@@ -124,16 +127,16 @@ require(["jquery.min","cookies","overborwserEvent"],function main($,cookies,Even
 		event = EventUntil.getEvent(event);
 		EventUntil.preventDefault(event);
 
-        		s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date().getTime();
+        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date().getTime();
 	})
 
-    	//验证码图片点击事件
-    	EventUntil.addHandler(s("#vt-img"),"click",function(event){
-	        event = EventUntil.getEvent(event);
-	        EventUntil.preventDefault(event);
+	//验证码图片点击事件
+	EventUntil.addHandler(s("#vt-img"),"click",function(event){
+        event = EventUntil.getEvent(event);
+        EventUntil.preventDefault(event);
 
-	        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date().getTime();
-	    })
+        s("#vt-img").src = "/Management/public/getCaptcha.action?a="+new Date().getTime();
+    })
 
 
 

@@ -1904,6 +1904,8 @@ require(["domReady","jquery.min","overborwserEvent",
 		}else if (target.id == "modifyadminemail-close-btn") {
 			//修改邮箱对话框关闭按钮点击事件
 			s("#modify-admin-email-floor").style.display = 'none';
+			s("#modify-new-email-hint").innerText = "";
+			s("#newEmail").value = "";
 
 		}else if(target.id == "confirm-modifyemail"){
 			//修改邮箱对话框提交按钮点击事件

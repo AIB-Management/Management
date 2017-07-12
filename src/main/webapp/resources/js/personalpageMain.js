@@ -105,7 +105,7 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 
 	checkBy.init({
 		newUsername:{hint:"长度为2~10位中文或英文字符,不能有数字",correct:"",error:"输入不正确"
-		,reg: /^\S[\u4E00-\u9FA5\uF900-\uFA2D\w][^0-9]{1,10}$/},
+		,reg: /^[\u4E00-\u9FA5\uF900-\uFA2D\w][^0-9]{1,9}$/},
 		newEmail: {hint:"请填写正确的邮箱地址",correct:"",error:"输入不正确"
 		,reg: /^([\d\w]+[_|\_|\.]?)*[\d\w]+@([\d\w]+[_|\_|\.]?)*[\d\w]+\.[\w]{2,3}$/}
 
@@ -124,6 +124,9 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 	//修改用户名对话框关闭按钮点击事件
 	EventUntil.addHandler(s("#modifyname-close-btn"),"click",function(){
 		s("#modify-personal-name-floor").style.display = 'none';
+		s("#newUsername").style.border = "1px solid #337ab7";
+		s("#newUsername").style.boxShadow = '0 0 0 rgba(0,0,0,0)';
+		s("#modify-new-name-hint").innerText = "";
 	})
 
 	//新用户名输入框键盘输入事件
@@ -153,6 +156,9 @@ require(["jquery.min", "checkInput", "overborwserEvent"], function main ($, chec
 	//修邮箱对话框关闭按钮点击事件
 	EventUntil.addHandler(s("#modifyemail-close-btn"),"click",function(){
 		s("#modify-personal-email-floor").style.display = 'none';
+		s("#newEmail").style.border = "1px solid #337ab7";
+		s("#newEmail").style.boxShadow = '0 0 0 rgba(0,0,0,0)';
+		s("#modify-new-email-hint").innerText = "";
 	})
 
 

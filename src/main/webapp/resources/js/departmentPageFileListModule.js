@@ -335,6 +335,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 
 			var floderName = a.cloneNode(true);
 			floderName.innerText = list[i].nav;
+			floderName.title = list[i].nav;
 			floderName.href = "#";
 			floderName.setAttribute("data-path", list[i].uid);
 			//为a 元素绑定事件 回调函数是生成面包屑导航函数
@@ -487,6 +488,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			filename.href = "#";
 			filename.setAttribute("data-path", list[i].uid);
 			filename.innerText = list[i].title;
+			filename.title = list[i].title;
 			//为文件名绑定点击事件
 			EventUntil.addHandler(filename,"click",fileNameClick);
 	
@@ -519,7 +521,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//此方法 将会在表格里面的文件夹名点击，面包屑导航，溢出导航点击时调用
 		//发送ajax 请求
 		$.ajax({
-			url: '/Management/content/ajaxFindNavAndFile.action',
+			url: '/Management/content/ajaxFindNavAndFile.action?',
 			type: 'GET',
 			dataType: 'json',
 			data: "parent=" + path + "&depuid=" + depId,
