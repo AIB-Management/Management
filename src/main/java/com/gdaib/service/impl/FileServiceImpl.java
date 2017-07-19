@@ -22,6 +22,7 @@ import java.util.UUID;
  * Created by mahanzhen on 17-6-6.
  */
 public class FileServiceImpl implements FileService {
+
     //直接显示的文件类型
     public static final String[] SHOW_TYPE = {
             ".swf", ".pdf", ".jpg", ".png", ".gif", ".jpeg"
@@ -31,11 +32,15 @@ public class FileServiceImpl implements FileService {
     public static final String[] NOT_UP_TYPE = {
             ".html", ".htm", ".php", ".jsp", ".asp", ".java", ".class", ".py"
     };
+
     @Autowired
     private FileExtMapper fileExtMapper;
 
     @Autowired
     private FileItemExtMapper fileItemExtMapper;
+
+    private BufferedOutputStream bos = null;
+    private BufferedInputStream bis = null;
 
 
     @Override
@@ -135,26 +140,7 @@ public class FileServiceImpl implements FileService {
         return null;
     }
 
-    BufferedOutputStream bos = null;
-    BufferedInputStream bis = null;
 
-    private void closeStream() {
-        try {
-            if(bos!=null) {
-                bos.flush();
-                bos.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            if(bis!=null) {
-                bis.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public List<FileItemSelectVo> writeFileToLocal(String path, CommonsMultipartFile[] files) throws Exception {
@@ -165,6 +151,7 @@ public class FileServiceImpl implements FileService {
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
         String fileName;
         FileItemSelectVo fileItemSelectVo;
+        File localFile;
 
         for (int i = 0, length = files.length; i < length; i++) {
             if (!files[i].isEmpty()) {
@@ -173,21 +160,24 @@ public class FileServiceImpl implements FileService {
                     fileItems.add(fileItemSelectVo);
 
                     fileName = fileItemSelectVo.getUid() + fileItemSelectVo.getPrefix();
-                    bis = new BufferedInputStream(files[i].getInputStream());
-                    bos = new BufferedOutputStream(new FileOutputStream(path + fileName));
-                    byte[] b = new byte[512];
-                    int len = bis.read(b);
-                    while (len != -1) {
-                        bos.write(b, 0, len);
-                        len = bis.read(b);
-                    }
+                    //改用jar包写入文件
+                    localFile = new File(path+fileName);
+//                    bis = new BufferedInputStream(files[i].getInputStream());
+//                    bos = new BufferedOutputStream(new FileOutputStream(path + fileName));
+//                    byte[] b = new byte[512];
+//                    int len = bis.read(b);
+//                    while (len != -1) {
+//                        bos.write(b, 0, len);
+//                        len = bis.read(b);
+//                    }
+                    files[i].transferTo(localFile);
                 } catch (Exception e) {
                     deleteFile(f);
                     e.printStackTrace();
                     return null;
                 } finally {
                     //关闭流
-                    closeStream();
+//                    closeStream();
                 }
 
             }
@@ -321,6 +311,7 @@ public class FileServiceImpl implements FileService {
     }
 
 
+
     @Override
     public void getFileStreamToHttp(String path, HttpServletResponse response) throws Exception {
         try {
@@ -338,6 +329,26 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         } finally {
             closeStream();
+        }
+    }
+
+
+
+    private void closeStream() {
+        try {
+            if(bos!=null) {
+                bos.flush();
+                bos.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            if(bis!=null) {
+                bis.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

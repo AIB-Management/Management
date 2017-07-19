@@ -49,7 +49,7 @@
 					<p id="vt-code-hint"></p>
 				</div>
 				<button id="log-in" type="submit">登录</button>
-				<label class="remember-me-wrap"><input type="checkbox" id="remember-me">3天内记住账号</label>
+				<!--<label class="remember-me-wrap"><input type="checkbox" id="remember-me">3天内记住账号</label>-->
 				<div class="link-wrap">
 					<a href="${pageContext.request.contextPath}/public/findPassword.action">忘记密码</a>
 					<span>|</span>
