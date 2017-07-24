@@ -485,13 +485,13 @@
 					<div class="unexamie-wrap" id="unexamie-main-content-wrap">
 						<table id="unexamie" class="message-list table table-striped table-hover" cellspacing="0">
 							<thead>
-								<tr>
+								<tr class="list-selectbox">
 									<th><input type="checkbox" id="unexamie-select-all">全选</th>
 									<th>姓名</th>
 									<th>账号</th>
 									<th>系别</th>
 									<th>专业</th>
-									<th>操作</th>
+									<th class="list-operate">操作</th>
 								</tr>
 							</thead>
 							<tbody id="unexamie-main-content"></tbody>
@@ -511,29 +511,7 @@
 						<!-- 待审核列表分页组建包裹层 -->
 						<div class="divid-page-wrap">
 							<nav aria-label="Page navigation">
-							  <ul class="pagination" id="unexamie-pagination-content">
-							  	<li>
-							      <a href="#" aria-label="homepage">首页</a>
-							    </li>
-							    <li>
-							      <a href="#" aria-label="Previous">
-							        <span aria-hidden="true">&laquo;</span>
-							      </a>
-							    </li>
-							    <li><a href="#">1</a></li>
-							    <li><a href="#">2</a></li>
-							    <li><a href="#">3</a></li>
-							    <li><a href="#">4</a></li>
-							    <li><a href="#">5</a></li>
-							    <li>
-							      <a href="#" aria-label="Next">
-							        <span aria-hidden="true">&raquo;</span>
-							      </a>
-							    </li>
-							    <li>
-							      <a href="#" aria-label="lastpage">末页</a>
-							    </li>
-								</ul>
+							  <ul class="pagination" id="unexamie-pagination-content"></ul>
 						</nav>
 					</div>
 				</div>
@@ -551,14 +529,14 @@
 					<table id="examied" class="message-list table table-striped table-hover">
 						<thead>
 							<tr>
-								<th>
+								<th class="list-selectbox">
 									<input type="checkbox" id="examied-select-all">全选
 								</th>
 								<th>姓名</th>
 								<th>账号</th>
 								<th>系别</th>
 								<th>专业</th>
-								<th>操作</th>
+								<th class="list-operate">操作</th>
 							</tr>
 						</thead>
 						<tbody id="examied-main-content"></tbody>
@@ -573,29 +551,7 @@
 					<!-- 已审核列表分页组建包裹层 -->
 					<div class="divid-page-wrap">
 						<nav aria-label="Page navigation">
-						  <ul class="pagination" id="examied-pagination-content">
-						  	<li>
-						      <a href="#" aria-label="Previous">首页</a>
-						    </li>
-						    <li>
-						      <a href="#" aria-label="Previous">
-						        <span aria-hidden="true">&laquo;</span>
-						      </a>
-						    </li>
-						    <li><a href="#">1</a></li>
-						    <li><a href="#">2</a></li>
-						    <li><a href="#">3</a></li>
-						    <li><a href="#">4</a></li>
-						    <li><a href="#">5</a></li>
-						    <li>
-						      <a href="#" aria-label="Next">
-						        <span aria-hidden="true">&raquo;</span>
-						      </a>
-						    </li>
-						    <li>
-						      <a href="#" aria-label="Previous">末页</a>
-						    </li>
-							</ul>
+						  <ul class="pagination" id="examied-pagination-content"></ul>
 						</nav>
 					</div>
 				</div>

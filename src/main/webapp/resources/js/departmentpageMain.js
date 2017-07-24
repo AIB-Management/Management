@@ -246,6 +246,7 @@ require(["domReady","jquery.min","overborwserEvent",
 			type: 'POST',
 			dataType: 'json',
 			data: "accuid=" + accuid + "&uid=" + uid,
+			cache: false,
 			success: function(data){
 				if (data.code == 100) {
 					//请求成功后刷新文件列表

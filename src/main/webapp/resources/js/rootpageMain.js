@@ -1035,9 +1035,9 @@ require(["domReady","jquery.min","overborwserEvent",
 			var idList = [];
 			//遍历所有复选框
 			for (var i = 0; i < checkboxs.length; i++) {
-				//把多选框对应的用户名列的 title值（即id 值）推进数组
+				//把多选框对应的用户名列的 data-userid值（即id 值）推进数组
 				if (checkboxs[i].checked == true) {
-					var idVal = checkboxs[i].parentNode.parentNode.querySelectorAll("td")[1].title;
+					var idVal = checkboxs[i].parentNode.parentNode.querySelectorAll("td")[1].getAttribute("data-userid");
 					idList.push(idVal);
 				}
 			}
@@ -1096,8 +1096,8 @@ require(["domReady","jquery.min","overborwserEvent",
 			for (var i = 0; i < checkboxs.length; i++) {
 				if (checkboxs[i].checked == true) {
 						//如果有选中的
-						//获取选中多选框所在行的第二列的 title 值
-						var idVal = checkboxs[i].parentNode.parentNode.querySelectorAll("td")[1].title;
+						//获取选中多选框所在行的第二列的 data-userid 值
+						var idVal = checkboxs[i].parentNode.parentNode.querySelectorAll("td")[1].getAttribute("data-userid");
 						//获取选中多选框所在行的第二列的 文本 值
 						var usernameVal = checkboxs[i].parentNode.parentNode.querySelectorAll("td")[1].innerText;
 						//保存id 值数组推入对应的id
@@ -1119,8 +1119,6 @@ require(["domReady","jquery.min","overborwserEvent",
 					s("#refuse-info").style.display = 'block';
 					//显示弹出层
 					floor.style.display = "block";
-					//将当页的全选多选框取消选中
-					s("#unexamie-select-all").checked = false;
 		}else{
 			alert("没有选中的用户");
 		}
@@ -1171,6 +1169,7 @@ require(["domReady","jquery.min","overborwserEvent",
 					s("#refuse-content").value = "";
 					//隐藏弹出层
 					s("#floor").style.display = "none";
+					alert("操作成功！");
 
 				}else if(data.code == 300) {
 					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
@@ -1234,8 +1233,11 @@ require(["domReady","jquery.min","overborwserEvent",
 					s("#refuse-content").removeAttribute("disabled");
 					//消除发送拒绝信息按钮 disabled 属性
 					s("#send-refuse-info").removeAttribute("disabled");
+					//清空拒绝信息内容
+					s("#refuse-content").value = "";
 					//隐藏弹出层
 					s("#floor").style.display = "none";
+					alert("操作成功！");
 
 				}else if(data.code == 300) {
 					//后台状态码为300 表示这个账号在另一个浏览器或终端登录
@@ -1335,7 +1337,7 @@ require(["domReady","jquery.min","overborwserEvent",
 				if (checkboxList[i].checked == true) {
 					//找到对应的内容
 					var username = checkboxList[i].parentNode.parentNode.querySelectorAll("td")[1].innerText;
-					var userId = checkboxList[i].parentNode.parentNode.querySelectorAll("td")[1].title;
+					var userId = checkboxList[i].parentNode.parentNode.querySelectorAll("td")[1].getAttribute("data-userid");
 
 					//保存用户id 和 用户名
 					idValList.push(userId);
@@ -1483,11 +1485,15 @@ require(["domReady","jquery.min","overborwserEvent",
 					s("#number-hints").style.display = 'none';
 					
 					unexamiePage.toUnexamiePage(unexamiePage.curUnexamieModulePage);
+					//已审核列表全选按钮取消选中
+					s("#examied-select-all").checked = false;
 		
 				}else if(this.id == "examied-tag"){
 					//如果当前点击的tag 为未审核列表
 					//读取已审核用户数据的第一页，且部门筛选为 "全部" 的内容
 					examiePage.toexamiedPage(1,examiePage.curDepartmentId);
+					//未审核列表全选按钮取消选中
+					s("#unexamie-select-all").checked = false;
 
 				}else if(this.id == "manage-leader-admin") {
 					//点击管理员领导管理标签时更新两个列表的内容
@@ -1825,6 +1831,7 @@ require(["domReady","jquery.min","overborwserEvent",
 			s("#send-refuse-info").disabled = "true";
 			//清空多选框选择状态
 			clearCheckBoxChecked(ss("#unexamie-main-content tr td input:checked"));
+			s("#unexamie-select-all").checked = false;
 			s("#floor").style.display = "none";
 
 		}else if(target.id == "send-refuse-info") {
@@ -1853,6 +1860,7 @@ require(["domReady","jquery.min","overborwserEvent",
 			s("#recall-content").value = "";
 			//确认撤回按钮变成disabled
 			s("#confirm-recall-user").disabled = "true";
+			s("#examied-select-all").checked = false;
 			s("#floor").style.display = "none";
 
 		}else if(target.id == "confirm-recall-user") {
@@ -1949,11 +1957,9 @@ require(["domReady","jquery.min","overborwserEvent",
 
 			if (this.value.length == 0) {
 				sendBtn.disabled = "disabled";
-				sendBtn.style.backgroundColor = "#999999"
 			}else{
 				sendBtn.removeAttribute("disabled");
 				sendBtn.className = "btn btn-success";
-				sendBtn.style.backgroundColor = "#05a828";
 			}
 		})
 

@@ -148,7 +148,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 					btn = button.cloneNode(true);
 
 				btn.appendChild(btnicon);
-				btn.innerHTML = "撤回管理员";
+				btn.innerHTML += "撤回管理员";
 				btn.className = "btn btn-danger btn-sm";
 				//授权按钮绑定点击事件
 				EventUntil.addHandler(btn,"click",recallAdmin);

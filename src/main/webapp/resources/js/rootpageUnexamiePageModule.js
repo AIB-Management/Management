@@ -72,7 +72,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//用作向后台传值及向弹出层传值
 		var parent = this.parentNode.parentNode;
 		var nameTd = parent.querySelectorAll("td")[1];
-		var uid = nameTd.title;
+		var uid = nameTd.getAttribute("data-userId");
 		//发送一个ajax 给后台
 		//然后刷新更新后的表格
 		//...ajaxCode
@@ -120,7 +120,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//为提示文字中的姓名字段添加内容
 		s("#refuse-username").innerText = nameTd.innerText;
 		//为提示文字中的名字字段属性 title添加内容
-		s("#refuse-username").title = nameTd.title;
+		s("#refuse-username").title = nameTd.getAttribute("data-userId");
 		//显示弹出层
 		floor.style.display = "block";
 	}
@@ -131,7 +131,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//用作向后台传值及向弹出层传值
 		var parent = this.parentNode.parentNode;
 		var nameTd = parent.querySelectorAll("td")[1];
-		var userId = nameTd.title;
+		var userId = nameTd.getAttribute("data-userId");
 
 		//发送ajax 把用户id 传给后台
 		$.ajax({
@@ -166,7 +166,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		//用作向后台传值及向弹出层传值
 		var parent = this.parentNode.parentNode;
 		var nameTd = parent.querySelectorAll("td")[1];
-		var userId = nameTd.title;
+		var userId = nameTd.getAttribute("data-userId");
 
 		//发送ajax 把用户id 传给后台
 		$.ajax({
@@ -281,23 +281,27 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				//创建一个教师姓名包裹 td
 				var userTd = createElem("td");
 				userTd.innerText = dataList[i].name;
-				userTd.title = dataList[i].uid;
+				userTd.title = dataList[i].name;
+				userTd.setAttribute("data-userId", dataList[i].uid);
 				tr.appendChild(userTd);
 
 				//创建一个账号包裹td
 				var accountTd = createElem("td");
 				accountTd.innerText = dataList[i].username;
+				accountTd.title = dataList[i].username;
 				tr.appendChild(accountTd);
 
 
 				//创建一个系别包裹 td
 				var departmentTd = createElem("td");
 				departmentTd.innerText = dataList[i].depContent;
+				departmentTd.title = dataList[i].depContent;
 				tr.appendChild(departmentTd);
 
 				//创建一个专业包裹 td
 				var professionTd = createElem("td");
 				professionTd.innerText = dataList[i].content;
+				professionTd.title = dataList[i].content;
 				tr.appendChild(professionTd);
 
 				//创建一个按钮包裹 td

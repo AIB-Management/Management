@@ -136,7 +136,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		s("#recall-user").style.display = 'block';
 		//为提示文字中的姓名字段添加内容
 		s("#recall-username").innerText = nameTd.innerText;
-		s("#recall-username").title = nameTd.title;
+		s("#recall-username").title = nameTd.getAttribute("data-userId");
 		//显示弹出层
 		floor.style.display = "block";
 	}
@@ -147,10 +147,10 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 	function examiedMouleModifyDep(){
 		//获取注册用户姓名的单元格
 		var parent = this.parentNode.parentNode;
-		var depId = parent.querySelectorAll("td")[3].title,
-			specId = parent.querySelectorAll("td")[4].title,
+		var depId = parent.querySelectorAll("td")[3].getAttribute("data-depId"),
+			specId = parent.querySelectorAll("td")[4].getAttribute("data-specId"),
 			account = parent.querySelectorAll("td")[2].innerText,
-			userId = parent.querySelectorAll("td")[1].title;
+			userId = parent.querySelectorAll("td")[1].getAttribute("data-userId");
 
 		var depOptions = ss("#user-dep option");
 
@@ -188,6 +188,7 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 			var frag = document.createDocumentFragment();
 
 			var dataList = data.extend.page.list;
+			console.log(dataList);
 
 			//创建多选框
 			var checkBox = createElem("input");
@@ -241,24 +242,28 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 				//创建一个教师姓名包裹 td
 				var userTd = createElem("td");
 				userTd.innerText = dataList[i].name;
-				userTd.title = dataList[i].uid;
+				userTd.title = dataList[i].name;
+				userTd.setAttribute("data-userId", dataList[i].uid);
 				tr.appendChild(userTd);
 
 				//创建一个包裹账号包裹 td
 				var accountTd = createElem("td");
 				accountTd.innerText = dataList[i].username;
+				accountTd.title = dataList[i].username;
 				tr.appendChild(accountTd);
 
 				//创建一个系别包裹 td
 				var departmentTd = createElem("td");
 				departmentTd.innerText = dataList[i].depContent;
-				departmentTd.title = dataList[i].departmentId;
+				departmentTd.title = dataList[i].depContent;
+				departmentTd.setAttribute("data-depId", dataList[i].departmentId);
 				tr.appendChild(departmentTd);
 
 				//创建一个专业包裹 td
 				var professionTd = createElem("td");
 				professionTd.innerText = dataList[i].content;
-				professionTd.title = dataList[i].professionId;
+				professionTd.title = dataList[i].content;
+				professionTd.setAttribute("data-specId", dataList[i].professionId);
 				tr.appendChild(professionTd);
 
 				//创建一个按钮包裹 td
