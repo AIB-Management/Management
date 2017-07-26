@@ -19,7 +19,7 @@ import java.util.*;
  * Created by znho on 2017/5/29.
  */
 //使用Spring的测试
-//@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 //得到webapplication的ioc容器
 @WebAppConfiguration
 //加入mvc和spring的配置文件

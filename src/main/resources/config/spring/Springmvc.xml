@@ -16,7 +16,7 @@
             http://www.springframework.org/schema/tx/spring-tx.xsd
             http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop.xsd "
-       >
+>
 
     <!--全局异常处理器
     只要实现了HandlerExceptionResolver接口，Spring就会知道他是一个全局异常处理器，项目只能有一个，所以我们直接配一个bea
@@ -53,8 +53,6 @@
     </bean>
 
 
-
-
     <!--注解映射器-->
     <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>-->
 
@@ -68,8 +66,6 @@
     -->
 
 
-
-
     <!-- 上传文件的设置 ，maxUploadSize=-1，表示无穷大。uploadTempDir为上传的临时目录 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
     >
@@ -79,6 +75,12 @@
 
     </bean>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.gdaib.filter.CacheInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 
 </beans>

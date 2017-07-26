@@ -156,9 +156,6 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
 
         }
 
-        resp.setHeader("Cache-Control","no-cache,no-store,must-revalidate");
-        resp.addHeader( "Cache-Control", "post-check=0,pre-check=0" );
-        resp.setHeader("Pragma","no-cache");
         return true;
     }
     private void out(ServletResponse hresponse, Map<String, String> resultMap)

@@ -10,6 +10,7 @@ import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
+import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,4 +163,16 @@ public class UtilTest {
         System.out.println(fileCustoms);
     }
 
+
+    @Test
+    public void test() throws Exception{
+        String url = "http://139.199.176.116:8080/Management/resources/filecontent.action?uid=2df58e9e-4260-423b-a48b-47cd83c4e4ff";
+        String indexof = "";
+        //当url中没有TeachersFile resources 时, 设置请求头为不缓存
+        if (url.indexOf("TeachersFile") >= 0 || url.indexOf("resources") >= 0) {
+            System.out.print("result"+"缓存");
+        }else {
+            System.out.print("result"+"不缓存");
+        }
+    }
 }
