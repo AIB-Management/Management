@@ -285,7 +285,11 @@
 				<button type="button" id="drop-floder-close-btn" class="close" aria-label="Close">×</button>
 			</div>
 			<h3>删除文件夹</h3>
-			<p class="drop-floder-msg">你确认要删除<b id="target-floder-name"></b>这（几个/个）文件夹吗？若当前文件夹下有子目录此操作会造成异常！</p>
+			<div class="drop-floder-msg">
+				<p>你确认要删除如下：</p>
+				<b id="target-floder-name"></b>
+				<p>这（几个/个）文件夹吗？若当前文件夹下有子目录此操作会造成异常！</p>
+			</div>
 			<div class="drop-floder-btn">
 				<button class="btn btn-success" id="cancel-drop-floder">
 					<span class="glyphicon glyphicon-remove"></span> 

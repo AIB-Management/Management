@@ -205,10 +205,17 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		var depList = ss("#manage-side-item li");
 		var floderListWrap = s("#file-list-content");
 
+
 		//获取面包屑导航栏包裹层
 		var breadCrumb = s("#breadcurmb-nav-wrap");
+		//重置面包屑导航栏 isFully 属性
+		breadCrumb.isFully = false;
 		//清空面包屑导航栏元素
 		breadCrumb.innerHTML = "";
+		//清空溢出导航包裹层并且隐藏包裹层显示的的按钮
+		ss("#overflow-item-wrap ul")[0].innerHTML = "";
+		s("#overflow-item-wrap").style.display = 'none';
+		s("#show-hidden-menu").style.display = 'none';
 		//清空li 的活动样式
 		for (var i = 0; i < depList.length; i++) {
 			if (depList[i].className.indexOf("filedep-item-active") != -1) {
@@ -230,11 +237,6 @@ define(["jquery.min","overborwserEvent"],function($,EventUntil){
 		EventUntil.addHandler(li,"click",breadCrumbItemClick);
 
 		breadCrumb.appendChild(li);
-
-		//清空和隐藏溢出导航包裹层并且隐藏包裹层显示的的按钮
-		ss("#overflow-item-wrap ul").innerHTML = "";
-		s("#overflow-item-wrap").style.display = 'none';
-		s("#show-hidden-menu").style.display = 'none';
 
 		//调整完样式后发送ajax 到后台请求
 		//取出数据

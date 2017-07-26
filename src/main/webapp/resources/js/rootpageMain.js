@@ -341,7 +341,8 @@ require(["domReady","jquery.min","overborwserEvent",
 
 				//将保存的要删除文件夹的内容输出到确认弹出窗口中显示
 				s("#target-floder-name").innerText = dropFloderName.join(",");
-				s("#target-floder-name").title = dropFloderUid.join(",");
+				s("#target-floder-name").title = dropFloderName.join(",");
+				s("#target-floder-name").setAttribute("data-floderUid",dropFloderUid.join(","));
 				s("#drop-floder-wrap").style.display = 'block';
 
 			}else{
@@ -525,7 +526,7 @@ require(["domReady","jquery.min","overborwserEvent",
 	//删除文件夹弹出层删除按钮点击事件回调函数
 	function doDropFloder(){
 		//获取要删除文件夹的uid
-		var uids = s("#target-floder-name").title;
+		var uids = s("#target-floder-name").getAttribute("data-floderUid");
 		$.ajax({
 			url: '/Management/admin/ajaxDeleteNav.action',
 			type: 'POST',
@@ -1618,11 +1619,8 @@ require(["domReady","jquery.min","overborwserEvent",
 		var target = EventUntil.getTarget(event);
 
 		if (target.id == "manage-floder") {
-			//如果部门列表没有元素才发送请求刷新数据
-			if (s("#manage-side-item").childNodes.length == 0) {
-				//侧边栏管理文件夹标签点击事件
-				manageDepFloder.createManageFloderDepList();
-			}
+			//部门管理侧栏点击事件
+			manageDepFloder.createManageFloderDepList();
 			
 			s("#manage-file-floor").style.display = 'block';
 
