@@ -8,7 +8,8 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv = "X-UA-Compatible" content ="IE=Edge"/> 
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 	<title>管理员页</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/websiteicon.ico" type="image/vnd.microsoft.icon">
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jsdist/require.min.js" defer async="true" data-main="${pageContext.request.contextPath}/resources/jsdist/rootpageMain-min.js"></script>
@@ -489,8 +490,8 @@
 					<div class="unexamie-wrap" id="unexamie-main-content-wrap">
 						<table id="unexamie" class="message-list table table-striped table-hover" cellspacing="0">
 							<thead>
-								<tr class="list-selectbox">
-									<th><input type="checkbox" id="unexamie-select-all">全选</th>
+								<tr>
+									<th class="list-selectbox"><input type="checkbox" id="unexamie-select-all">全选</th>
 									<th>姓名</th>
 									<th>账号</th>
 									<th>系别</th>
