@@ -3,3 +3,4 @@ target
 Management.*
 TestJsps
 src\test
+*tom.properties
