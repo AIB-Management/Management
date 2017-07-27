@@ -50,7 +50,7 @@ public class EmailUrlPojo {
     @Override
     public String toString() {
         try {
-            return Utils.getLocalADDress() + action + "?username=" + username;
+            return Utils.getMailInfo().get(Utils.MAIL_URL).toString() + action + "?username=" + username;
         } catch (Exception e) {
             e.printStackTrace();
         }

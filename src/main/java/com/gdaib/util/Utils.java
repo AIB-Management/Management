@@ -6,69 +6,70 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by mahanzhen on 17-5-29.
  */
 public class Utils {
 
-    //获取配置文件的本地IP
-    public static String getLocalADDress() throws Exception {
-        Resource resource = new ClassPathResource("custom.properties");
-        Properties properties = new Properties();
-        properties.load(resource.getInputStream());
-        String ipAddress = properties.getProperty("ipAddress");
+    public static final String DOC_BASE = "docBase";
+    public static final String PATH = "path";
 
-        return ipAddress;
+
+    public static final String MAIL_USERNAME = "mail.username";
+    public static final String MAIL_SEND_NAME = "mail.sendName";
+    public static final String MAIL_SUBJECT = "mail.subject";
+    public static final String MAIL_CONTENT = "mail.content";
+    public static final String MAIL_URL = "mail.url";
+
+    //获取配置文件
+    public static Map<String, Object> getCustomPropertiesMap() throws Exception {
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        Properties properties = getProperties("custom.properties");
+        map.put(DOC_BASE, properties.get(DOC_BASE).toString());
+        map.put(PATH, properties.get(PATH).toString());
+        properties.clear();
+        return map;
     }
 
     //获取系统当前时间
-    public static Timestamp getSystemCurrentTime() throws Exception{
-        return  new Timestamp(System.currentTimeMillis() / 1000 * 1000);
-    }
-
-
-    /* 获取文章相关文件的保存路径
-    * path 存进数据库的路径
-    *
-    * */
-    public static String getSystemRealFilePath(HttpServletRequest request,String path){
-        ServletContext sc = request.getSession().getServletContext();
-        return  sc.getRealPath(path) + "/";
+    public static Timestamp getSystemCurrentTime() throws Exception {
+        return new Timestamp(System.currentTimeMillis() / 1000 * 1000);
     }
 
 
     //获取邮件配置
     public static HashMap<String, Object> getMailInfo() throws Exception {
-        Resource resource = new ClassPathResource("mail.properties");
 
-        Properties properties = new Properties();
-        properties.load(resource.getInputStream());
+        Properties properties = getProperties("mail.properties");
+
         HashMap<String, Object> hashMap = new HashMap<String, Object>();
-
-        hashMap.put("username", properties.getProperty("mail.username"));
-        hashMap.put("sendName", properties.getProperty("mail.sendName"));
-        hashMap.put("subject", properties.get("mail.subject"));
-        hashMap.put("content", properties.getProperty("mail.content"));
+        hashMap.put(MAIL_USERNAME, properties.getProperty(MAIL_USERNAME));
+        hashMap.put(MAIL_SEND_NAME, properties.getProperty(MAIL_SEND_NAME));
+        hashMap.put(MAIL_SUBJECT, properties.get(MAIL_SUBJECT));
+        hashMap.put(MAIL_CONTENT, properties.getProperty(MAIL_CONTENT));
+        hashMap.put(MAIL_URL, properties.getProperty(MAIL_URL));
+        properties.clear();
         return hashMap;
-
 
     }
 
+    public static Properties getProperties(String propertiesName) throws Exception {
+        Resource resource = new ClassPathResource(propertiesName);
+        Properties properties = new Properties();
+        properties.load(resource.getInputStream());
+        return properties;
+    }
 
 
     //获取验证码
     public static String getCaptcha(HttpServletRequest request) throws Exception {
         //获取code方法
         String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-//        System.out.println(kaptchaExpected);
         return kaptchaExpected;
     }
 
@@ -87,7 +88,6 @@ public class Utils {
 
     //获取登录后信息
     public static AccountInfo getLoginAccountInfo() throws Exception {
-
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
         return accountInfo;

@@ -189,10 +189,11 @@ public class PasswordController {
         MailPojo mailPojo = new MailPojo();
 
         //设置发送人
-        mailPojo.setFromAddress(mail.get("username").toString());
+        mailPojo.setFromAddress(mail.get(Utils.MAIL_USERNAME).toString());
+
 
         //发送的标题
-        mailPojo.setSubject(mail.get("subject").toString());
+        mailPojo.setSubject(mail.get(Utils.MAIL_SUBJECT).toString());
 
         //发送的地址
         mailPojo.setToAddresses(urlPojo.getMail());

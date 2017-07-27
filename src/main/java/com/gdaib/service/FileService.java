@@ -33,9 +33,6 @@ public interface FileService {
     //添加文件条目
     public Integer insertFileItem(List<FileItemSelectVo> fileItemSelectVos,String fileUid)throws Exception;
 
-    //查找本地文件
-    public List<HashMap<String, Object>> selectLocalFileItem(String localPath, String sqlPath) throws Exception;
-
     //根据文件后缀判断该文件是否是允许上传的文件类型
     public boolean isAllowUpFileTypeByPrefix(String contentType) throws Exception;
 

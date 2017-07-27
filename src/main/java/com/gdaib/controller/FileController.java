@@ -28,7 +28,6 @@ import java.util.UUID;
  */
 @Controller
 public class FileController {
-    public static final String UP_FILE_PATH = "/TeachersFile";
 
 
     @Autowired
@@ -101,22 +100,21 @@ public class FileController {
 
         //保存到数据库的路径
         String fileUid = UUID.randomUUID().toString();
-        String sqlPath = UP_FILE_PATH + "/" + fileSelectVo.getAccuid() + "/" + fileUid;
+        String sqlPath = "/" + fileSelectVo.getAccuid() + "/" + fileUid+"/";
         fileSelectVo.setFilepath(sqlPath);
 
-        String path = Utils.getSystemRealFilePath(request, sqlPath);
+        String path = Utils.getCustomPropertiesMap().get(Utils.DOC_BASE).toString() + sqlPath;
 
-        System.out.println(path);
         //把文件写到目录中
         List<FileItemSelectVo> fileItems = fileService.writeFileToLocal(path, files);
 
-        if(fileItems ==null){
+        if (fileItems == null) {
             return Msg.fail();
         }
 
         fileSelectVo.setUid(fileUid);
 
-        String url = "/Management/content/filecontent.action?uid=" + fileUid;
+        String url = "/TeachersFile/"+fileSelectVo.getAccuid()+"/"+fileUid;
         fileSelectVo.setUrl(url);
 
         //写入文章信息
@@ -132,35 +130,6 @@ public class FileController {
         return Msg.fail();
     }
 
-
-    //获取上传文件的条目级链接
-    @RequestMapping(value = "/file/ajaxGetServerFileItem", params = {"uid"})
-    @ResponseBody
-    @RequiresPermissions("fileItem:query")
-    public Msg ajaxGetServerFileItem(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
-        if (
-                MyStringUtils.isEmpty(fileSelectVo.getUid())
-                ) {
-            throw new GlobalException("uid不能为空");
-        }
-
-        List<FileCustom> fileCustoms = fileService.selectFile(fileSelectVo);
-        if (fileCustoms.size() == 0) {
-            throw new GlobalException("文件不存在");
-        }
-
-        ServletContext sc = request.getSession().getServletContext();
-        String sqlPath = fileCustoms.get(0).getFilepath();
-        String localPath = sc.getRealPath(sqlPath) + "/";
-
-        List<HashMap<String, Object>> filenames = fileService.selectLocalFileItem(localPath, sqlPath);
-
-        if (filenames != null && filenames.size() > 0) {
-            return Msg.success().add("filenames", filenames);
-        }
-
-        return Msg.fail();
-    }
 
     //删除文件
     @RequestMapping(value = "/file/ajaxDeleteFile", params = {"uid", "accuid"})
@@ -194,7 +163,7 @@ public class FileController {
             throw new GlobalException("文件不存在");
         }
 
-        String localPath = Utils.getSystemRealFilePath(request, fileCustoms.get(0).getFilepath());
+        String localPath = Utils.getCustomPropertiesMap().get(Utils.DOC_BASE).toString() + fileCustoms.get(0).getFilepath();
         fileService.deleteLocalFile(localPath);
 
         int result = fileService.deleteFile(fileSelectVo);
@@ -247,13 +216,16 @@ public class FileController {
         System.out.println(custom);
         //设置Content-Disposition
         response.setHeader("Content-Disposition", "attachment;filename=" +
-                        new String(custom.getFilename().getBytes("UTF-8"), "ISO8859-1")
+                new String(custom.getFilename().getBytes("UTF-8"), "ISO8859-1")
         );
         //读取目标文件，通过response将目标文件写到客户端
         //获取目标文件的绝对路径
-        String fullFileName = Utils.getSystemRealFilePath(request, custom.getFilePath()) +  custom.getUid()+custom.getPrefix();
+        String fullFileName =
+                Utils.getCustomPropertiesMap().get(Utils.DOC_BASE).toString()
+                        +"/"+custom.getFilePath()+"/"
+                        + custom.getUid() + custom.getPrefix();
 
-        fileService.getFileStreamToHttp(fullFileName,response);
+        fileService.getFileStreamToHttp(fullFileName, response);
 
     }
 

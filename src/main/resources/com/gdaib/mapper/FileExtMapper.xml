@@ -103,6 +103,7 @@
         <result column="upTime" property="uptime"></result>
         <result column="filePath" property="filepath"></result>
         <result column="author" property="author"></result>
+        <result column="url" property="url"></result>
 
         <collection property="fileItems" ofType="com.gdaib.pojo.FileItemCustom">
             <id column="itemUid" property="uid"></id>
@@ -121,6 +122,7 @@
             t_file.upTime,
             t_file.filePath,
             t_file.uid,
+            t_file.url,
             t_file_item.filename,
             t_file_item.showing,
             t_file_item.prefix,

@@ -41,7 +41,7 @@
         <c:forEach items="${filecontent.fileItems}" var="ff">
             <c:if test="${ff.showing!=0}">
                 
-                <button class="btn btn-default boost-preview-file" data-src="${filecontent.filepath}/${ff.uid}${ff.prefix}" title="${ff.filename}">
+                <button class="btn btn-default boost-preview-file" data-src="${filecontent.url}/${ff.uid}${ff.prefix}" title="${ff.filename}">
                     <span class="glyphicon glyphicon-eye-open"></span> 
                     预览${ff.filename}
                 </button>

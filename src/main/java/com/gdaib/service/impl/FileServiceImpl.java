@@ -141,46 +141,30 @@ public class FileServiceImpl implements FileService {
     }
 
 
-
     @Override
     public List<FileItemSelectVo> writeFileToLocal(String path, CommonsMultipartFile[] files) throws Exception {
         File f = new File(path);
-        if (!f.exists())
+        if (!f.exists()) {
             f.mkdirs();
-
+        }
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
-        String fileName;
+        String newFileName;
         FileItemSelectVo fileItemSelectVo;
         File localFile;
-
-        for (int i = 0, length = files.length; i < length; i++) {
-            if (!files[i].isEmpty()) {
-                try {
+        try {
+            for (int i = 0, length = files.length; i < length; i++) {
+                if (!files[i].isEmpty()) {
                     fileItemSelectVo = getFileItemInfoByCommonsMultipartFile(i, files[i]);
                     fileItems.add(fileItemSelectVo);
-
-                    fileName = fileItemSelectVo.getUid() + fileItemSelectVo.getPrefix();
-                    //改用jar包写入文件
-                    localFile = new File(path+fileName);
-//                    bis = new BufferedInputStream(files[i].getInputStream());
-//                    bos = new BufferedOutputStream(new FileOutputStream(path + fileName));
-//                    byte[] b = new byte[512];
-//                    int len = bis.read(b);
-//                    while (len != -1) {
-//                        bos.write(b, 0, len);
-//                        len = bis.read(b);
-//                    }
+                    newFileName = fileItemSelectVo.getUid() + fileItemSelectVo.getPrefix();
+                    localFile = new File(path + "/" + newFileName);
                     files[i].transferTo(localFile);
-                } catch (Exception e) {
-                    deleteFile(f);
-                    e.printStackTrace();
-                    return null;
-                } finally {
-                    //关闭流
-//                    closeStream();
                 }
-
             }
+        } catch (Exception e) {
+            deleteFile(f);
+            e.printStackTrace();
+            return null;
         }
 
         return fileItems;
@@ -203,23 +187,6 @@ public class FileServiceImpl implements FileService {
             }
         }
         file.delete();
-    }
-
-    @Override
-    public List<HashMap<String, Object>> selectLocalFileItem(String localPath, String sqlPath) throws Exception {
-        List<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
-
-        File file = new File(localPath);
-
-        String[] fileNames = file.list();
-
-        for (int i = 0; i < fileNames.length; i++) {
-            HashMap<String, Object> hashMap = new HashMap<String, Object>();
-            hashMap.put("filename", fileNames[i]);
-            hashMap.put("url", Utils.getLocalADDress() + sqlPath + "/" + fileNames[i]);
-            items.add(hashMap);
-        }
-        return items;
     }
 
 
@@ -250,14 +217,14 @@ public class FileServiceImpl implements FileService {
     public FileCustom getFileContent(FileSelectVo file) throws Exception {
 
         List<FileCustom> fileCustoms = fileExtMapper.selectFileAndFileItem(file);
+        System.out.println(fileCustoms);
         if (fileCustoms == null || fileCustoms.size() == 0) {
             throw new GlobalException("文件读取异常");
         }
 
         FileCustom fileCustom = fileCustoms.get(0);
-        String sqlFilePath = fileCustom.getFilepath();
-        String link = Utils.getLocalADDress() + sqlFilePath;
-        fileCustom.setFilepath(link);
+
+        fileCustom.setUrl(Utils.getCustomPropertiesMap().get(Utils.PATH).toString()+"/"+fileCustom.getFilepath()+"/");
 
         return fileCustom;
     }
@@ -311,7 +278,6 @@ public class FileServiceImpl implements FileService {
     }
 
 
-
     @Override
     public void getFileStreamToHttp(String path, HttpServletResponse response) throws Exception {
         try {
@@ -333,10 +299,9 @@ public class FileServiceImpl implements FileService {
     }
 
 
-
     private void closeStream() {
         try {
-            if(bos!=null) {
+            if (bos != null) {
                 bos.flush();
                 bos.close();
             }
@@ -344,7 +309,7 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
         try {
-            if(bis!=null) {
+            if (bis != null) {
                 bis.close();
             }
         } catch (Exception e) {

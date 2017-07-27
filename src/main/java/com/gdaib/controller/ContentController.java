@@ -69,8 +69,9 @@ public class ContentController {
         }
         ModelAndView modelAndView = new ModelAndView();
 
-
         FileCustom fileCustom =fileService.getFileContent(fileSelectVo);
+
+        System.out.println(fileCustom);
         modelAndView.addObject("filecontent",fileCustom);
 
         modelAndView.setViewName(FILECONTENTPAGE);
