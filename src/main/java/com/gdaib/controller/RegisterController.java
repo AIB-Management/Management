@@ -40,8 +40,7 @@ public class RegisterController {
     private UsersService usersService;
 
     /**
-     *
-            得到所有系，并转发到注册页面
+     * 得到所有系，并转发到注册页面
      */
     @RequestMapping("/public/register")
     public ModelAndView register(HttpServletRequest request) {
@@ -51,11 +50,11 @@ public class RegisterController {
         try {
             RegisterPojo registerPojo = (RegisterPojo) request.getAttribute("RegisterPojo");
             modelAndView.addObject("department", departmentService.selectDepartment(null));
-            if(registerPojo != null) {
+            if (registerPojo != null) {
                 String depUid = registerPojo.getDepartmentId();
                 DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
                 departmentSelectVo.setParent(depUid);
-                modelAndView.addObject("pros",departmentService.selectProfession(departmentSelectVo));
+                modelAndView.addObject("pros", departmentService.selectProfession(departmentSelectVo));
             }
         } catch (Exception e) {
             modelAndView.addObject("department", null);
@@ -67,21 +66,20 @@ public class RegisterController {
     }
 
     /**
-     *  通过系找到系的所有专业
+     * 通过系找到系的所有专业
      */
     @RequestMapping(value = "/public/getProfessionJson")
     @ResponseBody
-    public List<HashMap<String,Object>> getProfessionJson(DepartmentSelectVo departmentSelectVo) throws Exception {
+    public List<HashMap<String, Object>> getProfessionJson(DepartmentSelectVo departmentSelectVo) throws Exception {
 
-        List<HashMap<String,Object>> professions = null;
-//        System.out.println("--------------------" + departmentID + "--------------------");
+        List<HashMap<String, Object>> professions = null;
         professions = departmentService.selectProfession(departmentSelectVo);
         return professions;
     }
 
 
     /**
-     *      执行注册
+     * 执行注册
      */
     @RequestMapping(value = "/public/doRegister", method = RequestMethod.POST)
     public ModelAndView doRegister(
@@ -99,7 +97,6 @@ public class RegisterController {
             usersService.insertAccountByRegisterPojo(registerPojo);
 
 
-
         } catch (Exception e) {
             //如果有错误 返回异常信息
 
@@ -108,7 +105,7 @@ public class RegisterController {
 
             request.getRequestDispatcher("/public/register.action").forward(request, response);
         }
-        modelAndView.addObject("success","注册成功！请耐心等待审核");
+        modelAndView.addObject("success", "注册成功！请耐心等待审核");
         modelAndView.setViewName(TAG);
 
         return modelAndView;
@@ -118,17 +115,17 @@ public class RegisterController {
 
     /**
      * 用户名是否为存在
-                */
-        @ResponseBody
-        @RequestMapping(value = "/public/ajaxFindUsernameIsExists")
-        public Msg ajaxFindUsernameIsExists(String accountVal, HttpServletResponse response) throws Exception {
+     */
+    @ResponseBody
+    @RequestMapping(value = "/public/ajaxFindUsernameIsExists")
+    public Msg ajaxFindUsernameIsExists(String accountVal, HttpServletResponse response) throws Exception {
 
-            Boolean UserBoolean = usersService.findUsernameIsExists(accountVal);
-            if(UserBoolean){
-                return Msg.success();
-            }else {
-                return Msg.fail();
-            }
+        Boolean UserBoolean = usersService.findUsernameIsExists(accountVal);
+        if (UserBoolean) {
+            return Msg.success();
+        } else {
+            return Msg.fail();
+        }
     }
 
     /**
@@ -140,13 +137,11 @@ public class RegisterController {
 
 
         Boolean Emailboolean = usersService.findEmailIsExists(mailVal);
-        if(Emailboolean){
+        if (Emailboolean) {
             return Msg.success();
-        }else {
+        } else {
             return Msg.fail();
         }
-
-
 
 
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gdaib.mapper.FileItemExtMapper" >
+<mapper namespace="com.gdaib.mapper.FileItemExtMapper">
 
     <insert id="insertFileItemByList" parameterType="map">
         INSERT INTO t_file_item(uid,filename,fileUid,datatype,showing,position,prefix) VALUE
@@ -20,4 +20,8 @@ WHERE
 t_file_item.uid = #{uid}
 
     </select>
+
+    <delete id="deleteFileItemByFileUid" parameterType="String">
+        delete from t_file_item where fileUid=#{fileUid}
+    </delete>
 </mapper>

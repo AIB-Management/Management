@@ -6,6 +6,7 @@ import com.gdaib.mapper.FileItemExtMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.util.MyStringUtils;
+import com.gdaib.util.PropertiesUtil;
 import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -45,66 +46,22 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public List<FileCustom> selectFile(FileSelectVo file) throws Exception {
-        if (file == null) {
-            throw new Exception("参数不能为空");
-        }
         return fileExtMapper.selectFile(file);
     }
 
     @Override
     public Integer insertFile(FileSelectVo file) throws Exception {
-        if (file == null) {
-            throw new Exception("参数不能为空");
-        }
-        if (
-                MyStringUtils.isEmpty(file.getUid())
-                ) {
-            throw new Exception("UID不能为空");
-        }
-        if (
-                MyStringUtils.isEmpty(file.getAccuid())
-                ) {
-            throw new Exception("账号不能为空");
-        }
-        if (MyStringUtils.isEmpty(file.getNavuid())
-                ) {
-            throw new Exception("上级目录不能为空");
-        }
-        if (
-                MyStringUtils.isEmpty(file.getTitle())
-                ) {
-            throw new Exception("标题不能为空");
-        }
         return fileExtMapper.insert(file);
     }
 
     @Override
     public Integer deleteFile(FileSelectVo file) throws Exception {
-        if (file == null) {
-            throw new Exception("参数不能为空");
-        }
-        if (
-                MyStringUtils.isEmpty(file.getUid())
-                ) {
-            throw new Exception("UID不能为空");
-        }
+        fileItemExtMapper.deleteFileItemByFileUid(file.getUid());
         return fileExtMapper.deleteFile(file);
     }
 
     @Override
     public Integer updateFile(FileSelectVo file) throws Exception {
-        if (file == null) {
-            throw new Exception("参数不能为空");
-        }
-        if (
-                MyStringUtils.isEmpty(file.getUid())
-                ) {
-            throw new Exception("UID不能为空");
-        }
-        if (MyStringUtils.isEmpty(file.getAccuid())
-                ) {
-            throw new Exception("账号不能为空");
-        }
         return fileExtMapper.updateFile(file);
     }
 
@@ -148,9 +105,10 @@ public class FileServiceImpl implements FileService {
             f.mkdirs();
         }
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
-        String newFileName;
-        FileItemSelectVo fileItemSelectVo;
-        File localFile;
+        String newFileName = null;
+        FileItemSelectVo fileItemSelectVo = null;
+        File localFile = null;
+
         try {
             for (int i = 0, length = files.length; i < length; i++) {
                 if (!files[i].isEmpty()) {
@@ -162,8 +120,8 @@ public class FileServiceImpl implements FileService {
                 }
             }
         } catch (Exception e) {
-            deleteFile(f);
             e.printStackTrace();
+            deleteFile(f);
             return null;
         }
 
@@ -199,7 +157,6 @@ public class FileServiceImpl implements FileService {
         String prefix = filename.substring(filename.lastIndexOf("."));
 
         for (String str : NOT_UP_TYPE) {
-            System.out.println(prefix);
             if (prefix.equals(str)) {
                 return true;
             }
@@ -223,8 +180,9 @@ public class FileServiceImpl implements FileService {
         }
 
         FileCustom fileCustom = fileCustoms.get(0);
-
-        fileCustom.setUrl(Utils.getCustomPropertiesMap().get(Utils.PATH).toString()+"/"+fileCustom.getFilepath()+"/");
+        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.SERVER);
+        String path = propertiesUtil.getValueByKey(PropertiesUtil.PATH);
+        fileCustom.setUrl(path + "/" + fileCustom.getFilepath() + "/");
 
         return fileCustom;
     }

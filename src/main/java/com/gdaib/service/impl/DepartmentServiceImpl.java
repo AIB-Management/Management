@@ -53,10 +53,6 @@ public class DepartmentServiceImpl implements DepartmentService {
                 throw new GlobalException("该系存在一个多或多个专业");
             }
 
-//            AccountExample example = new AccountExample();
-//            AccountExample.Criteria criteria = example.createCriteria();
-//            criteria.andDepuidEqualTo(uid);
-//            List<Account> accounts = accountMapper.selectByExample(example);
             int accountCount = usersMapper.getCountByDepUid(uid);
             if (accountCount> 0) {
                 throw new GlobalException("该专业存在一个或多个用户");

@@ -15,26 +15,8 @@ import java.util.*;
  */
 public class Utils {
 
-    public static final String DOC_BASE = "docBase";
-    public static final String PATH = "path";
 
 
-    public static final String MAIL_USERNAME = "mail.username";
-    public static final String MAIL_SEND_NAME = "mail.sendName";
-    public static final String MAIL_SUBJECT = "mail.subject";
-    public static final String MAIL_CONTENT = "mail.content";
-    public static final String MAIL_URL = "mail.url";
-
-    //获取配置文件
-    public static Map<String, Object> getCustomPropertiesMap() throws Exception {
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        Properties properties = getProperties("custom.properties");
-        map.put(DOC_BASE, properties.get(DOC_BASE).toString());
-        map.put(PATH, properties.get(PATH).toString());
-        properties.clear();
-        return map;
-    }
 
     //获取系统当前时间
     public static Timestamp getSystemCurrentTime() throws Exception {
@@ -42,21 +24,7 @@ public class Utils {
     }
 
 
-    //获取邮件配置
-    public static HashMap<String, Object> getMailInfo() throws Exception {
 
-        Properties properties = getProperties("mail.properties");
-
-        HashMap<String, Object> hashMap = new HashMap<String, Object>();
-        hashMap.put(MAIL_USERNAME, properties.getProperty(MAIL_USERNAME));
-        hashMap.put(MAIL_SEND_NAME, properties.getProperty(MAIL_SEND_NAME));
-        hashMap.put(MAIL_SUBJECT, properties.get(MAIL_SUBJECT));
-        hashMap.put(MAIL_CONTENT, properties.getProperty(MAIL_CONTENT));
-        hashMap.put(MAIL_URL, properties.getProperty(MAIL_URL));
-        properties.clear();
-        return hashMap;
-
-    }
 
     public static Properties getProperties(String propertiesName) throws Exception {
         Resource resource = new ClassPathResource(propertiesName);

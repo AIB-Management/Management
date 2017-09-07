@@ -64,9 +64,7 @@ public class ContentController {
     @RequestMapping(value = "/content/filecontent", params = {"uid"})
     @RequiresPermissions("file:query")
     public ModelAndView filecontent(HttpServletRequest request, FileSelectVo fileSelectVo) throws Exception {
-        if (fileSelectVo.getUid() == null || fileSelectVo.getUid().trim().equals("")) {
-             throw new GlobalException("uid不能为空");
-        }
+
         ModelAndView modelAndView = new ModelAndView();
 
         FileCustom fileCustom =fileService.getFileContent(fileSelectVo);

@@ -5,6 +5,7 @@ import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
 import com.gdaib.util.MyStringUtils;
+import com.gdaib.util.PropertiesUtil;
 import com.gdaib.util.Utils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,21 +45,10 @@ public class FileController {
     public Msg doUploadFile(
 
             FileSelectVo fileSelectVo,
-            @RequestParam("file") CommonsMultipartFile files[],
-            HttpServletRequest request
+            @RequestParam("file") CommonsMultipartFile files[]
 
     ) throws Exception {
 
-        //校验是否正确
-        if (
-                MyStringUtils.isEmpty(fileSelectVo.getTitle())
-                ) {
-
-            throw new GlobalException("标题不能为空");
-        }
-        if (fileSelectVo.getNavuid() == null || fileSelectVo.getNavuid().trim().equals("")) {
-            throw new GlobalException("上级目录不能为空");
-        }
 
         String accoutUid = Utils.getLoginAccountInfo().getUid();
         //如果上传者uid为空 则从登录账号获取
@@ -91,7 +81,6 @@ public class FileController {
 
             if (fileService.isAllowUpFileTypeByPrefix(fileName)) {
                 throw new GlobalException("上传文件中有不允许的文件种类");
-
             }
         }
 
@@ -100,10 +89,12 @@ public class FileController {
 
         //保存到数据库的路径
         String fileUid = UUID.randomUUID().toString();
-        String sqlPath = "/" + fileSelectVo.getAccuid() + "/" + fileUid+"/";
+        String sqlPath = "/" + fileSelectVo.getAccuid() + "/" + fileUid + "/";
         fileSelectVo.setFilepath(sqlPath);
 
-        String path = Utils.getCustomPropertiesMap().get(Utils.DOC_BASE).toString() + sqlPath;
+        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.SERVER);
+        String docBase = propertiesUtil.getValueByKey(PropertiesUtil.DOC_BASE);
+        String path = docBase + sqlPath;
 
         //把文件写到目录中
         List<FileItemSelectVo> fileItems = fileService.writeFileToLocal(path, files);
@@ -114,7 +105,7 @@ public class FileController {
 
         fileSelectVo.setUid(fileUid);
 
-        String url = "/TeachersFile/"+fileSelectVo.getAccuid()+"/"+fileUid;
+        String url = "/TeachersFile/" + fileSelectVo.getAccuid() + "/" + fileUid;
         fileSelectVo.setUrl(url);
 
         //写入文章信息
@@ -136,16 +127,6 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("file:delete")
     public Msg ajaxDeleteFile(FileSelectVo fileSelectVo, HttpServletRequest request) throws Exception {
-        if (
-                MyStringUtils.isEmpty(fileSelectVo.getUid())
-                ) {
-            throw new GlobalException("主键不能为空");
-        }
-
-        if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())
-                ) {
-            throw new GlobalException("上传作者uid不能为空");
-        }
 
 
         //添加判断上传账号与登陆账号是否相等
@@ -163,7 +144,9 @@ public class FileController {
             throw new GlobalException("文件不存在");
         }
 
-        String localPath = Utils.getCustomPropertiesMap().get(Utils.DOC_BASE).toString() + fileCustoms.get(0).getFilepath();
+        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.SERVER);
+        String docBase = propertiesUtil.getValueByKey(PropertiesUtil.DOC_BASE);
+        String localPath = docBase + fileCustoms.get(0).getFilepath();
         fileService.deleteLocalFile(localPath);
 
         int result = fileService.deleteFile(fileSelectVo);
@@ -179,17 +162,7 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("file:update")
     public Msg ajaxUpdateFile(FileSelectVo fileSelectVo) throws Exception {
-        if (
-                MyStringUtils.isEmpty(fileSelectVo.getUid())
 
-                ) {
-            throw new GlobalException("UID不能为空");
-        }
-
-        if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())
-                ) {
-            throw new GlobalException("账号ID不能为空");
-        }
         //添加判断上传账号与登陆账号是否相等
 
         if (!fileSelectVo.getAccuid().equals(Utils.getLoginAccountInfo().getUid())) {
@@ -204,12 +177,9 @@ public class FileController {
     }
 
     @RequiresPermissions("file:down")
-    @RequestMapping("/file/downLoadFile")
+    @RequestMapping(value = "/file/downLoadFile",params = {"uid"})
     public void downLoadFile(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        if (MyStringUtils.isEmpty(uid)) {
-            throw new GlobalException("uid不能为空");
-        }
         FileItemCustom custom = fileService.selectFileItemByUid(uid);
         //设置文件MIME类型
         response.setContentType(custom.getDatatype());
@@ -220,9 +190,11 @@ public class FileController {
         );
         //读取目标文件，通过response将目标文件写到客户端
         //获取目标文件的绝对路径
+        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.SERVER);
+        String docBase = propertiesUtil.getValueByKey(PropertiesUtil.DOC_BASE);
         String fullFileName =
-                Utils.getCustomPropertiesMap().get(Utils.DOC_BASE).toString()
-                        +"/"+custom.getFilePath()+"/"
+                docBase
+                        + "/" + custom.getFilePath() + "/"
                         + custom.getUid() + custom.getPrefix();
 
         fileService.getFileStreamToHttp(fullFileName, response);

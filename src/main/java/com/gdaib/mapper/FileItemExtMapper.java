@@ -15,4 +15,6 @@ public interface FileItemExtMapper extends FileItemMapper {
     public Integer insertFileItemByList(@Param("fileItems") List<FileItemSelectVo > fileItems,@Param("fileUid") String fileUid) throws Exception;
 
     public FileItemCustom selectFileItemByUid(String uid);
+
+    public void deleteFileItemByFileUid(@Param("fileUid") String uid) throws Exception;
 }
