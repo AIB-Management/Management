@@ -5,7 +5,7 @@ import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
 import com.gdaib.util.MyStringUtils;
-import com.gdaib.util.PropertiesUtil;
+import com.gdaib.util.ServerUtil;
 import com.gdaib.util.Utils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by mahanzhen on 17-5-28.
@@ -90,8 +86,7 @@ public class FileController {
         String sqlPath = "/" + fileSelectVo.getAccuid() + "/" + fileUid + "/";
         fileSelectVo.setFilepath(sqlPath);
 
-        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.SERVER);
-        String docBase = propertiesUtil.getValueByKey(PropertiesUtil.DOC_BASE);
+        String docBase = ServerUtil.getServerUtil().getProperties().getProperty(ServerUtil.DOC_BASE);
         String path = docBase + sqlPath;
 
         //把文件写到目录中
@@ -142,8 +137,7 @@ public class FileController {
             throw new GlobalException("文件不存在");
         }
 
-        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.SERVER);
-        String docBase = propertiesUtil.getValueByKey(PropertiesUtil.DOC_BASE);
+        String docBase = ServerUtil.getServerUtil().getProperties().getProperty(ServerUtil.DOC_BASE);
         String localPath = docBase + fileCustoms.get(0).getFilepath();
         fileService.deleteLocalFile(localPath);
 
@@ -189,8 +183,8 @@ public class FileController {
         );
         //读取目标文件，通过response将目标文件写到客户端
         //获取目标文件的绝对路径
-        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.SERVER);
-        String docBase = propertiesUtil.getValueByKey(PropertiesUtil.DOC_BASE);
+
+        String docBase = ServerUtil.getServerUtil().getProperties().getProperty(ServerUtil.DOC_BASE);
         String fullFileName =
                 docBase
                         + "/" + custom.getFilePath() + "/"

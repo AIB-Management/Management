@@ -6,7 +6,7 @@ import com.gdaib.mapper.FileItemExtMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.util.MyStringUtils;
-import com.gdaib.util.PropertiesUtil;
+import com.gdaib.util.ServerUtil;
 import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -17,7 +17,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by mahanzhen on 17-6-6.
@@ -180,8 +179,7 @@ public class FileServiceImpl implements FileService {
         }
 
         FileCustom fileCustom = fileCustoms.get(0);
-        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.SERVER);
-        String path = propertiesUtil.getValueByKey(PropertiesUtil.PATH);
+        String path = ServerUtil.getServerUtil().getProperties().getProperty(ServerUtil.PATH);
         fileCustom.setUrl(path + "/" + fileCustom.getFilepath() + "/");
 
         return fileCustom;

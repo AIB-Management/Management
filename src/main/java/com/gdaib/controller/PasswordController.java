@@ -3,7 +3,7 @@ package com.gdaib.controller;
 import com.gdaib.pojo.*;
 import com.gdaib.service.MailService;
 import com.gdaib.service.UsersService;
-import com.gdaib.util.PropertiesUtil;
+import com.gdaib.util.MailUtil;
 import com.gdaib.util.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 
 /**
  * @Author:马汉真
@@ -186,15 +185,15 @@ public class PasswordController {
 
         EmailUrlPojo urlPojo = (EmailUrlPojo) request.getAttribute("UrlPojo");
 
-        PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.MAIL);
+        MailUtil mailUtil = MailUtil.getMailUtil();
         MailPojo mailPojo = new MailPojo();
 
         //设置发送人
-        mailPojo.setFromAddress(propertiesUtil.getValueByKey(PropertiesUtil.MAIL_USERNAME).toString());
+        mailPojo.setFromAddress(mailUtil.getProperties().getProperty(MailUtil.MAIL_USERNAME).toString());
 
 
         //发送的标题
-        mailPojo.setSubject(propertiesUtil.getValueByKey(PropertiesUtil.MAIL_SUBJECT).toString());
+        mailPojo.setSubject(mailUtil.getProperties().getProperty(MailUtil.MAIL_SUBJECT).toString());
 
         //发送的地址
         mailPojo.setToAddresses(urlPojo.getMail());

@@ -1,9 +1,6 @@
 package com.gdaib.pojo;
 
-import com.gdaib.util.PropertiesUtil;
-import com.gdaib.util.Utils;
-
-import javax.servlet.http.HttpServletRequest;
+import com.gdaib.util.MailUtil;
 
 /**
  * @Author:马汉真
@@ -51,8 +48,7 @@ public class EmailUrlPojo {
     @Override
     public String toString() {
         try {
-            PropertiesUtil propertiesUtil = new PropertiesUtil(PropertiesUtil.MAIL);
-            String mailUrl = propertiesUtil.getValueByKey(PropertiesUtil.MAIL_URL);
+            String mailUrl = MailUtil.getMailUtil().getProperties().getProperty(MailUtil.MAIL_URL);
             return mailUrl + action + "?username=" + username;
         } catch (Exception e) {
             e.printStackTrace();
