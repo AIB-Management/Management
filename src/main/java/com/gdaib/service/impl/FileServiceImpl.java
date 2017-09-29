@@ -86,7 +86,7 @@ public class FileServiceImpl implements FileService {
             }
 
             fileItemSelectVo.setPrefix(prefix);
-            fileItemSelectVo.setUid(UUID.randomUUID().toString());
+            fileItemSelectVo.setUid(Utils.getUUid());
             fileItemSelectVo.setFilename(filename);
             fileItemSelectVo.setPosition(index + 1);
             fileItemSelectVo.setDatatype(file.getContentType());
@@ -174,7 +174,7 @@ public class FileServiceImpl implements FileService {
     public FileCustom getFileContent(FileSelectVo file) throws Exception {
 
         List<FileCustom> fileCustoms = fileExtMapper.selectFileAndFileItem(file);
-        System.out.println(fileCustoms);
+        Utils.out(fileCustoms);
         if (fileCustoms == null || fileCustoms.size() == 0) {
             throw new GlobalException("文件读取异常");
         }
@@ -257,9 +257,10 @@ public class FileServiceImpl implements FileService {
     }
 
 
-    private void closeStream() {
+    private  void closeStream() {
         try {
             if (bos != null) {
+
                 bos.flush();
                 bos.close();
             }
@@ -273,5 +274,6 @@ public class FileServiceImpl implements FileService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Utils.out("流关闭");
     }
 }

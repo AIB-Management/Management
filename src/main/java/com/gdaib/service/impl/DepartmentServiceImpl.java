@@ -8,6 +8,7 @@ import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 
 import com.gdaib.service.DepartmentService;
+import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             departmentSelectVo.setParent(uid);
             departmentCustom = departmentExtMapper.getCountProfessional(departmentSelectVo);
 
-            System.out.println("size" + departmentCustom.getCount());
+            Utils.out("size" + departmentCustom.getCount());
             if (departmentCustom.getCount() > 0) {
                 throw new GlobalException("该系存在一个多或多个专业");
             }

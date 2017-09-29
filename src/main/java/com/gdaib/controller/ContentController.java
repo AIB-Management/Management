@@ -30,7 +30,6 @@ public class ContentController {
     @Autowired
     private UsersService usersService;
 
-
     @Autowired
     private NavigationServer navigationServer;
 
@@ -41,13 +40,9 @@ public class ContentController {
     private FileService fileService;
 
 
-
     public static final String DEPARTMENTPAGE = "/teacher/departmentpage.jsp";
     public static final String PERSONALPAGE = "/teacher/personalpage.jsp";
     public static final String FILECONTENTPAGE = "filecontent.jsp";
-
-
-
 
 
     //获取主页面内容的接口
@@ -69,7 +64,7 @@ public class ContentController {
 
         FileCustom fileCustom =fileService.getFileContent(fileSelectVo);
 
-        System.out.println(fileCustom);
+        Utils.out(fileCustom);
         modelAndView.addObject("filecontent",fileCustom);
 
         modelAndView.setViewName(FILECONTENTPAGE);

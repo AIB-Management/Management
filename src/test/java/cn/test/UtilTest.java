@@ -8,6 +8,7 @@ import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mahanzhen on 2017/6/12.
@@ -53,7 +55,7 @@ public class UtilTest {
         String depUid;
         for (int i = 0; i < departs.length; i++) {
             department = new Department();
-            depUid = UUID.randomUUID().toString();
+            depUid = Utils.getUUid();
             department.setUid(depUid);
             department.setParent("0");
             department.setContent(departs[i].trim());
@@ -62,14 +64,14 @@ public class UtilTest {
 
             for (int j = 0; j < pros[i].length; j++) {
                 department = new Department();
-                department.setUid(UUID.randomUUID().toString());
+                department.setUid(Utils.getUUid());
                 department.setParent(depUid);
                 department.setContent(pros[i][j].trim());
                 departmentExtMapper.insert(department);
             }
         }
 
-        System.out.println("over");
+        Utils.out("over");
     }
 
     @Autowired
@@ -111,7 +113,7 @@ public class UtilTest {
     public void testInsertFileItemByFileSelectVo() throws Exception{
         List<FileItemSelectVo> fileItems = new ArrayList<FileItemSelectVo>();
         FileItemSelectVo select = new FileItemSelectVo();
-        select.setUid(UUID.randomUUID().toString());
+        select.setUid(Utils.getUUid());
         select.setFilename("实践课程考核大纲.docx");
         select.setDatatype("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         select.setShowing(0);
@@ -120,7 +122,7 @@ public class UtilTest {
         fileItems.add(select);
 
         select = new FileItemSelectVo();
-        select.setUid(UUID.randomUUID().toString());
+        select.setUid(Utils.getUUid());
         select.setFilename("实践课程考核大纲.docx");
         select.setDatatype("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         select.setShowing(1);
@@ -129,7 +131,7 @@ public class UtilTest {
         fileItems.add(select);
 
         select = new FileItemSelectVo();
-        select.setUid(UUID.randomUUID().toString());
+        select.setUid(Utils.getUUid());
         select.setFilename("实践课程考核大纲.docx");
         select.setDatatype("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         select.setShowing(0);
@@ -145,7 +147,7 @@ public class UtilTest {
     public void testSelectFileItemByFileId() throws Exception{
         FileItemCustom fileItemCustom = fileItemExtMapper.selectFileItemByUid("8373b8cd-d4cd-407e-8f20-b80c3a3e800f");
 
-        System.out.println(fileItemCustom);
+        Utils.out(fileItemCustom);
     }
 
 
@@ -157,7 +159,7 @@ public class UtilTest {
         fileSelectVo.setDepUid("edda68d5-e77d-41bc-98b8-207172b58ac7");
         fileSelectVo.setKeyWord("load");
         List<FileCustom> fileCustoms = fileExtMapper.selectFileByKeyWord(fileSelectVo);
-        System.out.println(fileCustoms);
+        Utils.out(fileCustoms);
     }
 
 

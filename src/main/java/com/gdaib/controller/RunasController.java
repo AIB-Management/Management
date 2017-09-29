@@ -4,6 +4,7 @@ package com.gdaib.controller;
 import com.gdaib.pojo.AccountInfo;
 import com.gdaib.pojo.Msg;
 import com.gdaib.service.RunasService;
+import com.gdaib.util.Utils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
@@ -51,7 +52,8 @@ public class RunasController {
         //1. 得到用户被授权账户
 
         List<AccountInfo> beAccount = runasService.getBeAccount(accountInfo.getUid());
-        System.out.println(beAccount);
+        
+        Utils.out(beAccount);
         if (beAccount != null) {
             msg.add("beAccount", beAccount);
         } else {
@@ -60,7 +62,7 @@ public class RunasController {
 
         //2. 得到用户授权给了谁
         List<AccountInfo> account = runasService.getAccount(accountInfo.getUid());
-        System.out.println(account);
+        Utils.out(account);
         if (account != null) {
             msg.add("account", account);
         } else {
@@ -75,7 +77,7 @@ public class RunasController {
         account.add(accountInfo);
         List<AccountInfo> allAccount = runasService.getAllAccount(accountInfo.getDepartmentId(), account);
         account.remove(accountInfo);
-        System.out.println("all"+allAccount);
+        Utils.out("all"+allAccount);
 
         if (allAccount != null) {
 
@@ -189,7 +191,7 @@ public class RunasController {
         //1. 得到用户被授权账户
 
         List<AccountInfo> beAccount = runasService.getBeAccount(accountInfo.getUid());
-        System.out.println(beAccount);
+        Utils.out(beAccount);
         if (beAccount != null){
             return msg.add("beAccount",beAccount);
         }else {

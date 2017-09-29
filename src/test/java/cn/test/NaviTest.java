@@ -3,6 +3,7 @@ package cn.test;
 import com.gdaib.mapper.*;
 import com.gdaib.pojo.*;
 import com.gdaib.service.*;
+import com.gdaib.util.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class NaviTest {
         fileSelectVo.setUid("97442581-ab27-472d-907d-333fa3b0f352");
         List<FileCustom> fileCustoms = fileExtMapper.selectFileAndFileItem(fileSelectVo);
 
-        System.out.println(fileCustoms.toString());
+        Utils.out(fileCustoms.toString());
     }
 
     @Test
@@ -62,7 +63,7 @@ public class NaviTest {
 
         FileCustom fileCustom =  fileExtMapper.getCountFile(fileSelectVo);
 
-        System.out.println(fileCustom);
+        Utils.out(fileCustom);
 
     }
 

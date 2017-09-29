@@ -134,7 +134,7 @@ public class ManageController {
     @ResponseBody
     @RequiresPermissions("accountType:query")
     public Msg ajaxGetAccountInfoIsPass(@RequestParam(value = "pn", defaultValue = "1") Integer pn, String parent) throws Exception {
-        System.out.println(parent);
+        Utils.out(parent);
         // 引入PageHelper分页插件
         // 在查询之前只需要调用，传入页码，以及每页的大小
         PageHelper.startPage(pn, 5);
@@ -507,7 +507,7 @@ public class ManageController {
              throw new GlobalException("上级参数为空,为0时是系");
         }
 
-        departmentSelectVo.setUid(UUID.randomUUID().toString());
+        departmentSelectVo.setUid(Utils.getUUid());
 
         int result = departmentService.insertDepartment(departmentSelectVo);
 
@@ -577,11 +577,11 @@ public class ManageController {
         }
 
         navigationSelectVo.setExtend(1);
-        String uid = UUID.randomUUID().toString();
+        String uid = Utils.getUUid();
         navigationSelectVo.setUid(uid);
 
         navigationSelectVo.setUrl("/content/ajaxFindNavAndFile.action?parent=" + uid + "&depuid=" + navigationSelectVo.getDepuid());
-        System.out.println(navigationSelectVo.toString());
+        Utils.out(navigationSelectVo.toString());
         int result = navigationServer.insertNavigation(navigationSelectVo);
 
         if (result > 0) {
@@ -604,7 +604,7 @@ public class ManageController {
 
         List<String> uidList = Utils.toList(uids);
 
-        System.out.println(uidList);
+        Utils.out(uidList);
         int result = navigationServer.deleteNavigation(uidList);
 
         if (result > 0) {

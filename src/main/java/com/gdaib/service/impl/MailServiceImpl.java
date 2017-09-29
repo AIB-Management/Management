@@ -6,6 +6,7 @@ import com.gdaib.pojo.Account;
 import com.gdaib.pojo.AccountExample;
 import com.gdaib.pojo.MailPojo;
 import com.gdaib.service.MailService;
+import com.gdaib.util.Utils;
 import com.github.pagehelper.PageHelper;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
@@ -83,7 +84,7 @@ public class MailServiceImpl implements MailService {
                 // 发送邮件
                 long time1 = new Date().getTime();
                 mailSender.send(mimeMessage);
-                System.out.println(new Date().getTime() - time1);
+                Utils.out(new Date().getTime() - time1);
 
 
                 logger.info("send mail ok=" + toAddresses[i]);
@@ -103,9 +104,10 @@ public class MailServiceImpl implements MailService {
     public String insertTimeAndUUID(String username) throws Exception {
 
 
+        
         //生成uuid
-        String uuid = UUID.randomUUID().toString();
-        System.out.println("uuid >>>>" + uuid);
+        String uuid = Utils.getUUid();
+        Utils.out("uuid >>>>" + uuid);
         //设置30分钟后过期
         Timestamp timestamp = new Timestamp(System.currentTimeMillis()/1000*1000 + 30 * 60 * 1000);
 
@@ -173,12 +175,12 @@ public class MailServiceImpl implements MailService {
         Account account = accounts.get(0);
 
 
-        System.out.println(account.getOutdate() + ":" + account.getValidatacode());
+        Utils.out(account.getOutdate() + ":" + account.getValidatacode());
 
         Timestamp timestamp = new Timestamp(account.getOutdate().getTime());
 
         String MD5code = timestamp.getTime() + "&" + account.getValidatacode();
-        System.out.println("MD5code:" + MD5code);
+        Utils.out("MD5code:" + MD5code);
         //生成盐值
         Object salt = ByteSource.Util.bytes(username);
         //生成md5加密
@@ -229,7 +231,7 @@ public class MailServiceImpl implements MailService {
     //修改UUID
     public void updateUUID(String username)throws Exception{
         //生成uuid
-        String uuid = UUID.randomUUID().toString();
+        String uuid = Utils.getUUid();
         Account account = new Account();
         account.setValidatacode(uuid);
 

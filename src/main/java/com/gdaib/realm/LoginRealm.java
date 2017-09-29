@@ -4,6 +4,7 @@ import com.gdaib.pojo.*;
 
 import com.gdaib.pojo.Account;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.Utils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -28,7 +29,7 @@ public class LoginRealm extends AuthorizingRealm {
     //认证方法
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        System.out.println("进入认证");
+        Utils.out("进入认证");
 
         //1. 把AuthenticationToken转换为UsernamePasswordToken
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
@@ -74,7 +75,7 @@ public class LoginRealm extends AuthorizingRealm {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println(accountInfo);
+        Utils.out(accountInfo);
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(accountInfo, count.getPassword(), salt, getName());
         return info;
 
@@ -87,10 +88,10 @@ public class LoginRealm extends AuthorizingRealm {
 
         AccountInfo accountInfo = (AccountInfo) principalCollection.getPrimaryPrincipal();
 
-        System.out.println("授权");
+        Utils.out("授权");
 
         List<String> permissions = new ArrayList<String>();
-        System.out.println(accountInfo.getRole());
+        Utils.out(accountInfo.getRole());
         List<Permission> permisson = null;
         try {
             permisson = usersService.findPermisson(accountInfo.getRole());
@@ -100,7 +101,7 @@ public class LoginRealm extends AuthorizingRealm {
 
         for(Permission per : permisson){
             permissions.add(per.getPermission());
-            System.out.println("permisson" + per.getPermission());
+            Utils.out("permisson" + per.getPermission());
         }
 
 

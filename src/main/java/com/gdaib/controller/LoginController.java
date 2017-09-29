@@ -44,7 +44,7 @@ public class LoginController {
     //登录页面
     @RequestMapping("/public/login")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response,String error) {
-        System.out.println("laya"+error);
+        Utils.out("laya"+error);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("error",error);
         modelAndView.setViewName(LOGIN);
@@ -55,7 +55,7 @@ public class LoginController {
     //登陆
     @RequestMapping("/public/doLogin")
     public ModelAndView doLogin(RegisterPojo registerPojo,  HttpServletRequest request,HttpServletResponse response) throws Exception {
-        System.out.println(registerPojo.toString());
+        Utils.out(registerPojo.toString());
 
         HttpSession session = request.getSession();
 
@@ -85,13 +85,13 @@ public class LoginController {
                 subject.login(token);
 
             } catch (UnknownAccountException ue) {
-                System.out.println("错误信息");
+                Utils.out("错误信息");
                 modelAndView.addObject("error", ue.getMessage());
                 modelAndView.addObject("username", registerPojo.getUsername());
                 modelAndView.setViewName(LOGIN);
                 return modelAndView;
             } catch (AuthenticationException ae) {
-                System.out.println("错误信息：" + ae.getMessage().toString());
+                Utils.out("错误信息：" + ae.getMessage().toString());
                 modelAndView.addObject("error", "密码错误");
                 modelAndView.addObject("username", registerPojo.getUsername());
                 modelAndView.setViewName(LOGIN);

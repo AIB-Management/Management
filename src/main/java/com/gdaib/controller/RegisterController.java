@@ -135,7 +135,6 @@ public class RegisterController {
     @RequestMapping(value = "/public/ajaxFindEmailIsExists")
     public Msg ajaxFindEmailIsExists(String mailVal, HttpServletResponse response) throws Exception {
 
-
         Boolean Emailboolean = usersService.findEmailIsExists(mailVal);
         if (Emailboolean) {
             return Msg.success();

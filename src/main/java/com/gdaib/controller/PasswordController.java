@@ -81,7 +81,7 @@ public class PasswordController {
             return Msg.fail().add("error","邮箱不能为空");
         }
         Boolean Emailboolean = usersService.findEmailIsExists(email);
-        System.out.println(Emailboolean);
+        Utils.out(Emailboolean);
         if(!Emailboolean){
             return Msg.fail().add("error","邮箱已存在");
         }
@@ -101,7 +101,7 @@ public class PasswordController {
      */
     @RequestMapping(value = "/public/domodifyPassword")
     public ModelAndView doModifyPassword(RegisterPojo registerPojo) throws Exception {
-        System.out.println(registerPojo);
+        Utils.out(registerPojo);
         ModelAndView modelAndView = new ModelAndView();
         //验证信息是否正确
         try {
@@ -116,7 +116,7 @@ public class PasswordController {
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
         registerPojo.setUsername(accountInfo.getUsername());
-        System.out.println(accountInfo);
+        Utils.out(accountInfo);
 
         //根据用户名找到密码，验证是否正确
         boolean bool = usersService.judegPassword(accountInfo.getUsername(), registerPojo.getOldpwd());
@@ -201,7 +201,7 @@ public class PasswordController {
 
         //发送的内容
         String content = urlPojo.toString() + "&Code=" + mailService.insertTimeAndUUID(urlPojo.getUsername());
-        System.out.println("cont>>>>" + content);
+        Utils.out("cont>>>>" + content);
 
         mailPojo.setContent(
                 "<html><head></head><body>" +

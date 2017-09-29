@@ -7,6 +7,7 @@ import com.gdaib.mapper.PermissionMapper;
 import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.UsersService;
+import com.gdaib.util.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
@@ -235,7 +236,7 @@ public class UsersServiceImpl implements UsersService {
         Object md5 = new SimpleHash("MD5", registerPojo.getPwd(), salt, 1024);
 
         registerPojo.setPwd(md5.toString());
-        registerPojo.setUid(UUID.randomUUID().toString());
+        registerPojo.setUid(Utils.getUUid());
 
         System.out.print("-----------------" + registerPojo.toString() + "----------------------------");
 

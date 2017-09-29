@@ -63,7 +63,7 @@ public class CaptchaController {
 
         //获取code方法
 //        String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-//        System.out.println(kaptchaExpected);
+//        Utils.out(kaptchaExpected);
     }
 
 

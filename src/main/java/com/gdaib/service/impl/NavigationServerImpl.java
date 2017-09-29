@@ -7,6 +7,7 @@ import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.NavigationServer;
+import com.gdaib.util.Utils;
 import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -60,7 +61,7 @@ public class NavigationServerImpl implements NavigationServer {
 //
 //        if (navigation != null) {
 //            int ifExtend = selectCountByParent(navigation.getParent());
-//            System.out.println("ifExtemd = " + ifExtend);
+//            Utils.out("ifExtemd = " + ifExtend);
 //            if (ifExtend == UN_EXTEND) {
 //                Navigation upNavigation = new Navigation();
 //                upNavigation.setParent(navigation.getParent());
@@ -76,7 +77,7 @@ public class NavigationServerImpl implements NavigationServer {
 //    }
 
 //    public Integer updateNavByParent(Navigation navigation) throws Exception {
-//        System.out.println(navigation.toString());
+//        Utils.out(navigation.toString());
 //
 //        NavigationExample example = new NavigationExample();
 //        NavigationExample.Criteria criteria = example.createCriteria();
@@ -317,7 +318,7 @@ public class NavigationServerImpl implements NavigationServer {
             fileSelectVo = new FileSelectVo();
             fileSelectVo.setNavuid(navUid);
             FileCustom fileCustom = fileExtMapper.getCountFile(fileSelectVo);
-            System.out.println("size:" + fileCustom.getCount());
+            Utils.out("size:" + fileCustom.getCount());
             if (fileCustom.getCount() > 0) {
                 throw new GlobalException("一个或者多个目录下存在文件");
             }

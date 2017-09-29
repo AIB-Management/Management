@@ -11,6 +11,9 @@ import java.util.Properties;
  */
 public class PropertiesUtil {
 
+
+
+
     public static final String SERVER = "server.properties";
     public static final String MAIL = "mail.properties";
 

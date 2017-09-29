@@ -49,7 +49,6 @@ public class FileController {
 
     ) throws Exception {
 
-
         String accoutUid = Utils.getLoginAccountInfo().getUid();
         //如果上传者uid为空 则从登录账号获取
         if (MyStringUtils.isEmpty(fileSelectVo.getAccuid())) {
@@ -73,7 +72,6 @@ public class FileController {
         for (int i = 0; i < files.length; i++) {
             // 获得原始文件名
             fileName = files[i].getOriginalFilename();
-            System.out.println(fileName);
             if (MyStringUtils.isEmpty(fileName)) {
                 throw new GlobalException("文件名不能为空");
 
@@ -88,7 +86,7 @@ public class FileController {
         fileSelectVo.setUptime(Utils.getSystemCurrentTime());
 
         //保存到数据库的路径
-        String fileUid = UUID.randomUUID().toString();
+        String fileUid = Utils.getUUid();
         String sqlPath = "/" + fileSelectVo.getAccuid() + "/" + fileUid + "/";
         fileSelectVo.setFilepath(sqlPath);
 
@@ -183,7 +181,8 @@ public class FileController {
         FileItemCustom custom = fileService.selectFileItemByUid(uid);
         //设置文件MIME类型
         response.setContentType(custom.getDatatype());
-        System.out.println(custom);
+        
+        Utils.out(custom);
         //设置Content-Disposition
         response.setHeader("Content-Disposition", "attachment;filename=" +
                 new String(custom.getFilename().getBytes("UTF-8"), "ISO8859-1")
