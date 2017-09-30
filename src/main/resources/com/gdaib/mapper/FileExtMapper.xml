@@ -6,7 +6,7 @@
         <id column="uid" property="uid" jdbcType="VARCHAR"/>
         <result column="accUid" property="accuid" jdbcType="VARCHAR"/>
         <result column="navUid" property="navuid" jdbcType="VARCHAR"/>
-        <result column="upTime" property="uptime" jdbcType="TIMESTAMP"/>
+        <result column="upTime" property="upTime" jdbcType="TIMESTAMP"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="filePath" property="filepath" jdbcType="VARCHAR"/>
@@ -168,7 +168,7 @@
 --             t_file.accUid
             t_file.uid,
             t_file.title,
-            t_file.upTime,
+            t_file.upTime ,
             t_file.accUid,
             t_account.`name` AS author
             FROM
@@ -195,7 +195,7 @@
         SELECT
         t_file.uid,
         t_file.title,
-        t_file.upTime,
+        t_file.upTime ,
         t_file.accUid,
         t_account.`name` AS author
         FROM

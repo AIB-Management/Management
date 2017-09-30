@@ -10,6 +10,16 @@ public class FileCustom extends File {
 
     private String  author;
 
+    private String upTime;
+
+    public String getUpTime() {
+        return upTime;
+    }
+
+    public void setUpTime(String upTime) {
+        this.upTime = upTime;
+    }
+
     private List<FileItemCustom> fileItems;
 
     public Integer getCount() {
