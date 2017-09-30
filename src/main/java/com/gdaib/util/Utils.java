@@ -18,7 +18,7 @@ public class Utils {
 
     private static Logger logger = Logger.getLogger(Utils.class);
     //true在控制台打印输出 false不输出
-    private static final boolean FLAG = false;
+    private static final boolean FLAG = true;
 
     //获取系统当前时间
     public static Timestamp getSystemCurrentTime() throws Exception {

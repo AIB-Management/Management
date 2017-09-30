@@ -358,6 +358,10 @@ public class NavigationServerImpl implements NavigationServer {
         return navigationExtMapper.selectNavigation(navigation);
     }
 
+    public List<NavigationCustom> selectNavAndUidByNsv(NavigationSelectVo navigationSelectVo) throws Exception{
+        return  navigationExtMapper.selectNavAndUidByNsv(navigationSelectVo);
+    }
+
     @Override
     public List<HashMap<String,Object>> navigationCustomToCustomMap(List<NavigationCustom> navigationCustoms) throws Exception{
         List<HashMap<String, Object>> navs ;
@@ -370,7 +374,6 @@ public class NavigationServerImpl implements NavigationServer {
                 hashMap.put("uid", navigation.getUid());
                 hashMap.put("nav", navigation.getTitle());
                 navs.add(hashMap);
-
             }
             return navs;
         }

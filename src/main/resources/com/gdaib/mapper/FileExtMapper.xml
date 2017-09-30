@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gdaib.mapper.FileExtMapper">
-    <resultMap id="FileCustom" type="com.gdaib.pojo.FileCustom" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <id column="uid" property="uid" jdbcType="VARCHAR" />
-        <result column="accUid" property="accuid" jdbcType="VARCHAR" />
-        <result column="navUid" property="navuid" jdbcType="VARCHAR" />
-        <result column="upTime" property="uptime" jdbcType="TIMESTAMP" />
-        <result column="title" property="title" jdbcType="VARCHAR" />
-        <result column="url" property="url" jdbcType="VARCHAR" />
-        <result column="filePath" property="filepath" jdbcType="VARCHAR" />
+    <resultMap id="FileCustom" type="com.gdaib.pojo.FileCustom">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="uid" property="uid" jdbcType="VARCHAR"/>
+        <result column="accUid" property="accuid" jdbcType="VARCHAR"/>
+        <result column="navUid" property="navuid" jdbcType="VARCHAR"/>
+        <result column="upTime" property="uptime" jdbcType="TIMESTAMP"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="filePath" property="filepath" jdbcType="VARCHAR"/>
         <result column="author" property="author" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -43,28 +43,28 @@
     <delete id="deleteFile" parameterType="com.gdaib.pojo.FileSelectVo">
         <if test="uid!=null">
 
-                DELETE FROM
-                `t_file`
-                <where>
-                    <include refid="where_File_Select_vo"></include>
-                </where>
+            DELETE FROM
+            `t_file`
+            <where>
+                <include refid="where_File_Select_vo"></include>
+            </where>
 
         </if>
     </delete>
 
     <select id="selectFile" parameterType="com.gdaib.pojo.FileSelectVo" resultMap="FileCustom">
         SELECT
-            t_file.uid,
-            t_file.filePath,
-            t_file.url,
-            t_file.title,
-            t_file.upTime,
-            t_file.navUid,
-            t_file.accUid,
-            t_file.id,
-            t_account.`name` AS author
+        t_file.uid,
+        t_file.filePath,
+        t_file.url,
+        t_file.title,
+        t_file.upTime,
+        t_file.navUid,
+        t_file.accUid,
+        t_file.id,
+        t_account.`name` AS author
         FROM
-          t_account
+        t_account
         INNER JOIN t_file ON t_file.accUid = t_account.uid
         <where>
             <include refid="where_File_Select_vo"></include>
@@ -158,14 +158,19 @@
         <if test="keyWord!=null ">
             SELECT
             distinct
-            t_account.`name` AS author,
+--             t_account.`name` AS author,
+--             t_file.uid,
+--             t_file.filePath,
+--             t_file.url,
+--             t_file.title,
+--             t_file.upTime,
+--             t_file.navUid,
+--             t_file.accUid
             t_file.uid,
-            t_file.filePath,
-            t_file.url,
             t_file.title,
             t_file.upTime,
-            t_file.navUid,
-            t_file.accUid
+            t_file.accUid,
+            t_account.`name` AS author
             FROM
             t_account
             INNER JOIN t_file ON t_file.accUid = t_account.uid
@@ -178,6 +183,27 @@
             t_file.upTime DESC
         </if>
 
+    </select>
+
+
+    <!--hashMap.put("uid", file.getUid());-->
+    <!--hashMap.put("title", file.getTitle());-->
+    <!--hashMap.put("upTime", file.getUptime());-->
+    <!--hashMap.put("author", file.getAuthor());-->
+    <!--hashMap.put("accuid", file.getAccuid());-->
+    <select id="selectFileByNavuid" parameterType="String" resultMap="FileCustom">
+        SELECT
+        t_file.uid,
+        t_file.title,
+        t_file.upTime,
+        t_file.accUid,
+        t_account.`name` AS author
+        FROM
+        t_account
+        INNER JOIN t_file ON t_file.accUid = t_account.uid
+        WHERE navuid=#{navuid}
+        ORDER BY
+        t_file.upTime DESC
     </select>
 
 </mapper>

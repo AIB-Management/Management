@@ -74,7 +74,14 @@
         </if>
     </delete>
 
-<select id="getCountByParent" parameterType="com.gdaib.pojo.NavigationSelectVo" resultType="com.gdaib.pojo.NavigationCustom">
-    SELECT COUNT(id) count FROM `t_navigation` WHERE parent=#{parent} LIMIT 0, 1000
-</select>
+    <select id="getCountByParent" parameterType="com.gdaib.pojo.NavigationSelectVo"
+            resultType="com.gdaib.pojo.NavigationCustom">
+      SELECT COUNT(id) count FROM `t_navigation` WHERE parent=#{parent} LIMIT 0, 1000
+    </select>
+    <select id="selectNavAndUidByNsv" parameterType="com.gdaib.pojo.NavigationSelectVo"
+            resultType="com.gdaib.pojo.NavigationCustom">
+        SELECT uid,title  nav FROM `t_navigation` WHERE
+        parent = #{parent} AND
+        depUid = #{depuid} LIMIT 0, 1000
+    </select>
 </mapper>

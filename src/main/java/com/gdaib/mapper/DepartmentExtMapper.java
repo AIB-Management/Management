@@ -28,4 +28,11 @@ public interface DepartmentExtMapper extends DepartmentMapper {
 
     //获取某个系别的专业总数
     public DepartmentCustom getCountProfessional(DepartmentSelectVo department) throws Exception;
+
+    //查找系别信息
+    public List<DepartmentCustom> selectDepartmentByParent(@Param("parent") String parent) throws Exception;
+
+    //查找专业信息
+    public List<DepartmentCustom> selectProfessionalByParent(@Param("parent") String parent) throws Exception;
+
 }

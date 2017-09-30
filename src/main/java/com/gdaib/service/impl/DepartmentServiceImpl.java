@@ -24,7 +24,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private AccountMapper accountMapper;
-    
+
     @Autowired
     private UsersMapper usersMapper;
 
@@ -55,7 +55,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
 
             int accountCount = usersMapper.getCountByDepUid(uid);
-            if (accountCount> 0) {
+            if (accountCount > 0) {
                 throw new GlobalException("该专业存在一个或多个用户");
             }
 
@@ -81,8 +81,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentCustom> selectDepartment(DepartmentSelectVo department) throws Exception {
-
-
         return departmentExtMapper.selectDepartment(department);
     }
 
@@ -91,7 +89,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (department == null) {
             throw new GlobalException("请确保该参数中至少有一个或多个有值");
         }
-
         return departmentExtMapper.selectProfessional(department);
     }
 
@@ -113,5 +110,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
-
+    @Override
+    public List<DepartmentCustom> selectDepOrPro(String parent) throws Exception {
+        List<DepartmentCustom> departmentCustoms;
+        if (parent.equals("0")) {
+            departmentCustoms = departmentExtMapper.selectDepartmentByParent(parent);
+        } else {
+            departmentCustoms = departmentExtMapper.selectProfessionalByParent(parent);
+        }
+        return departmentCustoms;
+    }
 }

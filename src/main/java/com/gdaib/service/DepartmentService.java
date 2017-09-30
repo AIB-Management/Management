@@ -26,4 +26,5 @@ public interface DepartmentService {
     //查询专业信息
     public List<HashMap<String,Object>> selectProfession(DepartmentSelectVo department) throws Exception;
 
+    public List<DepartmentCustom> selectDepOrPro(String parent) throws Exception;
 }

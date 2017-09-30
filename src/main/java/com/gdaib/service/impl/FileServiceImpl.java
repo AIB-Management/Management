@@ -8,6 +8,7 @@ import com.gdaib.service.FileService;
 import com.gdaib.util.MyStringUtils;
 import com.gdaib.util.ServerUtil;
 import com.gdaib.util.Utils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -192,12 +193,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<HashMap<String, Object>> selectFileByKeyWord(FileSelectVo file) throws Exception {
+    public List<FileCustom>  selectFileByKeyWord(FileSelectVo file) throws Exception {
         List<FileCustom> customs = fileExtMapper.selectFileByKeyWord(file);
-        if (customs != null) {
-            return fileCustomToCustomMap(customs);
-        }
-        return null;
+
+        return customs;
     }
 
 
@@ -273,5 +272,9 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
         Utils.out("流关闭");
+    }
+
+    public List<FileCustom> selectFileByNavuid( String navuid) throws Exception{
+        return fileExtMapper.selectFileByNavuid(navuid);
     }
 }

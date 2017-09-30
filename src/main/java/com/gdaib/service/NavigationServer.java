@@ -24,7 +24,7 @@ public interface NavigationServer {
 
     public List<HashMap<String,Object>> navigationCustomToCustomMap(List<NavigationCustom> navigationCustoms) throws Exception;
 
-
+    public List<NavigationCustom> selectNavAndUidByNsv(NavigationSelectVo navigationSelectVo) throws Exception;
 
     //插入一条导航
 //    public Integer insertNavigation(Navigation navigation) throws Exception;

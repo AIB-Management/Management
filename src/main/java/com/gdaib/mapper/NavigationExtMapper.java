@@ -23,5 +23,7 @@ public interface NavigationExtMapper extends NavigationMapper {
 
     //获取某个文件夹下字文件夹总数
     public NavigationCustom getCountByParent(NavigationSelectVo navigation) throws Exception;
+
+    public  List<NavigationCustom> selectNavAndUidByNsv(NavigationSelectVo navigationSelectVo) throws Exception;
 }
 

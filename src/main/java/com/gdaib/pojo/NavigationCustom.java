@@ -10,6 +10,16 @@ public class NavigationCustom extends Navigation{
 
     private Navigation navigation;
 
+    private String nav;
+
+    public String getNav() {
+        return nav;
+    }
+
+    public void setNav(String nav) {
+        this.nav = nav;
+    }
+
     public Navigation getNavigation() {
         return navigation;
     }

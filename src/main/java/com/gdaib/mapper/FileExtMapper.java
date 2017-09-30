@@ -28,4 +28,7 @@ public interface FileExtMapper extends FileMapper {
 
     //根据教师名或文章标题获取文章信息
     public List<FileCustom> selectFileByKeyWord(FileSelectVo file) throws Exception;
+
+    //查找导航页下面的文件
+    public List<FileCustom> selectFileByNavuid(@Param("navuid") String navuid) throws Exception;
 }
