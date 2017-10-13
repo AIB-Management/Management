@@ -1,0 +1,16 @@
+<<<<<<< HEAD
+target
+.idea
+Management.*
+TestJsps
+src\test
+src/main/resources/custom.properties
+=======
+target
+.idea
+Management.*
+TestJsps
+src\test
+src/main/resources/server.properties
+src/main/resources/db.properties
+>>>>>>> 9f056ec310daab1b73c0795b53f6f9c297f80285
