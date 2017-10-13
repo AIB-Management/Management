@@ -1,0 +1,85 @@
+body{
+	background: url(../images/selectdep-bg.jpg);
+	background-size: cover;
+	background-position: center;
+	line-height: 50px;
+	text-align: center;
+}
+/*外层白色背景*/
+.form-wrap{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 700px;
+	height: 450px;
+	margin: -225px 0 0 -350px;
+	background-color: rgba(255, 255, 255, 0.6);
+}
+/*顶层标题*/
+.form-title{
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	margin-top: 20px;
+	text-align: center;
+	border-bottom: 3px solid #009966;
+}
+/*表单的内容包裹层*/
+.form-content{
+	width: 80%;
+	margin: 0 auto;
+	text-align: left;
+}
+/*包裹表单元素层*/
+.input-wrap{
+	margin-top: 10px;
+	word-spacing: -6px;
+}
+/*表单元素的全部定义以及局部定义*/
+.input-wrap span,.input-wrap input,.input-wrap label{
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 15px;
+	word-spacing: 0;
+}
+.input-wrap label{
+	width: 70px;
+	height: 32px;
+	line-height: 32px;
+	border-radius: 5px 0 0 5px;
+	background-color: #ccc;
+	text-align: center;
+}
+.input-wrap input{
+	width: 200px;
+	height: 30px;
+	padding-left: 10px;
+	line-height: 30px;
+	border: 1px solid #999;
+	border-radius: 0 5px 5px 0;
+}
+.hint{
+	color: red;
+}
+/*修改提交按钮*/
+#modify{
+	display: inline-block;
+	width: 100px;
+	height: 40px;
+	line-height: 40px;
+	vertical-align: text-bottom;
+	margin-right: 5px;
+	background-color: #009966;
+	border-radius: 5px;
+	color: #fff;
+}
+.input-wrap-btn{
+	width: 80%;
+	margin: 20px auto 0 auto;
+	text-align: left;
+	cursor: pointer;
+}
+/*跳转链接*/
+.link-homepage{
+	text-decoration: none;
+}

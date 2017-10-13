@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdaib.mapper.NavigationExtMapper">
+    <resultMap id="NavigationCustom" type="com.gdaib.pojo.NavigationCustom">
+        <id column="id" property="navigation.id" jdbcType="INTEGER"/>
+        <id column="uid" property="navigation.uid" jdbcType="VARCHAR"/>
+        <result column="parent" property="navigation.parent" jdbcType="VARCHAR"/>
+        <result column="title" property="navigation.title" jdbcType="VARCHAR"/>
+        <result column="url" property="navigation.url" jdbcType="VARCHAR"/>
+        <result column="extend" property="navigation.extend" jdbcType="INTEGER"/>
+        <result column="depUid" property="navigation.depuid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="where_Navigation_Select_Vo">
+        <if test="parent!=null">
+            AND parent=#{parent}
+        </if>
+        <if test="title!=null">
+            AND title LIKE '%${title}%'
+        </if>
+        <if test="url!=null">
+            AND url=#{url}
+        </if>
+        <if test="extend!=null">
+            AND extend=#{extend}
+        </if>
+        <if test="depuid!=null">
+            and depuid=#{depuid}
+        </if>
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+        <if test="uid!=null">
+            and uid=#{uid}
+        </if>
+    </sql>
+
+    <select id="selectNavigation" parameterType="com.gdaib.pojo.NavigationSelectVo" resultMap="NavigationCustom">
+        SELECT * FROM `t_navigation`
+        <where>
+            <include refid="where_Navigation_Select_Vo"></include>
+        </where>
+    </select>
+
+    <update id="updateNavigation" parameterType="com.gdaib.pojo.NavigationSelectVo">
+        <if test="uid!=null">
+            UPDATE `t_navigation`
+            <set>
+                <if test="title!=null">
+                    `title`=#{title},
+                </if>
+                <if test="url!=null">
+                    `url`=#{url},
+                </if>
+                <if test="parent!=null">
+                    `parent`=#{parent},
+                </if>
+                <if test="extend!=null">
+                    `extend`=#{extend},
+                </if>
+            </set>
+            WHERE `uid`=#{uid}
+        </if>
+    </update>
+
+    <delete id="deleteNavigation" parameterType="List">
+        <if test="uids!=null">
+            DELETE FROM `t_navigation`
+            <where>
+                <foreach collection="uids" item="uid" open="AND uid IN (" close=")" separator=",">
+                    #{uid}
+                </foreach>
+            </where>
+        </if>
+    </delete>
+
+    <select id="getCountByParent" parameterType="com.gdaib.pojo.NavigationSelectVo"
+            resultType="com.gdaib.pojo.NavigationCustom">
+      SELECT COUNT(id) count FROM `t_navigation` WHERE parent=#{parent} LIMIT 0, 1000
+    </select>
+    <select id="selectNavAndUidByNsv" parameterType="com.gdaib.pojo.NavigationSelectVo"
+            resultType="com.gdaib.pojo.NavigationCustom">
+        SELECT uid,title  nav FROM `t_navigation` WHERE
+        parent = #{parent} AND
+        depUid = #{depuid} LIMIT 0, 1000
+    </select>
+</mapper>

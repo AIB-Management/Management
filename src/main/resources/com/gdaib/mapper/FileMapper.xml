@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gdaib.mapper.FileMapper" >
+  <resultMap id="BaseResultMap" type="com.gdaib.pojo.File" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="accUid" property="accuid" jdbcType="VARCHAR" />
+    <result column="navUid" property="navuid" jdbcType="VARCHAR" />
+    <result column="upTime" property="uptime" jdbcType="TIMESTAMP" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="filePath" property="filepath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, uid, accUid, navUid, upTime, title, url, filePath
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.FileExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.gdaib.pojo.FileKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_file
+    where id = #{id,jdbcType=INTEGER}
+      and uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.gdaib.pojo.FileKey" >
+    delete from t_file
+    where id = #{id,jdbcType=INTEGER}
+      and uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.gdaib.pojo.FileExample" >
+    delete from t_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.gdaib.pojo.File" >
+    insert into t_file (id, uid, accUid, 
+      navUid, upTime, title, 
+      url, filePath)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{accuid,jdbcType=VARCHAR}, 
+      #{navuid,jdbcType=VARCHAR}, #{uptime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{filepath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gdaib.pojo.File" >
+    insert into t_file
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="accuid != null" >
+        accUid,
+      </if>
+      <if test="navuid != null" >
+        navUid,
+      </if>
+      <if test="uptime != null" >
+        upTime,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="filepath != null" >
+        filePath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="accuid != null" >
+        #{accuid,jdbcType=VARCHAR},
+      </if>
+      <if test="navuid != null" >
+        #{navuid,jdbcType=VARCHAR},
+      </if>
+      <if test="uptime != null" >
+        #{uptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.gdaib.pojo.FileExample" resultType="java.lang.Integer" >
+    select count(*) from t_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_file
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accuid != null" >
+        accUid = #{record.accuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.navuid != null" >
+        navUid = #{record.navuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uptime != null" >
+        upTime = #{record.uptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filepath != null" >
+        filePath = #{record.filepath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_file
+    set id = #{record.id,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=VARCHAR},
+      accUid = #{record.accuid,jdbcType=VARCHAR},
+      navUid = #{record.navuid,jdbcType=VARCHAR},
+      upTime = #{record.uptime,jdbcType=TIMESTAMP},
+      title = #{record.title,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      filePath = #{record.filepath,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gdaib.pojo.File" >
+    update t_file
+    <set >
+      <if test="accuid != null" >
+        accUid = #{accuid,jdbcType=VARCHAR},
+      </if>
+      <if test="navuid != null" >
+        navUid = #{navuid,jdbcType=VARCHAR},
+      </if>
+      <if test="uptime != null" >
+        upTime = #{uptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        filePath = #{filepath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+      and uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gdaib.pojo.File" >
+    update t_file
+    set accUid = #{accuid,jdbcType=VARCHAR},
+      navUid = #{navuid,jdbcType=VARCHAR},
+      upTime = #{uptime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      filePath = #{filepath,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+      and uid = #{uid,jdbcType=VARCHAR}
+  </update>
+</mapper>

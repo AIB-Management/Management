@@ -1,0 +1,51 @@
+body{
+	background: url(../images/selectdep-bg.jpg);
+	background-size: cover;
+	background-position: center;
+	text-align: center;
+}
+/*外层白色背景*/
+.form-wrap{
+	position: absolute;
+	width: 700px;
+	height: 450px;
+	top: 50%;
+	left: 50%;
+	margin-top: -225px;
+	margin-left: -350px;
+	background-color: rgba(255, 255, 255, 0.3);
+}
+.form-content{
+	width: 80%;
+	margin: 120px auto 0 auto;
+}
+.form-content h3{
+	text-align: center;
+}
+#department{
+	width: 180px;
+	height: 35px;
+	line-height: 35px;
+	margin-top: 40px;
+	border: 1px solid #ccc;
+}
+#enter{
+	width: 150px;
+	height: 35px;
+	line-height: 35px;
+	margin-top: 40px;
+	color: #333;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	cursor: pointer;
+	font-size: 15px;
+	transition: all linear .3s;
+	-webkit-transition: all linear .3s;
+	-moz-transition: all linear .3s;
+	-o-transition: all linear .3s;
+	-ms-transition: all linear .3s;
+}
+#enter:hover{
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gdaib.mapper.FileExtMapper">
+    <resultMap id="FileCustom" type="com.gdaib.pojo.FileCustom">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="uid" property="uid" jdbcType="VARCHAR"/>
+        <result column="accUid" property="accuid" jdbcType="VARCHAR"/>
+        <result column="navUid" property="navuid" jdbcType="VARCHAR"/>
+        <result column="upTime" property="upTime" jdbcType="TIMESTAMP"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="filePath" property="filepath" jdbcType="VARCHAR"/>
+        <result column="author" property="author" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="where_File_Select_vo">
+        <if test="id!=null">
+            AND t_file.id=#{id}
+        </if>
+        <if test="uid!=null">
+            AND t_file.uid=#{uid}
+        </if>
+        <if test="accuid!=null">
+            AND t_file.accuid=#{accuid}
+        </if>
+        <if test="navuid!=null">
+            AND t_file.navuid=#{navuid}
+        </if>
+        <if test="uptime!=null">
+            AND t_file.uptime=#{uptime}
+        </if>
+        <if test="title!=null">
+            AND t_file.title=#{title}
+        </if>
+        <if test="url!=null">
+            AND t_file.url=#{url}
+        </if>
+        <if test="filepath!=null">
+            AND t_file.filepath=#{filepath}
+        </if>
+    </sql>
+
+    <delete id="deleteFile" parameterType="com.gdaib.pojo.FileSelectVo">
+        <if test="uid!=null">
+
+            DELETE FROM
+            `t_file`
+            <where>
+                <include refid="where_File_Select_vo"></include>
+            </where>
+
+        </if>
+    </delete>
+
+    <select id="selectFile" parameterType="com.gdaib.pojo.FileSelectVo" resultMap="FileCustom">
+        SELECT
+        t_file.uid,
+        t_file.filePath,
+        t_file.url,
+        t_file.title,
+        t_file.upTime,
+        t_file.navUid,
+        t_file.accUid,
+        t_file.id,
+        t_account.`name` AS author
+        FROM
+        t_account
+        INNER JOIN t_file ON t_file.accUid = t_account.uid
+        <where>
+            <include refid="where_File_Select_vo"></include>
+        </where>
+        ORDER BY
+        t_file.upTime DESC
+    </select>
+
+    <update id="updateFile" parameterType="com.gdaib.pojo.FileSelectVo">
+        <if test="uid!=null">
+            UPDATE `t_file`
+            <set>
+                <if test="navuid!=null">
+                    navuid=#{navuid},
+                </if>
+                <if test="uptime!=null">
+                    uptime=#{uptime},
+                </if>
+                <if test="title!=null">
+                    title=#{title},
+                </if>
+                <if test="url!=null">
+                    url=#{url},
+                </if>
+                <if test="filepath!=null">
+                    filepath=#{filepath},
+                </if>
+            </set>
+            WHERE uid=#{uid}
+        </if>
+    </update>
+
+    <resultMap id="fileAndFileItem" type="com.gdaib.pojo.FileCustom">
+        <id column="uid" property="uid"></id>
+        <result column="title" property="title"></result>
+        <result column="upTime" property="uptime"></result>
+        <result column="filePath" property="filepath"></result>
+        <result column="author" property="author"></result>
+        <result column="url" property="url"></result>
+
+        <collection property="fileItems" ofType="com.gdaib.pojo.FileItemCustom">
+            <id column="itemUid" property="uid"></id>
+            <result column="filename" property="filename"></result>
+            <result column="showing" property="showing"></result>
+            <result column="prefix" property="prefix"></result>
+            <result column="position" property="position"></result>
+        </collection>
+
+    </resultMap>
+
+    <select id="selectFileAndFileItem" parameterType="com.gdaib.pojo.FileSelectVo" resultMap="fileAndFileItem">
+
+        SELECT
+            t_file.title,
+            t_file.upTime,
+            t_file.filePath,
+            t_file.uid,
+            t_file.url,
+            t_file_item.filename,
+            t_file_item.showing,
+            t_file_item.prefix,
+            t_file_item.uid AS itemUid,
+            t_account.`name` AS author,
+            t_file_item.position
+            FROM
+            t_file
+            INNER JOIN t_file_item ON t_file_item.fileUid = t_file.uid
+            INNER JOIN t_account ON t_file.accUid = t_account.uid
+            WHERE
+            t_file.uid = #{uid}
+            ORDER BY
+            t_file_item.position ASC
+
+    </select>
+
+    <select id="getCountFile" parameterType="com.gdaib.pojo.FileSelectVo" resultType="com.gdaib.pojo.FileCustom">
+        SELECT COUNT(id) count FROM `t_file` WHERE navUid=#{navuid} LIMIT 0, 20
+    </select>
+
+    <sql id="where_author_or_title">
+        <if test="author!=null">
+
+            AND t_account.`name` LIKE '%${author}%'
+        </if>
+        <if test="title!=null">
+            AND t_file.title LIKE '%${title}%'
+        </if>
+    </sql>
+
+    <select id="selectFileByKeyWord" parameterType="com.gdaib.pojo.FileSelectVo" resultType="FileCustom">
+        <if test="keyWord!=null ">
+            SELECT
+            distinct
+--             t_account.`name` AS author,
+--             t_file.uid,
+--             t_file.filePath,
+--             t_file.url,
+--             t_file.title,
+--             t_file.upTime,
+--             t_file.navUid,
+--             t_file.accUid
+            t_file.uid,
+            t_file.title,
+            t_file.upTime ,
+            t_file.accUid,
+            t_account.`name` AS author
+            FROM
+            t_account
+            INNER JOIN t_file ON t_file.accUid = t_account.uid
+            INNER JOIN t_navigation ON t_file.navUid = t_navigation.uid
+            WHERE
+            (t_account.`name` LIKE '%${keyWord}%' OR
+            t_file.title LIKE '%${keyWord}%') AND
+            t_navigation.depUid = #{depUid}
+            ORDER BY
+            t_file.upTime DESC
+        </if>
+
+    </select>
+
+
+    <!--hashMap.put("uid", file.getUid());-->
+    <!--hashMap.put("title", file.getTitle());-->
+    <!--hashMap.put("upTime", file.getUptime());-->
+    <!--hashMap.put("author", file.getAuthor());-->
+    <!--hashMap.put("accuid", file.getAccuid());-->
+    <select id="selectFileByNavuid" parameterType="String" resultMap="FileCustom">
+        SELECT
+        t_file.uid,
+        t_file.title,
+        t_file.upTime ,
+        t_file.accUid,
+        t_account.`name` AS author
+        FROM
+        t_account
+        INNER JOIN t_file ON t_file.accUid = t_account.uid
+        WHERE navuid=#{navuid}
+        ORDER BY
+        t_file.upTime DESC
+    </select>
+
+</mapper>

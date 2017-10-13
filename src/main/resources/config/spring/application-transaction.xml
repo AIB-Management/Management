@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd "
+       >
+
+
+    <!--事务管理器，对mybatis操作数据库事务控制，Spring使用jdbc的事务控制类-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--dataSource：这里面的dataSource引用的是applicationContext-dao.xml里面的-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--通知-->
+    <tx:advice id="txadvice" transaction-manager="transactionManager">
+        <!--做事务操作-->
+        <tx:attributes>
+            <!--规范了方法的命名规则，如果要使用事务就要用这几个开头-->
+            <tx:method name="account*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <!--read-only：只读
+            SUPPORTS：指 Spring 容器中如果当前没有事务存在，就以非事务方式执行；如果有就使用当前事务。
+            -->
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+    <!--aop-->
+    <aop:config>
+        <!--切面-->
+        <aop:advisor advice-ref="txadvice" pointcut="execution(* com.gdaib.service.*.*(..))"/>
+    </aop:config>
+
+
+
+</beans>
