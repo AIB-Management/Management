@@ -10,6 +10,7 @@ import com.gdaib.util.ServerUtil;
 import com.gdaib.util.Utils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import java.util.List;
 /**
  * Created by mahanzhen on 17-6-6.
  */
+@Service
 public class FileServiceImpl implements FileService {
 
     //直接显示的文件类型

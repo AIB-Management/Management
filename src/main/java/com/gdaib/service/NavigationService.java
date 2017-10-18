@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by mahanzhen on 17-5-18.
  */
-public interface NavigationServer {
+public interface NavigationService {
     //添加文件夹
     public int insertNavigation(NavigationSelectVo navigation) throws Exception;
 

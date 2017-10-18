@@ -10,6 +10,7 @@ import com.gdaib.pojo.*;
 import com.gdaib.service.DepartmentService;
 import com.gdaib.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by MaHanZhen on 2017/6/5.
  */
+@Service
 public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired

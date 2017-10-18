@@ -15,8 +15,7 @@
             http://www.springframework.org/schema/tx
             http://www.springframework.org/schema/tx/spring-tx.xsd
             http://www.springframework.org/schema/aop
-            http://www.springframework.org/schema/aop/spring-aop.xsd "
-      >
+            http://www.springframework.org/schema/aop/spring-aop.xsd ">
 
     <!--加载db.properties文件的内容-->
     <context:property-placeholder location="classpath:db.properties" ignore-unresolvable="true"/>
@@ -51,7 +50,11 @@
             而且value中的sqlSessionFactory的Id名绝对不要起'sqlSessionFactory'
             因为这样MapperScannerConfigurer会提前加载
         -->
-        <property name="sqlSessionFactoryBeanName" value="MysqlSessionFactory"/>
+        <!--
+            这里没有必要去指定sqlSessionFactoryBeanName，因为MapperScannerConfigurer 将会创建 MapperFactoryBean,之后自动装配
+            但是如果使用了一个以上的DataSourse，自动转配可能会失效。所以需要使用这个指定
+        -->
+        <!--<property name="sqlSessionFactoryBeanName" value="MysqlSessionFactory"/>-->
     </bean>
 
     <!--可以批量操作的sqlsession-->

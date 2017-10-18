@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.rmi.CORBA.Util;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -31,7 +28,7 @@ public class ContentController {
     private UsersService usersService;
 
     @Autowired
-    private NavigationServer navigationServer;
+    private NavigationService navigationService;
 
     @Autowired
     private DepartmentService departmentService;
@@ -86,7 +83,7 @@ public class ContentController {
     public Msg ajaxFindNavAndFile(NavigationSelectVo navigationSelectVo) throws Exception {
 
         //查找父类uid为xx的子导航
-        List<NavigationCustom> navs = navigationServer.selectNavAndUidByNsv(navigationSelectVo);
+        List<NavigationCustom> navs = navigationService.selectNavAndUidByNsv(navigationSelectVo);
         //查找当前目录下有没有文件
         List<FileCustom> fileCustoms = fileService.selectFileByNavuid(navigationSelectVo.getParent());
         return Msg.success().add("navs", navs).add("files", fileCustoms);

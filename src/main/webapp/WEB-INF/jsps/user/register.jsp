@@ -72,7 +72,7 @@
 					<c:if test="${pros!=null}">
 						<c:forEach items="${pros}" var="pro">
 							<c:if test="${pro.uid == RegisterPojo.depUid}">
-							<option value="${pro.uid}" selected>${pro.pro}</option>
+								<option value="${pro.uid}" selected>${pro.pro}</option>
 							</c:if>
 							<c:if test="${pro.uid != RegisterPojo.depUid}">
 								<option value="${pro.uid}" >${pro.pro}</option>

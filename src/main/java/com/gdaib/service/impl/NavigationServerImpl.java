@@ -3,13 +3,11 @@ package com.gdaib.service.impl;
 import com.gdaib.Exception.GlobalException;
 import com.gdaib.mapper.FileExtMapper;
 import com.gdaib.mapper.NavigationExtMapper;
-import com.gdaib.mapper.NavigationMapper;
 import com.gdaib.pojo.*;
-import com.gdaib.service.FileService;
-import com.gdaib.service.NavigationServer;
+import com.gdaib.service.NavigationService;
 import com.gdaib.util.Utils;
-import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +19,8 @@ import java.util.List;
 /**
  * Created by mahanzhen on 17-5-18.
  */
-public class NavigationServerImpl implements NavigationServer {
+@Service
+public class NavigationServerImpl implements NavigationService {
 
     public static final String QUERY_NAV_ACTION = "/content/ajaxFindExtNavByParent.action";
     public static final String QUERY_FILE_TITLE_ACTION = "/content/ajaxFindFileInfoByNavId.action";

@@ -35,6 +35,7 @@
             <tx:method name="delete*" propagation="REQUIRED"/>
             <tx:method name="update*" propagation="REQUIRED"/>
             <!--read-only：只读
+            REQUIRED 如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中。
             SUPPORTS：指 Spring 容器中如果当前没有事务存在，就以非事务方式执行；如果有就使用当前事务。
             -->
             <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>

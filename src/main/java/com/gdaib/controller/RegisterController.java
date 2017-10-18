@@ -45,11 +45,10 @@ public class RegisterController {
     @RequestMapping("/public/register")
     public ModelAndView register(HttpServletRequest request) {
 
-
         ModelAndView modelAndView = new ModelAndView();
         try {
-            RegisterPojo registerPojo = (RegisterPojo) request.getAttribute("RegisterPojo");
             modelAndView.addObject("department", departmentService.selectDepartment(null));
+            RegisterPojo registerPojo = (RegisterPojo) request.getAttribute("RegisterPojo");
             if (registerPojo != null) {
                 String depUid = registerPojo.getDepartmentId();
                 DepartmentSelectVo departmentSelectVo = new DepartmentSelectVo();
@@ -118,7 +117,7 @@ public class RegisterController {
      */
     @ResponseBody
     @RequestMapping(value = "/public/ajaxFindUsernameIsExists")
-    public Msg ajaxFindUsernameIsExists(String accountVal, HttpServletResponse response) throws Exception {
+    public Msg ajaxFindUsernameIsExists(String accountVal) throws Exception {
 
         Boolean UserBoolean = usersService.findUsernameIsExists(accountVal);
         if (UserBoolean) {
@@ -133,7 +132,7 @@ public class RegisterController {
      */
     @ResponseBody
     @RequestMapping(value = "/public/ajaxFindEmailIsExists")
-    public Msg ajaxFindEmailIsExists(String mailVal, HttpServletResponse response) throws Exception {
+    public Msg ajaxFindEmailIsExists(String mailVal) throws Exception {
 
         Boolean Emailboolean = usersService.findEmailIsExists(mailVal);
         if (Emailboolean) {

@@ -8,12 +8,15 @@ import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.UsersService;
 import com.gdaib.util.Utils;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,8 +28,8 @@ import java.util.regex.Pattern;
 /**
  * Created by znho on 2017/4/22.
  */
+@Service
 public class UsersServiceImpl implements UsersService {
-
 
     @Autowired
     public UsersMapper usersMapper;
@@ -46,8 +49,6 @@ public class UsersServiceImpl implements UsersService {
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
         criteria.andUsernameEqualTo(username);
-
-
         List<Account> accounts = accountMapper.selectByExample(accountExample);
         return accounts.size() == 0 ? null : accounts.get(0);
     }
@@ -121,9 +122,8 @@ public class UsersServiceImpl implements UsersService {
     //登陆信息是否为空
     private void judgeLogin(RegisterPojo registerPojo) throws Exception {
         if (
-                registerPojo.getUsername().trim().equals("") ||
-                        registerPojo.getPwd().trim().equals("") ||
-                        registerPojo.getVtCode().trim().equals("")
+                StringUtils.isEmpty(registerPojo.getUsername()) ||
+                StringUtils.isEmpty(registerPojo.getVtCode())
                 ) {
             throw new Exception("请确保信息填写完整后重试!");
 
@@ -132,24 +132,17 @@ public class UsersServiceImpl implements UsersService {
 
     //注册信息是否为空
     private void judgeRegister(RegisterPojo registerPojo) throws Exception {
-        if (registerPojo == null ||
-                registerPojo.getName() == null ||
-                registerPojo.getName().trim().equals("") ||
-                registerPojo.getUsername() == null ||
-                registerPojo.getUsername().trim().equals("") ||
-                registerPojo.getPwd() == null ||
-                registerPojo.getPwd().trim().equals("") ||
-                registerPojo.getConfirmpwd() == null ||
-                registerPojo.getConfirmpwd().trim().equals("") ||
-                registerPojo.getDepUid() == null ||
-                registerPojo.getDepUid().trim().equals("") ||
-                registerPojo.getEmail() == null ||
-                registerPojo.getEmail().trim().equals("") ||
-                registerPojo.getVtCode() == null ||
-                registerPojo.getVtCode().trim().equals("")
-                ) {
+        if (
+                registerPojo == null ||
+                StringUtils.isEmpty(registerPojo.getName()) ||
+                StringUtils.isEmpty(registerPojo.getUsername()) ||
+                StringUtils.isEmpty(registerPojo.getPwd())||
+                StringUtils.isEmpty(registerPojo.getConfirmpwd())||
+                StringUtils.isEmpty(registerPojo.getDepUid())||
+                StringUtils.isEmpty(registerPojo.getEmail())||
+                StringUtils.isEmpty(registerPojo.getVtCode())
+         ) {
             throw new Exception("请确保信息填写完整后重试!");
-
         }
     }
 
@@ -157,7 +150,7 @@ public class UsersServiceImpl implements UsersService {
     private void judgeVtCode(HttpSession session, String vtCode) throws Exception {
         String kaptchaExpected = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 
-        if (vtCode.trim().equals("") || vtCode == null) {
+        if (StringUtils.isEmpty(vtCode)) {
             throw new Exception("验证码不能为空！");
         } else if (!(vtCode.equalsIgnoreCase(kaptchaExpected))) {
             throw new Exception("验证码错误！");
@@ -182,8 +175,9 @@ public class UsersServiceImpl implements UsersService {
 
     }
 
+    //判断用户是否已经存在
     private void judgeAccountIsExist(String username) throws Exception{
-                //判断用户是否已经存在
+
         Account account = findAccountForUsername(username);
         if (account != null) {
             throw  new Exception("该账号已被使用！");

@@ -8,6 +8,7 @@ import com.gdaib.mapper.UsersMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.RunasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Map;
 /**
  * Created by znho on 2017/6/3.
  */
+@Service
 public class RunasServiceImpl implements RunasService{
 
 

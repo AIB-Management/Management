@@ -34,7 +34,7 @@ public class ManageController {
 
 
     @Autowired
-    private NavigationServer navigationServer;
+    private NavigationService navigationService;
 
     @Autowired
     private MailService mailService;
@@ -582,7 +582,7 @@ public class ManageController {
 
         navigationSelectVo.setUrl("/content/ajaxFindNavAndFile.action?parent=" + uid + "&depuid=" + navigationSelectVo.getDepuid());
         Utils.out(navigationSelectVo.toString());
-        int result = navigationServer.insertNavigation(navigationSelectVo);
+        int result = navigationService.insertNavigation(navigationSelectVo);
 
         if (result > 0) {
             return Msg.success();
@@ -605,7 +605,7 @@ public class ManageController {
         List<String> uidList = Utils.toList(uids);
 
         Utils.out(uidList);
-        int result = navigationServer.deleteNavigation(uidList);
+        int result = navigationService.deleteNavigation(uidList);
 
         if (result > 0) {
             return Msg.success();
@@ -620,7 +620,7 @@ public class ManageController {
     @ResponseBody
     @RequiresPermissions("navigation:update")
     public Msg ajaxUpdateNav(NavigationSelectVo navigationSelectVo) throws Exception {
-        int result = navigationServer.updateNavigation(navigationSelectVo);
+        int result = navigationService.updateNavigation(navigationSelectVo);
         if (result > 0) {
             return Msg.success();
         }

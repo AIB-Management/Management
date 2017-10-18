@@ -54,7 +54,7 @@ public class LoginController {
 
     //登陆
     @RequestMapping("/public/doLogin")
-    public ModelAndView doLogin(RegisterPojo registerPojo,  HttpServletRequest request,HttpServletResponse response) throws Exception {
+    public ModelAndView doLogin(RegisterPojo registerPojo,  HttpServletRequest request) throws Exception {
         Utils.out(registerPojo.toString());
 
         HttpSession session = request.getSession();
@@ -65,7 +65,6 @@ public class LoginController {
         try {
             usersService.judgeLoginInfo(session,registerPojo);
         }catch (Exception e){
-
             modelAndView.addObject("error",e.getMessage());
             modelAndView.addObject("username",registerPojo.getUsername());
             modelAndView.setViewName(LOGIN);
@@ -97,28 +96,6 @@ public class LoginController {
                 modelAndView.setViewName(LOGIN);
                 return modelAndView;
             }
-
-
-
-
-        AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
-
-
-//        if (accountInfo.getRole().equals("leader")){
-//            modelAndView.setViewName("redirect:/admin/leader.action");
-//            return modelAndView;
-//        }
-//
-//        if(accountInfo.getRole().equals("teacher")||accountInfo.getRole().equals("teacher")){
-//            modelAndView.setViewName("redirect:/content/departmentpage.action");
-//        }
-//
-//        if(accountInfo.getRole().equals("admin")){
-//            modelAndView.setViewName("redirect:/admin/rootPage.action");
-//        }
-
-//        modelAndView.setViewName("redirect:/content/departmentpage.action");
-//        modelAndView.setViewName("redirect:/");
 
         modelAndView.setViewName("forward:/content/relayById.action");
 
