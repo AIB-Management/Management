@@ -11,7 +11,7 @@ import java.util.Properties;
  */
 public class MailUtil {
 
-    public static final String MAIL = "mail.properties";
+    public static final String MAIL = "config/properties/mail.properties";
 
     public static final String MAIL_USERNAME = "mail.username";
     public static final String MAIL_SEND_NAME = "mail.sendName";
@@ -20,7 +20,7 @@ public class MailUtil {
     public static final String MAIL_URL = "mail.url";
     public static final String DOC_BASE = "docBase";
     public static final String PATH = "path";
-    public static final String SERVER = "server.properties";
+    public static final String SERVER = "config/properties/server.properties";
 
     private static MailUtil serverUtil = new MailUtil();
     private Properties properties;

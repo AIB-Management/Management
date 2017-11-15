@@ -18,8 +18,6 @@
             http://www.springframework.org/schema/aop/spring-aop.xsd "
 >
 
-    <!--加载mail.properties文件的内容-->
-    <context:property-placeholder location="classpath:mail.properties" ignore-unresolvable="true"/>
     <!-- 实现邮件服务 -->
     <bean id="mimeMessage" class="javax.mail.internet.MimeMessage"
           factory-bean="javaMailSender" factory-method="createMimeMessage"/>

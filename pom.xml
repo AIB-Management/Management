@@ -411,7 +411,7 @@
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
-                    <include>**/*.properties</include>
+                    <include>**/*.config.properties</include>
                     <include>**/*.xml</include>
                 </includes>
                 <filtering>false</filtering>

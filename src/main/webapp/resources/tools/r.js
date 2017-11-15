@@ -336,7 +336,7 @@ var requirejs, require, define, xpcUtil;
     }
 
     /**
-     * Cycles over properties in an object and calls a function for each
+     * Cycles over config.properties in an object and calls a function for each
      * property value. If the function returns a truthy value, then the
      * iteration is stopped.
      */
@@ -352,7 +352,7 @@ var requirejs, require, define, xpcUtil;
     }
 
     /**
-     * Simple function to mix in properties from source into target,
+     * Simple function to mix in config.properties from source into target,
      * but only if target does not already have a property of the same name.
      */
     function mixin(target, source, force, deepStringMixin) {
@@ -2193,7 +2193,7 @@ var requirejs, require, define, xpcUtil;
             }
             node.src = url;
 
-            //Calling onNodeCreated after all properties on the node have been
+            //Calling onNodeCreated after all config.properties on the node have been
             //set, but before it is placed in the DOM.
             if (config.onNodeCreated) {
                 config.onNodeCreated(node, config, moduleName, url);
@@ -2766,7 +2766,7 @@ define('lang', function () {
 
         /**
          * mixin({}, obj1, obj2) is allowed. If the last argument is a boolean,
-         * then the source objects properties are force copied over to dest.
+         * then the source objects config.properties are force copied over to dest.
          */
         mixin: function(dest){
             var parameters = Array.prototype.slice.call(arguments),
@@ -2789,7 +2789,7 @@ define('lang', function () {
          * dest values if a winner is needed.
          * @param  {Object} dest destination object that receives the mixed
          * values.
-         * @param  {Object} source source object contributing properties to mix
+         * @param  {Object} source source object contributing config.properties to mix
          * in.
          * @return {[Object]} returns dest object with the modification.
          */
@@ -2813,10 +2813,10 @@ define('lang', function () {
         /**
          * Does a type of deep copy. Do not give it anything fancy, best
          * for basic object copies of objects that also work well as
-         * JSON-serialized things, or has properties pointing to functions.
+         * JSON-serialized things, or has config.properties pointing to functions.
          * For non-array/object values, just returns the same object.
-         * @param  {Object} obj      copy properties from this object
-         * @param  {Object} [ignoredProps] optional object whose own properties
+         * @param  {Object} obj      copy config.properties from this object
+         * @param  {Object} [ignoredProps] optional object whose own config.properties
          * are keys that should be ignored.
          * @return {Object}
          */
@@ -2878,7 +2878,7 @@ define('lang', function () {
         },
 
         /**
-         * Cycles over properties in an object and calls a function for each
+         * Cycles over config.properties in an object and calls a function for each
          * property value. If the function returns a truthy value, then the
          * iteration is stopped.
          */
@@ -4643,7 +4643,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.trailing = [];
 	    }
 	    CommentHandler.prototype.insertInnerComments = function (node, metadata) {
-	        //  innnerComments for properties empty block
+	        //  innnerComments for config.properties empty block
 	        //  `function a() {/** comments **\/}`
 	        if (node.type === syntax_1.Syntax.BlockStatement && node.body.length === 0) {
 	            var innerComments = [];
@@ -10969,7 +10969,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * An instance of the SourceMapGenerator represents a source map which is
 	 * being built incrementally. You may pass an object with the following
-	 * properties:
+	 * config.properties:
 	 *
 	 *   - file: The filename of the generated source.
 	 *   - sourceRoot: A root for all relative URLs in this source map.
@@ -11039,7 +11039,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Add a single mapping from original source line and column to the generated
 	 * source's line and column for this source map being created. The mapping
-	 * object should have the following properties:
+	 * object should have the following config.properties:
 	 *
 	 *   - generated: An object with the generated line and column positions.
 	 *   - original: An object with the original line and column positions.
@@ -12257,7 +12257,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	//             code.
 	//     }
 	//
-	// All properties except for `generatedLine` and `generatedColumn` can be
+	// All config.properties except for `generatedLine` and `generatedColumn` can be
 	// `null`.
 	//
 	// `_generatedMappings` is ordered by the generated positions.
@@ -12295,7 +12295,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Parse the mappings in a string in to a data structure which we can easily
 	 * query (the ordered arrays in the `this.__generatedMappings` and
-	 * `this.__originalMappings` properties).
+	 * `this.__originalMappings` config.properties).
 	 */
 	SourceMapConsumer.prototype._parseMappings =
 	  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
@@ -12366,13 +12366,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * corresponding to the given line and either the column we are searching for
 	 * or the next closest column that has any offsets.
 	 *
-	 * The only argument is an object with the following properties:
+	 * The only argument is an object with the following config.properties:
 	 *
 	 *   - source: The filename of the original source.
 	 *   - line: The line number in the original source.
 	 *   - column: Optional. the column number in the original source.
 	 *
-	 * and an array of objects is returned, each with the following properties:
+	 * and an array of objects is returned, each with the following config.properties:
 	 *
 	 *   - line: The line number in the generated source, or null.
 	 *   - column: The column number in the generated source, or null.
@@ -12620,7 +12620,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Parse the mappings in a string in to a data structure which we can easily
 	 * query (the ordered arrays in the `this.__generatedMappings` and
-	 * `this.__originalMappings` properties).
+	 * `this.__originalMappings` config.properties).
 	 */
 	BasicSourceMapConsumer.prototype._parseMappings =
 	  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
@@ -12780,7 +12780,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Returns the original source, line, and column information for the generated
 	 * source's line and column positions provided. The only argument is an object
-	 * with the following properties:
+	 * with the following config.properties:
 	 *
 	 *   - line: The line number in the generated source.
 	 *   - column: The column number in the generated source.
@@ -12790,7 +12790,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     searching for, respectively, if the exact element cannot be found.
 	 *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
 	 *
-	 * and an object is returned with the following properties:
+	 * and an object is returned with the following config.properties:
 	 *
 	 *   - source: The original source file, or null.
 	 *   - line: The line number in the original source, or null.
@@ -12911,7 +12911,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Returns the generated line and column information for the original source,
 	 * line, and column positions provided. The only argument is an object with
-	 * the following properties:
+	 * the following config.properties:
 	 *
 	 *   - source: The filename of the original source.
 	 *   - line: The line number in the original source.
@@ -12922,7 +12922,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     searching for, respectively, if the exact element cannot be found.
 	 *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
 	 *
-	 * and an object is returned with the following properties:
+	 * and an object is returned with the following config.properties:
 	 *
 	 *   - line: The line number in the generated source, or null.
 	 *   - column: The column number in the generated source, or null.
@@ -13097,12 +13097,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Returns the original source, line, and column information for the generated
 	 * source's line and column positions provided. The only argument is an object
-	 * with the following properties:
+	 * with the following config.properties:
 	 *
 	 *   - line: The line number in the generated source.
 	 *   - column: The column number in the generated source.
 	 *
-	 * and an object is returned with the following properties:
+	 * and an object is returned with the following config.properties:
 	 *
 	 *   - source: The original source file, or null.
 	 *   - line: The line number in the original source, or null.
@@ -13187,13 +13187,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Returns the generated line and column information for the original source,
 	 * line, and column positions provided. The only argument is an object with
-	 * the following properties:
+	 * the following config.properties:
 	 *
 	 *   - source: The filename of the original source.
 	 *   - line: The line number in the original source.
 	 *   - column: The column number in the original source.
 	 *
-	 * and an object is returned with the following properties:
+	 * and an object is returned with the following config.properties:
 	 *
 	 *   - line: The line number in the generated source, or null.
 	 *   - column: The column number in the generated source, or null.
@@ -13231,7 +13231,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Parse the mappings in a string in to a data structure which we can easily
 	 * query (the ordered arrays in the `this.__generatedMappings` and
-	 * `this.__originalMappings` properties).
+	 * `this.__originalMappings` config.properties).
 	 */
 	IndexedSourceMapConsumer.prototype._parseMappings =
 	  function IndexedSourceMapConsumer_parseMappings(aStr, aSourceRoot) {
@@ -14846,7 +14846,7 @@ var AST_Call = DEFNODE("Call", "expression args", {
 });
 
 var AST_New = DEFNODE("New", null, {
-    $documentation: "An object instantiation.  Derives from a function call since it has exactly the same properties"
+    $documentation: "An object instantiation.  Derives from a function call since it has exactly the same config.properties"
 }, AST_Call);
 
 var AST_Seq = DEFNODE("Seq", "car cdr", {
@@ -15017,7 +15017,7 @@ var AST_Array = DEFNODE("Array", "elements", {
 var AST_Object = DEFNODE("Object", "properties", {
     $documentation: "An object literal",
     $propdoc: {
-        properties: "[AST_ObjectProperty*] array of properties"
+        properties: "[AST_ObjectProperty*] array of config.properties"
     },
     _walk: function(visitor) {
         return visitor._visit(this, function(){
@@ -15029,7 +15029,7 @@ var AST_Object = DEFNODE("Object", "properties", {
 });
 
 var AST_ObjectProperty = DEFNODE("ObjectProperty", "key value", {
-    $documentation: "Base class for literal object properties",
+    $documentation: "Base class for literal object config.properties",
     $propdoc: {
         key: "[string] the property name converted to a string for ObjectKeyVal.  For setters and getters this is an arbitrary AST_Node.",
         value: "[AST_Node] property value.  For setters and getters this is an AST_Function."
@@ -22939,7 +22939,7 @@ function mangle_properties(ast, options) {
         }
     }));
 
-    // step 2: transform the tree, renaming properties
+    // step 2: transform the tree, renaming config.properties
     return ast.transform(new TreeTransformer(function(node){
         if (node instanceof AST_ObjectKeyVal) {
             if (!(ignore_quoted && node.quote))
@@ -23023,7 +23023,7 @@ function mangle_properties(ast, options) {
             // either debug mode is off, or it is on and we could not use the mangled name
             if (!mangled) {
                 // note can_mangle() does not check if the name collides with the 'ignored' set
-                // (filled with quoted properties when ignore_quoted set). Make sure we add this
+                // (filled with quoted config.properties when ignore_quoted set). Make sure we add this
                 // check so we don't collide with a quoted name.
                 do {
                     mangled = base54(++cache.cname);
@@ -23142,7 +23142,7 @@ exports.minify = function(files, options, name) {
         toplevel = sq.compress(toplevel);
     }
 
-    // 3. mangle properties
+    // 3. mangle config.properties
     if (options.mangleProperties || options.nameCache) {
         options.mangleProperties.cache = readNameCache(options.nameCache, "props");
         toplevel = mangle_properties(toplevel, options.mangleProperties);
@@ -23730,7 +23730,7 @@ define('parse', ['./esprimaAdapter', 'lang'], function (esprima, lang) {
      * requirejs({}, ...)
      * @param {String} fileContents
      *
-     * @returns {Object} a config details object with the following properties:
+     * @returns {Object} a config details object with the following config.properties:
      * - config: {Object} the config object found. Can be undefined if no
      * config found.
      * - range: {Array} the start index and end index in the contents where
@@ -26572,7 +26572,7 @@ define('build', function (require) {
      * or it can be a JavaScript object that has the format of a build profile
      * file.
      *
-     * If it is an object, then in addition to the normal properties allowed in
+     * If it is an object, then in addition to the normal config.properties allowed in
      * a build profile file, the object should contain one other property:
      *
      * The object could also contain a "buildFile" property, which is a string
@@ -27249,7 +27249,7 @@ define('build', function (require) {
 
     /**
      * Converts an array that has String members of "name=value"
-     * into an object, where the properties on the object are the names in the array.
+     * into an object, where the config.properties on the object are the names in the array.
      * Also converts the strings "true" and "false" to booleans for the values.
      * member name/value pairs, and converts some comma-separated lists into
      * arrays.
@@ -28233,7 +28233,7 @@ define('build', function (require) {
      *
      * @param {Object} the build config object.
      *
-     * @returns {Object} with two properties: "text", the text of the flattened
+     * @returns {Object} with two config.properties: "text", the text of the flattened
      * module, and "buildText", a string of text representing which files were
      * included in the flattened module text.
      */

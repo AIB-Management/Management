@@ -11,7 +11,7 @@ import java.util.Properties;
  */
 public class ServerUtil {
 
-    public static final String SERVER = "server.properties";
+    public static final String SERVER = "config/properties/server.properties";
 
     public static final String DOC_BASE = "docBase";
     public static final String PATH = "path";

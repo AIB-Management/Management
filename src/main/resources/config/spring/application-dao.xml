@@ -18,7 +18,7 @@
             http://www.springframework.org/schema/aop/spring-aop.xsd ">
 
     <!--加载db.properties文件的内容-->
-    <context:property-placeholder location="classpath:db.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:config/properties/*.properties" ignore-unresolvable="true"/>
 
     <!--配置数据源-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
