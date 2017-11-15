@@ -1,10 +1,7 @@
 package com.gdaib.service;
 
 
-import com.gdaib.pojo.Account;
-import com.gdaib.pojo.AccountInfo;
-import com.gdaib.pojo.Permission;
-import com.gdaib.pojo.RegisterPojo;
+import com.gdaib.pojo.*;
 import org.springframework.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,5 +81,5 @@ public interface UsersService {
     public void updateName(String name,String uid) throws Exception;
 
     //修改邮箱
-    public void updateEmail(String uid, String email);
+    public Msg updateEmail( String email) throws Exception;
 }

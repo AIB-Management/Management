@@ -74,22 +74,8 @@ public class PasswordController {
     @RequestMapping(value = "/public/ajaxDoModifyEmail")
     @ResponseBody
     public Msg ajaxDoModifyEmail(String email) throws Exception {
-
-
-        if(StringUtils.isEmpty(email)){
-            return Msg.fail().add("error","邮箱不能为空");
-        }
-        Boolean Emailboolean = usersService.findEmailIsExists(email);
-        Utils.out(Emailboolean);
-        if(!Emailboolean){
-            return Msg.fail().add("error","邮箱已存在");
-        }
-
-        AccountInfo loginAccountInfo = Utils.getLoginAccountInfo();
-
-        usersService.updateEmail(loginAccountInfo.getUid(),email);
-        loginAccountInfo.setMail(email);
-        return Msg.success();
+        Msg msg = usersService.updateEmail(email);
+        return msg;
 
     }
 
@@ -111,7 +97,7 @@ public class PasswordController {
             return modelAndView;
         }
 
-        //得到subject，使用getPrincipal得到里面保持的AccountInfo
+        //得到subject，使用getPrincipal得到里面保存的AccountInfo
         Subject subject = SecurityUtils.getSubject();
         AccountInfo accountInfo = (AccountInfo) subject.getPrincipal();
         registerPojo.setUsername(accountInfo.getUsername());

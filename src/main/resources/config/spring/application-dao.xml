@@ -57,11 +57,11 @@
         <!--<property name="sqlSessionFactoryBeanName" value="MysqlSessionFactory"/>-->
     </bean>
 
-    <!--可以批量操作的sqlsession-->
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg name="sqlSessionFactory" ref="MysqlSessionFactory"></constructor-arg>
-        <constructor-arg name="executorType" value="BATCH"></constructor-arg>
-    </bean>
+    <!--&lt;!&ndash;可以批量操作的sqlsession&ndash;&gt;-->
+    <!--<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">-->
+        <!--<constructor-arg name="sqlSessionFactory" ref="MysqlSessionFactory"></constructor-arg>-->
+        <!--<constructor-arg name="executorType" value="BATCH"></constructor-arg>-->
+    <!--</bean>-->
 
 
 

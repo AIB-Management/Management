@@ -48,10 +48,7 @@ public class NaviTest {
         Utils.out(fileCustoms.toString());
     }
 
-    @Test
-    public void testGetCountByDepUid() throws Exception{
-        usersService.updateEmail("79edb00e-518a-468a-be1e-20decb95e9c1","wsxzh22@qq.com");
-    }
+
 
 
     @Test
@@ -59,7 +56,7 @@ public class NaviTest {
         FileSelectVo fileSelectVo = new FileSelectVo();
         fileSelectVo.setNavuid("e3da4355-c68e-4b54-a82f-fed0907a3d49");
 
-
+        RegisterPojo cd = new RegisterPojo();
 
         FileCustom fileCustom =  fileExtMapper.getCountFile(fileSelectVo);
 

@@ -100,10 +100,7 @@ public class UtilTest {
     private RunasService runasService;
 
 
-    @Test
-    public void testGetCountByDepUid() throws Exception{
-        usersService.updateEmail("79edb00e-518a-468a-be1e-20decb95e9c1","wsxzh22@qq.com");
-    }
+
 
 
     @Autowired

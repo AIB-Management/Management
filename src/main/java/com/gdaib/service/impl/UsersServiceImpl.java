@@ -104,14 +104,10 @@ public class UsersServiceImpl implements UsersService {
     private void judgeModify(RegisterPojo registerPojo) throws Exception {
 
         if (
-
-                registerPojo.getPwd() == null ||
-                registerPojo.getConfirmpwd() == null ||
-                registerPojo.getOldpwd() == null ||
-                registerPojo.getPwd().trim().equals("") ||
-                registerPojo.getConfirmpwd().trim().equals("") ||
-                registerPojo.getOldpwd().trim().equals("")
-                ) {
+                StringUtils.isEmpty(registerPojo.getPwd()) ||
+                StringUtils.isEmpty(registerPojo.getConfirmpwd()) ||
+                StringUtils.isEmpty(registerPojo.getOldpwd())
+        ) {
 
             throw new Exception("请确保信息填写完整后重试!");
 
@@ -472,14 +468,44 @@ public class UsersServiceImpl implements UsersService {
 
     //修改邮箱
     @Override
-    public void updateEmail(String uid, String email) {
+    public Msg updateEmail( String email) throws Exception {
+
+        //查看是否为空或者已存在
+        if(StringUtils.isEmpty(email)){
+            return Msg.fail().add("error","邮箱不能为空");
+        }
+
+        String emailCheck = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        if (!Pattern.matches(emailCheck, email)) {
+            return Msg.fail().add("error","邮箱格式错误");
+        }
+
+        Boolean Emailboolean = findEmailIsExists(email);
+        Utils.out(Emailboolean);
+        if(!Emailboolean){
+            return Msg.fail().add("error","邮箱已存在");
+        }
+
+
+
+
+        //修改邮箱
         Account account = new Account();
         account.setMail(email);
-
         AccountExample accountExample = new AccountExample();
         AccountExample.Criteria criteria = accountExample.createCriteria();
+
+
+        //得到现在账户的uid
+        AccountInfo loginAccountInfo = Utils.getLoginAccountInfo();
+        String uid = loginAccountInfo.getUid();
         criteria.andUidEqualTo(uid);
         accountMapper.updateByExampleSelective(account,accountExample);
+
+
+        //更改现在账户的email
+        loginAccountInfo.setMail(email);
+        return Msg.success();
     }
 
 
