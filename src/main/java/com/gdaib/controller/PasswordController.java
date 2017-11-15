@@ -3,12 +3,14 @@ package com.gdaib.controller;
 import com.gdaib.pojo.*;
 import com.gdaib.service.MailService;
 import com.gdaib.service.UsersService;
+import com.gdaib.service.impl.MailServiceImpl;
 import com.gdaib.util.MailUtil;
 import com.gdaib.util.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,19 +34,10 @@ public class PasswordController {
     private UsersService usersService;
 
     private static final String FINDPASSWORD = "/user/findpassword.jsp";
-
     private static final String MODIFYPWD = "/user/resetpwd.jsp";
-
     private static final String MODIFYPWD_ACTION = "/public/modifypwdHtml.action";
-
     private static final String TAG = "Tag.jsp";
-
     private static final String MODIFYPDW = "/teacher/modifypwd.jsp";
-
-
-
-
-
 
     /**
      * 转发到修改密码页面
@@ -52,7 +45,6 @@ public class PasswordController {
     @RequestMapping(value = "/public/modifyPassword")
     public ModelAndView modifyPassword() {
         ModelAndView modelAndView = new ModelAndView(MODIFYPDW);
-
         return modelAndView;
     }
 
@@ -63,7 +55,6 @@ public class PasswordController {
     @RequestMapping(value = "/public/findPassword")
     public ModelAndView findPassword() {
         ModelAndView modelAndView = new ModelAndView(FINDPASSWORD);
-
         return modelAndView;
     }
 
@@ -80,7 +71,6 @@ public class PasswordController {
     }
 
 
-
     /**
      * 修改密码
      */
@@ -92,7 +82,7 @@ public class PasswordController {
         try {
             usersService.judgeModifyInfo(registerPojo);
         } catch (Exception e) {
-            modelAndView.addObject("error",e.getMessage());
+            modelAndView.addObject("error", e.getMessage());
             modelAndView.setViewName(MODIFYPDW);
             return modelAndView;
         }
@@ -105,22 +95,20 @@ public class PasswordController {
 
         //根据用户名找到密码，验证是否正确
         boolean bool = usersService.judegPassword(accountInfo.getUsername(), registerPojo.getOldpwd());
-        if (!bool){
-            modelAndView.addObject("error","密码错误，请输入正确的密码");
+        if (!bool) {
+            modelAndView.addObject("error", "密码错误，请输入正确的密码");
             modelAndView.setViewName(MODIFYPDW);
             return modelAndView;
         }
 
         //修改密码
         usersService.updatePassword(registerPojo);
-        modelAndView.addObject("success","修改成功，请重新登陆");
+        modelAndView.addObject("success", "修改成功，请重新登陆");
         modelAndView.setViewName(TAG);
         //退出登录
         subject.logout();
-        return  modelAndView;
+        return modelAndView;
     }
-
-
 
 
     /**
@@ -149,17 +137,17 @@ public class PasswordController {
         EmailUrlPojo urlPojo = new EmailUrlPojo();
 
         urlPojo.setAction(MODIFYPWD_ACTION);
-
         //增加邮箱用户名
         urlPojo.setMail(mail.trim());
         urlPojo.setUsername(username.trim());
-
         //保存到Attr中转发到sendMail.action
         request.setAttribute("UrlPojo", urlPojo);
         request.getRequestDispatcher("/public/sendMail.action").forward(request, response);
 
 
     }
+
+
 
     /**
      * 发送找回密码的短信
@@ -171,31 +159,19 @@ public class PasswordController {
 
         EmailUrlPojo urlPojo = (EmailUrlPojo) request.getAttribute("UrlPojo");
 
-        MailUtil mailUtil = MailUtil.getMailUtil();
-        MailPojo mailPojo = new MailPojo();
-
-        //设置发送人
-        mailPojo.setFromAddress(mailUtil.getProperties().getProperty(MailUtil.MAIL_USERNAME).toString());
-
-
-        //发送的标题
-        mailPojo.setSubject(mailUtil.getProperties().getProperty(MailUtil.MAIL_SUBJECT).toString());
-
-        //发送的地址
-        mailPojo.setToAddresses(urlPojo.getMail());
-
-        //发送的内容
-        String content = urlPojo.toString() + "&Code=" + mailService.insertTimeAndUUID(urlPojo.getUsername());
-        Utils.out("cont>>>>" + content);
-
-        mailPojo.setContent(
-                "<html><head></head><body>" +
-                        "<a href=\"" + content + "\">点击链接进入系统密码找回页面,此链接30分钟内有效</a>" +
-                        "</body></html>");
-
+        //拼接body中间的内容
+        StringBuffer content = new StringBuffer();
+        content.append("<a href=\"");
+        content.append(mailService.getLocalBaseUrl());
+        content.append(mailService.getModifyPassWordUrl());
+        content.append(urlPojo.getUsername());
+        content.append("&Code=");
+        content.append(mailService.insertTimeAndUUID(urlPojo.getUsername()));
+        content.append("\">点击链接进入系统密码找回页面,此链接30分钟内有效</a>");
+        Utils.out("cont>>>>" + content.toString());
 
         //发送邮件
-        mailService.sendAttachMail(mailPojo);
+        mailService.sendAttachMail(urlPojo.getMail(), null, content.toString());
         modelAndView.addObject("success", "发送成功,请到邮箱中查看验证信息");
 
         return modelAndView;
@@ -256,8 +232,6 @@ public class PasswordController {
         mailService.ModifyPassword(username, pwd);
         modelAndView.addObject("success", "修改成功");
         modelAndView.setViewName(TAG);
-
-
         //修改成功后，改变UUID
         mailService.updateUUID(username);
 

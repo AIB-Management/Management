@@ -1,6 +1,7 @@
 package com.gdaib.service;
 
 import com.gdaib.pojo.MailPojo;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @Author:马汉真
@@ -8,8 +9,8 @@ import com.gdaib.pojo.MailPojo;
  * @role:
  */
 public interface MailService {
-    public void sendAttachMail(MailPojo mail);
 
+    public void sendAttachMail(String toAddress, String subject, String content);
 
     //生成UUID和过期时间赋值给用户和url
     public String insertTimeAndUUID(String username) throws Exception;
@@ -28,4 +29,7 @@ public interface MailService {
 
     //修改UUID
     public void updateUUID(String username)throws Exception;
+
+    String getLocalBaseUrl();
+    String getModifyPassWordUrl();
 }

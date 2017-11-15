@@ -1,6 +1,5 @@
 package com.gdaib.filter;
 
-import org.osgi.framework.Filter;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

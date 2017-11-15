@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -56,9 +57,7 @@ public class ManageController {
     public ModelAndView rootPage() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(ROOTPAGE);
-
         return modelAndView;
-
     }
 
     /**
@@ -152,24 +151,23 @@ public class ManageController {
     @RequiresPermissions("accountType:query")
     public Msg ajaxGetAccountInfoIsAdmin() throws Exception {
         List<AccountInfo> accountInfo = usersService.findAccountInfoByCharacter("admin", null);
-        List<Map<String,Object>> accountInfoList = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> accountInfoList = new ArrayList<Map<String, Object>>();
         AccountInfo adminAccount = Utils.getLoginAccountInfo();
-        for(AccountInfo account : accountInfo){
-            if(!account.getUid().equals(adminAccount.getUid())){
-                HashMap<String,Object> map = new HashMap<String,Object>();
-                map.put("username",account.getUsername());
-                map.put("name",account.getName());
-                map.put("mail",account.getMail());
-                map.put("role",account.getRole());
-                map.put("departmentId",account.getDepartmentId());
-                map.put("depContent",account.getDepContent());
-                map.put("professionId",account.getProfessionId());
-                map.put("content",account.getContent());
-                map.put("uid",account.getUid());
+        for (AccountInfo account : accountInfo) {
+            if (!account.getUid().equals(adminAccount.getUid())) {
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("username", account.getUsername());
+                map.put("name", account.getName());
+                map.put("mail", account.getMail());
+                map.put("role", account.getRole());
+                map.put("departmentId", account.getDepartmentId());
+                map.put("depContent", account.getDepContent());
+                map.put("professionId", account.getProfessionId());
+                map.put("content", account.getContent());
+                map.put("uid", account.getUid());
                 accountInfoList.add(map);
             }
         }
-
 
         return Msg.success().add("accountInfo", accountInfo);
     }
@@ -228,16 +226,12 @@ public class ManageController {
     @ResponseBody
     @RequiresPermissions("accountType:update")
     public Msg ajaxRejectAccount(String uid, String content, HttpServletRequest request) throws Exception {
+        StringBuffer mailResult = new StringBuffer();
         if (uid == null || uid.equals("")) {
             return Msg.fail();
-
         } else {
-
-
-            MailPojo mailPojo = new MailPojo();
+//            MailPojo mailPojo = new MailPojo();
             List<String> ids = new ArrayList<String>();
-
-
             //验证字符串是否带有逗号，有就是多个
             if (uid.contains(",")) {
                 //得到的字符串切割
@@ -248,78 +242,60 @@ public class ManageController {
                     ids.add(sp);
                 }
 
-
                 //查询list中所有的用户
                 List<AccountInfo> accountInfos = usersService.findAccountInfoForId(ids);
                 if (accountInfos.size() != ids.size()) {
                     return new Msg(200, "用户不存在");
                 }
 
-
-
                 //保存接受者的邮箱
                 StringBuffer stringBuffer = new StringBuffer();
 
-
                 //遍历
                 for (AccountInfo accountInfo : accountInfos) {
-
                     //查看是否状态为未验证
                     if (!accountInfo.getRole().equals("reviewing")) {
                         return new Msg(200, "状态错误，用户不是未审核用户");
                     }
+//                    stringBuffer.append(accountInfo.getMail() + ";");
 
-                    stringBuffer.append(accountInfo.getMail() + ";");
-
+                    mailResult.append(accountInfo.getMail() + ";");
                 }
-                stringBuffer.deleteCharAt(stringBuffer.length() - 1);
-                mailPojo.setToAddresses(stringBuffer.toString());
-
-
+//                stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+                mailResult.deleteCharAt(stringBuffer.length() - 1);
+//                mailPojo.setToAddresses(stringBuffer.toString());
             } else {//否则就是单个
                 ids.add(uid);
                 List<AccountInfo> accountInfos = usersService.findAccountInfoForId(ids);
-
-
                 if (accountInfos.size() == 0) {
                     return new Msg(200, "该用户不存在");
                 }
-
                 AccountInfo accountInfo = accountInfos.get(0);
                 //查看是否状态为未验证
                 if (!accountInfo.getRole().equals("reviewing")) {
                     return new Msg(200, "状态错误，该用户不是未审核用户");
                 }
-
                 //发送的地址
-                mailPojo.setToAddresses(accountInfo.getMail());
-
-
+//                mailPojo.setToAddresses(accountInfo.getMail());
+                mailResult.append(accountInfo.getMail());
             }
-
-
-            //发送的标题
-            mailPojo.setSubject("[AIB]您的申请已被拒绝");
-            //设置发送人
-            mailPojo.setFromAddress(FROMADDRESS);
 
 
             //查看有没有附加信息
             if (content == null || content.equals("")) {
-                mailPojo.setContent("尊敬的用户您好，" + "管理员已经拒绝了你的申请！请重新申请。");
+                content = "尊敬的用户您好，" + "管理员已经拒绝了你的申请！请重新申请。";
             } else {
-                mailPojo.setContent("尊敬的用户您好，" + "管理员已经拒绝了你的申请！请重新申请。" + "原因是： " + content);
+                content = "尊敬的用户您好，" + "管理员已经拒绝了你的申请！请重新申请。" + "原因是： " + content;
             }
 
-            //发送邮件
-            mailService.sendAttachMail(mailPojo);
-
+            String subject = "[AIB]您的申请已被拒绝";
             //批量修改用户文件作者为管理员
             fileService.updateBatchFileAccUid(ids);
-
             //批量删除用户
             usersService.deleteAccountById(ids);
 
+            //发送邮件
+            mailService.sendAttachMail(mailResult.toString(), subject, content);
             return Msg.success();
         }
 
@@ -334,6 +310,8 @@ public class ManageController {
     @ResponseBody
     @RequiresPermissions("accountType:update")
     public Msg ajaxWithdrawAccount(String uid, String content) throws Exception {
+
+        StringBuffer mailResult = new StringBuffer();
         if (uid == null || uid.equals("")) {
             return Msg.fail();
 
@@ -371,11 +349,12 @@ public class ManageController {
                         return new Msg(200, "状态错误，用户不是已验证用户");
                     }
 
-                    stringBuffer.append(accountInfo.getMail() + ";");
-
+//                    stringBuffer.append(accountInfo.getMail() + ";");
+                    mailResult.append(accountInfo.getMail() + ";");
                 }
-                stringBuffer.deleteCharAt(stringBuffer.length() - 1);
-                mailPojo.setToAddresses(stringBuffer.toString());
+//                stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+                mailResult.deleteCharAt(stringBuffer.length() - 1);
+//                mailPojo.setToAddresses(stringBuffer.toString());
 
 
             } else {//否则就是单个
@@ -394,31 +373,32 @@ public class ManageController {
                 }
 
                 //发送的地址
-                mailPojo.setToAddresses(accountInfo.getMail());
-
+//                mailPojo.setToAddresses(accountInfo.getMail());
+                mailResult.append(accountInfo.getMail());
 
             }
 
 
             //发送的标题
-            mailPojo.setSubject("[AIB]您的用户状态已被更改");
+//            mailPojo.setSubject("[AIB]您的用户状态已被更改");
             //设置发送人
-            mailPojo.setFromAddress(FROMADDRESS);
+//            mailPojo.setFromAddress(FROMADDRESS);
 
-
+            String subject = "[AIB]您的用户状态已被更改";
             //查看有没有附加信息
             if (content == null || content.equals("")) {
-                mailPojo.setContent("尊敬的用户您好，" + "管理员已经将您的状态改为游客状态");
+//                mailPojo.setContent("尊敬的用户您好，" + "管理员已经将您的状态改为游客状态");
+                content = "尊敬的用户您好，" + "管理员已经将您的状态改为游客状态";
             } else {
-                mailPojo.setContent("尊敬的用户您好，" + "管理员已经将您的状态改为游客状态" + "原因是： " + content);
+//                mailPojo.setContent("尊敬的用户您好，" + "管理员已经将您的状态改为游客状态" + "原因是： " + content);
+                content = "尊敬的用户您好，" + "管理员已经将您的状态改为游客状态" + "原因是： " + content;
             }
-
-            //发送邮件
-            mailService.sendAttachMail(mailPojo);
 
             //批量更改状态
             usersService.updateBatchAccountByCharacter(ids, "reviewing");
 
+            //发送邮件
+            mailService.sendAttachMail(mailResult.toString(), subject, content);
             return Msg.success();
         }
 
@@ -483,28 +463,23 @@ public class ManageController {
     }
 
 
-
-
-
-
-
     private String toUtf(String param) throws Exception {
         String utfStr = new String(param.getBytes("iso-8859-1"), "utf-8");
         return utfStr;
     }
 
     /**
-     *  增加系别专业
+     * 增加系别专业
      */
     @RequestMapping(value = "/admin/ajaxAddDep", params = {"content", "parent"})
     @ResponseBody
     @RequiresPermissions("department:add")
     public Msg ajaxAddDep(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getContent() == null || departmentSelectVo.getContent().trim().equals("")) {
-             throw new GlobalException("内容为空");
+            throw new GlobalException("内容为空");
         }
         if (departmentSelectVo.getParent() == null || departmentSelectVo.getParent().trim().equals("")) {
-             throw new GlobalException("上级参数为空,为0时是系");
+            throw new GlobalException("上级参数为空,为0时是系");
         }
 
         departmentSelectVo.setUid(Utils.getUUid());
@@ -518,14 +493,14 @@ public class ManageController {
     }
 
     /**
-     *  删除系别专业
+     * 删除系别专业
      */
     @RequestMapping(value = "/admin/ajaxDeleteDep", params = {"uids"})
     @ResponseBody
     @RequiresPermissions("department:delete")
     public Msg ajaxDeleteDep(String uids) throws Exception {
         if (uids == null || uids.trim().equals("")) {
-             throw new GlobalException("参数为空");
+            throw new GlobalException("参数为空");
         }
         List<String> uidList = Utils.toList(uids);
         int result = departmentService.deleteDepartment(uidList);
@@ -536,14 +511,14 @@ public class ManageController {
     }
 
     /**
-     *  改变系别专业
+     * 改变系别专业
      */
     @RequestMapping(value = "/admin/ajaxUpdateDep", params = {"uid"})
     @ResponseBody
     @RequiresPermissions("department:update")
     public Msg ajaxUpdateDep(DepartmentSelectVo departmentSelectVo) throws Exception {
         if (departmentSelectVo.getUid().trim().equals("") || departmentSelectVo.getUid() == null) {
-             throw new GlobalException("主键不能为空");
+            throw new GlobalException("主键不能为空");
         }
 
 //        if (departmentSelectVo.getContent().trim().equals("") || departmentSelectVo.getContent() == null) {
@@ -558,22 +533,22 @@ public class ManageController {
 
 
     /**
-     *  增加导航
+     * 增加导航
      */
     @RequestMapping(value = "/admin/ajaxAddNav", params = {"title", "parent", "depuid"})
     @ResponseBody
     @RequiresPermissions("navigation:add")
     public Msg ajaxAddNav(NavigationSelectVo navigationSelectVo) throws Exception {
         if (navigationSelectVo.getParent().trim().equals("") || navigationSelectVo.getParent() == null) {
-             throw new GlobalException("上级目录不能为空");
+            throw new GlobalException("上级目录不能为空");
         }
 
         if (navigationSelectVo.getDepuid().trim().equals("") || navigationSelectVo.getDepuid() == null) {
-             throw new GlobalException("部门参数不能为空");
+            throw new GlobalException("部门参数不能为空");
         }
 
         if (navigationSelectVo.getTitle().trim().equals("") || navigationSelectVo.getTitle() == null) {
-             throw new GlobalException("文件夹名不能为空");
+            throw new GlobalException("文件夹名不能为空");
         }
 
         navigationSelectVo.setExtend(1);
@@ -592,14 +567,14 @@ public class ManageController {
     }
 
     /**
-     *  删除导航
+     * 删除导航
      */
     @RequestMapping(value = "/admin/ajaxDeleteNav", params = {"uids"})
     @ResponseBody
     @RequiresPermissions("navigation:delete")
     public Msg ajaxDeleteNav(String uids) throws Exception {
         if (uids == null || uids.trim().equals("")) {
-             throw new GlobalException("参数为空");
+            throw new GlobalException("参数为空");
         }
 
         List<String> uidList = Utils.toList(uids);
@@ -614,7 +589,7 @@ public class ManageController {
     }
 
     /**
-     *  修改导航
+     * 修改导航
      */
     @RequestMapping(value = "/admin/ajaxUpdateNav", params = {"uid"})
     @ResponseBody
@@ -633,18 +608,14 @@ public class ManageController {
     @RequestMapping("/admin/ajaxUpdateTeacherDep")
     @ResponseBody
     @RequiresPermissions("accountDep:update")
-    public Msg ajaxUpdateTeacherDep(String uid,String departmentUid) throws Exception {
-        if(uid == null || uid.equals("") || departmentUid == null || departmentUid.equals("")){
+    public Msg ajaxUpdateTeacherDep(String uid, String departmentUid) throws Exception {
+        if (uid == null || uid.equals("") || departmentUid == null || departmentUid.equals("")) {
             return Msg.fail();
         }
         runasService.deleteAllByUid(uid);
-        usersService.updateAccountByDepartment(uid,departmentUid);
+        usersService.updateAccountByDepartment(uid, departmentUid);
         return Msg.success();
     }
-
-
-
-
 
 
 }

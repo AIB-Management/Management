@@ -24,19 +24,19 @@
 
 
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="${mail.host}"/>
+        <property name="host" value="${MAIL_HOST}"/>
         <!--测试用邮箱 -->
-        <property name="username" value="${mail.username}"/>
-        <property name="password" value="${mail.password}"/>
+        <property name="username" value="${MAIL_USERNAME}"/>
+        <property name="password" value="${MAIL_PASSWORD}"/>
         <property name="javaMailProperties">
             <props>
-                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
-                <prop key="mail.smtp.host">${mail.host}</prop>
-                <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
-                <prop key="mail.smtp.port">${mail.smtp.port}</prop>
-                <prop key="mail.smtp.socketFactory.port">${mail.smtp.socketFactory.port}</prop>
-                <prop key="mail.smtp.socketFactory.fallback">${mail.smtp.socketFactory.fallback}</prop>
-                <prop key="mail.smtp.socketFactory.class">${mail.smtp.socketFactory.class}</prop>
+                <prop key="mail.smtp.auth">${MAIL_SMTP_AUTH}</prop>
+                <prop key="mail.smtp.host">${MAIL_HOST}</prop>
+                <prop key="mail.smtp.timeout">${MAIL_SMTP_TIMEOUT}</prop>
+                <prop key="mail.smtp.port">${MAIL_SMTP_PORT}</prop>
+                <prop key="mail.smtp.socketFactory.port">${MAIL_SMTP_SOCKETFACTORY_PORT}</prop>
+                <prop key="mail.smtp.socketFactory.fallback">${MAIL_SMTP_SOCKETFACTORY_FALLBACK}</prop>
+                <prop key="mail.smtp.socketFactory.class">${MAIL_SMTP_SOCKETFACTORY_CALSS}</prop>
             </props>
         </property>
     </bean>

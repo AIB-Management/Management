@@ -24,21 +24,19 @@
     <!--<bean id="runasService" class="com.gdaib.service.impl.RunasServiceImpl"/>-->
 
 
-
     <!--开启注解扫描
     base-package：注解类所在的包，可以写成cn，就扫描cn下的所有包，也可
     以使用逗号base-package="cn.znho.spring.anno,cn.znho.haha,com.iterm"
     1.会到包中扫描类、方法、属性是否有注解
     -->
-    <context:component-scan base-package="com.gdaib.service.impl"></context:component-scan>
+    <context:component-scan base-package="com.gdaib.service"></context:component-scan>
 
     <!--  java mail -->
+
     <bean id="mailService" class="com.gdaib.service.impl.MailServiceImpl">
         <property name="mailSender" ref="javaMailSender"/>
         <property name="mimeMessage" ref="mimeMessage"/>
     </bean>
-
-
 
 
 </beans>
