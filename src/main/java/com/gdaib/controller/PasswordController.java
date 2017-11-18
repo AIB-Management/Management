@@ -3,16 +3,12 @@ package com.gdaib.controller;
 import com.gdaib.pojo.*;
 import com.gdaib.service.MailService;
 import com.gdaib.service.UsersService;
-import com.gdaib.service.impl.MailServiceImpl;
-import com.gdaib.util.MailUtil;
 import com.gdaib.util.Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
