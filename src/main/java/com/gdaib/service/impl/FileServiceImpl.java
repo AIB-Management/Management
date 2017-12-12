@@ -5,19 +5,19 @@ import com.gdaib.mapper.FileExtMapper;
 import com.gdaib.mapper.FileItemExtMapper;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
-import com.gdaib.util.MyStringUtils;
-import com.gdaib.util.ServerUtil;
+import com.gdaib.util.LoggerUtils;
 import com.gdaib.util.Utils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,14 +27,9 @@ import java.util.List;
 public class FileServiceImpl implements FileService {
 
     //直接显示的文件类型
-    public static final String[] SHOW_TYPE = {
-            ".swf", ".pdf", ".jpg", ".png", ".gif", ".jpeg"
-    };
+    @Value("${SHOW_FILE_TYPE}")
+    private String SHOW_FILE_TYPE;
 
-    //不允许上传的文件后缀
-    public static final String[] NOT_UP_TYPE = {
-            ".html", ".htm", ".php", ".jsp", ".asp", ".java", ".class", ".py"
-    };
 
     @Autowired
     private FileExtMapper fileExtMapper;
@@ -68,40 +63,36 @@ public class FileServiceImpl implements FileService {
     }
 
     private FileItemSelectVo getFileItemInfoByCommonsMultipartFile(int index, CommonsMultipartFile file) throws Exception {
-        FileItemSelectVo fileItemSelectVo;
-        if (file != null) {
-            fileItemSelectVo = new FileItemSelectVo();
-            String filename = file.getOriginalFilename();
-            String prefix = filename.substring(filename.lastIndexOf("."));
-            if (
-                    MyStringUtils.isEmpty(prefix)
-                    ) {
-                throw new GlobalException("不允许的文件类型");
-            }
-            for (String type : SHOW_TYPE) {
-                if (prefix.equals(type)) {
-                    fileItemSelectVo.setShowing(1);
-                    break;
-                } else {
-                    fileItemSelectVo.setShowing(0);
-                }
-            }
 
-            fileItemSelectVo.setPrefix(prefix);
-            fileItemSelectVo.setUid(Utils.getUUid());
-            fileItemSelectVo.setFilename(filename);
-            fileItemSelectVo.setPosition(index + 1);
-            fileItemSelectVo.setDatatype(file.getContentType());
+        FileItemSelectVo fileItemSelectVo = new FileItemSelectVo();
+        String fileName = file.getOriginalFilename();
 
-            return fileItemSelectVo;
+        String suffix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+        if (SHOW_FILE_TYPE.contains(suffix.trim().toLowerCase())) {
+            fileItemSelectVo.setShowing(1);
+        } else {
+            fileItemSelectVo.setShowing(0);
         }
 
-        return null;
+        fileItemSelectVo.setPrefix(suffix);
+        fileItemSelectVo.setUid(Utils.getUUid());
+        fileItemSelectVo.setFilename(fileName);
+        fileItemSelectVo.setPosition(index + 1);
+        fileItemSelectVo.setDatatype(file.getContentType());
+
+        return fileItemSelectVo;
+
     }
 
+    @Value("${FILE_DOC_BASE}")
+    public String FILE_DOC_BASE;
+
+    @Value("${FILE_PATH}")
+    public String FILE_PATH;
 
     @Override
-    public List<FileItemSelectVo> writeFileToLocal(String path, CommonsMultipartFile[] files) throws Exception {
+    public List<FileItemSelectVo> writeFileToLocal(String sqlPath, CommonsMultipartFile[] files) throws Exception {
+        String path = FILE_DOC_BASE + sqlPath;
         File f = new File(path);
         if (!f.exists()) {
             f.mkdirs();
@@ -113,13 +104,11 @@ public class FileServiceImpl implements FileService {
 
         try {
             for (int i = 0, length = files.length; i < length; i++) {
-                if (!files[i].isEmpty()) {
-                    fileItemSelectVo = getFileItemInfoByCommonsMultipartFile(i, files[i]);
-                    fileItems.add(fileItemSelectVo);
-                    newFileName = fileItemSelectVo.getUid() + fileItemSelectVo.getPrefix();
-                    localFile = new File(path + "/" + newFileName);
-                    files[i].transferTo(localFile);
-                }
+                fileItemSelectVo = getFileItemInfoByCommonsMultipartFile(i, files[i]);
+                fileItems.add(fileItemSelectVo);
+                newFileName = fileItemSelectVo.getUid() + fileItemSelectVo.getPrefix();
+                localFile = new File(path + "/" + newFileName);
+                files[i].transferTo(localFile);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,7 +121,8 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public void deleteLocalFile(String workspaceRootPath) throws Exception {
+    public void deleteLocalFile(String sqlPath) throws Exception {
+        String workspaceRootPath = FILE_DOC_BASE + sqlPath;
         File file = new File(workspaceRootPath);
         if (file.exists()) {
             deleteFile(file);
@@ -147,23 +137,6 @@ public class FileServiceImpl implements FileService {
             }
         }
         file.delete();
-    }
-
-
-    @Override
-    public boolean isAllowUpFileTypeByPrefix(String filename) throws Exception {
-        if (MyStringUtils.isEmpty(filename)) {
-            throw new Exception("参数不能为空");
-        }
-
-        String prefix = filename.substring(filename.lastIndexOf("."));
-
-        for (String str : NOT_UP_TYPE) {
-            if (prefix.equals(str)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -182,8 +155,7 @@ public class FileServiceImpl implements FileService {
         }
 
         FileCustom fileCustom = fileCustoms.get(0);
-        String path = ServerUtil.getServerUtil().getProperties().getProperty(ServerUtil.PATH);
-        fileCustom.setUrl(path + "/" + fileCustom.getFilepath() + "/");
+        fileCustom.setUrl(FILE_PATH + "/" + fileCustom.getFilepath() + "/");
 
         return fileCustom;
     }
@@ -195,7 +167,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<FileCustom>  selectFileByKeyWord(FileSelectVo file) throws Exception {
+    public List<FileCustom> selectFileByKeyWord(FileSelectVo file) throws Exception {
         List<FileCustom> customs = fileExtMapper.selectFileByKeyWord(file);
 
         return customs;
@@ -208,32 +180,12 @@ public class FileServiceImpl implements FileService {
         AccountInfo accountInfo = Utils.getLoginAccountInfo();
         file.setAccuid(accountInfo.getUid());
 
-
         FileExample fileExample = new FileExample();
         FileExample.Criteria criteria = fileExample.createCriteria();
         criteria.andAccuidIn(ids);
 
         fileExtMapper.updateByExampleSelective(file, fileExample);
     }
-
-    @Override
-    public List<HashMap<String, Object>> fileCustomToCustomMap(List<FileCustom> fileCustoms) throws Exception {
-        List<HashMap<String, Object>> maps = new ArrayList<HashMap<String, Object>>();
-        if (fileCustoms != null || fileCustoms.size() > 0) {
-            for (FileCustom file : fileCustoms) {
-                HashMap<String, Object> hashMap = new HashMap<String, Object>();
-                hashMap.put("uid", file.getUid());
-                hashMap.put("title", file.getTitle());
-                hashMap.put("upTime", file.getUptime());
-                hashMap.put("author", file.getAuthor());
-                hashMap.put("accuid", file.getAccuid());
-                maps.add(hashMap);
-            }
-            return maps;
-        }
-        return null;
-    }
-
 
     @Override
     public void getFileStreamToHttp(String path, HttpServletResponse response) throws Exception {
@@ -256,10 +208,9 @@ public class FileServiceImpl implements FileService {
     }
 
 
-    private  void closeStream() {
+    private void closeStream() {
         try {
             if (bos != null) {
-
                 bos.flush();
                 bos.close();
             }
@@ -276,7 +227,31 @@ public class FileServiceImpl implements FileService {
         Utils.out("流关闭");
     }
 
-    public List<FileCustom> selectFileByNavuid( String navuid) throws Exception{
+    public List<FileCustom> selectFileByNavuid(String navuid) throws Exception {
         return fileExtMapper.selectFileByNavuid(navuid);
+    }
+
+    @Value("${DO_NOT_UPLOAD_FILE_TYPE}")
+    private String DO_NOT_UPLOAD_FILE_TYPE;
+
+    public boolean checkFile(String fileName) {
+        boolean flag = true;
+        LoggerUtils.debug("test");
+        //获取文件后缀
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
+        if (DO_NOT_UPLOAD_FILE_TYPE.contains(suffix.trim().toLowerCase())) {
+            flag = false;
+        }
+        return flag;
+    }
+
+    @Override
+    public String getFileDocBase() {
+        return FILE_DOC_BASE;
+    }
+
+    @Override
+    public String getFilePath() {
+        return FILE_PATH;
     }
 }

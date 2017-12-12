@@ -95,7 +95,10 @@
             <mvc:mapping path="/**"/>
             <bean class="com.gdaib.filter.CacheInterceptor"></bean>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/file/doUploadFile.action"/>
+            <bean class="com.gdaib.filter.FileInterceptor"></bean>
+        </mvc:interceptor>
     </mvc:interceptors>
-
-
+    
 </beans>

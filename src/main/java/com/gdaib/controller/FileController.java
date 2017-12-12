@@ -4,8 +4,8 @@ import com.gdaib.Exception.GlobalException;
 import com.gdaib.pojo.*;
 import com.gdaib.service.FileService;
 import com.gdaib.service.RunasService;
+import com.gdaib.service.impl.FileServiceImpl;
 import com.gdaib.util.MyStringUtils;
-import com.gdaib.util.ServerUtil;
 import com.gdaib.util.Utils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +39,8 @@ public class FileController {
     @ResponseBody
     @RequiresPermissions("file:add")
     public Msg doUploadFile(
-
             FileSelectVo fileSelectVo,
             @RequestParam("file") CommonsMultipartFile files[]
-
     ) throws Exception {
 
         String accoutUid = Utils.getLoginAccountInfo().getUid();
@@ -64,19 +62,6 @@ public class FileController {
 
         }
 
-        String fileName;
-        for (int i = 0; i < files.length; i++) {
-            // 获得原始文件名
-            fileName = files[i].getOriginalFilename();
-            if (MyStringUtils.isEmpty(fileName)) {
-                throw new GlobalException("文件名不能为空");
-
-            }
-
-            if (fileService.isAllowUpFileTypeByPrefix(fileName)) {
-                throw new GlobalException("上传文件中有不允许的文件种类");
-            }
-        }
 
         //设置上传时间时间
         fileSelectVo.setUptime(Utils.getSystemCurrentTime());
@@ -86,11 +71,9 @@ public class FileController {
         String sqlPath = "/" + fileSelectVo.getAccuid() + "/" + fileUid + "/";
         fileSelectVo.setFilepath(sqlPath);
 
-        String docBase = ServerUtil.getServerUtil().getProperties().getProperty(ServerUtil.DOC_BASE);
-        String path = docBase + sqlPath;
 
         //把文件写到目录中
-        List<FileItemSelectVo> fileItems = fileService.writeFileToLocal(path, files);
+        List<FileItemSelectVo> fileItems = fileService.writeFileToLocal(sqlPath, files);
 
         if (fileItems == null) {
             return Msg.fail();
@@ -137,9 +120,7 @@ public class FileController {
             throw new GlobalException("文件不存在");
         }
 
-        String docBase = ServerUtil.getServerUtil().getProperties().getProperty(ServerUtil.DOC_BASE);
-        String localPath = docBase + fileCustoms.get(0).getFilepath();
-        fileService.deleteLocalFile(localPath);
+        fileService.deleteLocalFile(fileCustoms.get(0).getFilepath());
 
         int result = fileService.deleteFile(fileSelectVo);
         if (result > 0) {
@@ -169,13 +150,13 @@ public class FileController {
     }
 
     @RequiresPermissions("file:down")
-    @RequestMapping(value = "/file/downLoadFile",params = {"uid"})
+    @RequestMapping(value = "/file/downLoadFile", params = {"uid"})
     public void downLoadFile(String uid, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         FileItemCustom custom = fileService.selectFileItemByUid(uid);
         //设置文件MIME类型
         response.setContentType(custom.getDatatype());
-        
+
         Utils.out(custom);
         //设置Content-Disposition
         response.setHeader("Content-Disposition", "attachment;filename=" +
@@ -184,9 +165,8 @@ public class FileController {
         //读取目标文件，通过response将目标文件写到客户端
         //获取目标文件的绝对路径
 
-        String docBase = ServerUtil.getServerUtil().getProperties().getProperty(ServerUtil.DOC_BASE);
         String fullFileName =
-                docBase
+                fileService.getFileDocBase()
                         + "/" + custom.getFilePath() + "/"
                         + custom.getUid() + custom.getPrefix();
 

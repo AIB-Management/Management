@@ -37,6 +37,7 @@ import java.util.logging.Logger;
  * @Date: 17-5-6
  * @role:
  */
+@Service
 public class MailServiceImpl implements MailService {
 
     @Autowired
@@ -273,19 +274,4 @@ public class MailServiceImpl implements MailService {
         return LOCAL_BASE_URL;
     }
 
-    public JavaMailSender getMailSender() {
-        return mailSender;
-    }
-
-    public void setMailSender(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
-
-    public MimeMessage getMimeMessage() {
-        return mimeMessage;
-    }
-
-    public void setMimeMessage(MimeMessage mimeMessage) {
-        this.mimeMessage = mimeMessage;
-    }
 }

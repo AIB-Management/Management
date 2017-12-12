@@ -33,10 +33,11 @@
 
     <!--  java mail -->
 
+    <!--
     <bean id="mailService" class="com.gdaib.service.impl.MailServiceImpl">
         <property name="mailSender" ref="javaMailSender"/>
         <property name="mimeMessage" ref="mimeMessage"/>
     </bean>
-
+    -->
 
 </beans>
