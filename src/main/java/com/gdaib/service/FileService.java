@@ -45,9 +45,10 @@ public interface FileService {
     public void updateBatchFileAccUid(List<String> ids) throws Exception;
 
     public boolean checkFile(String fileName);
+
     public List<FileCustom> selectFileByKeyWord(FileSelectVo file) throws Exception;
 
-    public void getFileStreamToHttp(String path, HttpServletResponse response) throws Exception;
+    public void getFileStreamToHttp(String path, HttpServletResponse response);
 
     public List<FileCustom> selectFileByNavuid(String navuid) throws Exception;
 

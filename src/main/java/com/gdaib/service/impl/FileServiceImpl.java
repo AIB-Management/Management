@@ -29,17 +29,17 @@ public class FileServiceImpl implements FileService {
     //直接显示的文件类型
     @Value("${SHOW_FILE_TYPE}")
     private String SHOW_FILE_TYPE;
+    @Value("${FILE_DOC_BASE}")
+    public String FILE_DOC_BASE;
 
+    @Value("${FILE_PATH}")
+    public String FILE_PATH;
 
     @Autowired
     private FileExtMapper fileExtMapper;
 
     @Autowired
     private FileItemExtMapper fileItemExtMapper;
-
-    private BufferedOutputStream bos = null;
-    private BufferedInputStream bis = null;
-
 
     @Override
     public List<FileCustom> selectFile(FileSelectVo file) throws Exception {
@@ -84,11 +84,7 @@ public class FileServiceImpl implements FileService {
 
     }
 
-    @Value("${FILE_DOC_BASE}")
-    public String FILE_DOC_BASE;
 
-    @Value("${FILE_PATH}")
-    public String FILE_PATH;
 
     @Override
     public List<FileItemSelectVo> writeFileToLocal(String sqlPath, CommonsMultipartFile[] files) throws Exception {
@@ -188,11 +184,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void getFileStreamToHttp(String path, HttpServletResponse response) throws Exception {
-        try {
-            //读取文件
-            bis = new BufferedInputStream(new FileInputStream(path));
-            bos = new BufferedOutputStream(response.getOutputStream());
+    public void getFileStreamToHttp(String path, HttpServletResponse response)  {
+        //JDK1.7 try with try-with-resources
+        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path));
+             BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream())) {
             //写文件
             byte[] b = new byte[512];
             int len = bis.read(b);
@@ -202,12 +197,22 @@ public class FileServiceImpl implements FileService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        /*
+        try {
+            //读取文件
+            bis = new BufferedInputStream(new FileInputStream(path));
+            bos = new BufferedOutputStream(response.getOutputStream());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             closeStream();
         }
+        */
     }
 
-
+    /*
     private void closeStream() {
         try {
             if (bos != null) {
@@ -226,7 +231,7 @@ public class FileServiceImpl implements FileService {
         }
         Utils.out("流关闭");
     }
-
+    */
     public List<FileCustom> selectFileByNavuid(String navuid) throws Exception {
         return fileExtMapper.selectFileByNavuid(navuid);
     }
@@ -236,7 +241,6 @@ public class FileServiceImpl implements FileService {
 
     public boolean checkFile(String fileName) {
         boolean flag = true;
-        LoggerUtils.debug("test");
         //获取文件后缀
         String suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
         if (DO_NOT_UPLOAD_FILE_TYPE.contains(suffix.trim().toLowerCase())) {
