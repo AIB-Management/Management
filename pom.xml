@@ -292,6 +292,10 @@
                 <configuration>
                     <port>8080</port>
                     <path>/Management</path>
+                    <url>http://139.199.73.29:8080/manager/text</url>
+                    <server>tomcat</server>
+                    <username>admin</username>
+                    <password>password</password>
                 </configuration>
             </plugin>
 

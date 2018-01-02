@@ -151,7 +151,7 @@ public class FileServiceImpl implements FileService {
         }
 
         FileCustom fileCustom = fileCustoms.get(0);
-        fileCustom.setUrl(FILE_PATH + "/" + fileCustom.getFilepath() + "/");
+        fileCustom.setUrl(FILE_PATH + fileCustom.getFilepath() );
 
         return fileCustom;
     }
